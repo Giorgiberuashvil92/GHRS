@@ -31,6 +31,7 @@ interface HeaderProps {
   title?: string;
   info?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   onPriceClick?: () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setData?: any; // set-ის მონაცემები complex variant-ისთვის
 }
 
@@ -43,20 +44,20 @@ export const defaultMenuItems: MenuItem[] = [
 
 const categories = [
   { id: 1, text: "15 категорий", image: "/assets/images/book.svg" },
-  { id: 2, text: "Магазины", image: "/assets/images/store.svg" },
-  { id: 3, text: "Рестораны", image: "/assets/images/camera.svg" },
+  { id: 2, text: "Онлайн-чат", image: "/assets/icons/message.svg" },
+  { id: 3, text: "1000+ уроков", image: "/assets/images/camera.svg" },
 ];
 
 const categoryDetailItems = [
-  { id: 1, text: "6 разделов", image: "/assets/images/book.svg" },
-  { id: 2, text: "36 комплексов", image: "/assets/images/store.svg" },
-  { id: 3, text: "125 упражнений", image: "/assets/images/camera.svg" },
+  { id: 1, text: "15 категорий", image: "/assets/images/book.svg" },
+  { id: 2, text: "Онлайн-чат", image: "/assets/icons/pulse.svg" },
+  { id: 3, text: "1000+ уроков", image: "/assets/icons/icon.svg" },
 ];
 
 const complexItems = [
-  { id: 1, text: "125 уроков", image: "/assets/images/book.svg" },
-  { id: 2, text: "102 минуты", image: "/assets/images/store.svg" },
-  { id: 3, text: "3 стадии тяжести", image: "/assets/images/camera.svg" },
+  { id: 1, text: "15 категорий", image: "/assets/images/book.svg" },
+  { id: 2, text: "36 комплексов", image: "/assets/icons/message.svg" },
+  { id: 3, text: "1000+ уроков", image: "/assets/images/camera.svg" },
 ];
 
 const Header: React.FC<HeaderProps> = ({

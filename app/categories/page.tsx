@@ -18,6 +18,7 @@ export default function CategoriesPage() {
       exerciseCount: 10,
       categoryName: "Ортопедия",
       monthlyPrice: 920,
+      categoryId: "1",
     },
     {
       id: "2",
@@ -28,6 +29,7 @@ export default function CategoriesPage() {
       exerciseCount: 10,
       categoryName: "Ортопедия",
       monthlyPrice: 920,
+      categoryId: "1",
     },
     {
       id: "3",
@@ -38,6 +40,7 @@ export default function CategoriesPage() {
       exerciseCount: 10,
       categoryName: "Ортопедия",
       monthlyPrice: 920,
+      categoryId: "1",
     },
     {
       id: "4",
@@ -48,6 +51,7 @@ export default function CategoriesPage() {
       exerciseCount: 10,
       categoryName: "Ортопедия",
       monthlyPrice: 920,
+      categoryId: "1",
     },
   ];
 
@@ -58,7 +62,7 @@ export default function CategoriesPage() {
       <div className="md:pt-[100px] pt-[400px]">
         {/*  */}
         <Section border={0} borderColor="none" />
-        <WorksSlider title="Комплексы" works={homePageWorks} />
+        <WorksSlider title="Комплексы" works={homePageWorks} fromMain={false} />
         <div className="md:my-10">
           <Subscribe
             backgroundImage="/assets/images/categorySliderBgs/bg4.jpg"
@@ -88,7 +92,7 @@ export default function CategoriesPage() {
             title={""}
           />
         </div>
-        <Professional />
+        <Professional withBanner={false} />
       </div>
     </div>
   );

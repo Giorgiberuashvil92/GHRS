@@ -16,33 +16,40 @@ import { BackendExercise } from "@/types/exercise";
 
 function SectionContent() {
   const searchParams = useSearchParams();
-  const subcategoryId = searchParams.get('subcategoryId') || '';
-  const categoryId = searchParams.get('categoryId') || '';
+  const subcategoryId = searchParams.get("subcategoryId") || "";
+  const categoryId = searchParams.get("categoryId") || "";
   const { t } = useI18n();
 
   // ვიყენებთ categoryComplete hook-ს მთავარი კატეგორიისთვის
   const { categoryData, loading, error } = useCategoryComplete(categoryId);
 
   // ვიყენებთ popular exercises-ების hook-ს
-  const { exercises: popularExercises, loading: popularLoading, error: popularError } = usePopularExercises();
+  const {
+    exercises: popularExercises,
+    loading: popularLoading,
+    error: popularError,
+  } = usePopularExercises();
 
   // ვპოულობთ ამ კონკრეტულ subcategory-ს
   const selectedSubcategory = categoryData?.subcategories?.find(
-    sub => sub._id === subcategoryId
+    (sub) => sub._id === subcategoryId
   );
 
   // ვპოულობთ ამ subcategory-ს სეტებს
-  const subcategorySets = categoryData?.sets?.filter(
-    set => set.subCategoryId === subcategoryId
-  ) || [];
+  const subcategorySets =
+    categoryData?.sets?.filter((set) => set.subCategoryId === subcategoryId) ||
+    [];
 
-  console.log("Section Subcategory Data:", { selectedSubcategory, subcategorySets });
-  console.log("Popular Exercises:", { 
-    popularExercises, 
-    popularLoading, 
+  console.log("Section Subcategory Data:", {
+    selectedSubcategory,
+    subcategorySets,
+  });
+  console.log("Popular Exercises:", {
+    popularExercises,
+    popularLoading,
     popularError,
     exercisesCount: popularExercises?.length,
-    firstExercise: popularExercises?.[0]
+    firstExercise: popularExercises?.[0],
   });
 
   if (loading) {
@@ -121,7 +128,10 @@ function SectionContent() {
     description: getLocalizedText(set?.description, locale),
     image: set.thumbnailImage || "/assets/images/workMan.png",
     exerciseCount: set.exercises?.length || 0,
-    categoryName: getLocalizedText(selectedSubcategory?.name as { ka: string; en: string; ru: string }, locale),
+    categoryName: getLocalizedText(
+      selectedSubcategory?.name as { ka: string; en: string; ru: string },
+      locale
+    ),
     price: `${set.price?.monthly || 920}₾/თვე`,
     monthlyPrice: set.price?.monthly || 920,
     categoryId: categoryId,
@@ -132,7 +142,10 @@ function SectionContent() {
     <div className="">
       <Header
         variant="categories"
-        title={getLocalizedText(selectedSubcategory?.name as { ka: string; en: string; ru: string }, locale)}
+        title={getLocalizedText(
+          selectedSubcategory?.name as { ka: string; en: string; ru: string },
+          locale
+        )}
         info={{
           setsCount,
           subcategoriesCount: 0, // subcategory-ს ქვეკატეგორიები არ აქვს
@@ -141,9 +154,16 @@ function SectionContent() {
       />
       <div className="md:pt-[100px] pt-[400px]">
         {Array.isArray(formattedSets) && formattedSets.length > 0 && (
-          <div>
-            <WorksSlider 
-              title={getLocalizedText(selectedSubcategory?.name as { ka: string; en: string; ru: string }, locale)} 
+          <div className="md:mb-10">
+            <WorksSlider
+              title={getLocalizedText(
+                selectedSubcategory?.name as {
+                  ka: string;
+                  en: string;
+                  ru: string;
+                },
+                locale
+              )}
               works={formattedSets}
               linkType="complex"
               fromMain={false}
@@ -157,16 +177,14 @@ function SectionContent() {
             <h3 className="text-2xl font-cinzel text-gray-600 mb-2">
               {t("common.no_sets_found")}
             </h3>
-            <p className="text-gray-500">
-              {t("common.no_sets_description")}
-            </p>
+            <p className="text-gray-500">{t("common.no_sets_description")}</p>
           </div>
         )}
 
         {/* Popular Exercises Section */}
         {!popularLoading && popularExercises.length > 0 && (
           <div className="mt-10">
-            <Works 
+            <Works
               exercises={popularExercises as unknown as BackendExercise[]}
               title={t("common.popular_exercises") || "პოპულარული ვარჯიშები"}
             />
@@ -176,26 +194,45 @@ function SectionContent() {
         {popularLoading && (
           <div className="text-center py-10">
             <div className="animate-spin rounded-full h-8 w-8 border-4 border-purple-600 border-t-transparent mb-4 mx-auto"></div>
-            <p className="text-gray-500">{t("common.loading_exercises") || "ვარჯიშები იტვირთება..."}</p>
+            <p className="text-gray-500">
+              {t("common.loading_exercises") || "ვარჯიშები იტვირთება..."}
+            </p>
           </div>
         )}
 
         {!popularLoading && popularError && (
           <div className="text-center py-10">
             <div className="text-red-500 text-4xl mb-4">⚠️</div>
-            <p className="text-red-600">{t("common.exercises_error") || "ვარჯიშების ჩატვირთვის შეცდომა"}</p>
+            <p className="text-red-600">
+              {t("common.exercises_error") || "ვარჯიშების ჩატვირთვის შეცდომა"}
+            </p>
           </div>
         )}
 
         <Subscribe />
-        <ReviewSlider />
-        <Blog
-          withBanner={false}
-          withSlider={true}
-          layoutType="default"
-          title={getLocalizedText(selectedSubcategory?.name as { ka: string; en: string; ru: string }, locale)}
-        />
-        <Professional />
+        <div className="my-10">
+          <ReviewSlider />
+        </div>
+        <div
+          className="mb-10
+        "
+        >
+          <Blog
+            withBanner={false}
+            withSlider={true}
+            layoutType="default"
+            title={getLocalizedText(
+              selectedSubcategory?.name as {
+                ka: string;
+                en: string;
+                ru: string;
+              },
+              locale
+            )}
+          />
+        </div>
+
+        <Professional withBanner={false} />
       </div>
     </div>
   );
@@ -203,16 +240,18 @@ function SectionContent() {
 
 export default function SectionPage() {
   return (
-    <Suspense fallback={
-      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-600 border-t-transparent mb-4 mx-auto"></div>
-          <h2 className="text-2xl font-cinzel font-semibold text-gray-700">
-            Loading...
-          </h2>
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-600 border-t-transparent mb-4 mx-auto"></div>
+            <h2 className="text-2xl font-cinzel font-semibold text-gray-700">
+              Loading...
+            </h2>
+          </div>
         </div>
-      </div>
-    }>
+      }
+    >
       <SectionContent />
     </Suspense>
   );

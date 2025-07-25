@@ -8,7 +8,7 @@ import { useCourses } from "../hooks/useCourses";
 import Banner from "./Banner";
 import { useI18n } from "../context/I18nContext";
 
-const Professional = () => {
+const Professional = ({ withBanner }: { withBanner: boolean }) => {
   const { courses, loading, error } = useCourses();
   const { t } = useI18n();
 
@@ -23,14 +23,16 @@ const Professional = () => {
   };
 
   return (
-    <div className="mb-10 md:mx-5 bg-[#F9F7FE]">
-      <Banner
-        backgroundUrl="/assets/images/bluebg.jpg"
-        logoUrl="/assets/images/simpleLogo.svg"
-        icon="/assets/images/profIcon.png"
-        iconHeight={50}
-        iconWidth={170}
-      />
+    <div className="mb-10 md:mx-5 md:rounded-[30px] bg-[#F9F7FE]">
+      {withBanner && (
+        <Banner
+          backgroundUrl="/assets/images/bluebg.jpg"
+          logoUrl="/assets/images/simpleLogo.svg"
+          icon="/assets/images/profIcon.png"
+          iconHeight={50}
+          iconWidth={170}
+        />
+      )}
       <div className="md:p-10 px-5">
         <h1 className="text-[20px] md:mt-10 md:text-[40px] md:tracking-[-3%] text-[#3D334A] leading-[120%] mb-2.5 md:mb-5">
           {typeof t("professional.title") === "string"

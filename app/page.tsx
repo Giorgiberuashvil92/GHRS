@@ -22,8 +22,7 @@ const Home = () => {
   const { exercises } = useAllExercises();
   // const { categoryComplete } = useCategoryComplete();
   const { sets } = useAllSets();
-  console.log(sets, 'Beros setebi')
-
+  console.log(sets, "Beros setebi");
 
   // const { t } = useI18n();
 
@@ -31,7 +30,7 @@ const Home = () => {
     setsCount: sets.length,
     sets: sets.slice(0, 2), // პირველი 2 set-ის ნახვა
     categoriesCount: categories.length,
-    exercisesCount: exercises.length
+    exercisesCount: exercises.length,
   });
 
   return (
@@ -40,18 +39,20 @@ const Home = () => {
       <div>
         <Rehabilitation />
         <Category bgColor="#F9F7FE" />
-        <Works title={"Sets"} sets={sets} fromMain={true}/>
+        <hr className="text-[#D5D1DB] bg-[#D5D1DB] w-[95%] mx-auto" />
+        <Works title={"Sets"} sets={sets} fromMain={true} />
         <Subscribe
-          backgroundImage="/assets/images/categorySliderBgs/bg4.jpg"
+          backgroundImage="/assets/images/categorySliderBgs/bg1.jpg"
           titleKey="subscription.title"
           buttonTextKey="buttons.subscribe"
           buttonTextColor="#3D334A"
           buttonBgColor="#FFFFFF"
+          bgCenter={true}
           containerStyles="custom-class"
           titleStyles="text-white"
           buttonStyles="hover:opacity-80"
         />
-        <Professional />
+        <Professional withBanner={true} />
         <Blog
           withBanner={true}
           withSlider={true}
@@ -65,6 +66,7 @@ const Home = () => {
           buttonTextKey="buttons.take_test"
           buttonTextColor="#3D334A"
           buttonBgColor="#FFFFFF"
+          bgCenter={true}
           containerStyles="custom-class"
           titleStyles="text-white"
           buttonStyles="hover:opacity-80"

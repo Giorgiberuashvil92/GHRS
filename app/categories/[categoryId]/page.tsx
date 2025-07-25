@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-duplicate-props */
 "use client";
 
 import { use } from "react";
@@ -23,7 +22,7 @@ export default function CategoriesPage({
   const { categoryData, loading, error } = useCategoryComplete(categoryId);
   const { t } = useI18n();
 
-  console.log(categoryData?.category?._id)
+  console.log(categoryData?.category?._id);
 
   // ახლა სრული მონაცემები გვაქვს
   const selectedCategory = categoryData?.category;
@@ -93,8 +92,10 @@ export default function CategoriesPage({
   const locale = getLocale();
 
   // ტექნიკურად ვფილტრავთ სეტებს წყაროს მიხედვით
-  const directSets = categoryData?.sets?.filter(set => !set.subCategoryId) || [];
-  const subcategorySets = categoryData?.sets?.filter(set => set.subCategoryId) || [];
+  const directSets =
+    categoryData?.sets?.filter((set) => !set.subCategoryId) || [];
+  const subcategorySets =
+    categoryData?.sets?.filter((set) => set.subCategoryId) || [];
 
   // ვაერთიანებთ ყველა სეტს ერთ სიაში
   const allSets = [...directSets, ...subcategorySets];
@@ -119,10 +120,10 @@ export default function CategoriesPage({
     price: `${set.price?.monthly || 920}₾/თვე`,
     monthlyPrice: set.price?.monthly || 920,
     categoryId: categoryId,
-    subcategoryId: set.subCategoryId || '',
+    subcategoryId: set.subCategoryId || "",
   }));
 
-  console.log(formattedSets)
+  console.log(formattedSets);
 
   return (
     <div className="">
@@ -169,15 +170,30 @@ export default function CategoriesPage({
                   src={subcategory.image || "/assets/images/category1.png"}
                   width={542}
                   height={181}
-                  alt={getLocalizedText(subcategory.name as { ka: string; en: string; ru: string }, locale)}
+                  alt={getLocalizedText(
+                    subcategory.name as { ka: string; en: string; ru: string },
+                    locale
+                  )}
                   className="w-full h-[181px] object-cover rounded-[15px]"
                 />
                 <div className="flex items-center justify-between mt-[22px]">
                   <h1 className="text-[#3D334A] w-[342px] text-[28px] leading-[100%]">
-                    {getLocalizedText(subcategory.name as { ka: string; en: string; ru: string }, locale)}
+                    {getLocalizedText(
+                      subcategory.name as {
+                        ka: string;
+                        en: string;
+                        ru: string;
+                      },
+                      locale
+                    )}
                   </h1>
                   <span className="text-[#D4BAFC] leading-[120%] font-medium">
-                    {subcategorySets.filter(set => set.subCategoryId === subcategory._id).length} {t("common.sets")}
+                    {
+                      subcategorySets.filter(
+                        (set) => set.subCategoryId === subcategory._id
+                      ).length
+                    }{" "}
+                    {t("common.sets")}
                   </span>
                 </div>
               </Link>
@@ -186,20 +202,40 @@ export default function CategoriesPage({
         </div>
 
         {Array.isArray(formattedSets) && formattedSets.length > 0 && (
-          <div>
-            <WorksSlider works={formattedSets} linkType="complex"  title={t("common.complexes")} categoryData={categoryData?.category?._id}/>
+          <div className="mt-10 mb-10">
+            <WorksSlider
+              works={formattedSets}
+              linkType="complex"
+              title={t("common.complexes")}
+              categoryData={categoryData?.category?._id}
+              fromMain={false}
+            />
           </div>
         )}
 
-        <Subscribe />
-        <ReviewSlider />
+        <Subscribe
+          backgroundImage="/assets/images/categorySliderBgs/bg1.jpg"
+          titleKey="subscription.test_title"
+          buttonTextKey="buttons.take_test"
+          buttonTextColor="#3D334A"
+          buttonBgColor="#FFFFFF"
+          bgCenter={true}
+          containerStyles="custom-class"
+          titleStyles="text-white"
+          buttonStyles="hover:opacity-80"
+        />
+        <div className="my-10">
+          <ReviewSlider />
+        </div>
         <Blog
           withBanner={false}
           withSlider={true}
           layoutType="default"
           title={getLocalizedText(selectedCategory?.name, locale)}
         />
-        <Professional />
+        <div className="mt-10">
+          <Professional withBanner={false} />
+        </div>
       </div>
     </div>
   );

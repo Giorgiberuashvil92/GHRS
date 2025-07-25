@@ -37,12 +37,21 @@ interface LocalizedString {
   _id: string;
 }
 
-const getLocalizedText = (localizedString: LocalizedString | string | null | undefined, locale: string = 'ru'): string => {
-  if (typeof localizedString === 'string') return localizedString;
-  if (typeof localizedString === 'object' && localizedString) {
-    return localizedString[locale as keyof LocalizedString] || localizedString.ru || localizedString.en || localizedString.ka || '';
+const getLocalizedText = (
+  localizedString: LocalizedString | string | null | undefined,
+  locale: string = "ru"
+): string => {
+  if (typeof localizedString === "string") return localizedString;
+  if (typeof localizedString === "object" && localizedString) {
+    return (
+      localizedString[locale as keyof LocalizedString] ||
+      localizedString.ru ||
+      localizedString.en ||
+      localizedString.ka ||
+      ""
+    );
   }
-  return '';
+  return "";
 };
 
 interface CategorySliderProps {
@@ -55,7 +64,7 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
     const [clickedCategory, setClickedCategory] = useState<string | null>(null);
 
     // Get current locale
-    const [locale, setLocale] = useState('ru');
+    const [locale, setLocale] = useState("ru");
     useEffect(() => {
       if (typeof window !== "undefined") {
         const storedLocale = localStorage.getItem("locale");
@@ -70,7 +79,7 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
       loading,
       error,
       firstCategory: categories[0],
-      locale
+      locale,
     });
 
     useImperativeHandle(ref, () => sliderRef.current as HTMLDivElement);
@@ -155,13 +164,13 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
         >
           {categories.map((category, index) => {
             const categoryTitle = getLocalizedText(category.name, locale);
-            
+
             console.log("🎯 Rendering category:", {
               _id: category._id,
               name: category.name,
               title: categoryTitle,
               locale,
-              sortOrder: category.sortOrder
+              sortOrder: category.sortOrder,
             });
 
             const backgroundImageUrl = backgrounds[index % backgrounds.length];
@@ -170,7 +179,8 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
               "/assets/images/services/category.png"
             );
 
-            const hasSubcategories = category.subcategories && category.subcategories.length > 0;
+            const hasSubcategories =
+              category.subcategories && category.subcategories.length > 0;
 
             return (
               <div
@@ -183,14 +193,14 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
                     console.log("🖱️ Category clicked:", {
                       _id: category._id,
                       title: categoryTitle,
-                      name: category.name
+                      name: category.name,
                     });
                     handleCategoryClick(category._id, categoryTitle, e);
                   }}
                   className="group cursor-pointer transform transition-transform duration-300"
                 >
                   <div
-                    className="bg-conic  rounded-[20px] w-[240px] h-[140px] md:w-[455px] md:h-[230px]"
+                    className="bg-conic rounded-[14px] w-[240px] h-[140px] md:w-[455px] md:h-[230px]"
                     style={{ backgroundImage: `url(${backgroundImageUrl})` }}
                   >
                     <Image
@@ -198,11 +208,11 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
                       width={232}
                       height={82}
                       alt={categoryTitle}
-                      className="mx-auto rounded-[14px] p-[4px] md:w-[443px] md:h-[153px]"
+                      className="mx-auto rounded-[14px] p-[6px] md:w-[443px] md:h-[163px]"
                     />
-                    <div className="flex items-center justify-between bg-white py-2 md:py-4 px-4 mx-[4px] rounded-[20px] text-black group-hover:bg-gray-50 transition-colors duration-300">
+                    <div className="flex items-center justify-between bg-white py-2 md:py-4 mt-1 px-4 mx-[4px] rounded-[20px] text-black group-hover:bg-gray-50 transition-colors duration-300">
                       <h4
-                        className="text-[24px] bg-conic md:text-[28px] font-bold overflow-hidden whitespace-nowrap text-ellipsis max-w-[390px]"
+                        className="text-[24px] bg-conic md:text-[28px] font-bold overflow-hidden whitespace-nowrap leading-[90%] tracking-[-3%] text-ellipsis max-w-[390px]"
                         style={{
                           backgroundImage: `url(${backgroundImageUrl})`,
                           WebkitBackgroundClip: "text",
@@ -254,7 +264,7 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
             );
           })}
         </div>
-        <hr className="md:mt-10 bg-[#D5D1DB]" />
+        {/* <hr className="md:mt-10 bg-[#D5D1DB]" /> */}
       </div>
     );
   }
