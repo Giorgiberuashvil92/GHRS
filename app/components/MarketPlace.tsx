@@ -7,7 +7,7 @@ const MarketPlace = () => {
   const { t } = useI18n();
 
   return (
-    <div className="bg-[#F9F7FE] md:mx-10 md:mb-10 mb-6 rounded-[30px]">
+    <div className="bg-[#F9F7FE] md:mx-5 md:mb-10 mb-6 rounded-[30px]">
       <Banner
         backgroundUrl="/assets/images/marketPlace.png"
         logoUrl="/assets/images/simpleLogo.svg"

@@ -75,13 +75,13 @@ const Works: React.FC<WorksProps> = ({
   borderColor,
 }) => {
   const { t, locale } = useI18n();
-  
+
   console.log("🎯 Works component data:", {
     title,
     itemsCount: items.length,
     exercisesCount: exercises.length,
     setsCount: sets.length,
-    fromMain
+    fromMain,
   });
 
   // Helper to get localized string from object or string
@@ -191,13 +191,13 @@ const Works: React.FC<WorksProps> = ({
   } else if (sets.length > 0) {
     console.log("🎯 Processing sets data:", sets);
     works = sets.map((set) => {
-      console.log("🎯 Processing set:", { 
-        id: set._id, 
+      console.log("🎯 Processing set:", {
+        id: set._id,
         categoryId: set.categoryId,
         name: set.name,
-        thumbnailImage: set.thumbnailImage 
+        thumbnailImage: set.thumbnailImage,
       });
-      
+
       return {
         id: set._id,
         title: getLocalized(set.name),
@@ -219,18 +219,21 @@ const Works: React.FC<WorksProps> = ({
   return (
     <div
       style={{ border: `${border}px solid ${borderColor}` }}
-      className="bg-[#F9F7FE] md:rounded-[20px] md:mt-0 mt-10 md:mb-10 mb-0 md:mx-5 rounded-b-[15px] md:pb-10 pb-0"
+      className="bg-[#F9F7FE] md:mt-0 mt-10 md:mb-10 mb-0 md:mx-5 rounded-b-[15px] md:pb-10 pb-0"
     >
       {/* Slider */}
-      <WorksSlider title={title} works={works} fromMain={fromMain}/>
+      <WorksSlider title={title} works={works} fromMain={fromMain} />
       <Link
         href={linkHref}
-        className="text-[14px] md:px-10 px-5 md:text-[24px] leading-[90%] uppercase text-[#D4BAFC]"
+        className="text-[14px]  px-5 md:px-0 md:text-[24px] leading-[90%] uppercase text-[#D4BAFC]"
       >
-        {typeof t("works.all_sets", { count: works.length.toString() }) ===
-        "string"
-          ? t("works.all_sets", { count: works.length.toString() })
-          : linkText}
+        <span className="px-5">
+          {" "}
+          {typeof t("works.all_sets", { count: works.length.toString() }) ===
+          "string"
+            ? t("works.all_sets", { count: works.length.toString() })
+            : linkText}
+        </span>
       </Link>
     </div>
   );

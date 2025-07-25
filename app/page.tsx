@@ -53,12 +53,14 @@ const Home = () => {
           buttonStyles="hover:opacity-80"
         />
         <Professional withBanner={true} />
-        <Blog
-          withBanner={true}
-          withSlider={true}
-          layoutType="default"
-          title={"Blog"}
-        />
+        <div className="mb-10">
+          <Blog
+            withBanner={true}
+            withSlider={true}
+            layoutType="default"
+            title={"Blog"}
+          />
+        </div>
         <MarketPlace />
         <Subscribe
           backgroundImage="/assets/images/categorySliderBgs/bg1.jpg"
