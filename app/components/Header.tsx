@@ -525,7 +525,7 @@ const Header: React.FC<HeaderProps> = ({
 
             {variant == "complex" && (
               <div className="mb-5 md:mb-0 mx-auto">
-                <section className="mt-[122px] md:mt-[150px] mx-auto md:mx-5 flex flex-col md:flex-row md:items-center md:gap-2">
+                <section className="mt-[122px] md:mt-[250px] mx-auto md:mx-5 flex flex-col md:flex-row md:items-center md:gap-2">
                   {/* პირველი ბარათი */}
                   <motion.div
                     initial={{ opacity: 0, x: -100 }}
