@@ -69,7 +69,7 @@ const Complex = ({ params }: ComplexPageProps) => {
   }
 
   // ვიღებთ სავარჯიშოებს
-  const { exercises, loading: exercisesLoading, error: exercisesError } = useExercisesBySet(setId);
+  const { exercises, loading: exercisesLoading } = useExercisesBySet(setId);
 
   // ვითვლით სავარჯიშოების რაოდენობას სირთულის მიხედვით
   const exercisesByDifficulty = exercises?.reduce((acc, exercise) => {
@@ -270,9 +270,12 @@ const Complex = ({ params }: ComplexPageProps) => {
                   <h1 className="md:text-[40px] leading-[120%] tracking-[-3%] text-[#3D334A]">
                     Дополнительно
                   </h1>
-                  <p className="font-[Pt] text-[18px] leading-[120%] text-[#846FA0] mt-10">
-                    {getLocalizedText(setData.description, locale)}
-                  </p>
+                  <div 
+                    className="font-[Pt] text-[18px] leading-[120%] text-[#846FA0] mt-10"
+                    dangerouslySetInnerHTML={{
+                      __html: getLocalizedText(setData.additional, locale) || ''
+                    }}
+                  />
                 </div>
               )}
               {activeTabIndex === 2 && (
@@ -282,7 +285,7 @@ const Complex = ({ params }: ComplexPageProps) => {
                   </h1>
                   <div className="rounded-[15px] overflow-hidden shadow-lg">
                     <ReactPlayer
-                      src="/videos/hero.mp4"
+                      src={setData.demoVideoUrl || '/videos/hero.mp4'}
                       controls
                       width="100%"
                       height="360px"
@@ -329,51 +332,110 @@ const Complex = ({ params }: ComplexPageProps) => {
                     {/* 1 месяц */}
                     <div className="flex justify-between items-center px-6 py-4 border-b border-[rgba(132,111,160,0.12)]">
                       <span 
-                        onClick={() => handleSubscriptionSelect('1 month', setData.price.monthly)}
+                        onClick={() => handleSubscriptionSelect('1 month', setData.discountedPrice?.monthly || setData.price.monthly)}
                         className="font-bold cursor-pointer text-[18px] leading-[120%] tracking-[-2%] text-[rgba(61,51,74,1)] uppercase">
                         1 месяц
                       </span>
-                      <span className="text-[16px] text-[rgba(132,111,160,1)] font-medium">
-                        {setData.price.monthly} ₽/мес
-                      </span>
+                      <div className="flex flex-col items-end">
+                        <span className="text-[20px] cursor-pointer font-bold text-[rgba(132,111,160,1)] leading-[120%]">
+                          {setData.discountedPrice?.monthly ? (
+                            <>
+                              {setData.discountedPrice.monthly} ₽/мес
+                              <span className="text-[14px] text-[rgba(132,111,160,0.5)] line-through block">
+                                {setData.price.monthly} ₽/мес
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              {setData.price.monthly} ₽/мес
+                              <span className="text-[14px] text-[rgba(132,111,160,0.5)] line-through block">
+                                {setData.price.monthly} ₽/мес
+                              </span>
+                            </>
+                          )}
+                        </span>
+                      </div>
                     </div>
                     {/* 3 месяца - highlight */}
                     <div className="flex justify-between items-center px-6 py-4 border-b border-[rgba(132,111,160,0.12)] bg-[rgba(132,111,160,0.08)]">
                       <span 
-                        onClick={() => handleSubscriptionSelect('3 months', setData.price.threeMonths)}
+                        onClick={() => handleSubscriptionSelect('3 months', setData.discountedPrice?.threeMonths || setData.price.threeMonths)}
                         className="font-bold cursor-pointer text-[18px] leading-[120%] tracking-[-2%] text-[rgba(132,111,160,1)] uppercase">
                         3 месяца
                       </span>
                       <div className="flex flex-col items-end">
                         <span className="text-[20px] cursor-pointer font-bold text-[rgba(132,111,160,1)] leading-[120%]">
-                          {setData.price.threeMonths} ₽/мес
-                        </span>
-                        <span className="text-[14px] cursor-pointer text-[rgba(132,111,160,0.5)] line-through font-medium">
-                          {setData.price.monthly * 3} ₽/мес
+                          {setData.discountedPrice?.threeMonths ? (
+                            <>
+                              {setData.discountedPrice.threeMonths} ₽/мес
+                              <span className="text-[14px] text-[rgba(132,111,160,0.5)] line-through block">
+                                {setData.price.threeMonths} ₽/мес
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              {setData.price.threeMonths} ₽/мес
+                              <span className="text-[14px] text-[rgba(132,111,160,0.5)] line-through block">
+                                {setData.price.monthly * 3} ₽/мес
+                              </span>
+                            </>
+                          )}
                         </span>
                       </div>
                     </div>
                     {/* 6 месяцев */}
                     <div className="flex justify-between items-center px-6 py-4 border-b border-[rgba(132,111,160,0.12)]">
                       <span 
-                        onClick={() => handleSubscriptionSelect('6 months', setData.price.sixMonths)}
+                        onClick={() => handleSubscriptionSelect('6 months', setData.discountedPrice?.sixMonths || setData.price.sixMonths)}
                         className="font-bold text-[18px] cursor-pointer leading-[120%] tracking-[-2%] text-[rgba(61,51,74,1)] uppercase">
                         6 месяцев
                       </span>
-                      <span className="text-[16px] cursor-pointer text-[rgba(132,111,160,1)] font-medium">
-                        {setData.price.sixMonths} ₽/мес
-                      </span>
+                      <div className="flex flex-col items-end">
+                        <span className="text-[20px] cursor-pointer font-bold text-[rgba(132,111,160,1)] leading-[120%]">
+                          {setData.discountedPrice?.sixMonths ? (
+                            <>
+                              {setData.discountedPrice.sixMonths} ₽/мес
+                              <span className="text-[14px] text-[rgba(132,111,160,0.5)] line-through block">
+                                {setData.price.sixMonths} ₽/мес
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              {setData.price.sixMonths} ₽/мес
+                              <span className="text-[14px] text-[rgba(132,111,160,0.5)] line-through block">
+                                {setData.price.monthly * 6} ₽/мес
+                              </span>
+                            </>
+                          )}
+                        </span>
+                      </div>
                     </div>
                     {/* 12 месяцев */}
                     <div className="flex justify-between items-center px-6 py-4">
                       <span 
-                        onClick={() => handleSubscriptionSelect('12 months', setData.price.yearly)}
+                        onClick={() => handleSubscriptionSelect('12 months', setData.discountedPrice?.yearly || setData.price.yearly)}
                         className="font-bold text-[18px] cursor-pointer leading-[120%] tracking-[-2%] text-[rgba(61,51,74,1)] uppercase">
                         12 месяцев
                       </span>
-                      <span className="text-[16px] cursor-pointer text-[rgba(132,111,160,1)] font-medium">
-                        {setData.price.yearly} ₽/мес
-                      </span>
+                      <div className="flex flex-col items-end">
+                        <span className="text-[20px] cursor-pointer font-bold text-[rgba(132,111,160,1)] leading-[120%]">
+                          {setData.discountedPrice?.yearly ? (
+                            <>
+                              {setData.discountedPrice.yearly} ₽/мес
+                              <span className="text-[14px] text-[rgba(132,111,160,0.5)] line-through block">
+                                {setData.price.yearly} ₽/мес
+                              </span>
+                            </>
+                          ) : (
+                            <>
+                              {setData.price.yearly} ₽/мес
+                              <span className="text-[14px] text-[rgba(132,111,160,0.5)] line-through block">
+                                {setData.price.monthly * 12} ₽/мес
+                              </span>
+                            </>
+                          )}
+                        </span>
+                      </div>
                     </div>
                   </div>
                 )}

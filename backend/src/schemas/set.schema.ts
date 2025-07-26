@@ -60,6 +60,46 @@ export class Set {
   })
   recommendations: LocalizedString;
 
+  @Prop({
+    type: {
+      en: { type: String, required: false },
+      ru: { type: String, required: false }
+    },
+    required: false
+  })
+  additional: LocalizedString;
+
+  @Prop({ required: false })
+  demoVideoUrl: string;
+
+  @Prop({ required: false })
+  duration: string;
+
+  @Prop({ 
+    type: String,
+    enum: ['easy', 'medium', 'hard'],
+    required: false
+  })
+  difficulty: string;
+
+  @Prop({
+    type: {
+      en: { type: String, required: false },
+      ru: { type: String, required: false }
+    },
+    required: false
+  })
+  equipment: LocalizedString;
+
+  @Prop({
+    type: {
+      en: { type: String, required: false },
+      ru: { type: String, required: false }
+    },
+    required: false
+  })
+  warnings: LocalizedString;
+
   @Prop({ required: true })
   thumbnailImage: string;
 
@@ -103,6 +143,18 @@ export class Set {
     _id: false
   })
   price: Price;
+
+  @Prop({
+    type: {
+      monthly: { type: Number, required: false },
+      threeMonths: { type: Number, required: false },
+      sixMonths: { type: Number, required: false },
+      yearly: { type: Number, required: false }
+    },
+    required: false,
+    _id: false
+  })
+  discountedPrice: Price;
 
   @Prop({ default: true })
   isActive: boolean;
