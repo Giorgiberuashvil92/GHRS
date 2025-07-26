@@ -40,15 +40,7 @@ function SectionContent() {
     categoryData?.sets?.filter((set) => set.subCategoryId === subcategoryId) ||
     [];
 
-    selectedSubcategory,
-    subcategorySets,
-  });
-    popularExercises,
-    popularLoading,
-    popularError,
-    exercisesCount: popularExercises?.length,
-    firstExercise: popularExercises?.[0],
-  });
+
 
   if (loading) {
     return (
