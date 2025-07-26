@@ -28,12 +28,6 @@ function ComplexContent() {
   const popoverRef = useRef<HTMLDivElement>(null);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
-    setId,
-    setData,
-    setLoading,
-    setError
-  });
-
   // Close popover when clicking outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
