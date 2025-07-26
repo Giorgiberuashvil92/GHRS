@@ -7,6 +7,5 @@ cloudinary.config({
 });
 
 // Log only non-sensitive information
-console.log('Cloudinary configured with cloud name:', cloudinary.config().cloud_name);
 
 export default cloudinary; 

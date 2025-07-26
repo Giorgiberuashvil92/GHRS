@@ -47,6 +47,20 @@
     "popular_exercises": "Популярные упражнения",
     "loading_exercises": "Упражнения загружаются...",
     "exercises_error": "Ошибка загрузки упражнений",
-    "set_not_found": "Сет не найден"
+    "set_not_found": "Сет не найден",
+    "exercise": "Упражнение",
+    "completed": "Просмотрено",
+    "watching": "Смотрите сейчас",
+    "notStarted": "Не начато",
+    "noVideo": "Видео не найдено",
+    "previous": "Предыдущее",
+    "next": "Следующее",
+    "duration": "Длительность",
+    "difficulty": "Сложность",
+    "repetitions": "Повторения",
+    "sets": "Подходы",
+    "restTime": "Отдых",
+    "description": "Описание",
+    "markAsComplete": "Отметить как просмотренное"
   }
 } 

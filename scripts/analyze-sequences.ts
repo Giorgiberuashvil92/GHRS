@@ -74,18 +74,9 @@ const analyzeData = () => {
         }
     });
     
-    console.log('\nTotal Analysis:');
-    console.log(`Total Sets: ${totalSets}`);
-    console.log(`Total Videos: ${totalVideos}`);
-    console.log('\nBy Category:');
     Object.keys(categoryCounts).forEach(category => {
-        console.log(`\n${category}:`);
-        console.log(`  Sets: ${categoryCounts[category].sets}`);
-        console.log(`  Videos: ${categoryCounts[category].videos}`);
-        console.log('  Set Details:');
         categoryCounts[category].setDetails.forEach(set => {
             const duration = set.totalDuration ? ` (Duration: ${set.totalDuration})` : '';
-            console.log(`    - ${set.name} (${set.videoCount} videos)${duration}`);
         });
     });
 }

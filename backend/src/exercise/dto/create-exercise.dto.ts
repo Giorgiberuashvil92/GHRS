@@ -3,14 +3,9 @@ import { Type } from 'class-transformer';
 
 class LocalizedStringDto {
   @IsString()
-  ka: string;
-
-  @IsString()
-  @IsOptional()
   en: string;
 
   @IsString()
-  @IsOptional()
   ru: string;
 }
 
@@ -22,10 +17,6 @@ export class CreateExerciseDto {
   @ValidateNested()
   @Type(() => LocalizedStringDto)
   description: LocalizedStringDto;
-
-  @ValidateNested()
-  @Type(() => LocalizedStringDto)
-  recommendations: LocalizedStringDto;
 
   @IsOptional()
   @IsString()

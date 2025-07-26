@@ -82,23 +82,19 @@ const BlogSlider: React.FC<BlogSliderProps> = ({
   const getArticleLink = (blog: Blog) => {
     // Check if blog exists
     if (!blog) {
-      console.log('Blog is undefined');
       return '#';
     }
 
     // Check if articles array exists and has items
     if (!Array.isArray(blog.articles) || blog.articles.length === 0) {
-      console.log('Blog articles array is empty or not an array:', blog);
       return '#';
     }
 
     // Get first article ID
     const firstArticle = blog.articles[0];
-    console.log('First article:', firstArticle);
     const articleId = typeof firstArticle === 'string' ? firstArticle : firstArticle._id;
     
     if (!articleId) {
-      console.log('Article ID is undefined');
       return '#';
     }
 

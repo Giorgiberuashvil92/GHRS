@@ -35,7 +35,6 @@ interface Levels {
 export class Set {
   @Prop({
     type: {
-      ka: { type: String, required: true },
       en: { type: String, required: true },
       ru: { type: String, required: true }
     },
@@ -45,13 +44,21 @@ export class Set {
 
   @Prop({
     type: {
-      ka: { type: String, required: true },
       en: { type: String, required: true },
       ru: { type: String, required: true }
     },
     required: true
   })
   description: LocalizedString;
+
+  @Prop({
+    type: {
+      en: { type: String, required: true },
+      ru: { type: String, required: true }
+    },
+    required: true
+  })
+  recommendations: LocalizedString;
 
   @Prop({ required: true })
   thumbnailImage: string;

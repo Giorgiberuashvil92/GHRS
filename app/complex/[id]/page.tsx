@@ -17,6 +17,7 @@ import { useSet } from "../../hooks/useSet";
 import { useI18n } from "../../context/I18nContext";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import { useExercisesBySet } from "../../hooks/useExercises";
 
 interface Params {
   id: string;
@@ -66,22 +67,20 @@ const Complex = ({ params }: ComplexPageProps) => {
     // პირდაპირ set
     rawSetData = directSet;
   }
-  
-  console.log("🎯 Data fetching status:", {
-    setId,
-    categoryId: categoryIdFromUrl,
-    shouldUseCategoryComplete,
-    loading,
-    error,
-    hasCategoryData: !!categoryData,
-    hasDirectSet: !!directSet,
-    setsCount: categoryData?.sets?.length || 0,
-    setFound: !!rawSetData,
-    strategy: shouldUseCategoryComplete ? 'category-complete' : 'direct-set'
-  });
+
+  // ვიღებთ სავარჯიშოებს
+  const { exercises, loading: exercisesLoading, error: exercisesError } = useExercisesBySet(setId);
+
+  // ვითვლით სავარჯიშოების რაოდენობას სირთულის მიხედვით
+  const exercisesByDifficulty = exercises?.reduce((acc, exercise) => {
+    acc[exercise.difficulty] = (acc[exercise.difficulty] || 0) + 1;
+    return acc;
+  }, {} as { [key: string]: number });
+
+  console.log("🎯 Exercises by difficulty:", exercisesByDifficulty);
 
   // ვითვლით ჯამურ ხანგრძლივობას
-  const totalDurationInMinutes = rawSetData?.exercises?.reduce((total: number, exercise: any) => {
+  const totalDurationInMinutes = exercises?.reduce((total: number, exercise: any) => {
     const duration = exercise.duration || "0:00";
     const [minutes, seconds] = duration.split(":").map(Number);
     return total + minutes + (seconds || 0) / 60;
@@ -93,11 +92,10 @@ const Complex = ({ params }: ComplexPageProps) => {
   // ვამატებთ დათვლილ მონაცემებს setData-ში
   const setData = rawSetData ? {
     ...rawSetData,
-    totalExercises: rawSetData.exercises?.length || 0,
-    totalDuration: formattedTotalDuration
+    totalExercises: exercises?.length || 0,
+    totalDuration: formattedTotalDuration,
+    exercises // ვამატებთ სავარჯიშოების სრულ სიას
   } : null;
-
-  console.log("🎯 Complex page rendered with:", { setData, categoryData });
 
   const [popoverOpen, setPopoverOpen] = useState(false);
   const playBtnRef = useRef<HTMLButtonElement>(null);
@@ -108,7 +106,8 @@ const Complex = ({ params }: ComplexPageProps) => {
     setId,
     setData,
     setLoading,
-    setError
+    setError,
+    exercises
   });
 
   // Close popover when clicking outside
@@ -165,7 +164,7 @@ const Complex = ({ params }: ComplexPageProps) => {
   const locale = getLocale();
 
   // Loading state
-  if (loading) {
+  if (loading || exercisesLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
         <div className="text-center">
@@ -200,6 +199,35 @@ const Complex = ({ params }: ComplexPageProps) => {
       </div>
     );
   }
+
+  const handleSubscriptionSelect = (period: string, price: number) => {
+    if (!setData) return;
+    
+    const cartItem = {
+      id: setId,
+      type: 'subscription',
+      name: setData.name,
+      price: price,
+      period: period,
+      image: '/assets/images/course.png',
+      description: setData.description,
+      totalExercises: setData.totalExercises,
+      totalDuration: setData.totalDuration
+    };
+
+    // Get existing cart or initialize empty array
+    const existingCart = localStorage.getItem('cart');
+    const cart = existingCart ? JSON.parse(existingCart) : [];
+    
+    // Add new item
+    cart.push(cartItem);
+    
+    // Save back to localStorage
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // Redirect to shopping cart
+    window.location.href = '/shoppingcard';
+  };
 
   return (
     <div>
@@ -271,10 +299,20 @@ const Complex = ({ params }: ComplexPageProps) => {
                     Начальный уровень
                   </h3>
                   <span className="text-[rgba(132,111,160,1)] md:text-[14px] text-xs leading-[90%] tracking-[0%] uppercase">
-                    {setData.levels.beginner.exerciseCount} упражнений
+                    {exercisesByDifficulty?.easy || 0} упражнений
                   </span>
                 </div>
-                <Link href={`/player?setId=${setId}`}>
+                <Link 
+                  href={{
+                    pathname: '/player',
+                    query: { 
+                      setId,
+                      difficulty: 'easy',
+                      exercises: JSON.stringify(exercises?.filter(ex => ex.difficulty === 'easy')),
+                      set: JSON.stringify(setData)
+                    }
+                  }}
+                >
                   <button ref={playBtnRef} className="relative z-10">
                     <CiPlay1
                       size={20}
@@ -290,7 +328,9 @@ const Complex = ({ params }: ComplexPageProps) => {
                   >
                     {/* 1 месяц */}
                     <div className="flex justify-between items-center px-6 py-4 border-b border-[rgba(132,111,160,0.12)]">
-                      <span className="font-bold cursor-pointer text-[18px] leading-[120%] tracking-[-2%] text-[rgba(61,51,74,1)] uppercase">
+                      <span 
+                        onClick={() => handleSubscriptionSelect('1 month', setData.price.monthly)}
+                        className="font-bold cursor-pointer text-[18px] leading-[120%] tracking-[-2%] text-[rgba(61,51,74,1)] uppercase">
                         1 месяц
                       </span>
                       <span className="text-[16px] text-[rgba(132,111,160,1)] font-medium">
@@ -299,7 +339,9 @@ const Complex = ({ params }: ComplexPageProps) => {
                     </div>
                     {/* 3 месяца - highlight */}
                     <div className="flex justify-between items-center px-6 py-4 border-b border-[rgba(132,111,160,0.12)] bg-[rgba(132,111,160,0.08)]">
-                      <span className="font-bold cursor-pointer text-[18px] leading-[120%] tracking-[-2%] text-[rgba(132,111,160,1)] uppercase">
+                      <span 
+                        onClick={() => handleSubscriptionSelect('3 months', setData.price.threeMonths)}
+                        className="font-bold cursor-pointer text-[18px] leading-[120%] tracking-[-2%] text-[rgba(132,111,160,1)] uppercase">
                         3 месяца
                       </span>
                       <div className="flex flex-col items-end">
@@ -313,7 +355,9 @@ const Complex = ({ params }: ComplexPageProps) => {
                     </div>
                     {/* 6 месяцев */}
                     <div className="flex justify-between items-center px-6 py-4 border-b border-[rgba(132,111,160,0.12)]">
-                      <span className="font-bold text-[18px] cursor-pointer leading-[120%] tracking-[-2%] text-[rgba(61,51,74,1)] uppercase">
+                      <span 
+                        onClick={() => handleSubscriptionSelect('6 months', setData.price.sixMonths)}
+                        className="font-bold text-[18px] cursor-pointer leading-[120%] tracking-[-2%] text-[rgba(61,51,74,1)] uppercase">
                         6 месяцев
                       </span>
                       <span className="text-[16px] cursor-pointer text-[rgba(132,111,160,1)] font-medium">
@@ -322,7 +366,9 @@ const Complex = ({ params }: ComplexPageProps) => {
                     </div>
                     {/* 12 месяцев */}
                     <div className="flex justify-between items-center px-6 py-4">
-                      <span className="font-bold text-[18px] cursor-pointer leading-[120%] tracking-[-2%] text-[rgba(61,51,74,1)] uppercase">
+                      <span 
+                        onClick={() => handleSubscriptionSelect('12 months', setData.price.yearly)}
+                        className="font-bold text-[18px] cursor-pointer leading-[120%] tracking-[-2%] text-[rgba(61,51,74,1)] uppercase">
                         12 месяцев
                       </span>
                       <span className="text-[16px] cursor-pointer text-[rgba(132,111,160,1)] font-medium">
@@ -340,7 +386,7 @@ const Complex = ({ params }: ComplexPageProps) => {
                     Средний уровень
                   </h3>
                   <span className="text-[rgba(132,111,160,1)] md:text-[14px] text-xs leading-[90%] tracking-[0%] uppercase">
-                    {setData.levels.intermediate.exerciseCount} упражнений
+                    {exercisesByDifficulty?.medium || 0} упражнений
                   </span>
                   {setData.levels.intermediate.isLocked && (
                     <CiLock
@@ -350,7 +396,21 @@ const Complex = ({ params }: ComplexPageProps) => {
                     />
                   )}
                 </div>
-                <CiPlay1 width={19.28} height={25.44} />
+                {!setData.levels.intermediate.isLocked && (
+                  <Link 
+                    href={{
+                      pathname: '/player',
+                      query: { 
+                        setId,
+                        difficulty: 'medium',
+                        exercises: JSON.stringify(exercises?.filter(ex => ex.difficulty === 'medium')),
+                        set: JSON.stringify(setData)
+                      }
+                    }}
+                  >
+                    <CiPlay1 width={19.28} height={25.44} />
+                  </Link>
+                )}
               </div>
 
               {/* Advanced Level */}
@@ -360,7 +420,7 @@ const Complex = ({ params }: ComplexPageProps) => {
                     Продвинутый уровень
                   </h3>
                   <span className="text-[rgba(132,111,160,1)] md:text-[14px] text-xs leading-[90%] tracking-[0%] uppercase">
-                    {setData.levels.advanced.exerciseCount} упражнений
+                    {exercisesByDifficulty?.hard || 0} упражнений
                   </span>
                   {setData.levels.advanced.isLocked && (
                     <CiLock
@@ -370,6 +430,21 @@ const Complex = ({ params }: ComplexPageProps) => {
                     />
                   )}
                 </div>
+                {!setData.levels.advanced.isLocked && (
+                  <Link 
+                    href={{
+                      pathname: '/player',
+                      query: { 
+                        setId,
+                        difficulty: 'hard',
+                        exercises: JSON.stringify(exercises?.filter(ex => ex.difficulty === 'hard')),
+                        set: JSON.stringify(setData)
+                      }
+                    }}
+                  >
+                    <CiPlay1 width={19.28} height={25.44} />
+                  </Link>
+                )}
               </div>
             </div>
           </section>

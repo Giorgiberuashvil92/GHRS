@@ -3,9 +3,6 @@ import { Type } from 'class-transformer';
 
 class LocalizedStringDto {
   @IsString()
-  ka: string;
-
-  @IsString()
   en: string;
 
   @IsString()
@@ -56,6 +53,10 @@ export class CreateSetDto {
   @ValidateNested()
   @Type(() => LocalizedStringDto)
   description: LocalizedStringDto;
+
+  @ValidateNested()
+  @Type(() => LocalizedStringDto)
+  recommendations: LocalizedStringDto;
 
   @IsString()
   thumbnailImage: string;

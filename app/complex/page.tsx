@@ -28,7 +28,6 @@ function ComplexContent() {
   const popoverRef = useRef<HTMLDivElement>(null);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
-  console.log("🎯 Complex page rendered with:", {
     setId,
     setData,
     setLoading,

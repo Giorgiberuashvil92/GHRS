@@ -45,8 +45,6 @@ export class ArticleController {
 
   @Post('json')
   async createJson(@Body() createArticleDto: CreateArticleDto) {
-    console.log('📝 Creating article with JSON data');
-    console.log('Body received:', createArticleDto);
 
     try {
       const result = await this.articleService.create(createArticleDto);
@@ -63,9 +61,6 @@ export class ArticleController {
     @UploadedFiles() files: Express.Multer.File[],
     @Body() createArticleDto: any,
   ) {
-    console.log('📝 Creating article with file upload');
-    console.log('Files received:', files?.length || 0);
-    console.log('Body received:', Object.keys(createArticleDto));
 
     try {
       // Parse JSON strings from FormData
@@ -83,13 +78,11 @@ export class ArticleController {
 
       // Upload images to Cloudinary if provided
       if (files && files.length > 0) {
-        console.log(`📤 Uploading ${files.length} images to Cloudinary...`);
         
         const uploadPromises = files.map(file => this.uploadToCloudinary(file, 'image'));
         const uploadResults = await Promise.all(uploadPromises);
         
         featuredImages = uploadResults.map((result: any) => result.secure_url);
-        console.log('✅ Images uploaded successfully:', featuredImages);
       }
 
       const articleData = {
@@ -107,26 +100,22 @@ export class ArticleController {
 
   @Get()
   async findAll(@Query() query: any) {
-    console.log('📚 GET /articles - Query params:', query);
     return this.articleService.findAll(query);
   }
 
   @Get('featured')
   async findFeatured() {
-    console.log('⭐ GET /articles/featured');
     return this.articleService.findFeatured();
   }
 
   @Get('popular')
   async findPopular(@Query('limit') limit?: string) {
-    console.log('🔥 GET /articles/popular - Limit:', limit);
     const limitNum = limit ? parseInt(limit, 10) : 6;
     return this.articleService.findPopular(limitNum);
   }
 
   @Get('search')
   async search(@Query('q') searchTerm: string) {
-    console.log('🔍 GET /articles/search - Term:', searchTerm);
     if (!searchTerm) {
       throw new BadRequestException('Search term is required');
     }
@@ -135,19 +124,16 @@ export class ArticleController {
 
   @Get('category/:categoryId')
   async findByCategory(@Param('categoryId') categoryId: string) {
-    console.log('📂 GET /articles/category/:categoryId - Category:', categoryId);
     return this.articleService.findByCategory(categoryId);
   }
 
   @Get('blog/:blogId')
   async findByBlog(@Param('blogId') blogId: string) {
-    console.log('📚 GET /articles/blog/:blogId - Blog ID:', blogId);
     return this.articleService.findByBlog(blogId);
   }
 
   @Get(':id')
   async findOne(@Param('id') id: string) {
-    console.log('📖 GET /articles/:id - ID:', id);
     return this.articleService.findOne(id);
   }
 
@@ -158,8 +144,6 @@ export class ArticleController {
     @UploadedFiles() files: Express.Multer.File[],
     @Body() updateArticleDto: any,
   ) {
-    console.log('📝 PATCH /articles/:id - ID:', id);
-    console.log('Files received:', files?.length || 0);
 
     try {
       // Parse JSON strings from FormData
@@ -181,7 +165,6 @@ export class ArticleController {
 
       // Upload new images if provided
       if (files && files.length > 0) {
-        console.log(`📤 Uploading ${files.length} new images to Cloudinary...`);
         
         const uploadPromises = files.map(file => this.uploadToCloudinary(file, 'image'));
         const uploadResults = await Promise.all(uploadPromises);
@@ -190,7 +173,6 @@ export class ArticleController {
         
         // Merge with existing images or replace them
         parsedData.featuredImages = newImages;
-        console.log('✅ New images uploaded successfully:', newImages);
       }
 
       const result = await this.articleService.update(id, parsedData);
@@ -203,13 +185,11 @@ export class ArticleController {
 
   @Delete(':id')
   async remove(@Param('id') id: string) {
-    console.log('🗑️ DELETE /articles/:id - ID:', id);
     return this.articleService.remove(id);
   }
 
   @Post(':id/like')
   async incrementLikes(@Param('id') id: string) {
-    console.log('👍 POST /articles/:id/like - ID:', id);
     return this.articleService.incrementLikes(id);
   }
 } 

@@ -118,8 +118,6 @@ const transformData = () => {
     videos
   }, null, 2));
 
-  console.log(`Transformed ${videos.length} videos in ${sets.length} sets`);
-  console.log('Data saved to structured-video-data.json');
 }
 
 transformData(); 

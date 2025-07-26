@@ -82,6 +82,11 @@ export const API_CONFIG = {
     },
   },
 
+  PAYMENTS: {
+    CREATE_ORDER: '/payments/create-order',
+    CAPTURE_PAYMENT: '/payments/capture-payment'
+  },
+
   HEADERS: {
     "Content-Type": "application/json",
   },

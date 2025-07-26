@@ -8,7 +8,6 @@ async function checkDatabase() {
   try {
     // Connect to MongoDB
     await connect(MONGODB_URI);
-    console.log('Connected to MongoDB');
 
     // Initialize models
     const ArticleModel = model('Article', ArticleSchema);
@@ -16,18 +15,13 @@ async function checkDatabase() {
 
     // Check articles
     const articles = await ArticleModel.find();
-    console.log('\nArticles:', articles.length);
     for (const article of articles) {
-      console.log(`- ${article._id}: ${article.title?.ka || 'No title'} (Blog: ${article.blogId})`);
     }
 
     // Check blogs
     const blogs = await BlogModel.find();
-    console.log('\nBlogs:', blogs.length);
     for (const blog of blogs) {
-      console.log(`- ${blog._id}: ${blog.title?.ka || 'No title'} (Articles: ${blog.articles?.length || 0})`);
       if (blog.articles?.length > 0) {
-        console.log('  Articles:', blog.articles);
       }
     }
 

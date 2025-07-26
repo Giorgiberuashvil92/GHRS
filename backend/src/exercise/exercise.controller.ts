@@ -37,12 +37,7 @@ export class ExerciseController {
         ...data,
         name: JSON.parse(data.name),
         description: JSON.parse(data.description),
-        recommendations: JSON.parse(data.recommendations),
       };
-
-      if (!parsedData.name.ka || !parsedData.description.ka || !parsedData.recommendations.ka) {
-        throw new BadRequestException('ქართული ენის ველები სავალდებულოა');
-      }
 
       let videoUrl = '';
       let thumbnailUrl = '';
@@ -164,7 +159,6 @@ export class ExerciseController {
       // Parse localized fields if they exist
       if (data.name) updateData.name = JSON.parse(data.name);
       if (data.description) updateData.description = JSON.parse(data.description);
-      if (data.recommendations) updateData.recommendations = JSON.parse(data.recommendations);
 
       // Handle direct URLs
       if (data.videoUrl) {

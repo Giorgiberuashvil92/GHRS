@@ -1,11 +1,11 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DesktopNavbar from "../components/Navbar/DesktopNavbar";
 import MobileNavbar from "../components/Navbar/MobileNavbar";
 import { defaultMenuItems } from "../components/Header";
 import Image from "next/image";
-// import WorksSlider from "../components/WorksSlider";
-// import { homePageWorks } from "../components/Works";
+import PayPalButton from '../components/PayPalButton';
+import type { PaymentResponse } from '../components/PayPalButton';
 
 const subscriptionOptions = [
   { label: "1 МЕСЯЦ", value: 1 },
@@ -14,70 +14,107 @@ const subscriptionOptions = [
   { label: "12 МЕСЯЦЕВ", value: 12 },
 ];
 
-const mockCart = [
-  {
-    id: 1,
-    title: "Комплекс упражнений №1 для грудного отдела позвоночника",
-    desc: "Улучшение динамики и подвижности грудного отдела",
-    img: "/assets/images/blog1.png",
-    price: 950,
-    subscription: 1,
-  },
-  {
-    id: 2,
-    title: "Комплекс упражнений №1 для грудного отдела позвоночника",
-    desc: "Улучшение динамики и подвижности грудного отдела",
-    img: "/assets/images/blog1.png",
-    price: 950,
-    subscription: 1,
-  },
-  {
-    id: 3,
-    title: "Комплекс упражнений №1 для грудного отдела позвоночника",
-    desc: "Улучшение динамики и подвижности грудного отдела",
-    img: "/assets/images/blog1.png",
-    price: 950,
-    subscription: 1,
-  },
-  {
-    id: 4,
-    title: "Комплекс упражнений №1 для грудного отдела позвоночника",
-    desc: "Улучшение динамики и подвижности грудного отдела",
-    img: "/assets/images/blog1.png",
-    price: 950,
-    subscription: 1,
-  },
-  {
-    id: 5,
-    title: "Комплекс упражнений №1 для грудного отдела позвоночника",
-    desc: "Улучшение динамики и подвижности грудного отдела",
-    img: "/assets/images/blog1.png",
-    price: 950,
-    subscription: 1,
-  },
-];
+interface CartItem {
+  id: string;
+  title: string;
+  desc: string;
+  img: string;
+  price: number;
+  subscription: number;
+  totalExercises?: number;
+  totalDuration?: string;
+}
+
+interface ParsedCartItem {
+  id: string;
+  name: {
+    ru: string;
+    en: string;
+    ka: string;
+  };
+  description: {
+    ru: string;
+    en: string;
+    ka: string;
+  };
+  image: string;
+  price: number;
+  period: string;
+  totalExercises: number;
+  totalDuration: string;
+}
 
 const ShoppingCard = () => {
-  const [cart, setCart] = useState(mockCart);
+  const [cart, setCart] = useState<CartItem[]>([]);
   const [dropdownOpen, setDropdownOpen] = useState<number | null>(null);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
+  const [showPayPal, setShowPayPal] = useState(false);
 
-  const handleRemove = (id: number) => {
-    setCart((prev) => prev.filter((item) => item.id !== id));
+  useEffect(() => {
+    try {
+      // Load cart from localStorage
+      const savedCart = localStorage.getItem('cart');
+      
+      if (savedCart) {
+        const parsedCart = JSON.parse(savedCart);
+        // Transform the data to match our new CartItem interface
+        const transformedCart = parsedCart.map((item: ParsedCartItem) => ({
+          id: item.id,
+          title: item.name.ru, // Using Russian as default
+          desc: item.description.ru,
+          img: item.image,
+          price: item.price,
+          subscription: parseInt(item.period) || 1,
+          totalExercises: item.totalExercises,
+          totalDuration: item.totalDuration
+        }));
+        setCart(transformedCart);
+      }
+    } catch (error) {
+      console.error('❌ Error loading cart:', error);
+    }
+  }, []);
+
+  const handleRemove = (id: string) => {
+    setCart((prev) => {
+      const newCart = prev.filter((item) => item.id !== id);
+      localStorage.setItem('cart', JSON.stringify(newCart));
+      return newCart;
+    });
   };
 
-  const handleSelectSubscription = (id: number, value: number) => {
-    setCart((prev) =>
-      prev.map((item) =>
+  const handleSelectSubscription = (id: string, value: number) => {
+    setCart((prev) => {
+      const newCart = prev.map((item) =>
         item.id === id ? { ...item, subscription: value } : item
-      )
-    );
+      );
+      localStorage.setItem('cart', JSON.stringify(newCart));
+      return newCart;
+    });
     setDropdownOpen(null);
+  };
+
+  const handlePaymentSuccess = (details: PaymentResponse) => {
+    // Clear cart after successful payment
+    setCart([]);
+    localStorage.removeItem('cart');
+    // You could also redirect to a success page or show a success message
+  };
+
+  const handlePaymentError = (error: Error) => {
+    console.error('Payment failed:', error);
+    setPaymentError(error.message);
+  };
+
+  const handleRemoveAll = () => {
+    setCart([]);
+    localStorage.removeItem('cart');
   };
 
   return (
     <div>
       <div className="bg-[#F9F7FE] ">
-        <DesktopNavbar menuItems={defaultMenuItems} blogBg={false} />
+        <DesktopNavbar menuItems={defaultMenuItems} blogBg={false} allCourseBg={false} />
         <MobileNavbar />
         {/* LeftSide */}
         <div className="flex md:flex-row md:justify-between flex-col mx-2 md:mx-10 md:gap-[60px] md:mb-10 md:pb-10">
@@ -87,7 +124,9 @@ const ShoppingCard = () => {
                 <h1 className="text-[#3D334A] text-[24px] md:text-[40px] leading-[120%] tracking-[-3px]">
                   Корзина
                 </h1>
-                <span className="hidden font-[Pt] md:flex text-[#D5D1DB] text-[24px] leading-[120%] cursor-pointer hover:text-[#846FA0] transition">
+                <span 
+                  onClick={handleRemoveAll}
+                  className="hidden font-[Pt] md:flex text-[#D5D1DB] text-[24px] leading-[120%] cursor-pointer hover:text-[#846FA0] transition">
                   Удалить все
                 </span>
               </div>
@@ -95,7 +134,7 @@ const ShoppingCard = () => {
               {cart.map((item) => (
                 <div
                   key={item.id}
-                  className="flex items-start gap-4 p-3 rounded-[16px]  relative group hover:shadow-md transition"
+                  className="flex items-start gap-4 p-3 rounded-[16px] relative group hover:shadow-md transition"
                 >
                   <Image
                     src={item.img}
@@ -111,12 +150,22 @@ const ShoppingCard = () => {
                     <p className="text-[#846FA0] text-[14px] font-[Pt]">
                       {item.desc}
                     </p>
+                    {item.totalExercises && (
+                      <p className="text-[#846FA0] text-[14px] font-[Pt]">
+                        Упражнений: {item.totalExercises}
+                      </p>
+                    )}
+                    {item.totalDuration && (
+                      <p className="text-[#846FA0] text-[14px] font-[Pt]">
+                        Длительность: {item.totalDuration}
+                      </p>
+                    )}
                     <div className="flex items-center gap-2 mt-2 relative">
                       <button
-                        className="text-[#846FA0] font-[Pt] text-[14px] rounded-[8px] px-3 py-1 flex items-center gap-1  hover:bg-[#F3EDFF] transition"
+                        className="text-[#846FA0] font-[Pt] text-[14px] rounded-[8px] px-3 py-1 flex items-center gap-1 hover:bg-[#F3EDFF] transition"
                         onClick={() =>
                           setDropdownOpen(
-                            dropdownOpen === item.id ? null : item.id
+                            dropdownOpen === Number(item.id) ? null : Number(item.id)
                           )
                         }
                       >
@@ -130,7 +179,7 @@ const ShoppingCard = () => {
                         </span>
                         <svg
                           className={`ml-1 w-4 h-4 transition-transform ${
-                            dropdownOpen === item.id ? "rotate-180" : "rotate-0"
+                            dropdownOpen === Number(item.id) ? "rotate-180" : "rotate-0"
                           }`}
                           fill="none"
                           stroke="currentColor"
@@ -145,7 +194,7 @@ const ShoppingCard = () => {
                           />
                         </svg>
                       </button>
-                      {dropdownOpen === item.id && (
+                      {dropdownOpen === Number(item.id) && (
                         <div className="absolute font-[Bowler] z-10 top-10 left-0 bg-white rounded-[16px] shadow-lg py-2 w-[180px] flex flex-col animate-fade-in border border-[#E2D6F9]">
                           {subscriptionOptions.map((option) => (
                             <button
@@ -194,8 +243,8 @@ const ShoppingCard = () => {
                 </div>
               ))}
             </div>
-            {/* RightSide */}
           </div>
+          {/* RightSide */}
           <div className="bg-white p-4 min-h-[334px] h-[334px] mt-4 md:w-[334px] space-y-5 rounded-[20px]">
             <div className="flex items-center justify-between">
               <h5 className="text-[#846FA0] font-[Pt]">Товаров</h5>
@@ -213,13 +262,32 @@ const ShoppingCard = () => {
               <h5 className="text-[#846FA0] font-[Pt]">Скидки</h5>
               <span className="text-[#3D334A] font-[Pt]">1000 ₽</span>
             </div>
-            <button className="bg-[url('/assets/images/bluebg.jpg')] rounded-[10px] bg-cover py-[17px] w-full mt-4 cursor-pointer text-white text-[18px] font-semibold shadow-md hover:opacity-90 transition">
+
+            <button 
+              onClick={() => setShowPayPal(true)}
+              className="bg-[url('/assets/images/bluebg.jpg')] rounded-[10px] bg-cover py-[17px] w-full mt-4 cursor-pointer text-white text-[18px] font-semibold shadow-md hover:opacity-90 transition"
+            >
               Оплатить
             </button>
+
+            {showPayPal && (
+              <div className="mt-8">
+                {paymentError && (
+                  <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
+                    {paymentError}
+                  </div>
+                )}
+
+                <PayPalButton
+                  amount={cart.reduce((sum, i) => sum + i.price, 0)}
+                  currency="RUB"
+                  onSuccess={handlePaymentSuccess}
+                  onError={handlePaymentError}
+                />
+              </div>
+            )}
           </div>
         </div>
-        {/*  */}
-        {/* <WorksSlider works={homePageWorks} /> */}
       </div>
     </div>
   );

@@ -81,7 +81,6 @@ export class AuthService {
     });
 
     // აქ უნდა დაემატოს რეალური ელ-ფოსტის გაგზავნის ლოგიკა
-    console.log(`Verification code for ${email}: ${code}`);
 
     return {
       success: true,

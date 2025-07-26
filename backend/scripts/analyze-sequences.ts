@@ -16,7 +16,6 @@ async function analyzeSequences() {
   const db = client.db();
 
   try {
-    console.log('🔍 Analyzing video sequences...');
     const videos = await db.collection<Video>('videos').find({}).toArray();
 
     // დაჯგუფება კატეგორიების მიხედვით
@@ -36,7 +35,6 @@ async function analyzeSequences() {
     for (const categoryCode in videosByCategory) {
       const categoryVideos = videosByCategory[categoryCode];
 
-      console.log(`\n📊 Category ${categoryCode}:`);
 
       // sequence-ების დაჯგუფება პირველი ორი ნომრის მიხედვით (მაგ: "2.1" from "2.1.1.2")
       const subcategoryGroups = categoryVideos.reduce<Record<string, Video[]>>(
@@ -57,7 +55,6 @@ async function analyzeSequences() {
       // სუბკატეგორიების ანალიზი
       for (const prefix in subcategoryGroups) {
         const videos = subcategoryGroups[prefix];
-        console.log(`  - Subcategory ${prefix}: ${videos.length} videos`);
 
         // sequence-ების დეტალური ანალიზი
         const uniquePatterns = new Set(
@@ -67,8 +64,6 @@ async function analyzeSequences() {
           }),
         );
 
-        console.log('    Sequence patterns:');
-        uniquePatterns.forEach((pattern) => console.log(`    * ${pattern}`));
       }
     }
   } catch (error) {

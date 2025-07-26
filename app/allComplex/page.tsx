@@ -21,7 +21,6 @@ const AllComplex = () => {
   const { sets, loading: setsLoading } = useAllSets();
   const { exercises, loading: exercisesLoading } = useAllExercises();
 
-  console.log("🎯 AllComplex page data:", {
     categoriesCount: categories.length,
     setsCount: sets.length,
     exercisesCount: exercises.length,

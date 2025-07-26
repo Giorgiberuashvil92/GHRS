@@ -1,26 +1,25 @@
 "use client";
-import React, { useRef, useLayoutEffect, useState, Suspense } from "react";
+import React, { useRef, useState, Suspense, useEffect, useCallback } from "react";
 import DesktopNavbar from "../components/Navbar/DesktopNavbar";
 import { defaultMenuItems } from "../components/Header";
 import Image from "next/image";
-import ReactPlayer from "react-player";
 import MobileNavbar from "../components/Navbar/MobileNavbar";
 import { useSearchParams } from "next/navigation";
-import { useCategoryComplete } from "../hooks/useCategoryComplete";
 import { useI18n } from "../context/I18nContext";
+
 // ----- Types -----
 interface LocalizedString {
-  ka: string;
+  ka?: string;
   en: string;
   ru: string;
   _id: string;
+  id?: string;
 }
 
 interface BackendExercise {
   _id: string;
   name: LocalizedString;
   description: LocalizedString;
-  recommendations: LocalizedString;
   videoUrl: string;
   thumbnailUrl: string;
   videoDuration: string;
@@ -31,19 +30,31 @@ interface BackendExercise {
   restTime: string;
   isActive: boolean;
   isPublished: boolean;
-  isPopular?: boolean;
+  isPopular: boolean;
   sortOrder: number;
   setId: string;
   categoryId: string;
-  subCategoryId?: string;
   createdAt: string;
   updatedAt: string;
+  set?: {
+    _id: string;
+    name: LocalizedString;
+    description: LocalizedString;
+    id: string;
+  };
+  category?: {
+    _id: string;
+    name: LocalizedString;
+  };
+  subcategory: null | unknown;
+  id: string;
 }
 
 interface BackendSet {
   _id: string;
   name: LocalizedString;
   description: LocalizedString;
+  recommendations: LocalizedString;
   thumbnailImage: string;
   totalExercises: number;
   totalDuration: string;
@@ -74,93 +85,29 @@ interface BackendSet {
   categoryId: string;
   subCategoryId?: string;
   exercises?: BackendExercise[];
-  createdAt?: string;
-  updatedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+  id: string;
 }
-
-type Step = {
-  step: number;
-  title: string;
-  list: string[];
-  image?: string;
-};
 
 type ExerciseStatus = "done" | "waiting" | "locked";
 
 type Exercise = {
   id: number;
+  _id: string; // დავამატოთ _id ველი
   title: string;
-  steps: Step[];
+  steps: {
+    step: number;
+    title: string;
+    list: string[];
+    image?: string;
+  }[];
   status: ExerciseStatus;
 };
 
-// ვქმნით exercises მასივს setData-დან
-const getExercises = (setData: BackendSet | null): Exercise[] => {
-  if (!setData?.exercises) return [];
-
-  return setData.exercises.map((exercise: BackendExercise, index: number) => {
-    // სტატუსის განსაზღვრა
-    let status: ExerciseStatus = "locked";
-    if (index === 0) status = "done";
-    else if (index === 1) status = "waiting";
-
-    // ვქმნით steps მასივს
-    const steps: Step[] = [
-      {
-        step: 1,
-        title: "Описание упражнения",
-        list: [getLocalizedText(exercise.description, "ru")],
-        image: exercise.thumbnailUrl,
-      },
-      {
-        step: 2,
-        title: "Рекомендации",
-        list: [getLocalizedText(exercise.recommendations, "ru")],
-        image: exercise.thumbnailUrl,
-      },
-    ];
-
-    return {
-      id: index + 1,
-      title: `УПРАЖНЕНИЕ ${index + 1}. ${getLocalizedText(exercise.name, "ru").toUpperCase()}`,
-      steps,
-      status,
-    };
-  });
-};
-
-// ----- Status Map -----
-const statusMap = {
-  done: {
-    label: "Просмотрено",
-    line: "rgba(243, 213, 127, 1)",
-    badge: "bg-yellow-200 text-yellow-700 border-yellow-300",
-    bg: "rgba(255, 236, 180, 1)",
-  },
-  waiting: {
-    label: "Ожидает просмотра",
-    line: "rgba(212, 186, 252, 1)",
-    badge: "bg-purple-100 text-purple-800 border-purple-300",
-    bg: "rgba(232, 213, 255, 1)",
-  },
-  locked: {
-    label: "Посмотрите предыдущее упражнение",
-    line: "rgba(241, 238, 246, 1)",
-    badge: "bg-gray-100 text-gray-400 border-gray-200",
-    bg: "rgba(241, 238, 246, 1)",
-  },
-};
-
-
-
-const numberTextColor = "rgba(61, 51, 74, 1)";
-const mobileNumberBg = "rgba(213, 209, 219, 1)";
-const markerSize = 48;
-const markerOffset = 32;
-
 // ლოკალიზაციის ფუნქცია
 const getLocalizedText = (
-  field: { ka: string; en: string; ru: string } | undefined,
+  field: LocalizedString | undefined,
   locale: string = "ru"
 ): string => {
   if (!field) return "";
@@ -173,25 +120,302 @@ const getLocalizedText = (
   );
 };
 
+// ვქმნით exercises მასივს setData-დან
+const getExercises = (exercises: BackendExercise[]): Exercise[] => {
+  if (!exercises) return [];
+
+  return exercises.map((exercise: BackendExercise, index: number) => {
+    // სტატუსის განსაზღვრა
+    let status: ExerciseStatus = "locked";
+    if (index === 0) status = "done";
+    else if (index === 1) status = "waiting";
+
+    // ვქმნით steps მასივს
+    const steps = [
+      {
+        step: 1,
+        title: "Описание упражнения",
+        list: [getLocalizedText(exercise.description, "ru")],
+        image: exercise.thumbnailUrl,
+      },
+      {
+        step: 2,
+        title: "Рекомендации",
+        list: [getLocalizedText(exercise.description, "ru")], // აქ უნდა იყოს recommendations როცა დაემატება
+        image: exercise.thumbnailUrl,
+      },
+    ];
+
+    return {
+      id: index + 1,
+      _id: exercise._id, // დავამატოთ _id
+      title: `УПРАЖНЕНИЕ ${index + 1}. ${getLocalizedText(exercise.name, "ru").toUpperCase()}`,
+      steps,
+      status,
+    };
+  });
+};
+
+// Helper function to get YouTube video ID
+const getYouTubeVideoId = (url: string) => {
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return match && match[2].length === 11 ? match[2] : null;
+};
+
+// ვიდეოს ტიპის შემოწმების ფუნქცია
+const getVideoType = (url: string): 'youtube' | 'direct' | 'unknown' => {
+  if (!url) return 'unknown';
+  
+  // YouTube URL პატერნები
+  const youtubePatterns = [
+    /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/,
+    /^(https?:\/\/)?(www\.)?youtube\.com\/watch\?v=([^&]+)/,
+    /^(https?:\/\/)?(www\.)?youtu\.be\/([^?]+)/,
+  ];
+
+  if (youtubePatterns.some(pattern => pattern.test(url))) {
+    return 'youtube';
+  }
+
+  // პირდაპირი ვიდეო URL-ის პატერნები
+  const videoExtensions = /\.(mp4|webm|ogg)$/i;
+  if (videoExtensions.test(url)) {
+    return 'direct';
+  }
+
+  return 'unknown';
+};
+
+// YouTube API ტიპები
+interface YouTubePlayer {
+  Player: new (
+    element: HTMLIFrameElement,
+    config: {
+      events: {
+        onStateChange: (event: { data: number; target: { getCurrentTime: () => number; getDuration: () => number; } }) => void;
+      };
+    }
+  ) => void;
+}
+
+declare global {
+  interface Window {
+    YT?: YouTubePlayer;
+  }
+}
+
+// ვიდეო პლეიერის კომპონენტი
+const VideoPlayer = ({ 
+  url, 
+  title,
+  onVideoComplete,
+  onProgress
+}: { 
+  url: string; 
+  title: string;
+  onVideoComplete: () => void;
+  onProgress: (progress: number) => void;
+}) => {
+  const videoType = getVideoType(url);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  // YouTube Player API-ის ჩატვირთვა
+  useEffect(() => {
+    if (videoType !== 'youtube') return;
+
+    const tag = document.createElement('script');
+    tag.src = 'https://www.youtube.com/iframe_api';
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode?.insertBefore(tag, firstScriptTag);
+
+    return () => {
+      tag.remove();
+    };
+  }, [videoType]);
+
+  // YouTube ივენთების ჰენდლერი
+  const handleYouTubeStateChange = useCallback((event: { data: number; target: { getCurrentTime: () => number; getDuration: () => number; } }) => {
+    // YouTube Player States:
+    // -1 (unstarted)
+    // 0 (ended)
+    // 1 (playing)
+    // 2 (paused)
+    // 3 (buffering)
+    // 5 (video cued)
+    
+    if (event.data === 0) { // ვიდეო დასრულდა
+      onVideoComplete();
+    } else if (event.data === 1) { // ვიდეო დაიწყო
+      // პროგრესის თრექინგი ყოველ წამში
+      const interval = setInterval(() => {
+        const progress = (event.target.getCurrentTime() / event.target.getDuration()) * 100;
+        onProgress(progress);
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [onVideoComplete, onProgress]);
+
+  // ჩვეულებრივი ვიდეოს ივენთების ჰენდლერები
+  const handleTimeUpdate = useCallback(() => {
+    if (!videoRef.current) return;
+    const progress = (videoRef.current.currentTime / videoRef.current.duration) * 100;
+    onProgress(progress);
+  }, [onProgress]);
+
+  const handleEnded = useCallback(() => {
+    onVideoComplete();
+  }, [onVideoComplete]);
+
+  switch (videoType) {
+    case 'youtube':
+      return (
+        <div className="relative w-full h-0 pb-[56.25%]">
+          <iframe
+            className="absolute top-0 left-0 w-full h-full rounded-[20px] md:rounded-[30px]"
+            src={`https://www.youtube.com/embed/${getYouTubeVideoId(url)}?autoplay=1&modestbranding=1&rel=0&enablejsapi=1`}
+            title={title}
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            onLoad={(e) => {
+              // YouTube Player API-ის ინიციალიზაცია
+              if (window.YT) {
+                new window.YT.Player((e.target as HTMLIFrameElement), {
+                  events: {
+                    onStateChange: handleYouTubeStateChange,
+                  },
+                });
+              }
+            }}
+          />
+        </div>
+      );
+    
+    case 'direct':
+      return (
+        <video
+          ref={videoRef}
+          className="w-full h-full rounded-[20px] md:rounded-[30px]"
+          src={url}
+          title={title}
+          controls
+          autoPlay
+          playsInline
+          onTimeUpdate={handleTimeUpdate}
+          onEnded={handleEnded}
+        >
+          Your browser does not support the video tag.
+        </video>
+      );
+    
+    default:
+      return (
+        <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-[20px] md:rounded-[30px]">
+          <p className="text-gray-500">Unsupported video format</p>
+        </div>
+      );
+  }
+};
+
 function PlayerContent() {
   const searchParams = useSearchParams();
-  const setId = searchParams.get('setId') || '';
   const { t } = useI18n();
+  const [currentExercise, setCurrentExercise] = useState<BackendExercise | null>(null);
+  const [completedExercises, setCompletedExercises] = useState<string[]>([]);
+  const [videoProgress, setVideoProgress] = useState<number>(0);
 
-  // ვიღებთ სრულ მონაცემებს
-  const { categoryData, loading } = useCategoryComplete("687c192042e8ebbadd50b8bc");
-  const setData: BackendSet | null = categoryData?.sets?.find((set: BackendSet) => set._id === setId) || null;
+  // URL-დან პარამეტრების ამოღება
+  const setId = searchParams.get('setId') || '';
+  const exercisesFromUrl = searchParams.get('exercises');
+  const setFromUrl = searchParams.get('set');
+
+  // ვარჯიშების დასრულების სტატუსის ჩატვირთვა
+  useEffect(() => {
+    if (!setId) return;
+    const savedProgress = localStorage.getItem(`exercise_progress_${setId}`);
+    if (savedProgress) {
+      setCompletedExercises(JSON.parse(savedProgress));
+    }
+  }, [setId]);
+
+  // ვარჯიშის დასრულების ფუნქცია
+  const handleExerciseComplete = useCallback((exerciseId: string) => {
+    console.log('✅ Completing exercise:', exerciseId);
+    setCompletedExercises(prev => {
+      const newCompleted = [...prev];
+      const index = newCompleted.indexOf(exerciseId);
+      
+      if (index === -1) {
+        newCompleted.push(exerciseId);
+      } else {
+        newCompleted.splice(index, 1);
+      }
+      
+      localStorage.setItem(`exercise_progress_${setId}`, JSON.stringify(newCompleted));
+      return newCompleted;
+    });
+  }, [setId]);
+
+  // შემდეგ/წინა ვარჯიშზე გადასვლა
+
+
+  // JSON-ის პარსვა
+  let exercises: BackendExercise[] = [];
+  let setData: BackendSet | null = null;
+  try {
+    exercises = exercisesFromUrl ? JSON.parse(exercisesFromUrl) : [];
+    setData = setFromUrl ? JSON.parse(setFromUrl) : null;
+    
+    // Set first exercise as current by default
+    if (exercises.length > 0 && !currentExercise) {
+      setCurrentExercise(exercises[0]);
+    }
+
+    console.log('🎯 Player Data:', {
+      setId,
+      exercisesCount: exercises.length,
+      exercises: exercises,
+      set: setData
+    });
+  } catch (error) {
+    console.error('Error parsing data:', error);
+  }
+
+  // Function to change current exercise
+  const handleExerciseChange = (exercise: BackendExercise) => {
+    setCurrentExercise(exercise);
+  };
+
+  // ვიდეოს დასრულების ჰენდლერი
+  const handleVideoComplete = useCallback(() => {
+    if (!currentExercise) return;
+    
+    console.log('🎬 Video completed:', currentExercise._id);
+    // ვიდეოს დასრულებისას ავტომატურად ვნიშნავთ ვარჯიშს შესრულებულად
+    if (!completedExercises.includes(currentExercise._id)) {
+      handleExerciseComplete(currentExercise._id);
+    }
+  }, [currentExercise, completedExercises, handleExerciseComplete]);
+
+  // ვიდეოს პროგრესის ჰენდლერი
+  const handleVideoProgress = useCallback((progress: number) => {
+    setVideoProgress(progress);
+    console.log('📊 Video progress:', progress.toFixed(1) + '%');
+  }, []);
+
+  const loading = false;
 
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
-  const [centers, setCenters] = useState<number[]>([]);
+  // const [centers, setCenters] = useState<number[]>([]);
 
-  useLayoutEffect(() => {
-    setCenters(
-      cardRefs.current.map((el) =>
-        el ? el.offsetTop + markerOffset + markerSize / 2 : 0
-      )
-    );
-  }, []);
+  // useLayoutEffect(() => {
+  //   setCenters(
+  //     cardRefs.current.map((el) =>
+  //       el ? el.offsetTop + markerOffset + markerSize / 2 : 0
+  //     )
+  //   );
+  // }, []);
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
@@ -210,43 +434,61 @@ function PlayerContent() {
       <DesktopNavbar menuItems={defaultMenuItems} blogBg={false} allCourseBg={true} />
       <MobileNavbar />
       <div className="flex flex-col items-center md:overflow-hidden">
-        <div className="w-full  max-w-[1400px] aspect-video md:mx-auto px-1 rounded-[20px] md:rounded-[30px] overflow-hidden">
-          <ReactPlayer
-            src="/videos/hero.mp4"
-            controls
-            width="100%"
-            height="100%"
-            className="!rounded-[20px] md:!rounded-[30px]"
-          />
+        <div className="w-full max-w-[1400px] aspect-video md:mx-auto px-1 rounded-[20px] md:rounded-[30px] overflow-hidden">
+          {currentExercise?.videoUrl ? (
+            <VideoPlayer 
+              url={currentExercise.videoUrl} 
+              title={getLocalizedText(currentExercise.name)}
+              onVideoComplete={handleVideoComplete}
+              onProgress={handleVideoProgress}
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-[20px] md:rounded-[30px]">
+              <p className="text-gray-500">{t("common.noVideo")}</p>
+            </div>
+          )}
         </div>
+
+        {/* Progress Bar */}
+        {currentExercise?.videoUrl && (
+          <div className="w-full max-w-[1400px] px-4 mt-2">
+            <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
+              <div 
+                className="h-full bg-purple-600 transition-all duration-300"
+                style={{ width: `${videoProgress}%` }}
+              />
+            </div>
+          </div>
+        )}
+
+        {/* Exercise Details */}
+       
+
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:m-5 md:gap-5 mx-auto justify-center md:w-auto mt-4 md:mt-8">
-          {setData?.exercises?.map((exercise, index) => {
-            const bgColors = ["#F3D57F", "#F3D57F", "#D4BAFC", "#F9F7FE"];
-            const textColors = ["#3D334A", "#3D334A", "#FFFFFF", "#3D334A"];
+          {exercises.map((exercise, index) => {
+            const isWatching = currentExercise?._id === exercise._id;
+            const isCompleted = completedExercises.includes(exercise._id);
             
             return (
-              <div
+              <button
                 key={exercise._id}
-                className="flex flex-row items-center md:w-auto mb-2 md:mb-0"
+                type="button"
+                onClick={() => handleExerciseChange(exercise)}
+                className={`flex flex-row items-center md:w-auto mb-2 md:mb-0 rounded-[10px] px-4 py-2 ${
+                  isWatching ? 'bg-[#E8D5FF]' : 
+                  isCompleted ? 'bg-[#F3D57F]' : 
+                  'bg-[#F9F7FE]'
+                }`}
               >
-                <div
-                  className="p-3 md:p-5 flex flex-col items-start rounded-[16px] md:rounded-[20px] md:w-auto min-w-0"
-                  style={{ backgroundColor: bgColors[index % bgColors.length] }}
-                >
-                  <h1
-                    style={{ color: textColors[index % textColors.length] }}
-                    className="text-[16px] md:text-[18px] leading-[100%] tracking-[-1%] mb-1 md:mb-0"
-                  >
+                <div className="flex flex-col items-start">
+                  <span className="text-sm font-medium text-[#3D334A] mb-1">
                     {t("common.exercise")} {index + 1}
-                  </h1>
-                  <p
-                    style={{ color: textColors[index % textColors.length] }}
-                    className="font-[Pt] w-full md:w-[295px] font-medium leading-[120%] text-sm md:text-base"
-                  >
+                  </span>
+                  <span className="text-sm font-[Pt] text-[#3D334A]">
                     {getLocalizedText(exercise.name, "ru")}
-                  </p>
+                  </span>
                 </div>
-              </div>
+              </button>
             );
           })}
         </div>
@@ -255,168 +497,124 @@ function PlayerContent() {
       {/* bg-[#F9F7FE] */}
       <section className="w-full bg-[#F9F7FE] rounded-[16px] md:rounded-[30px] md:mb-10 flex flex-col items-center min-h-screen py-4 px-2 md:px-5 mt-4 md:mt-8">
         <div className="relative w-full flex flex-col gap-4 md:gap-6">
-          {/* Desktop: ვერტიკალური ხაზის სეგმენტები */}
-          <div
-            className="hidden md:block absolute left-[22px] w-[6px] z-0"
-            style={{ top: 0, bottom: 0, pointerEvents: "none" }}
-          >
-            {centers.length > 1 &&
-              centers.slice(0, -1).map((center, idx) => {
-                const nextCenter = centers[idx + 1];
-                if (center === 0 || nextCenter === 0) return null;
-                const exercises = getExercises(setData);
-                return (
-                  <div
-                    key={idx}
-                    style={{
-                      position: "absolute",
-                      left: 0,
-                      width: "6px",
-                      top: center,
-                      height: nextCenter - center,
-                      background: statusMap[exercises[idx + 1]?.status || "locked"].line,
-                      borderRadius: 3,
-                    }}
-                  />
-                );
-              })}
+          {/* ვერტიკალური ხაზების კონტეინერი */}
+          <div className="hidden md:block absolute left-6 w-[2px] h-full">
+            {getExercises(setData?.exercises || []).map((exercise, idx, arr) => {
+              const nextExercise = arr[idx + 1];
+              if (!nextExercise) return null;
+              
+              // ვამოწმებთ წინა ვარჯიშების დასრულების სტატუსს
+              const prevExercises = arr.slice(0, idx);
+              const allPreviousCompleted = prevExercises.every(ex => 
+                completedExercises.includes(ex._id)
+              );
+              
+              let lineColor = "#F1EEF6"; // locked ფერი
+              
+              if (completedExercises.includes(exercise._id)) {
+                lineColor = "#F3D57F"; // done ფერი
+              } else if (currentExercise?._id === exercise._id && allPreviousCompleted) {
+                lineColor = "#E8D5FF"; // waiting/active ფერი
+              } else if (currentExercise?._id === nextExercise._id && allPreviousCompleted) {
+                lineColor = "#F3D57F"; // done ფერი - ხაზი ყვითელი იქნება მიმდინარე ვარჯიშამდე
+              }
+              
+              const lineHeight = idx === arr.length - 1 ? "50%" : "100%";
+              
+              return (
+                <div
+                  key={exercise.id}
+                  className="absolute w-full"
+                  style={{
+                    top: `${idx * 100}%`,
+                    height: lineHeight,
+                    backgroundColor: lineColor,
+                  }}
+                />
+              );
+            })}
           </div>
+          
+          {getExercises(setData?.exercises || []).map((exercise, idx, arr) => {
+            // ვამოწმებთ წინა ვარჯიშების დასრულების სტატუსს
+            const prevExercises = arr.slice(0, idx);
+            const allPreviousCompleted = prevExercises.every(ex => 
+              completedExercises.includes(ex._id)
+            );
 
-          {getExercises(setData).map((exercise, idx) => (
-            <div
-              key={exercise.id}
-              className="relative flex flex-col md:flex-row w-full"
-              ref={(el) => {
-                cardRefs.current[idx] = el;
-              }}
-            >
-              {/* Desktop: ნომერი ზუსტად ხაზის ცენტრში */}
+            return (
               <div
-                className="hidden md:block absolute left-0 z-10"
-                style={{
-                  top: markerOffset,
-                  width: markerSize + 8,
-                  height: markerSize,
+                key={exercise.id}
+                className="relative flex flex-col md:flex-row w-full"
+                ref={(el) => {
+                  cardRefs.current[idx] = el;
                 }}
               >
-                <div
-                  className="flex items-center justify-center w-12 h-12 rounded-full font-semibold text-lg shadow-sm"
-                  style={{
-                    background: statusMap[exercise.status].bg,
-                    color: numberTextColor,
-                    border: "none",
-                    fontSize: 22,
-                  }}
-                >
-                  {exercise.id}
-                </div>
-              </div>
-              {/* Main Card */}
-              <article
-                className={`relative z-10 flex-1 ml-0 md:ml-[68px] ${
-                  exercise.status === "locked" ? "opacity-50" : ""
-                } w-full`}
-              >
-                <div className="w-full rounded-xl md:rounded-2xl shadow-md p-3 md:p-6 bg-white mb-3 md:mb-4 flex flex-col relative">
-                  {/* Desktop: header row */}
-                  <header className="flex flex-col md:flex-row items-start md:items-center justify-between mb-2 gap-2 md:gap-0">
-                    <h2
-                      className={`font-bold text-base md:text-lg ${
-                        exercise.status === "locked"
-                          ? "text-gray-400"
-                          : "text-gray-900"
-                      }`}
-                    >
-                      {exercise.title}
-                    </h2>
-                    {/* Desktop only: სტატუსის ბეჯი */}
-                    <span
-                      className={`hidden md:flex items-center px-3 py-1 rounded-lg border text-xs font-medium ml-2 ${
-                        statusMap[exercise.status].badge
-                      }`}
-                    >
-                      {statusMap[exercise.status].label}
-                    </span>
-                  </header>
-
-                  {/* Mobile only: სტატუსის ბეჯი სათაურის ქვემოთ */}
-                  <span
-                    className={`md:hidden inline-flex items-center px-3 py-1 rounded-lg border text-xs font-medium mb-3 self-start ${
-                      statusMap[exercise.status].badge
-                    }`}
-                  >
-                    {statusMap[exercise.status].label}
+                {/* ნომერი წრეში - სტატუსის მიხედვით */}
+                <div className={`hidden md:flex absolute left-0 items-center justify-center w-12 h-12 rounded-full z-10 ${
+                  completedExercises.includes(exercise._id) 
+                    ? 'bg-[#F3D57F] border-[#F3D57F]' 
+                    : currentExercise?._id === exercise._id && allPreviousCompleted
+                      ? 'bg-white border-[#E8D5FF]'
+                      : 'bg-white border-[#F1EEF6]'
+                } border-4`}>
+                  <span className={`text-xl font-semibold ${
+                    completedExercises.includes(exercise._id)
+                      ? 'text-[#92400E]'
+                      : 'text-[#3D334A]'
+                  }`}>
+                    {exercise.id}
                   </span>
+                </div>
 
-                  {/* Steps */}
-                  <div className="flex flex-col gap-3 md:gap-4">
-                    {exercise.steps.map((step, stepIdx) => (
-                      <section
-                        key={step.step}
-                        className="flex flex-col sm:flex-row gap-2 items-start"
-                      >
-                        {step.image && (
-                          <div className="relative w-full sm:w-32 flex-shrink-0 mb-2 sm:mb-0 overflow-hidden">
-                            <Image
-                              width={128}
-                              height={100}
-                              src={step.image}
-                              alt={`Шаг ${step.step}`}
-                              className="w-full h-28 sm:h-32 object-cover rounded-lg border border-gray-200"
-                            />
-                            {/* Mobile: Step number on each image */}
-                            <div
-                              className="md:hidden absolute z-20"
-                              style={{ top: "-5px", left: "20px" }}
-                            >
-                              <div
-                                className="flex items-center justify-center w-7 h-7 rounded-full font-semibold text-base shadow"
-                                style={{
-                                  background: mobileNumberBg,
-                                  color: numberTextColor,
-                                  border: "none",
-                                }}
-                              >
-                                {exercise.id}
-                              </div>
+                {/* მთავარი კონტენტი */}
+                <div className="flex-1 ml-0 md:ml-20">
+                  <div className="bg-white rounded-[16px] p-4 shadow-sm">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-lg font-semibold text-[#3D334A]">{exercise.title}</h3>
+                      <span className={`px-3 py-1 rounded-full text-sm ${
+                        completedExercises.includes(exercise._id) 
+                          ? 'bg-[#F3D57F] text-[#92400E]' 
+                          : currentExercise?._id === exercise._id && allPreviousCompleted
+                            ? 'bg-[#E8D5FF] text-[#6D28D9]'
+                            : 'bg-[#F1EEF6] text-[#9CA3AF]'
+                      }`}>
+                        {completedExercises.includes(exercise._id)
+                          ? "Просмотрено"
+                          : currentExercise?._id === exercise._id && allPreviousCompleted
+                            ? "Ожидает просмотра"
+                            : "Посмотрите предыдущее упражнение"}
+                      </span>
+                    </div>
+
+                    {exercise.steps.map((step) => (
+                      <div key={step.step} className="mb-4 last:mb-0">
+                        <h4 className="text-[#6D28D9] font-medium mb-2">{step.title}</h4>
+                        <div className="flex gap-4">
+                          {step.image && (
+                            <div className="w-24 h-24 flex-shrink-0">
+                              <Image
+                                src={step.image}
+                                alt={step.title}
+                                width={96}
+                                height={96}
+                                className="w-full h-full object-cover rounded-lg"
+                              />
                             </div>
-                          </div>
-                        )}
-                        <div className="flex-1 min-w-0">
-                          <h3
-                            className={`font-semibold text-[15px] mb-1 ${
-                              stepIdx === 0
-                                ? "text-purple-600"
-                                : "text-purple-500"
-                            } ${
-                              exercise.status === "locked"
-                                ? "text-gray-400"
-                                : ""
-                            }`}
-                          >
-                            {step.title}
-                          </h3>
-                          <ol
-                            className={`list-decimal pl-4 text-sm ${
-                              exercise.status === "locked"
-                                ? "text-gray-400"
-                                : "text-gray-800"
-                            }`}
-                          >
+                          )}
+                          <ul className="flex-1 text-sm text-[#3D334A] space-y-2">
                             {step.list.map((item, i) => (
-                              <li key={i} className="font-[Pt]">
-                                {item}
-                              </li>
+                              <li key={i} className="font-[Pt]">{item}</li>
                             ))}
-                          </ol>
+                          </ul>
                         </div>
-                      </section>
+                      </div>
                     ))}
                   </div>
                 </div>
-              </article>
-            </div>
-          ))}
+              </div>
+            );
+          })}
         </div>
       </section>
     </div>

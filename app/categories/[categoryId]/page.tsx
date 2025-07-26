@@ -22,12 +22,10 @@ export default function CategoriesPage({
   const { categoryData, loading, error } = useCategoryComplete(categoryId);
   const { t } = useI18n();
 
-  console.log(categoryData?.category?._id);
 
   // ახლა სრული მონაცემები გვაქვს
   const selectedCategory = categoryData?.category;
 
-  console.log(categoryData);
 
   if (loading) {
     return (
@@ -123,7 +121,6 @@ export default function CategoriesPage({
     subcategoryId: set.subCategoryId || "",
   }));
 
-  console.log(formattedSets);
 
   return (
     <div className="">

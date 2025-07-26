@@ -17,9 +17,8 @@ interface LocalizedString {
 export class Exercise {
   @Prop({
     type: {
-      ka: { type: String, required: true },
-      en: { type: String, default: '' },
-      ru: { type: String, default: '' }
+      en: { type: String, required: true },
+      ru: { type: String, required: true }
     },
     required: true
   })
@@ -27,23 +26,12 @@ export class Exercise {
 
   @Prop({
     type: {
-      ka: { type: String, required: true },
-      en: { type: String, default: '' },
-      ru: { type: String, default: '' }
+      en: { type: String, required: true },
+      ru: { type: String, required: true }
     },
     required: true
   })
   description: LocalizedString;
-
-  @Prop({
-    type: {
-      ka: { type: String, required: true },
-      en: { type: String, default: '' },
-      ru: { type: String, default: '' }
-    },
-    required: true
-  })
-  recommendations: LocalizedString;
 
   @Prop({ required: false })
   videoUrl: string;

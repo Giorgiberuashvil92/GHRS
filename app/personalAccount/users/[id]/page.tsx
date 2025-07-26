@@ -9,7 +9,6 @@ type Props = {
 
 const UserPage = ({ params }: Props) => {
   const userId = use(params).id;
-  console.log(userId);
 
   return <PersonalAccount />;
 };

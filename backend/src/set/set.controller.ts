@@ -54,14 +54,17 @@ export class SetController {
         ...createSetDto,
         name: JSON.parse(createSetDto.name),
         description: JSON.parse(createSetDto.description),
+        recommendations: JSON.parse(createSetDto.recommendations),
         levels: createSetDto.levels ? JSON.parse(createSetDto.levels) : undefined,
         price: createSetDto.price ? JSON.parse(createSetDto.price) : undefined,
       };
 
       console.log('📝 Parsed data:', parsedData);
 
-      if (!parsedData.name.ka || !parsedData.description.ka) {
-        throw new BadRequestException('ქართული ენის ველები სავალდებულოა');
+      if (!parsedData.name.en || !parsedData.name.ru || 
+          !parsedData.description.en || !parsedData.description.ru ||
+          !parsedData.recommendations.en || !parsedData.recommendations.ru) {
+        throw new BadRequestException('All language fields are required');
       }
 
       let thumbnailImage = '';

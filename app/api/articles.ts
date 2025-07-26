@@ -168,9 +168,6 @@ export const createArticle = async (data: CreateArticleDto) => {
     throw new Error('Read time is required');
   }
 
-  console.log('Creating article with data:', data);
-  console.log('Using JSON endpoint');
-  console.log('Sending JSON data:', JSON.stringify(data, null, 2));
   
   return apiRequest<Article>(API_CONFIG.ENDPOINTS.ARTICLES.JSON, {
     method: 'POST',

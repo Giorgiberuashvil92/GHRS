@@ -56,7 +56,6 @@ const PersonalAccountPage = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: Implement update logic
-    console.log('Form data:', formData);
   };
 
   if (!user) {

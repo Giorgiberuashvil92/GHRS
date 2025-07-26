@@ -76,7 +76,6 @@ const Blog: React.FC<BlogProps> = ({
     fetchBlogs();
   }, []);
 
-  console.log(blogs);
 
   const totalPages = useMemo(() => {
     const otherBlogs = blogs.slice(1);

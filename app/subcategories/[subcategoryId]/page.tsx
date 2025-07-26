@@ -32,7 +32,6 @@ export default function SubcategoryPage({
     set => set.subCategoryId === subcategoryId
   ) || [];
 
-  console.log("Subcategory Data:", { selectedSubcategory, subcategorySets });
 
   if (loading) {
     return (

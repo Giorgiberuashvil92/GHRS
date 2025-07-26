@@ -32,13 +32,10 @@ const WorksSlider: React.FC<WorksSliderProps> = ({
   linkType = 'sets', // default არის sets
   fromMain,
 }) => {
-  console.log(works)
   const scroll = (direction: "left" | "right") => {
     const slider = document.getElementById("works-slider");
-    console.log("🖱️ Scroll button clicked:", { direction, slider });
     if (slider) {
       const scrollAmount = direction === "left" ? -500 : 500;
-      console.log("📜 Scrolling by:", scrollAmount);
       slider.scrollBy({
         left: scrollAmount,
         behavior: "smooth",

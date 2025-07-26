@@ -40,11 +40,9 @@ function SectionContent() {
     categoryData?.sets?.filter((set) => set.subCategoryId === subcategoryId) ||
     [];
 
-  console.log("Section Subcategory Data:", {
     selectedSubcategory,
     subcategorySets,
   });
-  console.log("Popular Exercises:", {
     popularExercises,
     popularLoading,
     popularError,

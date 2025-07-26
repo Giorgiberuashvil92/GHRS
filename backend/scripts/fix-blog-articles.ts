@@ -40,12 +40,10 @@ const Article = mongoose.model('Article', articleSchema);
 async function updateArticleContent() {
   try {
     await mongoose.connect(MONGODB_URI);
-    console.log('Connected to MongoDB');
 
     const article = await Article.findById('688022e1a7a0d4f79d1a73cb');
     
     if (!article) {
-      console.log('Article not found');
       return;
     }
 
@@ -195,13 +193,11 @@ async function updateArticleContent() {
     ];
 
     await article.save();
-    console.log('Article updated successfully');
 
   } catch (error) {
     console.error('Error:', error);
   } finally {
     await mongoose.disconnect();
-    console.log('Disconnected from MongoDB');
   }
 }
 
