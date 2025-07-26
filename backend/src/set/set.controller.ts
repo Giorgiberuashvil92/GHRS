@@ -74,12 +74,15 @@ export class SetController {
         thumbnailImage = await this.uploadToCloudinary(file, 'image');
         console.log('✅ Cloudinary upload successful:', thumbnailImage);
       } else if (createSetDto.thumbnailImage) {
-        console.log('🔗 Using provided image URL:', createSetDto.thumbnailImage);
+        console.log('🔗 Using provided thumbnailImage URL:', createSetDto.thumbnailImage);
         thumbnailImage = createSetDto.thumbnailImage;
+      } else if (createSetDto.imageUrl) {
+        console.log('🔗 Using provided imageUrl URL:', createSetDto.imageUrl);
+        thumbnailImage = createSetDto.imageUrl;
       }
 
       if (!thumbnailImage) {
-        throw new BadRequestException('სურათის ატვირთვა სავალდებულოა');
+        throw new BadRequestException('სურათის ატვირთვა ან URL მითითება სავალდებულოა');
       }
 
       console.log('💾 Creating set with thumbnail:', thumbnailImage);

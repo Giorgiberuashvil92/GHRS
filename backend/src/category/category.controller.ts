@@ -70,10 +70,13 @@ export class CategoryController {
       } else if (createCategoryDto.image) {
         console.log('🔗 Using provided image URL:', createCategoryDto.image);
         imageUrl = createCategoryDto.image;
+      } else if (createCategoryDto.imageUrl) {
+        console.log('🔗 Using provided imageUrl URL:', createCategoryDto.imageUrl);
+        imageUrl = createCategoryDto.imageUrl;
       }
 
       if (!imageUrl) {
-        throw new BadRequestException('სურათის ატვირთვა სავალდებულოა');
+        throw new BadRequestException('სურათის ატვირთვა ან URL მითითება სავალდებულოა');
       }
 
       console.log('💾 Creating category with image URL:', imageUrl);
@@ -209,6 +212,9 @@ export class CategoryController {
         console.log('⬆️ Uploading file to Cloudinary...');
         imageUrl = await this.uploadToCloudinary(file, 'image');
         console.log('✅ Cloudinary upload successful:', imageUrl);
+      } else if (updateCategoryDto.imageUrl) {
+        console.log('🔗 Using provided imageUrl URL:', updateCategoryDto.imageUrl);
+        imageUrl = updateCategoryDto.imageUrl;
       }
 
       console.log('💾 Updating subcategory with image URL:', imageUrl);
@@ -279,10 +285,13 @@ export class CategoryController {
       } else if (createCategoryDto.image) {
         console.log('🔗 Using provided image URL:', createCategoryDto.image);
         imageUrl = createCategoryDto.image;
+      } else if (createCategoryDto.imageUrl) {
+        console.log('🔗 Using provided imageUrl URL:', createCategoryDto.imageUrl);
+        imageUrl = createCategoryDto.imageUrl;
       }
 
       if (!imageUrl) {
-        throw new BadRequestException('სურათის ატვირთვა სავალდებულოა');
+        throw new BadRequestException('სურათის ატვირთვა ან URL მითითება სავალდებულოა');
       }
 
       console.log('💾 Creating subcategory with image URL:', imageUrl);
