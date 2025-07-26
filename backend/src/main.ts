@@ -9,9 +9,9 @@ async function bootstrap() {
   
   // CORS კონფიგურაცია
   app.enableCors({
-    origin: ['http://localhost:3001', 'http://localhost:3000'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
+    origin: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
     credentials: true,
   });
 
