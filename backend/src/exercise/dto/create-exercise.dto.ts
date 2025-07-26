@@ -14,9 +14,10 @@ export class CreateExerciseDto {
   @Type(() => LocalizedStringDto)
   name: LocalizedStringDto;
 
+  @IsOptional()
   @ValidateNested()
   @Type(() => LocalizedStringDto)
-  description: LocalizedStringDto;
+  description?: LocalizedStringDto;
 
   @IsOptional()
   @IsString()

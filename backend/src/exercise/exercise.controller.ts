@@ -36,7 +36,7 @@ export class ExerciseController {
       const parsedData = {
         ...data,
         name: JSON.parse(data.name),
-        description: JSON.parse(data.description),
+        description: data.description ? JSON.parse(data.description) : undefined,
       };
 
       let videoUrl = '';

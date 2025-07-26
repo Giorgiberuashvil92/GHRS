@@ -26,10 +26,10 @@ export class Exercise {
 
   @Prop({
     type: {
-      en: { type: String, required: true },
-      ru: { type: String, required: true }
+      en: { type: String, required: false },
+      ru: { type: String, required: false }
     },
-    required: true
+    required: false
   })
   description: LocalizedString;
 

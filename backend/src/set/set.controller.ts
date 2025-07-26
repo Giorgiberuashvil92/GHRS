@@ -57,6 +57,10 @@ export class SetController {
         recommendations: JSON.parse(createSetDto.recommendations),
         levels: createSetDto.levels ? JSON.parse(createSetDto.levels) : undefined,
         price: createSetDto.price ? JSON.parse(createSetDto.price) : undefined,
+        additional: createSetDto.additional ? JSON.parse(createSetDto.additional) : undefined,
+        discountedPrice: createSetDto.discountedPrice ? JSON.parse(createSetDto.discountedPrice) : undefined,
+        equipment: createSetDto.equipment ? JSON.parse(createSetDto.equipment) : undefined,
+        warnings: createSetDto.warnings ? JSON.parse(createSetDto.warnings) : undefined,
       };
 
       console.log('📝 Parsed data:', parsedData);
@@ -126,6 +130,10 @@ export class SetController {
       if (updateSetDto.description) parsedData.description = JSON.parse(updateSetDto.description);
       if (updateSetDto.levels) parsedData.levels = JSON.parse(updateSetDto.levels);
       if (updateSetDto.price) parsedData.price = JSON.parse(updateSetDto.price);
+      if (updateSetDto.additional) parsedData.additional = JSON.parse(updateSetDto.additional);
+      if (updateSetDto.discountedPrice) parsedData.discountedPrice = JSON.parse(updateSetDto.discountedPrice);
+      if (updateSetDto.equipment) parsedData.equipment = JSON.parse(updateSetDto.equipment);
+      if (updateSetDto.warnings) parsedData.warnings = JSON.parse(updateSetDto.warnings);
 
       console.log('📝 Parsed data:', parsedData);
 

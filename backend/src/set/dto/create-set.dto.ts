@@ -58,6 +58,33 @@ export class CreateSetDto {
   @Type(() => LocalizedStringDto)
   recommendations: LocalizedStringDto;
 
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => LocalizedStringDto)
+  additional?: LocalizedStringDto;
+
+  @IsOptional()
+  @IsString()
+  demoVideoUrl?: string;
+
+  @IsOptional()
+  @IsString()
+  duration?: string;
+
+  @IsOptional()
+  @IsString()
+  difficulty?: 'easy' | 'medium' | 'hard';
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => LocalizedStringDto)
+  equipment?: LocalizedStringDto;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => LocalizedStringDto)
+  warnings?: LocalizedStringDto;
+
   @IsString()
   thumbnailImage: string;
 
@@ -80,6 +107,11 @@ export class CreateSetDto {
   @ValidateNested()
   @Type(() => PriceDto)
   price: PriceDto;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => PriceDto)
+  discountedPrice?: PriceDto;
 
   @IsOptional()
   @IsBoolean()
