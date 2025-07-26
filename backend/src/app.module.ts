@@ -13,6 +13,7 @@ import { ArticleModule } from './article/article.module';
 import { BlogModule } from './blog/blog.module';
 import { ConfigModule } from '@nestjs/config';
 import { PaymentModule } from './payment/payment.module';
+import { PurchaseModule } from './purchase/purchase.module';
 
 
 @Module({
@@ -33,6 +34,7 @@ import { PaymentModule } from './payment/payment.module';
     ArticleModule,
     BlogModule,
     PaymentModule,
+    PurchaseModule,
   ],
   controllers: [AppController],
   providers: [AppService],

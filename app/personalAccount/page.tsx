@@ -6,14 +6,12 @@ import MobileNavbar from "../components/Navbar/MobileNavbar";
 import { defaultMenuItems } from "../components/Header";
 import PersonInfo from "../components/PersonalAccount/PersonInfo";
 import PersonGoals from "../components/PersonalAccount/PersonGoals";
-import Image from "next/image";
 import Achievements from "../components/Achievements";
 import Statistics from "../components/Statistics";
 import DaysInRow from "../components/PersonalAccount/DaysInRow";
 import ContinueWatchingBanner from "../components/PersonalAccount/ContinueWatchingBanner";
+import PurchasedCourses from "../components/PersonalAccount/PurchasedCourses";
 import { useAuth } from "../context/AuthContext";
-import { MdOutlinePlayLesson } from "react-icons/md";
-import { FaArrowRightLong, FaRegClock } from "react-icons/fa6";
 import { FaRegCheckCircle, FaStar } from "react-icons/fa";
 import WorksSlider from "../components/WorksSlider";
 import { chapterSliderInfo } from "../chapter/page";
@@ -62,28 +60,6 @@ const dummyData = {
   ],
 };
 
-// My courses data for tab 0
-const myCourses = [
-  {
-    id: 1,
-    category: "ОРТОПЕДИЯ",
-    title: "Комплекс упражнений №1 для грудного отдела позвоночника",
-    description: "Улучшение динамики и подвижности грудного отдела",
-    duration: "42 минуты",
-    lessons: "2 из 5 уроков",
-    image: "/assets/images/womenWork1.png",
-  },
-  {
-    id: 2,
-    category: "ОРТОПЕДИЯ",
-    title: "Комплекс упражнений №2 для поясничного отдела позвоночника",
-    description: "Улучшение гибкости и силы поясницы",
-    duration: "35 минут",
-    lessons: "3 из 6 уроков",
-    image: "/assets/images/womenWork1.png",
-  },
-];
-
 const PersonalAccountContent: React.FC = () => {
   const { isAuthenticated, user, isLoading } = useAuth();
   const router = useRouter();
@@ -125,56 +101,7 @@ const PersonalAccountContent: React.FC = () => {
     if (activeTab === 0) {
       return (
         <div className="flex flex-col gap-6 mt-8 bg-[#F9F7FE] mb-5 md:m-10 md:p-10 md:rounded-[40px]">
-          {myCourses.map((course) => (
-            <div
-              key={course.id}
-              className="flex flex-col md:flex-row bg-white rounded-2xl p-6 items-center gap-6"
-            >
-              <div className="flex-1 flex flex-col gap-4">
-                <span className="bg-[#E9DFF6] text-[#3D334A] md:text-[18px] px-2.5 py-1 rounded-[8px] w-fit mb-2">
-                  {course.category}
-                </span>
-                <h2 className="text-2xl md:text-[48px] md:font-bold text-[#3D334A] leading-[100%] ">
-                  {course.title}
-                </h2>
-                <p className="text-[#846FA0] text-base md:text-[32px] font-bold font-[Pt] leading-[100%]">
-                  {course.description}
-                </p>
-                <div className="flex items-center mt-4 justify-between font-[Pt] font-medium">
-                  <div className="flex items-center gap-8">
-                    <div className="flex items-center gap-2 text-[#846FA0] text-sm">
-                      <span className="inline-block  bg-[#D4BAFC] p-2 rounded-full">
-                        <FaRegClock size={22} color="white" />
-                      </span>
-                      <span className="font-medium text-[20px] leading-[100%] text-[#3D334A]">
-                        {course.duration}
-                      </span>
-                    </div>
-                    <div className="flex items-center gap-2 text-[#846FA0] text-sm">
-                      <span className="inline-block bg-[#D4BAFC] p-2 rounded-full">
-                        <MdOutlinePlayLesson size={22} color="white" />
-                      </span>
-                      <span className="font-medium text-[20px] leading-[100%] text-[#3D334A]">
-                        {course.lessons}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2 text-[#3D334A] text-[20px] cursor-pointer">
-                    Продолжить просмотр
-                    <FaArrowRightLong />
-                  </div>
-                </div>
-              </div>
-              <div className="w-full md:w-1/3 flex-shrink-0 flex justify-center">
-                <Image
-                  src={course.image}
-                  width={441}
-                  height={423}
-                  alt="woman stretching"
-                />
-              </div>
-            </div>
-          ))}
+          <PurchasedCourses />
         </div>
       );
     } else if (activeTab === 1) {
@@ -187,7 +114,7 @@ const PersonalAccountContent: React.FC = () => {
 
   return (
     <div className="md:gap-20 px-4 md:px-5">
-      <DesktopNavbar menuItems={defaultMenuItems} blogBg={false} />
+      <DesktopNavbar menuItems={defaultMenuItems} blogBg={false} allCourseBg={false} />
       <MobileNavbar />
       <ContinueWatchingBanner />
       <div className="mx-2 md:mx-10 md:mt-10 mt-0  flex flex-col gap-3 md:flex-row-reverse">
@@ -236,7 +163,14 @@ const PersonalAccountContent: React.FC = () => {
         ) : (
           <>
             {renderTabContent()}
-            <WorksSlider title="Рекомендуем" works={chapterSliderInfo} />
+            <WorksSlider 
+              title="Рекомендуем" 
+              works={chapterSliderInfo.map(item => ({
+                ...item,
+                categoryId: item.id // დროებითი გადაწყვეტა
+              }))} 
+              fromMain={false}
+            />
             <Statistics statistics={users[0].statistics} />
             <Achievements achievements={users[0].achievements} />
           </>

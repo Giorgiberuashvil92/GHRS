@@ -1,8 +1,8 @@
 'use client';
 
-import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
+import { PayPalButtons } from '@paypal/react-paypal-js';
 import { apiRequest, API_CONFIG } from '../config/api';
-import { useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
 
 export interface PaymentResponse {
   id: string;
@@ -22,22 +22,36 @@ export interface PaymentResponse {
 interface PayPalButtonProps {
   amount: number;
   currency?: string;
+  setId: string;
   onSuccess: (details: PaymentResponse) => void;
   onError: (error: Error) => void;
 }
 
-export default function PayPalButton({ amount, currency = 'RUB', onSuccess, onError }: PayPalButtonProps) {
-  const [{ isResolved, isPending }] = usePayPalScriptReducer();
-
-  useEffect(() => {
-  }, [isResolved, isPending, amount, currency]);
+export default function PayPalButton({ amount, currency = 'RUB', setId, onSuccess, onError }: PayPalButtonProps) {
+  const { user } = useAuth();
 
   const createOrder = async () => {
     try {
-      const response = await apiRequest<PaymentResponse>(API_CONFIG.PAYMENTS.CREATE_ORDER, {
+      if (!user) {
+        throw new Error('მომხმარებელი არ არის ავტორიზებული');
+      }
+
+      const response = await apiRequest<PaymentResponse>(API_CONFIG.ENDPOINTS.PAYMENTS.CREATE_ORDER, {
         method: 'POST',
-        body: JSON.stringify({ amount, currency })
+        body: JSON.stringify({ 
+          amount, 
+          currency,
+          userId: user.id,
+          setId
+        })
       });
+
+      console.log('PayPal order created:', response);
+      
+      if (!response.id) {
+        throw new Error('PayPal order ID is missing');
+      }
+
       return response.id;
     } catch (error) {
       console.error('Error creating PayPal order:', error);
@@ -46,12 +60,16 @@ export default function PayPalButton({ amount, currency = 'RUB', onSuccess, onEr
     }
   };
 
-  const onApprove = async (data: { orderID: string }) => {
+  const handleApprove = async (data: any) => {
     try {
-      const response = await apiRequest<PaymentResponse>(API_CONFIG.PAYMENTS.CAPTURE_PAYMENT, {
+      console.log('PayPal payment approved:', data);
+      
+      const response = await apiRequest<PaymentResponse>(API_CONFIG.ENDPOINTS.PAYMENTS.CAPTURE_PAYMENT, {
         method: 'POST',
         body: JSON.stringify({ orderId: data.orderID })
       });
+      
+      console.log('PayPal payment captured:', response);
       
       onSuccess(response);
     } catch (error) {
@@ -60,32 +78,35 @@ export default function PayPalButton({ amount, currency = 'RUB', onSuccess, onEr
     }
   };
 
-  if (!isResolved) {
-    return <div className="text-center p-4">Loading PayPal...</div>;
-  }
+  const handleCancel = () => {
+    console.log('PayPal payment cancelled');
+  };
 
-  if (isPending) {
-    return <div className="text-center p-4">PayPal is initializing...</div>;
+  const handleError = (error: unknown) => {
+    console.error('PayPal error:', error);
+    onError(new Error('PayPal payment failed'));
+  };
+
+  if (!user) {
+    return <div className="text-center text-red-500 p-4">გთხოვთ გაიაროთ ავტორიზაცია</div>;
   }
 
   return (
     <div className="w-full">
       <div className="mb-4 text-center text-gray-700">
-        Total: {amount} {currency}
+        ჯამი: {amount} {currency}
       </div>
       <PayPalButtons
-        style={{ 
+        style={{
           layout: "vertical",
-          color: "blue",
+          color: "gold",
           shape: "rect",
-          label: "pay"
+          label: "paypal"
         }}
         createOrder={createOrder}
-        onApprove={onApprove}
-        onError={(err) => {
-          console.error('PayPal button error:', err);
-          onError(err instanceof Error ? err : new Error('PayPal button error'));
-        }}
+        onApprove={handleApprove}
+        onCancel={handleCancel}
+        onError={handleError}
       />
     </div>
   );

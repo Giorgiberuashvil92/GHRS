@@ -30,11 +30,11 @@ function isPublicEndpoint(endpoint: string): boolean {
 
 // API Configuration
 export const API_CONFIG = {
-  // URL კონფიგურაცია გარემოს მიხედვით
-  BASE_URL: process.env.NODE_ENV === 'development'
-    ? (process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000")
-    : (process.env.NEXT_PUBLIC_API_URL || "https://ghrs-backend.onrender.com"),
-  
+   // URL კონფიგურაცია გარემოს მიხედვით
+  //  BASE_URL: process.env.NODE_ENV === 'development'
+  //  ? (process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000")
+  //  : (process.env.NEXT_PUBLIC_API_URL || "https://ghrs-backend.onrender.com"),
+  BASE_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000',
   ENDPOINTS: {
     UPLOAD: {
       IMAGE: "/upload/image"
@@ -80,11 +80,14 @@ export const API_CONFIG = {
         `/sets/subcategory/${subcategoryId}`,
       BY_ID: (id: string) => `/sets/${id}`,
     },
-  },
-
-  PAYMENTS: {
-    CREATE_ORDER: '/payments/create-order',
-    CAPTURE_PAYMENT: '/payments/capture-payment'
+    PURCHASES: {
+      GET_MY_COURSES: '/purchases/my-courses',
+      CHECK_ACCESS: (setId: string) => `/purchases/check-access/${setId}`,
+    },
+    PAYMENTS: {
+      CREATE_ORDER: '/payment/create-order',
+      CAPTURE_PAYMENT: '/payment/capture-payment',
+    },
   },
 
   HEADERS: {

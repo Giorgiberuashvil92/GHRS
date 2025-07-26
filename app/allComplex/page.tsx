@@ -21,13 +21,6 @@ const AllComplex = () => {
   const { sets, loading: setsLoading } = useAllSets();
   const { exercises, loading: exercisesLoading } = useAllExercises();
 
-    categoriesCount: categories.length,
-    setsCount: sets.length,
-    exercisesCount: exercises.length,
-    currentLocale: locale,
-    categories: categories.slice(0, 3),
-    sets: sets.slice(0, 3)
-  });
 
   // Helper to get localized text
   const getLocalizedText = (

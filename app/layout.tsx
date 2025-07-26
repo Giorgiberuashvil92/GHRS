@@ -9,6 +9,17 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 const inter = Inter({ subsets: ["latin"] });
 
+const paypalOptions = {
+  clientId: "AdGUXBKzSaUCAZ_j7UO8YOYCbWRQCIcBl9o0pC6GJ7PQmT6uMucRdWCGegdB65JJbGewVP97-iU7EiAl",
+  currency: "RUB",
+  intent: "capture",
+  disableFunding: "bancontact,blik,eps,giropay,ideal,mercadopago,mybank,p24,sepa,sofort,venmo",
+  enableFunding: "card,credit,paypal",
+  commit: true,
+  vault: false,
+  components: "buttons"
+};
+
 export default function RootLayout({
   children,
 }: {
@@ -23,11 +34,7 @@ export default function RootLayout({
         />
       </head>
       <body className={inter.className}>
-        <PayPalScriptProvider options={{
-          clientId: "AauAG9HWxx25fS0hccd_kZS5vQNfPA5hlQKolkRDLa1rDRklWnN3NasH0DWsMaM1pud7fwly032dGBDV",
-          currency: "RUB",
-          intent: "capture"
-        }}>
+        <PayPalScriptProvider options={paypalOptions}>
           <I18nProvider>
             <AuthProvider>
               <CategoryProvider value={{ categories: [], setCategories: () => {} }}>
