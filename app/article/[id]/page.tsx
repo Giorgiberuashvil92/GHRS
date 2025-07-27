@@ -46,7 +46,7 @@ export default function ArticlePage() {
   }
 
   if (!article) {
-    return <div>Article not found</div>;
+    return <div>Article not found...</div>;
   }
 
   return (
