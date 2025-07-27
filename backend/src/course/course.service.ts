@@ -110,7 +110,7 @@ export class CourseService {
       }
       if (maxPrice !== undefined) {
         query.price.$lte = maxPrice;
-      }ს
+      }
     }
 
     // Search in title and description
