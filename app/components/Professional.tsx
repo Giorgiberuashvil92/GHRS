@@ -1,18 +1,56 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import SliderArrows from "./SliderArrows";
 import CourseSlider from "./CourseSlider";
-import { useCourses } from "../hooks/useCourses";
 import Banner from "./Banner";
 import { useI18n } from "../context/I18nContext";
 
+interface Course {
+  _id: string;
+  title: {
+    en: string;
+    ru: string;
+  };
+  description: {
+    en: string;
+    ru: string;
+  };
+  price: number;
+  thumbnail: string;
+  instructor: {
+    name: string;
+  };
+}
+
 const Professional = ({ withBanner }: { withBanner: boolean }) => {
-  const { courses, loading, error } = useCourses();
+  const [courses, setCourses] = useState<Course[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const { t } = useI18n();
 
   const sliderRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('http://localhost:4000/courses?isPublished=true');
+        if (!response.ok) {
+          throw new Error('Failed to fetch courses');
+        }
+        const data = await response.json();
+        setCourses(data.courses);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'An error occurred');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCourses();
+  }, []);
 
   const scrollLeft = () => {
     sliderRef.current?.scrollBy({ left: -300, behavior: "smooth" });

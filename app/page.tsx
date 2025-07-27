@@ -14,6 +14,7 @@ import Reviews from "./components/Reviews";
 import { useCategories } from "./hooks/useCategories";
 import { useAllExercises } from "./hooks/useExercises";
 import { useAllSets } from "./hooks/useSets";
+import { Footer } from "./components/Footer";
 // import { useCategoryComplete } from "./hooks/useCategoryComplete";
 // import { useI18n } from "./context/I18nContext";
 
@@ -87,6 +88,7 @@ const Home = () => {
           buttonStyles="hover:opacity-80"
           bgColor="#F9F7FE"
         />
+        <Footer />
       </div>
     </div>
   );
