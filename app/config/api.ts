@@ -1,4 +1,5 @@
 import { User } from "../components/PersonalAccount/PersonInfo";
+import axios from 'axios';
 
 interface RegistrationData {
   email: string;
@@ -188,3 +189,44 @@ export async function resendVerificationCode(email: string) {
     body: JSON.stringify({ email }),
   });
 }
+
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+
+export const api = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Courses
+export const fetchCourses = async (params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  categoryId?: string;
+  isPublished?: boolean;
+  language?: string;
+  minPrice?: number;
+  maxPrice?: number;
+}) => {
+  try {
+    const response = await api.get('/courses', { params });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching courses:', error);
+    throw error;
+  }
+};
+
+// Single Course
+export const fetchCourse = async (id: string) => {
+  try {
+    console.log('Fetching course from API:', `${API_URL}/courses/${id}`);
+    const response = await api.get(`/courses/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching single course:', error);
+    throw error;
+  }
+};

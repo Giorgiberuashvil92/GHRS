@@ -2,6 +2,8 @@ import Image from "next/image";
 import { PiStudent } from "react-icons/pi";
 import { FaCertificate } from "react-icons/fa6";
 import { MdOutlineWeb } from "react-icons/md";
+import DesktopNavbar from "./Navbar/DesktopNavbar";
+import { defaultMenuItems } from "./Header";
 
 const ContentsSidebar = () => (
   <div className="bg-white rounded-[20px] p-5 shadow-sm">
@@ -20,9 +22,17 @@ const ContentsSidebar = () => (
   </div>
 );
 
-const TeacherInfo = () => {
+interface TeacherInfoProps {
+  instructorId?: string;
+}
+
+const TeacherInfo = ({ instructorId }: TeacherInfoProps) => {
+  // TODO: Use instructorId to fetch instructor data from API
+  console.log('Loading instructor with ID:', instructorId);
+  
   return (
     <div className="min-h-screen bg-[#F9F7FE] py-6 px-2 md:px-8">
+      <DesktopNavbar menuItems={defaultMenuItems} blogBg={false} allCourseBg={false} />
       <div className=" mx-auto flex flex-col md:flex-row gap-6">
         {/* Left Sidebar */}
         <div className="flex flex-col gap-6 w-full md:w-[270px] flex-shrink-0">

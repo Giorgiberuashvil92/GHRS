@@ -3,12 +3,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User, UserDocument } from '../schemas/user.schema';
 
-// User/Instructor dropdown controller
-@Controller('instructors')
-export class InstructorController {
+// Legacy user-based instructor endpoints (kept for backward compatibility)
+@Controller('legacy-instructors')
+export class UserInstructorController {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  // GET /instructors/dropdown - ინსტრუქტორების ჩამოსაშლელი სია
+  // GET /legacy-instructors/dropdown - ინსტრუქტორების ჩამოსაშლელი სია (legacy)
   @Get('dropdown')
   async getInstructorsForDropdown(): Promise<
     { id: string; name: string; email: string }[]
@@ -28,7 +28,7 @@ export class InstructorController {
     }));
   }
 
-  // GET /instructors - ყველა ინსტრუქტორი (უფრო დეტალური ინფორმაციით)
+  // GET /legacy-instructors - ყველა ინსტრუქტორი (legacy)
   @Get()
   async getAllInstructors() {
     return this.userModel
@@ -42,7 +42,7 @@ export class InstructorController {
       .sort({ name: 1 });
   }
 
-  // POST /instructors - ახალი ინსტრუქტორის შექმნა
+  // POST /legacy-instructors - ახალი ინსტრუქტორის შექმნა (legacy)
   @Post()
   async createInstructor(
     @Body()
