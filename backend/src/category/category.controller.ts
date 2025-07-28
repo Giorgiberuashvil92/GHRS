@@ -49,16 +49,30 @@ export class CategoryController {
     console.log('📄 Body received:', createCategoryDto);
 
     try {
+      // Helper function to safely parse JSON or return object as is
+      const safeParseJSON = (value: any, fieldName: string) => {
+        if (typeof value === 'string') {
+          try {
+            return JSON.parse(value);
+          } catch (e) {
+            throw new BadRequestException(`Invalid JSON format for field: ${fieldName} / Неверный формат JSON для поля: ${fieldName}`);
+          }
+        } else if (typeof value === 'object' && value !== null) {
+          return value;
+        }
+        return value;
+      };
+
       const parsedData = {
         ...createCategoryDto,
-        name: JSON.parse(createCategoryDto.name),
-        description: createCategoryDto.description ? JSON.parse(createCategoryDto.description) : undefined,
+        name: safeParseJSON(createCategoryDto.name, 'name'),
+        description: createCategoryDto.description ? safeParseJSON(createCategoryDto.description, 'description') : undefined,
       };
 
       console.log('📝 Parsed data:', parsedData);
 
-      if (!parsedData.name.ka) {
-        throw new BadRequestException('ქართული ენის ველები სავალდებულოა');
+      if (!parsedData.name || (!parsedData.name.en && !parsedData.name.ru)) {
+        throw new BadRequestException('Name is required in English or Russian / Имя обязательно на английском или русском языке');
       }
 
       let imageUrl = '';
@@ -76,7 +90,7 @@ export class CategoryController {
       }
 
       if (!imageUrl) {
-        throw new BadRequestException('სურათის ატვირთვა ან URL მითითება სავალდებულოა');
+        throw new BadRequestException('Image upload or URL is required / Требуется загрузка изображения или URL');
       }
 
       console.log('💾 Creating category with image URL:', imageUrl);
@@ -93,7 +107,7 @@ export class CategoryController {
       if (error instanceof BadRequestException) {
         throw error;
       }
-      throw new BadRequestException(error.message);
+      throw new BadRequestException(`Failed to create category / Не удалось создать категорию: ${error.message}`);
     }
   }
 
@@ -124,15 +138,40 @@ export class CategoryController {
     @Body() updateCategoryDto: any,
     @UploadedFile() file?: Express.Multer.File,
   ) {
+    console.log('📝 PATCH /categories/:id - ID:', id);
+    console.log('Body received:', updateCategoryDto);
+    console.log('File received:', !!file);
+
     try {
       const parsedData = { ...updateCategoryDto };
 
-      if (updateCategoryDto.name) parsedData.name = JSON.parse(updateCategoryDto.name);
-      if (updateCategoryDto.description) parsedData.description = JSON.parse(updateCategoryDto.description);
+      // Helper function to safely parse JSON or return object as is
+      const safeParseJSON = (value: any, fieldName: string) => {
+        if (typeof value === 'string') {
+          try {
+            return JSON.parse(value);
+          } catch (e) {
+            throw new BadRequestException(`Invalid JSON format for field: ${fieldName} / Неверный формат JSON для поля: ${fieldName}`);
+          }
+        } else if (typeof value === 'object' && value !== null) {
+          return value;
+        }
+        return value;
+      };
+
+      // Parse complex fields safely
+      if (updateCategoryDto.name) {
+        parsedData.name = safeParseJSON(updateCategoryDto.name, 'name');
+      }
+      if (updateCategoryDto.description) {
+        parsedData.description = safeParseJSON(updateCategoryDto.description, 'description');
+      }
 
       let imageUrl = updateCategoryDto.image;
       if (file) {
+        console.log('📤 Uploading new image to Cloudinary...');
         imageUrl = await this.uploadToCloudinary(file, 'image');
+        console.log('✅ New image uploaded successfully:', imageUrl);
       }
 
       const result = await this.categoryService.update(id, {
@@ -141,10 +180,11 @@ export class CategoryController {
       });
       return result;
     } catch (error) {
+      console.error('❌ Error in update category controller:', error);
       if (error instanceof BadRequestException) {
         throw error;
       }
-      throw new BadRequestException(error.message);
+      throw new BadRequestException(`Failed to update category / Не удалось обновить категорию: ${error.message}`);
     }
   }
 
@@ -202,8 +242,27 @@ export class CategoryController {
     try {
       const parsedData = { ...updateCategoryDto };
 
-      if (updateCategoryDto.name) parsedData.name = JSON.parse(updateCategoryDto.name);
-      if (updateCategoryDto.description) parsedData.description = JSON.parse(updateCategoryDto.description);
+      // Helper function to safely parse JSON or return object as is
+      const safeParseJSON = (value: any, fieldName: string) => {
+        if (typeof value === 'string') {
+          try {
+            return JSON.parse(value);
+          } catch (e) {
+            throw new BadRequestException(`Invalid JSON format for field: ${fieldName} / Неверный формат JSON для поля: ${fieldName}`);
+          }
+        } else if (typeof value === 'object' && value !== null) {
+          return value;
+        }
+        return value;
+      };
+
+      // Parse complex fields safely
+      if (updateCategoryDto.name) {
+        parsedData.name = safeParseJSON(updateCategoryDto.name, 'name');
+      }
+      if (updateCategoryDto.description) {
+        parsedData.description = safeParseJSON(updateCategoryDto.description, 'description');
+      }
 
       console.log('📝 Parsed data:', parsedData);
 
@@ -235,7 +294,7 @@ export class CategoryController {
       if (error instanceof BadRequestException) {
         throw error;
       }
-      throw new BadRequestException(error.message);
+      throw new BadRequestException(`Failed to update subcategory / Не удалось обновить подкатегорию: ${error.message}`);
     }
   }
 
@@ -264,16 +323,30 @@ export class CategoryController {
     console.log('📄 Body received:', createCategoryDto);
 
     try {
+      // Helper function to safely parse JSON or return object as is
+      const safeParseJSON = (value: any, fieldName: string) => {
+        if (typeof value === 'string') {
+          try {
+            return JSON.parse(value);
+          } catch (e) {
+            throw new BadRequestException(`Invalid JSON format for field: ${fieldName} / Неверный формат JSON для поля: ${fieldName}`);
+          }
+        } else if (typeof value === 'object' && value !== null) {
+          return value;
+        }
+        return value;
+      };
+
       const parsedData = {
         ...createCategoryDto,
-        name: JSON.parse(createCategoryDto.name),
-        description: createCategoryDto.description ? JSON.parse(createCategoryDto.description) : undefined,
+        name: safeParseJSON(createCategoryDto.name, 'name'),
+        description: createCategoryDto.description ? safeParseJSON(createCategoryDto.description, 'description') : undefined,
       };
 
       console.log('📝 Parsed data:', parsedData);
 
-      if (!parsedData.name.ka) {
-        throw new BadRequestException('ქართული ენის ველები სავალდებულოა');
+      if (!parsedData.name || (!parsedData.name.en && !parsedData.name.ru)) {
+        throw new BadRequestException('Name is required in English or Russian / Имя обязательно на английском или русском языке');
       }
 
       let imageUrl = '';
@@ -291,7 +364,7 @@ export class CategoryController {
       }
 
       if (!imageUrl) {
-        throw new BadRequestException('სურათის ატვირთვა ან URL მითითება სავალდებულოა');
+        throw new BadRequestException('Image upload or URL is required / Требуется загрузка изображения или URL');
       }
 
       console.log('💾 Creating subcategory with image URL:', imageUrl);
@@ -308,7 +381,7 @@ export class CategoryController {
       if (error instanceof BadRequestException) {
         throw error;
       }
-      throw new BadRequestException(error.message);
+      throw new BadRequestException(`Failed to create subcategory / Не удалось создать подкатегорию: ${error.message}`);
     }
   }
 

@@ -121,21 +121,15 @@ export class SetController {
       size: file?.size,
       hasBuffer: !!file?.buffer
     });
-    console.log('📄 Body received:', updateSetDto);
+    console.log('📄 Raw body received:', JSON.stringify(updateSetDto, null, 2));
 
     try {
-      const parsedData = { ...updateSetDto };
-
-      if (updateSetDto.name) parsedData.name = JSON.parse(updateSetDto.name);
-      if (updateSetDto.description) parsedData.description = JSON.parse(updateSetDto.description);
-      if (updateSetDto.levels) parsedData.levels = JSON.parse(updateSetDto.levels);
-      if (updateSetDto.price) parsedData.price = JSON.parse(updateSetDto.price);
-      if (updateSetDto.additional) parsedData.additional = JSON.parse(updateSetDto.additional);
-      if (updateSetDto.discountedPrice) parsedData.discountedPrice = JSON.parse(updateSetDto.discountedPrice);
-      if (updateSetDto.equipment) parsedData.equipment = JSON.parse(updateSetDto.equipment);
-      if (updateSetDto.warnings) parsedData.warnings = JSON.parse(updateSetDto.warnings);
-
-      console.log('📝 Parsed data:', parsedData);
+      // Validate required fields
+      if (!updateSetDto.name?.en || !updateSetDto.name?.ru || 
+          !updateSetDto.description?.en || !updateSetDto.description?.ru ||
+          !updateSetDto.recommendations?.en || !updateSetDto.recommendations?.ru) {
+        throw new BadRequestException('All language fields are required');
+      }
 
       let thumbnailImage = updateSetDto.thumbnailImage;
       if (file && file.buffer) {
@@ -144,21 +138,24 @@ export class SetController {
         console.log('✅ Cloudinary upload successful:', thumbnailImage);
       }
 
-      console.log('💾 Updating set with thumbnail:', thumbnailImage);
+      console.log('💾 Updating set with data:', {
+        ...updateSetDto,
+        thumbnailImage
+      });
 
       const result = await this.setService.update(id, {
-        ...parsedData,
+        ...updateSetDto,
         thumbnailImage,
       });
       
-      console.log('✅ Set updated successfully:', result.name?.ka || 'Set');
+      console.log('✅ Set updated successfully:', result.name?.en || result.name?.ru || 'Set');
       return result;
     } catch (error) {
       console.error('❌ Set update error:', error);
       if (error instanceof BadRequestException) {
         throw error;
       }
-      throw new BadRequestException(error.message);
+      throw new BadRequestException(`Failed to update set / Не удалось обновить набор: ${error.message}`);
     }
   }
 

@@ -117,10 +117,10 @@ const BlogSlider: React.FC<BlogSliderProps> = ({
                   className="md:h-[232px] object-cover rounded-[20px]"
                 />
                 <p className="text-[#3D334A] tracking-[0%] md:mt-[10px] mt-0 md:mb-2 mb-2 text-[14px] md:text-[24px] leading-[120%] font-semibold px-3">
-                  <div className="line-clamp-2">{featuredBlog.title[language].trim()}</div>
+                  <div className="line-clamp-2">{featuredBlog?.title[language]?.trim() || ''}</div>
                 </p>
                 <p className="mt-0 text-[#846FA0] font-medium leading-[120%] tracking-[0%] px-3">
-                  {featuredBlog.excerpt[language]}
+                  {featuredBlog?.excerpt[language]}
                 </p>
                 <div className="flex items-center gap-1.5 flex-col absolute top-2 right-2">
                   <div className="w-8 h-8 md:w-10 md:h-10 bg-[#F9F7FE]/30 rounded-[6px] flex justify-center items-center">

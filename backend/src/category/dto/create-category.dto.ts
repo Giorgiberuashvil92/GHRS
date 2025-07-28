@@ -3,9 +3,6 @@ import { Type } from 'class-transformer';
 
 class LocalizedStringDto {
   @IsString()
-  ka: string;
-
-  @IsString()
   en: string;
 
   @IsString()

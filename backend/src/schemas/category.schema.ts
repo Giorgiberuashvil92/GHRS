@@ -4,7 +4,6 @@ import { Document, Types } from 'mongoose';
 export type CategoryDocument = Category & Document;
 
 interface LocalizedString {
-  ka: string;
   en: string;
   ru: string;
 }
@@ -13,7 +12,6 @@ interface LocalizedString {
 export class Category {
   @Prop({
     type: {
-      ka: { type: String, required: true },
       en: { type: String, required: true },
       ru: { type: String, required: true }
     },
@@ -23,7 +21,6 @@ export class Category {
 
   @Prop({
     type: {
-      ka: String,
       en: String,
       ru: String
     }
