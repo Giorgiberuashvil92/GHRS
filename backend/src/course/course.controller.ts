@@ -9,9 +9,11 @@ import {
   HttpCode,
   UseGuards,
   NotFoundException,
+  Patch,
+  Delete,
 } from '@nestjs/common';
 import { CourseService } from './course.service';
-import { CreateCourseDto } from './dto/create-course.dto';
+import { CreateCourseDto, UpdateCourseDto } from './dto/create-course.dto';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @Controller('courses')
@@ -60,6 +62,21 @@ export class CourseController {
     return course;
   }
 
+  @Patch(':id')
+  @HttpCode(HttpStatus.OK)
+  async update(
+    @Param('id') id: string,
+    @Body() updateCourseDto: UpdateCourseDto
+  ) {
+    return this.courseService.update(id, updateCourseDto);
+  }
+
+  @Delete(':id')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id') id: string) {
+    return this.courseService.remove(id);
+  }
+
   @Get('category/:categoryId')
   async findByCategory(
     @Param('categoryId') categoryId: string,
@@ -81,6 +98,28 @@ export class CourseController {
     return this.courseService.findByInstructor(instructorId, {
       page: page ? Number(page) : 1,
       limit: limit ? Number(limit) : 10,
+    });
+  }
+
+  @Get('by-category/:categoryId')
+  async getCoursesByCategory(
+    @Param('categoryId') categoryId: string,
+    @Query('page') page?: number,
+    @Query('limit') limit?: number,
+    @Query('search') search?: string,
+    @Query('language') language?: string,
+    @Query('minPrice') minPrice?: number,
+    @Query('maxPrice') maxPrice?: number,
+    @Query('excludeId') excludeId?: string, // მიმდინარე კურსის გამორიცხვისთვის
+  ) {
+    return this.courseService.getCoursesByCategory(categoryId, {
+      page: page ? Number(page) : 1,
+      limit: limit ? Number(limit) : 10,
+      search,
+      language,
+      minPrice: minPrice ? Number(minPrice) : undefined,
+      maxPrice: maxPrice ? Number(maxPrice) : undefined,
+      excludeId,
     });
   }
 } 
