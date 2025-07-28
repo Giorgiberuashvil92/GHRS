@@ -161,18 +161,41 @@ export class BlogController {
   ) {
     console.log('📝 PATCH /blogs/:id - ID:', id);
     console.log('File received:', !!file);
+    console.log('Body received:', updateBlogDto);
 
     try {
-      // Parse JSON strings from FormData
       const parsedData: any = {};
       
-      if (updateBlogDto.title) parsedData.title = JSON.parse(updateBlogDto.title);
-      if (updateBlogDto.description) parsedData.description = JSON.parse(updateBlogDto.description);
-      if (updateBlogDto.excerpt) parsedData.excerpt = JSON.parse(updateBlogDto.excerpt);
-      if (updateBlogDto.tags) parsedData.tags = JSON.parse(updateBlogDto.tags);
+      // Helper function to safely parse JSON or return object as is
+      const safeParseJSON = (value: any, fieldName: string) => {
+        if (typeof value === 'string') {
+          try {
+            return JSON.parse(value);
+          } catch (e) {
+            throw new BadRequestException(`Invalid JSON format for field: ${fieldName} / Неверный формат JSON для поля: ${fieldName}`);
+          }
+        } else if (typeof value === 'object' && value !== null) {
+          return value;
+        }
+        return value;
+      };
+
+      // Parse complex fields
+      if (updateBlogDto.title) {
+        parsedData.title = safeParseJSON(updateBlogDto.title, 'title');
+      }
+      if (updateBlogDto.description) {
+        parsedData.description = safeParseJSON(updateBlogDto.description, 'description');
+      }
+      if (updateBlogDto.excerpt) {
+        parsedData.excerpt = safeParseJSON(updateBlogDto.excerpt, 'excerpt');
+      }
+      if (updateBlogDto.tags) {
+        parsedData.tags = safeParseJSON(updateBlogDto.tags, 'tags');
+      }
       
       // Copy other simple fields
-      ['categoryId', 'link', 'isPublished', 'isFeatured', 'isActive', 'sortOrder'].forEach(field => {
+      ['categoryId', 'isPublished', 'isFeatured', 'isActive', 'sortOrder', 'imageUrl'].forEach(field => {
         if (updateBlogDto[field] !== undefined) {
           parsedData[field] = updateBlogDto[field];
         }
@@ -190,7 +213,10 @@ export class BlogController {
       return result;
     } catch (error) {
       console.error('❌ Error in update blog controller:', error);
-      throw new BadRequestException(error.message || 'Failed to update blog post');
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+      throw new BadRequestException(`Failed to update blog post / Не удалось обновить блог: ${error.message}`);
     }
   }
 

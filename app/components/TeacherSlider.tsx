@@ -97,31 +97,31 @@ const TeacherSlider: React.FC<TeacherSliderProps> = ({
           {allTeachers.map((teacher) => (
             <div 
               key={teacher.id}
-              className="flex-none w-full md:w-[1340px] bg-white rounded-[20px] overflow-hidden"
+              className="flex-none w-full md:w-[900px] lg:w-[1200px] bg-white rounded-[20px] overflow-hidden"
             >
-              <div className="flex gap-12 p-8">
-                <div className="w-[400px] h-[400px] relative">
+              <div className="flex flex-col md:flex-row gap-6 md:gap-8 p-6 md:p-8">
+                <div className="w-full md:w-[300px] lg:w-[400px] h-[300px] md:h-[350px] lg:h-[400px] relative flex-shrink-0">
                   <Image
                     src={teacher.imageUrl}
                     fill
                     alt={teacher.name}
-                    className="object-cover"
+                    className="object-cover rounded-lg"
                   />
                 </div>
-                <div className="flex-1 flex flex-col pt-4">
-                  <h3 className="text-[40px] text-[#3D334A] font-bold mb-2">{teacher.name}</h3>
-                  <div className="mb-6">
-                    <p className="text-[20px] text-[#3D334A]">{teacher.position}</p>
-                    <p className="text-[20px] text-[#3D334A]">{teacher.institution}</p>
+                <div className="flex-1 flex flex-col min-w-0">
+                  <h3 className="text-[28px] md:text-[32px] lg:text-[40px] text-[#3D334A] font-bold mb-2 leading-tight">{teacher.name}</h3>
+                  <div className="mb-4 md:mb-6">
+                    <p className="text-[16px] md:text-[18px] lg:text-[20px] text-[#3D334A]">{teacher.position}</p>
+                    <p className="text-[16px] md:text-[18px] lg:text-[20px] text-[#3D334A]">{teacher.institution}</p>
                   </div>
-                  <p className="text-[16px] text-[#3D334A] mb-6">{teacher.credentials}</p>
+                  <p className="text-[14px] md:text-[16px] text-[#3D334A] mb-4 md:mb-6">{teacher.credentials}</p>
                   <div 
-                    className="space-y-4 text-[16px] text-[#846FA0] leading-relaxed"
+                    className="flex-1 space-y-3 text-[14px] md:text-[16px] text-[#846FA0] leading-relaxed overflow-hidden"
                     dangerouslySetInnerHTML={{ __html: teacher.htmlContent.ru || teacher.htmlContent.en || "" }}
                   />
                   <Link 
                     href={`/teachers/${teacher.id}`}
-                    className="text-[#D4BAFC] text-lg mt-auto self-start"
+                    className="text-[#D4BAFC] text-base md:text-lg mt-4 md:mt-6 self-start hover:underline"
                   >
                     ПОДРОБНЕЕ
                   </Link>

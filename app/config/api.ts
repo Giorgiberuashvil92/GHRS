@@ -12,6 +12,65 @@ interface RegistrationData {
   verificationCode?: string;
 }
 
+interface MultilingualContent {
+  en: string;
+  ru?: string;
+  ka?: string;
+}
+
+interface SyllabusItem {
+  title: MultilingualContent;
+  description: MultilingualContent;
+  duration?: number;
+}
+
+interface Announcement {
+  title: MultilingualContent;
+  content: MultilingualContent;
+  isActive: boolean;
+}
+
+interface CourseData {
+  // ძირითადი ინფორმაცია
+  title?: MultilingualContent;
+  description?: MultilingualContent;
+  shortDescription?: MultilingualContent;
+  price?: number;
+  thumbnail?: string;
+  duration?: number;
+  isPublished?: boolean;
+  
+  // სურათები და მედია
+  additionalImages?: string[];
+  advertisementImage?: string;
+  previewVideoUrl?: string;
+  certificateImages?: string[];
+  
+  // ინსტრუქტორი
+  instructor?: {
+    name: string;
+  };
+  
+  // მულტილინგვალური კონტენტი
+  prerequisites?: MultilingualContent;
+  certificateDescription?: MultilingualContent;
+  
+  // მასივები
+  learningOutcomes?: MultilingualContent[];
+  syllabus?: SyllabusItem[];
+  announcements?: Announcement[];
+  languages?: string[];
+  tags?: string[];
+  
+  // კატეგორიები
+  categoryId?: string;
+  subcategoryId?: string;
+  
+  // თარიღები
+  startDate?: string;
+  endDate?: string;
+}
+
 // Public endpoints რომელთაც authorization არ სჭირდება
 const PUBLIC_ENDPOINTS = [
   '/categories',
@@ -227,6 +286,157 @@ export const fetchCourse = async (id: string) => {
     return response.data;
   } catch (error) {
     console.error('Error fetching single course:', error);
+    throw error;
+  }
+};
+
+// ყველა ველის მომზადება გაგზავნისთვის
+const prepareCourseData = (courseData: CourseData): CourseData => {
+  const prepared: CourseData = {
+    ...courseData,
+    // მასივები - ყოველთვის უნდა იყოს (ცარიელი მასივიც კი)
+    additionalImages: courseData.additionalImages || [],
+    certificateImages: courseData.certificateImages || [],
+    learningOutcomes: courseData.learningOutcomes || [],
+    tags: courseData.tags || [],
+    announcements: courseData.announcements || [],
+    syllabus: (courseData.syllabus || []).map(item => ({
+      ...item,
+      duration: item.duration || 0 // duration ყოველთვის უნდა იყოს
+    })),
+    languages: courseData.languages || [],
+  };
+
+  // მულტილინგვალური ველების დამუშავება
+  if (courseData.title) {
+    prepared.title = {
+      en: courseData.title.en || '',
+      ru: courseData.title.ru || courseData.title.en || '',
+      ka: courseData.title.ka || courseData.title.en || ''
+    };
+  }
+
+  if (courseData.description) {
+    prepared.description = {
+      en: courseData.description.en || '',
+      ru: courseData.description.ru || courseData.description.en || '',
+      ka: courseData.description.ka || courseData.description.en || ''
+    };
+  }
+
+  if (courseData.shortDescription) {
+    prepared.shortDescription = {
+      en: courseData.shortDescription.en || '',
+      ru: courseData.shortDescription.ru || courseData.shortDescription.en || '',
+      ka: courseData.shortDescription.ka || courseData.shortDescription.en || ''
+    };
+  }
+
+  if (courseData.prerequisites) {
+    prepared.prerequisites = {
+      en: courseData.prerequisites.en || '',
+      ru: courseData.prerequisites.ru || courseData.prerequisites.en || '',
+      ka: courseData.prerequisites.ka || courseData.prerequisites.en || ''
+    };
+  }
+
+  if (courseData.certificateDescription) {
+    prepared.certificateDescription = {
+      en: courseData.certificateDescription.en || '',
+      ru: courseData.certificateDescription.ru || courseData.certificateDescription.en || '',
+      ka: courseData.certificateDescription.ka || courseData.certificateDescription.en || ''
+    };
+  }
+
+  return prepared;
+};
+
+// Update Course
+export const updateCourse = async (id: string, courseData: CourseData) => {
+  try {
+    const token = localStorage.getItem('token');
+    const preparedData = prepareCourseData(courseData);
+    
+    const response = await api.patch(`/courses/${id}`, preparedData, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error updating course:', error);
+    throw error;
+  }
+};
+
+// Create Course
+export const createCourse = async (courseData: CourseData) => {
+  try {
+    const token = localStorage.getItem('token');
+    const preparedData = prepareCourseData(courseData);
+    
+    const response = await api.post('/courses', preparedData, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error creating course:', error);
+    throw error;
+  }
+};
+
+// Delete Course
+export const deleteCourse = async (id: string) => {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await api.delete(`/courses/${id}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Error deleting course:', error);
+    throw error;
+  }
+};
+
+// Fetch Courses by Category
+export const fetchCoursesByCategory = async (categoryId: string, params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  language?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  excludeId?: string;
+}) => {
+  try {
+    const response = await api.get(`/courses/by-category/${categoryId}`, { params });
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching courses by category:', error);
+    throw error;
+  }
+};
+
+// Fetch Related Courses (same category, excluding current course)
+export const fetchRelatedCourses = async (courseId: string, categoryId: string, limit: number = 4) => {
+  try {
+    const response = await api.get(`/courses/by-category/${categoryId}`, { 
+      params: { 
+        limit,
+        excludeId: courseId // ახალი პარამეტრი - მიმდინარე კურსის გამორიცხვისთვის
+      } 
+    });
+    
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching related courses:', error);
     throw error;
   }
 };

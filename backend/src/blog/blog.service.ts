@@ -232,10 +232,8 @@ export class BlogService {
           isActive: true,
           isPublished: true,
           $or: [
-            { 'title.ka': { $regex: searchTerm, $options: 'i' } },
             { 'title.en': { $regex: searchTerm, $options: 'i' } },
             { 'title.ru': { $regex: searchTerm, $options: 'i' } },
-            { 'description.ka': { $regex: searchTerm, $options: 'i' } },
             { 'description.en': { $regex: searchTerm, $options: 'i' } },
             { 'description.ru': { $regex: searchTerm, $options: 'i' } },
             { tags: { $in: [new RegExp(searchTerm, 'i')] } }
