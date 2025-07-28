@@ -1,0 +1,56 @@
+{
+  "hero": {
+    "title": "Israeli Methods of Recovery and Health",
+    "description": "Modern Israeli rehabilitation methods for recovery and maintaining mobility and work capacity"
+  },
+  "advantages": {
+    "title": "Advantages",
+    "personal_support": {
+      "title": "Personal Support",
+      "description": "If you have questions, you can ask them to a Curator-consultant in the Chat on the site and promptly receive an answer. If you didn't find an exercise complex to solve your problem in our video catalog, our Curators will prepare a CUSTOMIZED exercise complex personally for you, or offer consultation with a REHABILITOLOGIST specializing in the direction you need."
+    },
+    "inspiration": {
+      "title": "WE INSPIRE",
+      "description": "After demonstrating the exercise technique, repetitions follow in accordance with the protocol, and the musical accompaniment sets the rhythm of the workout."
+    },
+    "exercise_count": {
+      "title": "75 EXERCISE COMPLEXES",
+      "description": "Exercises are collected in playlists in accordance with Israeli rehabilitation protocols."
+    },
+    "accessibility": {
+      "title": "ACCESSIBILITY",
+      "description": "Affordable subscription prices, personal approach."
+    },
+    "informativeness": {
+      "title": "INFORMATIVENESS",
+      "description": "The description of Exercise Complexes provides information on the equipment needed for training, emphasizes key points and gives recommendations for performing exercises and the course of training."
+    },
+    "train_anywhere": {
+      "title": "Train wherever convenient",
+      "description": "You just need to turn on the player on a computer, tablet or phone and you can conduct a full-fledged workout with a Personal Trainer anywhere and at any convenient time."
+    },
+    "video_count": {
+      "title": "1000+ VIDEO EXERCISES",
+      "description": "All our materials are filmed with step-by-step demonstration of exercise technique and supplemented with infographics highlighting complex movements and moments."
+    }
+  },
+  "subscription": {
+    "title": "Purchase a subscription to access platform content",
+    "test_title": "Take a test and choose the exercise complex suitable for you",
+    "feedback_title": "Share your impressions",
+    "feedback_subtitle": "Take a short survey and leave feedback about working with our platform"
+  },
+  "marketplace": {
+    "title": "We are developing the MARKETPLACE direction",
+    "description": "Our partners in this direction can be rehabilitation centers, clinics, sanatoriums, sports clubs, massage...",
+    "status": "In development"
+  },
+  "works": {
+    "exercises_title": "Exercises"
+  },
+  "buttons": {
+    "subscribe": "Purchase subscription →",
+    "take_test": "TAKE TEST →",
+    "take_survey": "take survey →"
+  }
+} 

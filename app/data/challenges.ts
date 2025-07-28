@@ -1,0 +1,38 @@
+export const challenges = [
+  {
+    id: 1,
+    title: "Ударная волна",
+    description: "Занимайтесь 15 дней подряд",
+    image: "/assets/images/rocket.png",
+    imageBg: "#F3D57F",
+    current: 12,
+    total: 15,
+  },
+  {
+    id: 2,
+    title: "Сложности мне по плечу",
+    description: "Завершите продвинутый уровень в любом комплексе",
+    image: "/assets/images/trophy.png",
+    imageBg: "#B1E5FC",
+    current: 10,
+    total: 15,
+  },
+  {
+    id: 3,
+    title: "Читатель",
+    description: "Прочтите 15 статей ",
+    image: "/assets/images/lampbrain.png",
+    imageBg: "#D3A3F2",
+    current: 15,
+    total: 15,
+  },
+  {
+    id: 4,
+    title: "Я – комментатор",
+    description: "Прокомментируйте статью 5 раз",
+    image: "/assets/images/pencil_paper.png",
+    imageBg: "#FFB6B6",
+    current: 8,
+    total: 15,
+  },
+];

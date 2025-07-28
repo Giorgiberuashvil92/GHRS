@@ -1,0 +1,52 @@
+{
+  "navigation": {
+    "home": "Home",
+    "about": "About Us",
+    "rehabilitation": "Rehabilitation",
+    "professional": "Professional Development", 
+    "blog": "Blog",
+    "categories": "Categories",
+    "contact": "Contact",
+    "login": "Login",
+    "register": "Register"
+  },
+  "buttons": {
+    "subscribe": "Subscribe",
+    "continue_watching": "Continue Watching",
+    "buy_subscription": "Buy Subscription",
+    "read_more": "Read More",
+    "show_all": "View All",
+    "send_request": "Send Request",
+    "take_test": "Take Test",
+    "continue": "Continue",
+    "back": "Back",
+    "show_more": "Show More"
+  },
+  "common": {
+    "months": "month",
+    "price_per_month": "₾/month",
+    "videos": "videos",
+    "exercises": "exercises",
+    "courses": "courses", 
+    "minutes": "minutes",
+    "hours": "hours",
+    "loading": "Loading...",
+    "error": "Error",
+    "subscription_plans": "Subscription plans",
+    "default_category": "Orthopedics",
+    "category_loading": "Category loading...",
+    "category_error": "Error!",
+    "category_not_found": "Category not found",
+    "retry": "Try again",
+    "subcategories": "Subcategories",
+    "subcategory": "subcategory",
+    "sets": "sets",
+    "complexes": "Complexes",
+    "no_sets_found": "No sets found",
+    "no_sets_description": "No sets have been added to this subcategory yet",
+    "popular_exercises": "Popular Exercises",
+    "loading_exercises": "Loading exercises...",
+    "exercises_error": "Error loading exercises",
+    "set_not_found": "Set not found"
+  }
+} 

@@ -1,0 +1,43 @@
+{
+  "main_title": "ecosystem of products aimed at forming your health",
+  "navigation": {
+    "all_complexes": "All complexes",
+    "about": "About us",
+    "blog": "Blog",
+    "contacts": "Contacts"
+  },
+  "rehabilitation": {
+    "title": "MODERN ISRAELI REHABILITATION METHODS",
+    "description": "For recovery and maintaining mobility and ability to work",
+    "detail_description": "Modern Israeli rehabilitation methods in orthopedics, neurology, post-traumatic gait rehabilitation and others.",
+    "section_title": "Rehabilitation"
+  },
+  "categories": {
+    "fifteen_categories": "15 categories",
+    "stores": "Stores",
+    "restaurants": "Restaurants",
+    "six_sections": "6 sections",
+    "thirty_six_complexes": "36 complexes",
+    "one_twenty_five_exercises": "125 exercises"
+  },
+  "complex": {
+    "one_twenty_five_lessons": "125 lessons",
+    "one_hundred_two_minutes": "102 minutes",
+    "three_difficulty_stages": "3 difficulty stages",
+    "general_recovery_title": "General recovery, supporting complex",
+    "price": "500 ₾",
+    "per_month": "Per month",
+    "purchase": "Purchase",
+    "subscription_offer": "Attention! Discounts apply to subscriptions of 3 months or more"
+  },
+  "blog": {
+    "title": "Courses and master classes for experienced therapists. Workshop on treating orthopedic problems",
+    "mobile_title": "BACK AND NECK PAIN: HOW TO IMPROVE POSTURE NATURALLY.",
+    "description": "With safety tips to follow before and after fracture by Kristen Gasnik",
+    "category_label": "Orthopedics"
+  },
+  "buttons": {
+    "learn_more": "Learn more",
+    "to_catalog": "To catalog"
+  }
+} 

@@ -1,0 +1,46 @@
+{
+  "rehabilitation": {
+    "title": "Rehabilitation",
+    "description": "Modern Israeli rehabilitation techniques for restoring and maintaining mobility and work capacity",
+    "learn_more": "Explore →"
+  },
+  "category": {
+    "title": "Categories",
+    "view_all": "View all →"
+  },
+  "works": {
+    "all_sets": "All {{count}} sets →"
+  },
+  "professional": {
+    "title": "Professional Development",
+    "description": "Educational and professional development section in rehabilitation, physiotherapy and therapeutic-restorative massage - this is a collaboration with Israeli specialists and training centers, such as the College of Medical Massage, founded and led by Dr. Aaron Yacobi.",
+    "learn_more": "Explore →",
+    "courses": {
+      "title": "Courses",
+      "error": "Error loading courses",
+      "all_courses": "All {{count}} courses →"
+    }
+  },
+  "marketplace": {
+    "description": "We are developing the MARKETPLACE direction. Our partners in this direction can be rehabilitation centers, clinics, sanatoriums, sports clubs, massage ...",
+    "status": "In development"
+  },
+  "blog": {
+    "title": "Blog"
+  },
+  "download": {
+    "title": "Interaction capabilities <br /> across different platforms"
+  },
+  "article": {
+    "table_of_contents": "Table of Contents",
+    "comments": "Comments",
+    "comment_count": "{{count}} comments",
+    "read_time": "{{time}} min read",
+    "rate_article": "Rate Article",
+    "ratings": "{{count}} ratings",
+    "write_comment": "Write a comment",
+    "show_more_comments": "Show More",
+    "similar_articles": "Similar Articles",
+    "no_similar_articles": "No similar articles found"
+  }
+} 

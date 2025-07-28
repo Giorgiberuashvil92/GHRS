@@ -1,0 +1,229 @@
+/* Google Fonts - Beautiful & Unique Fonts */
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Righteous&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Lobster&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Bowler";
+  font-style: normal;
+  font-weight: 200 700;
+  font-display: swap;
+  src: url("/assets/font/Bowler.woff") format("woff"),
+    url("/assets/font/bowler.otf") format("opentype");
+}
+
+@font-face {
+  font-family: "PT";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/assets/font/pt.otf") format("opentype"),
+    url("/assets/font/Pt.ttf") format("truetype");
+}
+
+body {
+  background: white;
+  color: white;
+  font-family: "Bowler";
+}
+
+/* ვარიანტები */
+.font-thin {
+  font-weight: 100;
+}
+.font-extralight {
+  font-weight: 200;
+}
+.font-light {
+  font-weight: 300;
+}
+.font-normal {
+  font-weight: 400;
+}
+.font-medium {
+  font-weight: 500;
+}
+.font-semibold {
+  font-weight: 600;
+}
+.font-bold {
+  font-weight: 700;
+}
+.font-extrabold {
+  font-weight: 800;
+}
+.font-black {
+  font-weight: 900;
+}
+
+/* ლამაზი ფონტ კლასები */
+.font-playfair {
+  font-family: "Playfair Display", serif;
+}
+
+.font-dancing {
+  font-family: "Dancing Script", cursive;
+}
+
+.font-great-vibes {
+  font-family: "Great Vibes", cursive;
+}
+
+.font-abril {
+  font-family: "Abril Fatface", serif;
+}
+
+.font-righteous {
+  font-family: "Righteous", sans-serif;
+}
+
+.font-merriweather {
+  font-family: "Merriweather", serif;
+}
+
+.font-lobster {
+  font-family: "Lobster", cursive;
+}
+
+.font-cinzel {
+  font-family: "Cinzel", serif;
+}
+
+.font-pacifico {
+  font-family: "Pacifico", cursive;
+}
+
+.font-bebas {
+  font-family: "Bebas Neue", sans-serif;
+}
+
+header {
+  position: relative;
+}
+.video-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  /* height: 100%; */
+  object-fit: cover;
+  z-index: -1;
+}
+.sub-header1 {
+  width: 100%;
+  max-width: 100%;
+  height: 500px;
+  position: absolute;
+  /* background-color: red; */
+  bottom: 296px;
+}
+.sub-header2 {
+  max-width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: end;
+  justify-content: end;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+.cutout-container {
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+  border-top-left-radius: 40px;
+  padding: 20px;
+}
+.white-cutout {
+  position: relative;
+  display: flex;
+  gap: 20px;
+  /* background-color: white; */
+  padding: 10px 0 10px;
+}
+.white-cutout div {
+  /* background-color: blue; */
+  width: 246px;
+  height: 244px;
+  border-radius: 20px;
+}
+
+.purple-cutout {
+  /* height: 100%; */
+  /* width: 100%; */
+  background-color: inherit;
+  position: relative;
+}
+/* .purp1 {
+  background-color: inherit;
+  position: relative;
+} */
+
+/* .purp1::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle at top left, transparent 40px, white 40px);
+} */
+
+button {
+  cursor: pointer;
+}
+
+.purple-cutout::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0px;
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle at top left, transparent 40px, white 40px);
+}
+.sub-header1::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle at top left, transparent 40px, white 40px);
+}
+
+/* Swiper კასტომ სტილები */
+.category-swiper .swiper-pagination-bullet {
+  background: #d5d1db;
+  opacity: 0.5;
+  width: 8px;
+  height: 8px;
+}
+
+.category-swiper .swiper-pagination-bullet-active {
+  background: #734ea4;
+  opacity: 1;
+  transform: scale(1.2);
+}
+
+.swiper-button-prev-custom:hover svg path,
+.swiper-button-next-custom:hover svg path {
+  stroke: #3f1a70;
+}
+
+/* Swiper navigation ღილაკების დამალვა მობაილზე */
+@media (max-width: 640px) {
+  .swiper-button-prev-custom,
+  .swiper-button-next-custom {
+    display: none;
+  }
+}

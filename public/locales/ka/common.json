@@ -1,0 +1,52 @@
+{
+  "navigation": {
+    "home": "მთავარი",
+    "about": "ჩვენ შესახებ",
+    "rehabilitation": "რეაბილიტაცია",
+    "professional": "პროფგანვითარება", 
+    "blog": "ბლოგი",
+    "categories": "კატეგორიები",
+    "contact": "კონტაქტი",
+    "login": "შესვლა",
+    "register": "რეგისტრაცია"
+  },
+  "buttons": {
+    "subscribe": "გამოწერა",
+    "continue_watching": "ნახვის გაგრძელება",
+    "buy_subscription": "გამოწერის შეძენა",
+    "read_more": "ვრცლად",
+    "show_all": "ყველას ნახვა",
+    "send_request": "განაცხადის გაგზავნა",
+    "take_test": "ტესტირების გავლა",
+    "continue": "გაგრძელება",
+    "back": "უკან",
+    "show_more": "მეტის ნახვა"
+  },
+  "common": {
+    "months": "თვე",
+    "price_per_month": "₾/თვე",
+    "videos": "ვიდეოები",
+    "exercises": "ვარჯიშები",
+    "courses": "კურსები",
+    "minutes": "წუთი",
+    "hours": "საათი",
+    "loading": "იტვირთება...",
+    "error": "შეცდომა",
+    "subscription_plans": "გამოწერის გეგმები",
+    "default_category": "ორთოპედია",
+    "category_loading": "კატეგორია იტვირთება...",
+    "category_error": "შეცდომა!",
+    "category_not_found": "კატეგორია ვერ მოიძებნა",
+    "retry": "თავიდან ცდა",
+    "subcategories": "საბკატეგორიები",
+    "subcategory": "საბკატეგორია",
+      "sets": "სეტი",
+  "complexes": "კომპლექსები",
+  "no_sets_found": "სეტები ვერ მოიძებნა",
+  "no_sets_description": "ამ ქვეკატეგორიაში ჯერ კიდევ სეტები არ არის დამატებული",
+  "popular_exercises": "პოპულარული ვარჯიშები",
+  "loading_exercises": "ვარჯიშები იტვირთება...",
+  "exercises_error": "ვარჯიშების ჩატვირთვის შეცდომა",
+  "set_not_found": "სეტი ვერ მოიძებნა"
+  }
+} 
