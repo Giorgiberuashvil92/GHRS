@@ -283,4 +283,10 @@ export class CategoryService {
 
     return category;
   }
+
+  async findAllSubcategories(): Promise<Category[]> {
+    return this.categoryModel.find({ parentId: { $exists: true, $ne: null }, isActive: true })
+      .populate('sets')
+      .exec();
+  }
 } 
