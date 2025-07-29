@@ -43,63 +43,70 @@ export const Footer: FC = () => {
       </div>
       <hr className="my-6 border-[#E0D6F9]" />
       {/* მთავარი ბლოკი */}
-      <div className="flex flex-col md:flex-row md:justify-between gap-8 mb-8 items-center md:items-start">
+      <div className="flex flex-col md:flex-row md:justify-between gap-8 mb-8 items-center md:items-start px-16">
         {/* მარცხენა */}
-        <div className="flex flex-col gap-2 min-w-[220px] items-center md:items-start">
+        <div className="flex flex-col md:flex-row gap-2 min-w-[220px] items-center">
           <Image
             src="/assets/images/footerLogo.svg"
             alt="GRS Logo"
-            width={120}
+            width={180}
             height={40}
             className="mb-2"
           />
-          <span className="text-sm text-[#8B7BAA]">
-            Работаем с 9:00 до 19:00 по МСК
-          </span>
-          <span className="text-2xl font-bold">+7 (916) 856—11—45</span>
-          <a
-            href="mailto:office@ghrs-group.com"
-            className="text-[#8B7BAA] text-sm hover:underline"
-          >
-            office@ghrs-group.com
-          </a>
+          <div className="flex-col flex ml-6">
+            <span className="text-sm text-[#8B7BAA]">
+              Работаем с 9:00 до 19:00 по МСК
+            </span>
+            <span className="text-2xl font-bold text-[#3D334A]">
+              +7 (916) 856—11—45
+            </span>
+            <a
+              href="mailto:office@ghrs-group.com"
+              className="text-[#D4BAFC] text-sm hover:underline"
+            >
+              office@ghrs-group.com
+            </a>
+          </div>
         </div>
+
         {/* სოციალური ღილაკები */}
-        <div className="flex gap-3 items-center mt-4 md:mt-0">
+        <div className="flex gap-3 items-center mt-4">
           <a
             href="#"
             className="hover:bg-[#B6A3D9]/30 rounded-full p-1 transition"
           >
-            <LinkedinIcon className="w-8 h-8" />
+            <LinkedinIcon className="w-12 h-12" />
           </a>
           <a
             href="#"
             className="hover:bg-[#B6A3D9]/30 rounded-full p-1 transition"
           >
-            <InstagramIcon className="w-8 h-8" />
+            <InstagramIcon className="w-12 h-12" />
           </a>
           <a
             href="#"
             className="hover:bg-[#B6A3D9]/30 rounded-full p-1 transition"
           >
-            <YoutubeIcon className="w-8 h-8" />
+            <YoutubeIcon className="w-12 h-12" />
           </a>
           <a
             href="#"
             className="hover:bg-[#B6A3D9]/30 rounded-full p-1 transition"
           >
-            <VkIcon className="w-8 h-8" />
+            <VkIcon className="w-12 h-12" />
           </a>
           <a
             href="#"
             className="hover:bg-[#B6A3D9]/30 rounded-full p-1 transition"
           >
-            <FacebookIcon className="w-8 h-8" />
+            <FacebookIcon className="w-12 h-12" />
           </a>
         </div>
       </div>
+      <hr className="my-6 border-[#E0D6F9]" />
+
       {/* ლინკები */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-2 mb-8 text-sm">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-2 mb-8 px-16 text-[#846FA0]">
         <div className="flex flex-col gap-1">
           <a href="#">Главная</a>
           <a href="#">Реабилитация</a>
@@ -114,17 +121,43 @@ export const Footer: FC = () => {
         <div className="flex flex-col gap-1">
           <a href="#">Все комплексы</a>
           <a href="#">Ортопедия</a>
-          <a href="#">Шейный отдел позвоночника</a>
-          <a href="#">Грудной отдел позвоночника</a>
-          <a href="#">Поясничный отдел позвоночника</a>
-          <a href="#">Проблемы верхних конечностей</a>
-          <a href="#">Проблемы нижних конечностей</a>
-          <a href="#">Проблемы осанки</a>
+          <ul className="pl-4">
+            {/*  */}
+            <li>
+              <a href="#">Шейный отдел позвоночника</a>
+            </li>
+            <li>
+              <a href="#">Грудной отдел позвоночника</a>
+            </li>
+            <li>
+              <a href="#">Поясничный отдел позвоночника</a>
+            </li>
+            <li>
+              <a href="#">Проблемы верхних конечностей</a>
+            </li>
+            <li>
+              <a href="#">Проблемы нижних конечностей</a>
+            </li>
+            <li>
+              <a href="#">Проблемы осанки</a>
+            </li>
+          </ul>
           <a href="#">Неврология</a>
-          <a href="#">Болезнь Паркинсона</a>
-          <a href="#">Инсульт</a>
-          <a href="#">Паралич лицевого нерва</a>
-          <a href="#">Рессейный склероз</a>
+          {/*  */}
+          <ul className="pl-4">
+            <li>
+              <a href="#">Болезнь Паркинсона</a>
+            </li>
+            <li>
+              <a href="#">Инсульт</a>
+            </li>
+            <li>
+              <a href="#">Паралич лицевого нерва</a>
+            </li>
+            <li>
+              <a href="#">Рессейный склероз</a>
+            </li>
+          </ul>
         </div>
         <div className="flex flex-col gap-1">
           <a href="#">Афазия и дизартрия</a>
@@ -135,28 +168,28 @@ export const Footer: FC = () => {
         </div>
       </div>
       {/* ქვედა ლოგოები */}
-      <div className="flex flex-col md:flex-row justify-center items-center gap-12 mb-4">
+      <div className="flex flex-col md:flex-row justify-between items-center mb-4 px-16">
         <Image
           src="/assets/images/services/asuta.png"
           alt="Assuta"
-          width={220}
+          width={400}
           height={48}
         />
         <Image
           src="/assets/images/services/asuta.png"
           alt="Assuta"
-          width={220}
+          width={400}
           height={48}
         />
         <Image
           src="/assets/images/services/asuta.png"
           alt="Assuta"
-          width={220}
+          width={400}
           height={48}
         />
       </div>
       {/* ქვედა ტექსტი */}
-      <div className="flex flex-col md:flex-row justify-between items-center text-xs text-[#8B7BAA] gap-2 border-t border-[#E0D6F9] pt-2 text-center md:text-left">
+      <div className="flex flex-col md:flex-row justify-between items-center text-sm text-[#8B7BAA] border-t border-[#E0D6F9] pt-2 text-center md:text-left px-16">
         <span>Copyright © 2023 GHRS LLC</span>
         <a href="#" className="hover:underline">
           Пользовательское соглашение

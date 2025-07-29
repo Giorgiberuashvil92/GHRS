@@ -23,10 +23,18 @@ const AllComplex = () => {
   const { sets, loading: setsLoading } = useAllSets();
   const { exercises, loading: exercisesLoading } = useAllExercises();
 
+  // Helper to get localized text
   const getLocalizedText = (
     field: { ka: string; en: string; ru: string } | undefined
   ): string => {
     if (!field) return "";
+    return (
+      field[locale as keyof typeof field] ||
+      field.ru ||
+      field.en ||
+      field.ka ||
+      ""
+    );
     return (
       field[locale as keyof typeof field] ||
       field.ru ||
@@ -52,7 +60,6 @@ const AllComplex = () => {
   }, []);
 
   const popularSets = sets.slice(0, 6);
-
   const orthopedicSets = sets.filter(
     (set) =>
       set.categoryId &&
@@ -75,6 +82,8 @@ const AllComplex = () => {
     ka: "ყველა კატეგორია",
     en: "All Categories",
     ru: "Все категории",
+    en: "All Categories",
+    ru: "Все категории",
   };
 
   const realCategories = [
@@ -84,10 +93,19 @@ const AllComplex = () => {
         allCategoriesText[locale as keyof typeof allCategoriesText] ||
         allCategoriesText.ru,
       active: true,
+    {
+      id: "all",
+      title:
+        allCategoriesText[locale as keyof typeof allCategoriesText] ||
+        allCategoriesText.ru,
+      active: true,
     },
+    ...categories.map((cat) => ({
     ...categories.map((cat) => ({
       id: cat._id,
       title: getLocalizedText(cat.name),
+      active: false,
+    })),
       active: false,
     })),
   ];
@@ -95,7 +113,7 @@ const AllComplex = () => {
   const loadingText = {
     ka: "იტვირთება...",
     en: "Loading...",
-    ru: "Загрузка..",
+    ru: "Загрузка...",
   };
 
   const pageTexts = {
@@ -103,10 +121,12 @@ const AllComplex = () => {
       ka: "ყველა კომპლექსი",
       en: "All Complexes",
       ru: "Все комплексы",
+      ru: "Все комплексы",
     },
     searchPlaceholder: {
       ka: "შეიყვანეთ ვარჯიშის სახელი",
       en: "Enter exercise name",
+      ru: "Введите название упражнения",
       ru: "Введите название упражнения",
     },
     sections: {
@@ -114,15 +134,19 @@ const AllComplex = () => {
         ka: "პოპულარული სექციები",
         en: "Popular Sections",
         ru: "Популярные разделы",
+        ru: "Популярные разделы",
       },
       popularComplexes: {
         ka: "პოპულარული კომპლექსები",
+        en: "Popular Complexes",
+        ru: "Популярные комплексы",
         en: "Popular Complexes",
         ru: "Популярные комплексы",
       },
       orthopedics: {
         ka: "ორთოპედია",
         en: "Orthopedics",
+        ru: "Ортопедия",
         ru: "Ортопедия",
       },
       recommended: {
@@ -131,10 +155,6 @@ const AllComplex = () => {
         ru: "Рекомендуемые",
       },
     },
-  };
-
-  const handleShowMore = () => {
-    setVisibleWorksCount((prev) => prev + 1);
   };
 
   if (categoriesLoading || setsLoading || exercisesLoading) {
@@ -158,30 +178,26 @@ const AllComplex = () => {
       <h1 className="md:text-[64px] md:px-10 px-5 leading-[100%] tracking-[-3%] text-[#3D334A]">
         {pageTexts.title[locale as keyof typeof pageTexts.title] ||
           pageTexts.title.ru}
+        {pageTexts.title[locale as keyof typeof pageTexts.title] ||
+          pageTexts.title.ru}
       </h1>
 
       <div className="bg-white md:mx-5 md:my-10 md:rounded-[30px]">
-        <Category bgColor="white" customRounded={""} customMx={""} />
-      </div>
+        <Category bgColor="white" />
 
-      {/* საძიებო ველი */}
-      <div className="bg-white md:mx-5 md:rounded-[30px] md:p-10 mb-10">
-        <div className="relative mb-6 max-w-full">
+        {/* Subcategories section like in categories/[categoryId]/page.tsx */}
+      </div>
+      {/* Search input */}
+      <div className="bg-white mx-5 md:rounded-[30px] md:p-10 my-10">
+        <div className="mb-6 max-w-full border-[#D4BAFC] border flex rounded-4xl  p-2 md:p-4">
+          <CiSearch color="black" size={25} />
           <input
             type="text"
-            placeholder={
-              pageTexts.searchPlaceholder[
-                locale as keyof typeof pageTexts.searchPlaceholder
-              ] || pageTexts.searchPlaceholder.ru
-            }
-            className="w-full border-[#D4BAFC] border font-[Pt] bg-white rounded-[54px] px-[50px] py-[21px] mb-2 text-[#846FA0] text-[19px] font-medium"
-          />
-          <CiSearch
-            color="black"
-            size={25}
-            className="absolute top-[22px] left-4"
+            placeholder="Введите название упражнения"
+            className="w-full font-[Pt] bg-white text-[#846FA0]  md:text-[19px] font-medium ml-2 md:ml-4"
           />
         </div>
+
 
         <div
           ref={dropdownRef}
@@ -236,46 +252,56 @@ const AllComplex = () => {
       </div>
 
       <Section border={1} borderColor="#D4BAFC" />
+      <Section border={1} borderColor="#D4BAFC" />
+
+      {/* <Works title={"Sets"} sets={sets} border={1} borderColor="#D4BAFC" /> */}
+      {/* <Works title={"Популярные комплексы "} />
+      <Works title={"Ортопедия"} />
+      <Works title={""} /> */}
+
+      {/* Category bar with real data */}
 
       <Works
+        title={
+          pageTexts.sections.popularComplexes[
+            locale as keyof typeof pageTexts.sections.popularComplexes
+          ] || pageTexts.sections.popularComplexes.ru
+        }
+        sets={sets.slice(0, 8)}
+        fromMain={true}
+      />
+      {/* Works components with real data */}
+      {/* <Works
         title={
           pageTexts.sections.popularSections[
             locale as keyof typeof pageTexts.sections.popularSections
           ] || pageTexts.sections.popularSections.ru
         }
         sets={popularSets}
-        border={1}
-        borderColor="#D4BAFC"
-        customMargin="20px"
-        customBorderRadius="30px"
         fromMain={true}
       />
 
-      {/* დაჩენადი Works კომპონენტები */}
-      {Array.from({ length: visibleWorksCount }).map((_, index) => (
-        <Works
-          key={index}
-          seeAll={false}
-          border={0}
-          borderColor=""
-          customMargin="20px"
-          customBorderRadius="30px"
-          title=""
-          sets={orthopedicSets.length > 0 ? orthopedicSets : sets.slice(0, 4)}
-          fromMain={true}
-          scrollable={false}
-        />
-      ))}
+      
 
-      {/* "Показать ещё" ღილაკი */}
-      <button
-        onClick={handleShowMore}
-        className="bg-[#D4BAFC] text-white rounded-[10px] py-3 text-[32px] w-[312px] flex items-center justify-center mx-auto"
-      >
-        Показать ещё
-      </button>
+      <Works
+        title={
+          pageTexts.sections.orthopedics[
+            locale as keyof typeof pageTexts.sections.orthopedics
+          ] || pageTexts.sections.orthopedics.ru
+        }
+        sets={orthopedicSets.length > 0 ? orthopedicSets : sets.slice(0, 4)}
+        fromMain={true}
+      />
 
-      <Footer />
+      <Works
+        title={
+          pageTexts.sections.recommended[
+            locale as keyof typeof pageTexts.sections.recommended
+          ] || pageTexts.sections.recommended.ru
+        }
+        sets={sets.slice(-6)}
+        fromMain={true}
+      /> */}
     </div>
   );
 };
