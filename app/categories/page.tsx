@@ -93,7 +93,7 @@ export default function CategoriesPage() {
             title={"GRS МЕДИА"}
           />
         </div>
-        <Professional withBanner={false} title="GRS Профразвитие" />
+        <Professional withBanner={false} title="GRS Профразвитие" bgColor={"bg-[#F9F7FE]"} withProfText={true} />
       </div>
       <Footer />
     </div>
