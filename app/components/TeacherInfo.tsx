@@ -4,6 +4,12 @@ import { FaCertificate } from "react-icons/fa6";
 import { MdOutlineWeb } from "react-icons/md";
 import DesktopNavbar from "./Navbar/DesktopNavbar";
 import { defaultMenuItems } from "./Header";
+import CourseSlider from "./CourseSlider";
+import CourseContents from "./CourseContents";
+import Professional from "./Professional";
+import Certificate from "./Certificate";
+import Subscribe from "./Subscribe";
+import { Footer } from "./Footer";
 
 const ContentsSidebar = () => (
   <div className="bg-white rounded-[20px] p-5 shadow-sm">
@@ -166,6 +172,24 @@ const TeacherInfo = ({ instructorId }: TeacherInfoProps) => {
           />
         </div>
       </div>
+      <div className="md:mt-10">
+      <Professional withBanner={false} title={""} bgColor="white" withProfText={false} />
+      </div>
+      <Certificate />
+     <div className="my-10">
+     <Subscribe
+          backgroundImage="/assets/images/bluebg.jpg"
+          titleKey="subscription.title"
+          buttonTextKey="buttons.subscribe"
+          buttonTextColor="#3D334A"
+          buttonBgColor="#FFFFFF"
+          bgCenter={true}
+          containerStyles="custom-class"
+          titleStyles="text-white"
+          buttonStyles="hover:opacity-80"
+        />
+     </div>
+        <Footer />
     </div>
   );
 };

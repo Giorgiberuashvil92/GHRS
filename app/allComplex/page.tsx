@@ -11,17 +11,18 @@ import { useAllSets } from "../hooks/useSets";
 import { useAllExercises } from "../hooks/useExercises";
 import { useI18n } from "../context/I18nContext";
 import Section from "../components/Section";
+import { Footer } from "../components/Footer";
 
 const AllComplex = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { locale } = useI18n();
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
-  // Real data hooks
+  const [visibleWorksCount, setVisibleWorksCount] = useState(1); // რამდენი Works გამოჩნდეს
+
   const { categories, loading: categoriesLoading } = useCategories();
   const { sets, loading: setsLoading } = useAllSets();
   const { exercises, loading: exercisesLoading } = useAllExercises();
 
-  // Helper to get localized text
   const getLocalizedText = (
     field: { ka: string; en: string; ru: string } | undefined
   ): string => {
@@ -35,14 +36,13 @@ const AllComplex = () => {
     );
   };
 
-  // Close dropdown on outside click
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        // No dropdown state to manage anymore
+        // არავიტარ მოქმედებას არ ვახდენ dropdown-ზე
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -51,8 +51,8 @@ const AllComplex = () => {
     };
   }, []);
 
-  // Filter sets by categories
   const popularSets = sets.slice(0, 6);
+
   const orthopedicSets = sets.filter(
     (set) =>
       set.categoryId &&
@@ -71,7 +71,6 @@ const AllComplex = () => {
       )
   );
 
-  // Create category buttons from real data
   const allCategoriesText = {
     ka: "ყველა კატეგორია",
     en: "All Categories",
@@ -93,14 +92,12 @@ const AllComplex = () => {
     })),
   ];
 
-  // Loading text
   const loadingText = {
     ka: "იტვირთება...",
     en: "Loading...",
     ru: "Загрузка..",
   };
 
-  // Page texts
   const pageTexts = {
     title: {
       ka: "ყველა კომპლექსი",
@@ -136,6 +133,10 @@ const AllComplex = () => {
     },
   };
 
+  const handleShowMore = () => {
+    setVisibleWorksCount((prev) => prev + 1);
+  };
+
   if (categoriesLoading || setsLoading || exercisesLoading) {
     return (
       <div className="bg-[#F9F7FE] min-h-screen flex items-center justify-center">
@@ -151,82 +152,28 @@ const AllComplex = () => {
 
   return (
     <div className="bg-[#F9F7FE]">
-      <DesktopNavbar menuItems={defaultMenuItems} blogBg={false} />
+      <DesktopNavbar menuItems={defaultMenuItems} blogBg={false} allCourseBg={false} />
       <MobileNavbar />
+
       <h1 className="md:text-[64px] md:px-10 px-5 leading-[100%] tracking-[-3%] text-[#3D334A]">
         {pageTexts.title[locale as keyof typeof pageTexts.title] ||
           pageTexts.title.ru}
       </h1>
-      <div className="bg-white md:mx-5 md:my-10 md:rounded-[30px]">
-        <Category bgColor="white" />
 
-        {/* Subcategories section like in categories/[categoryId]/page.tsx */}
-        <div className="md:px-10 px-5 mb-8">
-          <div className="flex flex-row items-center gap-[28px] overflow-x-auto">
-            {/* Sample subcategories data */}
-            {[
-              {
-                _id: "1",
-                name: {
-                  ka: "ზურგის პრობლემები",
-                  en: "Back Problems",
-                  ru: "Проблемы спины",
-                },
-                image:
-                  "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=500",
-                setsCount: 8,
-              },
-              {
-                _id: "2",
-                name: {
-                  ka: "სახსრების პრობლემები",
-                  en: "Joint Problems",
-                  ru: "Проблемы суставов",
-                },
-                image:
-                  "https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=500",
-                setsCount: 12,
-              },
-              {
-                _id: "3",
-                name: {
-                  ka: "გულის ჯანმრთელობა",
-                  en: "Heart Health",
-                  ru: "Здоровье сердца",
-                },
-                image:
-                  "https://images.unsplash.com/photo-1628348068343-c6a848d2d497?w=500",
-                setsCount: 6,
-              },
-            ].map((subcategory) => (
-              <div
-                key={subcategory._id}
-                className="mt-[48px] min-w-[558px] bg-white p-2 rounded-[20px] cursor-pointer hover:shadow-lg transition-shadow"
-              >
-                <img
-                  src={subcategory.image}
-                  alt={getLocalizedText(subcategory.name)}
-                  className="w-full h-[181px] object-cover rounded-[15px]"
-                />
-                <div className="flex items-center justify-between mt-[22px]">
-                  <h1 className="text-[#3D334A] w-[342px] text-[28px] leading-[100%]">
-                    {getLocalizedText(subcategory.name)}
-                  </h1>
-                  <span className="text-[#D4BAFC] leading-[120%] font-medium">
-                    {subcategory.setsCount} სეტი
-                  </span>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
+      <div className="bg-white md:mx-5 md:my-10 md:rounded-[30px]">
+        <Category bgColor="white" customRounded={""} customMx={""} />
       </div>
-      {/* Search input */}
+
+      {/* საძიებო ველი */}
       <div className="bg-white md:mx-5 md:rounded-[30px] md:p-10 mb-10">
         <div className="relative mb-6 max-w-full">
           <input
             type="text"
-            placeholder="Введите название упражнения"
+            placeholder={
+              pageTexts.searchPlaceholder[
+                locale as keyof typeof pageTexts.searchPlaceholder
+              ] || pageTexts.searchPlaceholder.ru
+            }
             className="w-full border-[#D4BAFC] border font-[Pt] bg-white rounded-[54px] px-[50px] py-[21px] mb-2 text-[#846FA0] text-[19px] font-medium"
           />
           <CiSearch
@@ -235,6 +182,7 @@ const AllComplex = () => {
             className="absolute top-[22px] left-4"
           />
         </div>
+
         <div
           ref={dropdownRef}
           className="w-full px-10 min-h-[64px] bg-white rounded-[40px] mb-6 p-4 flex flex-wrap gap-2 md:gap-3 items-center"
@@ -268,7 +216,7 @@ const AllComplex = () => {
                     </span>
                   )}
                 </button>
-                {/* Dropdown menu */}
+
                 {isDropdown && isOpen && (
                   <div className="absolute left-0 top-full mt-1 z-20 bg-white rounded-[10px] shadow-lg min-w-[160px] py-2 animate-fade-in">
                     {cat.subcategories.map((item: string, i: number) => (
@@ -286,49 +234,9 @@ const AllComplex = () => {
           })}
         </div>
       </div>
+
       <Section border={1} borderColor="#D4BAFC" />
-      <Works title={"Sets"} sets={sets} border={1} borderColor="#D4BAFC" />
-      {/* <Works title={"Популярные комплексы "} />
-      <Works title={"Ортопедия"} />
-      <Works title={""} /> */}
-      <div className="relative mb-6 max-w-full mx-10 mt-8">
-        <input
-          type="text"
-          placeholder={
-            pageTexts.searchPlaceholder[
-              locale as keyof typeof pageTexts.searchPlaceholder
-            ] || pageTexts.searchPlaceholder.ru
-          }
-          className="w-full bg-white rounded-[54px] px-[50px] py-[21px] mb-2 text-[#846FA0] text-[19px] font-medium"
-        />
-        <CiSearch
-          color="black"
-          size={25}
-          className="absolute top-[22px] left-4"
-        />
-      </div>
 
-      {/* Category bar with real data */}
-      <div
-        ref={dropdownRef}
-        className="w-full px-10 min-h-[64px] bg-white rounded-[40px] mb-6 p-4 flex flex-wrap gap-2 md:gap-3 items-center"
-      >
-        {realCategories.map((cat, idx) => (
-          <div key={cat.id} className="relative">
-            <button
-              className={`text-[#3D334A] text-[13px] md:text-[15px] font-medium rounded-[8px] px-3 md:px-5 h-[33px] transition-colors whitespace-nowrap flex items-center gap-1
-                ${idx === 0 ? "bg-[#E9DDFB] font-bold" : "bg-[#F9F7FE]"}
-                ${cat.active ? "shadow-sm" : ""}
-              `}
-              type="button"
-            >
-              {cat.title}
-            </button>
-          </div>
-        ))}
-      </div>
-
-      {/* Works components with real data */}
       <Works
         title={
           pageTexts.sections.popularSections[
@@ -336,38 +244,38 @@ const AllComplex = () => {
           ] || pageTexts.sections.popularSections.ru
         }
         sets={popularSets}
+        border={1}
+        borderColor="#D4BAFC"
+        customMargin="20px"
+        customBorderRadius="30px"
         fromMain={true}
       />
 
-      <Works
-        title={
-          pageTexts.sections.popularComplexes[
-            locale as keyof typeof pageTexts.sections.popularComplexes
-          ] || pageTexts.sections.popularComplexes.ru
-        }
-        sets={sets.slice(0, 8)}
-        fromMain={true}
-      />
+      {/* დაჩენადი Works კომპონენტები */}
+      {Array.from({ length: visibleWorksCount }).map((_, index) => (
+        <Works
+          key={index}
+          seeAll={false}
+          border={0}
+          borderColor=""
+          customMargin="20px"
+          customBorderRadius="30px"
+          title=""
+          sets={orthopedicSets.length > 0 ? orthopedicSets : sets.slice(0, 4)}
+          fromMain={true}
+          scrollable={false}
+        />
+      ))}
 
-      <Works
-        title={
-          pageTexts.sections.orthopedics[
-            locale as keyof typeof pageTexts.sections.orthopedics
-          ] || pageTexts.sections.orthopedics.ru
-        }
-        sets={orthopedicSets.length > 0 ? orthopedicSets : sets.slice(0, 4)}
-        fromMain={true}
-      />
+      {/* "Показать ещё" ღილაკი */}
+      <button
+        onClick={handleShowMore}
+        className="bg-[#D4BAFC] text-white rounded-[10px] py-3 text-[32px] w-[312px] flex items-center justify-center mx-auto"
+      >
+        Показать ещё
+      </button>
 
-      <Works
-        title={
-          pageTexts.sections.recommended[
-            locale as keyof typeof pageTexts.sections.recommended
-          ] || pageTexts.sections.recommended.ru
-        }
-        sets={sets.slice(-6)}
-        fromMain={true}
-      />
+      <Footer />
     </div>
   );
 };

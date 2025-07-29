@@ -122,7 +122,7 @@ const Blog: React.FC<BlogProps> = ({
       <div className="py-5 md:px-6">
         {withSlider && (
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-[20px] leading-[120%] text-[#3D334A] md:text-[40px] md:tracking-[-3%]">
+            <h2 className="text-[20px] leading-[120%] md:my-5 md:mx-3 text-[#3D334A] md:text-[40px] md:tracking-[-3%]">
               {title}
             </h2>
             <SliderArrows

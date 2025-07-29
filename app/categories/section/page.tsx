@@ -13,6 +13,7 @@ import Professional from "../../components/Professional";
 import Blog from "@/app/components/Blog";
 import { useI18n } from "../../context/I18nContext";
 import { BackendExercise } from "@/types/exercise";
+import { Footer } from "@/app/components/Footer";
 
 function SectionContent() {
   const searchParams = useSearchParams();
@@ -156,8 +157,7 @@ function SectionContent() {
               )}
               works={formattedSets}
               linkType="complex"
-              fromMain={false}
-            />
+              fromMain={false} seeAll={false} scrollable={false}            />
           </div>
         )}
 
@@ -199,9 +199,19 @@ function SectionContent() {
           </div>
         )}
 
-        <Subscribe />
+<Subscribe
+          backgroundImage="/assets/images/categorySliderBgs/bg1.jpg"
+          titleKey="subscription.test_title"
+          buttonTextKey="buttons.take_test"
+          buttonTextColor="#3D334A"
+          buttonBgColor="#FFFFFF"
+          bgCenter={true}
+          containerStyles="custom-class"
+          titleStyles="text-white"
+          buttonStyles="hover:opacity-80"
+        />
         <div className="my-10">
-          <ReviewSlider />
+          <ReviewSlider title={"ОТЗЫВЫ О НАС"} />
         </div>
         <div
           className="mb-10
@@ -222,8 +232,9 @@ function SectionContent() {
           />
         </div>
 
-        <Professional withBanner={false} />
+        <Professional withBanner={false} title={""} bgColor={"#F9F7FE"} withProfText={true} />
       </div>
+      <Footer />
     </div>
   );
 }

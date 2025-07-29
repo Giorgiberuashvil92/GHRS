@@ -49,15 +49,21 @@ const categories = [
 ];
 
 const categoryDetailItems = [
-  { id: 1, text: "15 категорий", image: "/assets/images/book.svg" },
-  { id: 2, text: "Онлайн-чат", image: "/assets/icons/pulse.svg" },
-  { id: 3, text: "1000+ уроков", image: "/assets/icons/icon.svg" },
+  { id: 1, text: "15 категорий", image: "/assets/icons/pulse.svg" },
+  { id: 2, text: "Онлайн-чат", image: "/assets/images/camera.svg" },
+  { id: 3, text: "1000+ уроков", image: "/assets/icons/watch.png" },
 ];
 
 const complexItems = [
-  { id: 1, text: "15 категорий", image: "/assets/images/book.svg" },
+  { id: 1, text: "15 категорий", image: "/assets/icons/card.svg" },
   { id: 2, text: "36 комплексов", image: "/assets/icons/message.svg" },
-  { id: 3, text: "1000+ уроков", image: "/assets/images/camera.svg" },
+  { id: 3, text: "1000+ уроков", image: "/assets/icons/heat.svg" },
+];
+
+const sectionItems = [
+  { id: 1, text: "36 комплексов", image: "/assets/icons/pulse.svg" },
+  { id: 2, text: "125 упражнений", image: "/assets/images/camera.svg" },
+  { id: 3, text: "126 часов", image: "/assets/icons/watch.png" },
 ];
 
 const Header: React.FC<HeaderProps> = ({
@@ -189,16 +195,59 @@ const Header: React.FC<HeaderProps> = ({
           </div>
         )}
 
-        {variant !== "blog" && (
-          <div className="relative z-10 ">
-            <MobileNavbar />
-            {variant !== "category" && variant !== "categories" && (
+        {
+          variant == "rehabilitation" && (
+            <DesktopNavbar
+                menuItems={localizedMenuItems}
+                blogBg={false}
+                allCourseBg={false}
+              />
+          )
+        }
+
+{
+          variant == "categories" && (
+            <DesktopNavbar
+                menuItems={localizedMenuItems}
+                blogBg={false}
+                allCourseBg={false}
+              />
+          )
+        }
+
+
+{
+          variant == "complex" && (
+            <DesktopNavbar
+                menuItems={localizedMenuItems}
+                blogBg={false}
+                allCourseBg={false}
+              />
+          )
+        }
+
+        
+
+{variant == "category" || variant == "categories" || variant == "rehabilitation" || variant == "category-detail" || variant == "section" && (
               <DesktopNavbar
                 menuItems={localizedMenuItems}
                 blogBg={false}
                 allCourseBg={false}
               />
             )}
+
+            {variant == "default" && (
+               <DesktopNavbar
+               menuItems={localizedMenuItems}
+               blogBg={false}
+               allCourseBg={false}
+             />
+            )}
+
+        {variant !== "blog" && (
+          <div className="relative z-10 ">
+            <MobileNavbar />
+           
             {/* HeroTitle */}
             {variant == "default" && (
               <h2 className="mx-5  hidden md:flex text-[64px] mt-20 leading-[100%]  tracking-[-3%] max-w-[994px]">
@@ -261,20 +310,20 @@ const Header: React.FC<HeaderProps> = ({
                           >
                             <div className="bg-[rgba(255,255,255,0.2)] w-[46px] h-[46px] justify-center items-center flex rounded-[8px]">
                               <Image
-                                src={categories[0].image}
-                                alt={categories[0].text}
+                                src={sectionItems[0].image}
+                                alt={sectionItems[0].text}
                                 width={30}
                                 height={30}
                               />
                             </div>
                             <h3 className="text-white text-sm font-medium font-[Pt]">
-                              {categories[0].text}
+                              {sectionItems[0].text}
                             </h3>
                           </motion.div>
 
                           {/* მეორე და მესამე ბარათები */}
                           <div className="flex flex-row gap-2 mt-2 md:mt-0 w-full font-[Pt]">
-                            {categories.slice(1).map((item) => (
+                            {sectionItems.slice(1).map((item) => (
                               <motion.div
                                 initial={{ opacity: 0, x: -100 }}
                                 animate={{ opacity: 1, x: 0 }}
@@ -376,7 +425,7 @@ const Header: React.FC<HeaderProps> = ({
               </div>
             )}
             {variant == "categories" && (
-              <div className="mb-5 md:mb-0 mx-auto md:pt-[550px]">
+              <div className="mb-5 md:mb-0 mx-auto md:pt-[400px]">
                 <section className="mx-auto md:mx-5 flex flex-col md:flex-row md:items-center md:gap-2">
                   {/* პირველი ბარათი */}
                   <motion.div
@@ -450,7 +499,7 @@ const Header: React.FC<HeaderProps> = ({
             )}
 
             {variant == "section" && (
-              <div className="mb-5 md:mb-0 mx-auto">
+              <div className="mb-5 md:mb-0 mx-auto ">
                 <section className="mt-[122px] md:mt-[450px] mx-auto md:mx-5 flex flex-col md:flex-row md:items-center md:gap-2">
                   {/* პირველი ბარათი */}
                   <motion.div
@@ -461,8 +510,8 @@ const Header: React.FC<HeaderProps> = ({
                   >
                     <div className="bg-[rgba(255,255,255,0.2)] w-[46px] h-[46px] justify-center items-center flex rounded-[8px]">
                       <Image
-                        src={categoryDetailItems[0].image}
-                        alt={categoryDetailItems[0].text}
+                        src={sectionItems[0].image}
+                        alt={sectionItems[0].text}
                         width={30}
                         height={30}
                       />
@@ -482,8 +531,8 @@ const Header: React.FC<HeaderProps> = ({
                     >
                       <div className="bg-[rgba(255,255,255,0.2)] w-[46px] h-[46px] justify-center items-center flex rounded-[8px]">
                         <Image
-                          src={categoryDetailItems[1].image}
-                          alt={categoryDetailItems[1].text}
+                          src={sectionItems[1].image}
+                          alt={sectionItems[1].text}
                           width={30}
                           height={30}
                         />
@@ -500,8 +549,8 @@ const Header: React.FC<HeaderProps> = ({
                     >
                       <div className="bg-[rgba(255,255,255,0.2)] w-[46px] h-[46px] justify-center items-center flex rounded-[8px]">
                         <Image
-                          src={categoryDetailItems[2].image}
-                          alt={categoryDetailItems[2].text}
+                          src={sectionItems[2].image}
+                          alt={sectionItems[2].text}
                           width={30}
                           height={30}
                         />
@@ -682,7 +731,7 @@ const Header: React.FC<HeaderProps> = ({
             {variant == "complex" && (
               <div
                 className="bg-[#3D334A4D] py-4 px-5 rounded-[20px] text-white absolute max-w-[206px] text-center hidden md:flex 
-              font-medium leading-[120%] font-[Pt] right-10 top-[400px]"
+              font-medium leading-[120%] font-[Pt] right-10 top-[30px]"
               >
                 <p>
                   Внимание! На подписки сроком от 3-х месяцев действуют скидки
@@ -698,15 +747,19 @@ const Header: React.FC<HeaderProps> = ({
                 <div
                   className={`hidden absolute md:flex flex-row items-center right-10 ${
                     variant == "rehabilitation" ? "bottom-14" : "bottom-84"
-                  } ${currentSlide === 0 && " bottom-0 top-[457px]"} ${
-                    currentSlide === 0 &&
+                  } ${currentSlide === 0 && " bottom-0 top-[157px]"} ${
+                    currentSlide === 0 && 
                     variant == "rehabilitation" &&
                     " bottom-0 top-[460px]"
                   } ${
                     currentSlide === 1 &&
                     variant == "rehabilitation" &&
                     " bottom-0 top-[450px]"
-                  }  `}
+                  }  ${
+                    currentSlide === 1 &&
+                    variant == "rehabilitation" &&
+                    " bottom-0 top-[450px]"
+                  }   ` }
                 >
                   <div
                     onClick={handleLeftArrowClick}

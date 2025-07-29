@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import SliderArrows from "./SliderArrows";
@@ -29,12 +29,7 @@ interface TeacherSliderProps {
   teachers?: Teacher[];
 }
 
-const TeacherSlider: React.FC<TeacherSliderProps> = ({
-  teachers = []
-}) => {
-  const sliderRef = useRef<HTMLDivElement>(null);
-
-  // Fallback data if no teachers provided
+const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
   const fallbackTeachers: Teacher[] = [
     {
       id: "1",
@@ -51,88 +46,97 @@ const TeacherSlider: React.FC<TeacherSliderProps> = ({
       bio: {
         en: "Aaron Jacoby is the founder and director of the 'College of Medical Massage'.",
         ru: "Аарон Якоби является основателем и директором 'Колледжа медицинского массажа'.",
-        ka: "არონ იაკობი არის ფონდატორი და დირექტორი 'მედიკალური მასაჯის კოლეჯი'.",
+        ka: "არონ იაკობი არის ფონდატორი და დირექტორი 'მედიკალური მასაჟის კოლეჯი'."
       },
       htmlContent: {
         en: "<p>Aaron Jacoby is the founder and director of the 'College of Medical Massage'.</p>",
         ru: "<p>Аарон Якоби является основателем и директором 'Колледжа медицинского массажа'.</p>",
-        ka: "<p>არონ იაკობი არის ფონდატორი და დირექტორი 'მედიკალური მასაჯის კოლეჯი'.</p>",
+        ka: "<p>არონ იაკობი არის ფონდატორი და დირექტორი 'მედიკალური მასაჟის კოლეჯი'.</p>"
       }
-    }
+    },
   ];
 
   const allTeachers = teachers.length > 0 ? teachers : fallbackTeachers;
+  const [currentIndex, setCurrentIndex] = useState(0);
 
   const scrollLeft = () => {
-    if (sliderRef.current) {
-      sliderRef.current.scrollBy({ left: -300, behavior: "smooth" });
-    }
+    setCurrentIndex((prevIndex) =>
+      prevIndex > 0 ? prevIndex - 1 : allTeachers.length - 1
+    );
   };
 
   const scrollRight = () => {
-    if (sliderRef.current) {
-      sliderRef.current.scrollBy({ left: 300, behavior: "smooth" });
-    }
+    setCurrentIndex((prevIndex) =>
+      prevIndex < allTeachers.length - 1 ? prevIndex + 1 : 0
+    );
   };
 
+  const teacher = allTeachers[currentIndex];
+
   return (
-    <div className="w-full px-6 py-12 md:mx-5 md:rounded-[30px] bg-[#F9F7FE] md:px-5">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-[40px] text-[#3D334A] font-bold">НАШИ ПРЕПОДАВАТЕЛИ</h2>
-        <SliderArrows
-          onScrollLeft={scrollLeft}
-          onScrollRight={scrollRight}
-        />
+    <div className="w-full px-4 md:px-6 md:mx-5 py-12 bg-[#F9F7FE] rounded-[30px] overflow-hidden">
+      <div className="flex justify-between items-center mb-6">
+        <h2 className="text-[32px] md:text-[40px] text-[#3D334A] font-bold">
+          НАШИ ПРЕПОДАВАТЕЛИ
+        </h2>
+        <div className="md:mx-5">
+          <SliderArrows onScrollLeft={scrollLeft} onScrollRight={scrollRight} />
+        </div>
       </div>
-      
-      <Link href="/teachers" className="text-[#D4BAFC] text-lg block mb-8">
+
+      <Link
+        href="/teachers"
+        className="text-[#D4BAFC] text-lg block mb-10 font-semibold hover:underline"
+      >
         СМОТРЕТЬ ВСЕ →
       </Link>
 
-      <div className="relative">
-        <div 
-          ref={sliderRef}
-          className="flex gap-8 overflow-x-auto scrollbar-hide"
-        >
-          {allTeachers.map((teacher) => (
-            <div 
-              key={teacher.id}
-              className="flex-none w-full md:w-[1340px] bg-white rounded-[20px] overflow-hidden"
-            >
-              <div className="flex gap-12 p-8">
-                <div className="w-[400px] h-[400px] relative">
-                  <Image
-                    src={teacher.imageUrl}
-                    fill
-                    alt={teacher.name}
-                    className="object-cover"
-                  />
-                </div>
-                <div className="flex-1 flex flex-col pt-4">
-                  <h3 className="text-[40px] text-[#3D334A] font-bold mb-2">{teacher.name}</h3>
-                  <div className="mb-6">
-                    <p className="text-[20px] text-[#3D334A]">{teacher.position}</p>
-                    <p className="text-[20px] text-[#3D334A]">{teacher.institution}</p>
-                  </div>
-                  <p className="text-[16px] text-[#3D334A] mb-6">{teacher.credentials}</p>
-                  <div 
-                    className="space-y-4 text-[16px] text-[#846FA0] leading-relaxed"
-                    dangerouslySetInnerHTML={{ __html: teacher.htmlContent.ru || teacher.htmlContent.en || "" }}
-                  />
-                  <Link 
-                    href={`/teachers/${teacher.id}`}
-                    className="text-[#D4BAFC] text-lg mt-auto self-start"
-                  >
-                    ПОДРОБНЕЕ
-                  </Link>
-                </div>
-              </div>
+      <div className="bg-white rounded-[20px] shadow-md overflow-hidden">
+        <div className="flex flex-col md:flex-row gap-8 p-4">
+          <div className="w-full md:w-[400px] h-[400px] relative rounded-lg overflow-hidden shrink-0">
+            <Image
+              src={teacher.imageUrl}
+              width={511}
+              height={496}
+              alt={teacher.name}
+              className="object-cover"
+            />
+          </div>
+          <div className="flex-1 flex flex-col pt-2 md:pt-4">
+            <h3 className="text-[28px] md:text-[40px] text-[#3D334A] font-bold mb-2 leading-snug">
+              {teacher.name}
+            </h3>
+
+            <div className="mb-4 md:mb-6 space-y-1">
+              <p className="text-[18px] md:text-[20px] text-[#3D334A] font-medium">
+                {teacher.position}
+              </p>
+              <p className="text-[18px] md:text-[20px] text-[#3D334A]">
+                {teacher.institution}
+              </p>
             </div>
-          ))}
+
+            <p className="text-[16px] text-[#3D334A] mb-4 md:mb-6">{teacher.credentials}</p>
+
+            <div
+              className="space-y-3 text-[16px] text-[#846FA0] leading-relaxed max-w-[750px]"
+              dangerouslySetInnerHTML={{
+                __html:
+                  teacher.htmlContent.ru || teacher.htmlContent.en || "",
+              }}
+            />
+
+            <Link
+              href={`/teachers/${teacher.id}`}
+              className="text-[#D4BAFC] text-lg pl-10 mt-auto text-end items-end w-full mr-10 font-medium hover:underline pt-4"
+            >
+              ПОДРОБНЕЕ
+            </Link>
+          </div>
         </div>
       </div>
     </div>
   );
 };
 
-export default TeacherSlider; 
+export default TeacherSlider;

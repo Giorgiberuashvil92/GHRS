@@ -61,6 +61,10 @@ interface WorksProps {
   fromMain?: boolean;
   border?: number;
   borderColor?: string;
+  customMargin: string;
+  customBorderRadius: string;
+  seeAll: boolean;
+  scrollable: boolean;
 }
 
 const Works: React.FC<WorksProps> = ({
@@ -73,6 +77,10 @@ const Works: React.FC<WorksProps> = ({
   fromMain = false, // Default value დამატებული
   border,
   borderColor,
+  customMargin,
+  customBorderRadius,
+  seeAll = true,
+  scrollable = true,
 }) => {
   const { t, locale } = useI18n();
 
@@ -218,16 +226,16 @@ const Works: React.FC<WorksProps> = ({
 
   return (
     <div
-      style={{ border: `${border}px solid ${borderColor}` }}
-      className="bg-[#F9F7FE] md:mt-0 mt-10 md:mb-10 mb-0 md:mx-5 rounded-b-[15px] md:pb-10 pb-0"
+      style={{ border: `${border}px solid ${borderColor}`, marginInline: `${customMargin}`, borderRadius: `${customBorderRadius}` }}
+      className="bg-[#F9F7FE] md:mt-0 md:pt-6 mt-10 md:mb-10 mb-0   rounded-b-[15px] md:pb-10 pb-0"
     >
       {/* Slider */}
-      <WorksSlider title={title} works={works} fromMain={fromMain} />
+      <WorksSlider scrollable={scrollable} seeAll={seeAll} title={title} works={works} fromMain={fromMain} />
       <Link
         href={linkHref}
-        className="text-[14px]  px-5 md:px-0 md:text-[24px] leading-[90%] uppercase text-[#D4BAFC]"
+        className="text-[14px] px-5 md:px-0 md:text-[24px] leading-[90%] uppercase text-[#D4BAFC]"
       >
-        <span className="px-5">
+        <span className="px-12">
           {" "}
           {typeof t("works.all_sets", { count: works.length.toString() }) ===
           "string"

@@ -8,6 +8,7 @@ import { CiSearch } from "react-icons/ci";
 import CategoryFilter from "../components/CategoryFilter";
 import { useRouter } from "next/navigation";
 import { Footer } from "../components/Footer";
+import CustomBadge from "../components/CustomBadge";
 
 interface Course {
   _id: string;
@@ -156,14 +157,15 @@ const AllCourse = () => {
           {courses.map((course) => (
             <div
               key={course._id}
-              className="bg-white rounded-lg shadow-md overflow-hidden cursor-pointer hover:shadow-lg transition-shadow"
+              className="bg-white rounded-[20px] shadow-md cursor-pointer hover:shadow-lg transition-shadow"
               onClick={() => handleCourseClick(course._id)}
             >
               <img
                 src={course.thumbnail}
                 alt={course.title.ru}
-                className="w-full h-48 object-cover"
+                className="w-[690px] h-[249px] object-cover rounded-[20px]"
               />
+              <CustomBadge text="нА АНГЛИЙСКОМ" />
               <div className="p-4">
                 <h3 className="text-xl font-semibold text-[#3D334A] mb-2">
                   {course.title.ru}
@@ -171,14 +173,14 @@ const AllCourse = () => {
                 <p className="text-[#846FA0] mb-4">
                   Инструктор: {course.instructor.name}
                 </p>
-                <div className="flex justify-between items-center">
-                  <span className="text-lg font-bold text-[#3D334A]">
-                    ${course.price}
-                  </span>
-                  <button className="bg-[#D4BAFC] text-white px-4 py-2 rounded-full hover:bg-[#b89ee0] transition-colors">
-                    Подробнее
-                  </button>
-                </div>
+                <div className="flex justify-end">
+  <div className="bg-[#D4BAFC] py-[10px] px-10 rounded-[6px] inline-block">
+    <span className="text-2xl font-bold text-white leading-[100%] font-[Pt]">
+      ${course.price}
+    </span>
+  </div>
+</div>
+
               </div>
             </div>
           ))}

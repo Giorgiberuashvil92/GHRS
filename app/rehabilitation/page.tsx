@@ -6,11 +6,12 @@ import VideoNotification from "../components/VideoNotification";
 import Advantages from "../components/Advantages";
 import Image from "next/image";
 import Category from "../components/Category";
+import { Footer } from "../components/Footer";
 
 const Rehabilitation = () => {
   return (
     <div className="">
-      <Header variant="rehabilitation" />
+      <Header variant="rehabilitation"  />
       <VideoNotification variant="default" />
       <Advantages />
       <section className="md:max-w-full flex flex-col gap-5 px-2 md:px-8">
@@ -143,8 +144,10 @@ const Rehabilitation = () => {
         </div>
       </section>
 
-      <Category />
-      <section className="px-2 md:px-8 mx-2 mt-6 md:mx-8 relative md:max-w-full md:h-[404px] h-[471px] bg-[rgba(249,247,254,1)] rounded-[20px] mx:p-[40] pt-[40px] pb-0 flex flex-col md:justify-between overflow-visible ">
+      <div className="md:mt-10 mt-5 md:mx-5">
+      <Category bgColor={""} customRounded="30px" customMx="10px" />
+      </div>
+      <section className="px-2 md:px-8 mx-2 mt-10 md:mx-8 relative md:max-w-full md:h-[404px] h-[471px] bg-[rgba(249,247,254,1)] rounded-[20px] mx:p-[40] pt-[40px] pb-0 flex flex-col md:justify-between overflow-visible ">
         <div className="flex flex-col justify-between md:pb-[40px] gap-[35px]">
           <div className="md:pb-25">
             <h2 className="md:text-[48px] text-xl text-[rgba(61,51,74,1)] uppercase tracking-[-3%] leading-[100%] pb-4">
@@ -177,6 +180,9 @@ const Rehabilitation = () => {
           />
         </div>
       </section>
+      <div className="md:mt-10 mt-5">
+      <Footer />
+      </div>
     </div>
   );
 };

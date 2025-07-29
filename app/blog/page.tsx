@@ -5,14 +5,15 @@ import Header, { defaultMenuItems } from "../components/Header";
 import Blog from "../components/Blog";
 import DesktopNavbar from "../components/Navbar/DesktopNavbar";
 import MobileNavbar from "../components/Navbar/MobileNavbar";
+import { Footer } from "../components/Footer";
 
 const BlogRoute = () => {
   return (
-    <div>
-      <DesktopNavbar menuItems={defaultMenuItems} blogBg={true} />
+    <div className="bg-[#F9F7FE]">
+      <DesktopNavbar menuItems={defaultMenuItems} blogBg={true} allCourseBg={false} />
       <MobileNavbar />
       <Header variant="blog" />
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-10 mb-10">
         <Blog
           withBanner={false}
           withSlider={false}
@@ -38,6 +39,7 @@ const BlogRoute = () => {
           title="Ортопедия"
         />
       </div>
+      <Footer />
     </div>
   );
 };

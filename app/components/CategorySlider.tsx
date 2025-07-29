@@ -74,13 +74,19 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
       }
     }, []);
 
+    
+
     console.log("🔍 Categories Data:", {
       categories,
       loading,
       error,
       firstCategory: categories[0],
       locale,
+    
     });
+
+    console.log("✅ Subcategories of first category:", categories[0]?.subcategories);
+
 
     useImperativeHandle(ref, () => sliderRef.current as HTMLDivElement);
 
@@ -255,7 +261,8 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
                   </div>
                 </Link>
                 <SubcategoryDropdown
-                  subcategories={[]} // subcategories არ არის populated useCategories hook-ში
+                  // subcategories={[]} // subcategories არ არის populated useCategories hook-ში
+                  subcategories={category.subcategories || []}
                   isOpen={isDropdownOpen(category._id)}
                   onClose={handleDropdownClose}
                   categoryId={category._id}

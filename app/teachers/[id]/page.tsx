@@ -1,3 +1,4 @@
+import Certificate from "@/app/components/Certificate";
 import TeacherInfo from "../../components/TeacherInfo";
 
 interface PageProps {
@@ -7,5 +8,7 @@ interface PageProps {
 }
 
 export default function TeacherPage({ params }: PageProps) {
-  return <TeacherInfo instructorId={params.id} />;
+  return <div>
+    <TeacherInfo instructorId={params.id} />
+  </div>
 } 
