@@ -274,7 +274,7 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
               </button>
             )}
           </section>
-          <div className="w-full pr-40 flex flex-col items-center mt-10 gap-8">
+          <div className="w-full pr-40 flex flex-col items-center mt-10 md:mb-20 gap-8">
               <h1 className="text-[18px] leading-[100%] tracking-[-1%] text-[#3D334A]">поделиться в соцсетях</h1>
               <div className="flex gap-10">
               <div className="w-14 h-14 bg-white rounded-[5px] items-center justify-center flex cursor-pointer hover:scale-105 duration-300">
