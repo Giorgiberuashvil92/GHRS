@@ -10,6 +10,7 @@ import MobileNavbar from "./Navbar/MobileNavbar";
 import DesktopNavbar from "./Navbar/DesktopNavbar";
 import Link from "next/link";
 import { useI18n } from "../context/I18nContext";
+import useStatistics from '../hooks/useStatistics';
 
 export interface MenuItem {
   id: number;
@@ -33,6 +34,7 @@ interface HeaderProps {
   onPriceClick?: () => void;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setData?: any; // set-ის მონაცემები complex variant-ისთვის
+  statistics?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export const defaultMenuItems: MenuItem[] = [
@@ -40,12 +42,6 @@ export const defaultMenuItems: MenuItem[] = [
   { id: 2, name: "О нас", route: "about" },
   { id: 3, name: "Блог", route: "blog" },
   { id: 4, name: "Контакты", route: "contact" },
-];
-
-const categories = [
-  { id: 1, text: "15 категорий", image: "/assets/images/book.svg" },
-  { id: 2, text: "Онлайн-чат", image: "/assets/icons/message.svg" },
-  { id: 3, text: "1000+ уроков", image: "/assets/images/camera.svg" },
 ];
 
 const categoryDetailItems = [
@@ -60,14 +56,8 @@ const complexItems = [
   { id: 3, text: "1000+ уроков", image: "/assets/icons/heat.svg" },
 ];
 
-const sectionItems = [
-  { id: 1, text: "36 комплексов", image: "/assets/icons/pulse.svg" },
-  { id: 2, text: "125 упражнений", image: "/assets/images/camera.svg" },
-  { id: 3, text: "126 часов", image: "/assets/icons/watch.png" },
-];
-
 const Header: React.FC<HeaderProps> = ({
-  variant = "default",
+  variant = "default",  
   title,
   info,
   onPriceClick,
@@ -75,6 +65,7 @@ const Header: React.FC<HeaderProps> = ({
 }) => {
   const [currentSlide, setCurrentSlide] = useState<0 | 1>(0);
   const { t } = useI18n();
+  const { statistics } = useStatistics();
 
   // ლოკალიზებული მენიუ items
   const localizedMenuItems = [
@@ -104,6 +95,24 @@ const Header: React.FC<HeaderProps> = ({
   const handleLeftArrowClick = () => {
     setCurrentSlide(0);
   };
+
+  const sectionItems = [
+    { 
+      id: 1, 
+      text: statistics ? `${statistics.total.sets} комплексов` : "Loading...", 
+      image: "/assets/icons/pulse.svg" 
+    },
+    { 
+      id: 2, 
+      text: statistics ? `${statistics.total.exercises} упражнений` : "Loading...", 
+      image: "/assets/images/camera.svg" 
+    },
+    { 
+      id: 3, 
+      text: statistics ? `${statistics.total.hours} часов` : "Loading...", 
+      image: "/assets/icons/watch.png" 
+    },
+  ];
 
   return (
     <header

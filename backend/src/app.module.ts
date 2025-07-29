@@ -18,6 +18,7 @@ import { CourseModule } from './course/course.module';
 import { InstructorModule } from './instructor/instructor.module';
 import { CourseModuleModule } from './course-module/course-module.module';
 import { ReviewModule } from './review/review.module';
+import { StatisticsModule } from './statistics/statistics.module';
 
 
 @Module({
@@ -43,6 +44,7 @@ import { ReviewModule } from './review/review.module';
     InstructorModule,
     CourseModuleModule,
     ReviewModule,
+    StatisticsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -8,7 +8,9 @@
     "categories": "Categories",
     "contact": "Contact",
     "login": "Login",
-    "register": "Register"
+    "register": "Register",
+    "all_complexes": "All Complexes",
+    "sets": "Sets"
   },
   "buttons": {
     "subscribe": "Subscribe",
@@ -24,6 +26,7 @@
   },
   "common": {
     "months": "month",
+    "month": "month",
     "price_per_month": "₾/month",
     "videos": "videos",
     "exercises": "exercises",
@@ -47,6 +50,10 @@
     "popular_exercises": "Popular Exercises",
     "loading_exercises": "Loading exercises...",
     "exercises_error": "Error loading exercises",
-    "set_not_found": "Set not found"
+    "set_not_found": "Set not found",
+    "see_all": "See All"
+  },
+  "sections": {
+    "professional": "Professional"
   }
 } 
