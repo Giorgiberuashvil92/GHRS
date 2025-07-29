@@ -319,4 +319,9 @@ export class CategoryController {
   ) {
     return this.categoryService.addSet(id, setId);
   }
+
+  @Get('subcategories/all')
+  findAllSubcategories() {
+    return this.categoryService.findAllSubcategories();
+  }
 }

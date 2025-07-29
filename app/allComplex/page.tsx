@@ -8,21 +8,21 @@ import { CiSearch } from "react-icons/ci";
 import Works from "../components/Works";
 import { useCategories } from "../hooks/useCategories";
 import { useAllSets } from "../hooks/useSets";
-// import { useAllExercises } from "../hooks/useExercises";
 import { useI18n } from "../context/I18nContext";
 import Section from "../components/Section";
 import { IoIosArrowDown } from "react-icons/io";
 import { Footer } from "../components/Footer";
+import { API_CONFIG } from "../config/api";
 
 const AllComplex = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { locale } = useI18n();
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+  const [subcategories, setSubcategories] = useState([]);
   // const [visibleWorksCount, setVisibleWorksCount] = useState(1); // რამდენი Works გამოჩნდეს
 
   const { categories, loading: categoriesLoading } = useCategories();
   const { sets, loading: setsLoading } = useAllSets();
-  // const { exercises, loading: exercisesLoading } = useAllExercises();
 
   // Helper to get localized text
   const getLocalizedText = (
@@ -60,61 +60,21 @@ const AllComplex = () => {
     };
   }, []);
 
-  const popularSets = sets.slice(0, 6);
-  const orthopedicSets = sets.filter(
-    (set) =>
-      set.categoryId &&
-      categories.some(
-        (cat) =>
-          cat._id === set.categoryId &&
-          getLocalizedText(cat.name)
-            .toLowerCase()
-            .includes(
-              locale === "ka"
-                ? "ორთოპედ"
-                : locale === "en"
-                ? "orthoped"
-                : "ортопед"
-            )
-      )
-  );
+  useEffect(() => {
+    const fetchSubcategories = async () => {
+      try {
+        const response = await fetch(`${API_CONFIG.BASE_URL}/categories/subcategories/all`);
+        const data = await response.json();
+        setSubcategories(data);
+        console.log(data, "subcategories");
+      } catch (error) {
+        console.error("Error fetching subcategories:", error);
+      }
+    };
+    fetchSubcategories();
+  }, []);
 
-  const allCategoriesText = {
-    ka: "ყველა კატეგორია",
-    en: "All Categories",
-    ru: "Все категории",
-  };
 
-  const realCategories = [
-    {
-      id: "all",
-      title:
-        allCategoriesText[locale as keyof typeof allCategoriesText] ||
-        allCategoriesText.ru,
-      active: true,
-    },
-    {
-      id: "all",
-      title:
-        allCategoriesText[locale as keyof typeof allCategoriesText] ||
-        allCategoriesText.ru,
-      active: true,
-    },
-    ...categories.map((cat) => ({
-      ...categories.map((cat) => ({
-        id: cat._id,
-        title: getLocalizedText(cat.name),
-        active: false,
-      })),
-      active: false,
-    })),
-  ];
-
-  const loadingText = {
-    ka: "იტვირთება...",
-    en: "Loading...",
-    ru: "Загрузка...",
-  };
 
   const pageTexts = {
     title: {
@@ -151,18 +111,18 @@ const AllComplex = () => {
     },
   };
 
-  if (categoriesLoading || setsLoading || exercisesLoading) {
-    return (
-      <div className="bg-[#F9F7FE] min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-600 border-t-transparent mb-4 mx-auto"></div>
-          <h2 className="text-2xl font-semibold text-gray-700">
-            {loadingText[locale as keyof typeof loadingText] || loadingText.ru}
-          </h2>
-        </div>
-      </div>
-    );
-  }
+  // if (categoriesLoading || setsLoading) {
+  //   return (
+  //     <div className="bg-[#F9F7FE] min-h-screen flex items-center justify-center">
+  //       <div className="text-center">
+  //         <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-600 border-t-transparent mb-4 mx-auto"></div>
+  //         <h2 className="text-2xl font-semibold text-gray-700">
+  //           {loadingText[locale as keyof typeof loadingText] || loadingText.ru}
+  //         </h2>
+  //       </div>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className="bg-[#F9F7FE]">
@@ -174,8 +134,6 @@ const AllComplex = () => {
       <MobileNavbar />
 
       <h1 className="md:text-[64px] md:px-10 px-5 leading-[100%] tracking-[-3%] text-[#3D334A]">
-        {pageTexts.title[locale as keyof typeof pageTexts.title] ||
-          pageTexts.title.ru}
         {pageTexts.title[locale as keyof typeof pageTexts.title] ||
           pageTexts.title.ru}
       </h1>
@@ -248,7 +206,7 @@ const AllComplex = () => {
         </div>
       </div>
 
-      <Section border={1} borderColor="#D4BAFC" />
+      <Section border={1} borderColor="#D4BAFC" subcategories={subcategories} />
 
       {/* <Works title={"Sets"} sets={sets} border={1} borderColor="#D4BAFC" /> */}
       {/* <Works title={"Популярные комплексы "} />
