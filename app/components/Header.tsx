@@ -28,7 +28,8 @@ interface HeaderProps {
     | "blog"
     | "categories"
     | "category-detail"
-    | "section";
+    | "section"
+    | "allComplex"
   title?: string;
   info?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
   onPriceClick?: () => void;
@@ -38,7 +39,7 @@ interface HeaderProps {
 }
 
 export const defaultMenuItems: MenuItem[] = [
-  { id: 1, name: "Все комплексы", route: "complex" },
+  { id: 1, name: "Все комплексы", route: "allComplex" },
   { id: 2, name: "О нас", route: "about" },
   { id: 3, name: "Блог", route: "blog" },
   { id: 4, name: "Контакты", route: "contact" },
@@ -69,7 +70,7 @@ const Header: React.FC<HeaderProps> = ({
 
   // ლოკალიზებული მენიუ items
   const localizedMenuItems = [
-    { id: 1, name: t("navigation.all_complexes"), route: "complex" },
+    { id: 1, name: t("navigation.all_complexes"), route: "allComplex" },
     { id: 2, name: t("navigation.about"), route: "about" },
     { id: 3, name: t("navigation.blog"), route: "blog" },
     { id: 4, name: t("navigation.contacts"), route: "contact" },

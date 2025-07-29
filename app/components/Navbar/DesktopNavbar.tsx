@@ -52,13 +52,17 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
         </div>
 
         <div className="flex items-center gap-4 ml-4">
+          <div className="hover:scale-105 duration-300">
           <LanguageSelector
             currentLanguage={language}
             onSelectLanguage={setLanguage}
-          />
-          <NavbarIconButton src="/assets/images/store.svg" alt="Store" />
+            />
+            </div>
+          <Link href={"/shoppingcard"}>
+            <NavbarIconButton className="hover:scale-105 duration-300" src="/assets/images/store.svg" alt="Store" />
+          </Link>
           <Link href={"/personalAccount"}>
-            <NavbarIconButton src={"/assets/images/person.svg"} alt="Person" />
+            <NavbarIconButton className="hover:scale-105 duration-300" src={"/assets/images/person.svg"} alt="Person" />
           </Link>
         </div>
       </header>
