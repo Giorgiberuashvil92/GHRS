@@ -36,12 +36,7 @@ const Complex = ({ params }: ComplexPageProps) => {
   const searchParams = useSearchParams();
   const categoryIdFromUrl = searchParams.get("categoryId");
   
-  console.log("🎯 Complex component initialized:", {
-    setId,
-    categoryIdFromParams: categoryIdFromUrl,
-    hasSearchParams: !!searchParams,
-    allSearchParams: Object.fromEntries(searchParams.entries())
-  });
+
 
   // თუ არ არის categoryId URL-ში, მაშინ პირდაპირ set-ს ვიღებთ
   const shouldUseCategoryComplete = !!categoryIdFromUrl;
@@ -79,7 +74,6 @@ const Complex = ({ params }: ComplexPageProps) => {
     return acc;
   }, {} as { [key: string]: number });
 
-  console.log("🎯 Exercises by difficulty:", exercisesByDifficulty);
 
   // ვითვლით ჯამურ ხანგრძლივობას
   const totalDurationInMinutes = exercises?.reduce((total: number, exercise: any) => {
@@ -104,13 +98,6 @@ const Complex = ({ params }: ComplexPageProps) => {
   const popoverRef = useRef<HTMLDivElement>(null);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
 
-  console.log("🎯 Complex page rendered with:", {
-    setId,
-    setData,
-    setLoading,
-    setError,
-    exercises
-  });
 
   // Close popover when clicking outside
   useEffect(() => {

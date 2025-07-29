@@ -4,12 +4,15 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { CiBookmark } from "react-icons/ci";
 import { Article as ArticleType, getArticlesByCategory } from "../api/articles";
-import { FaShare } from "react-icons/fa";
+import { FaFacebookF, FaShare } from "react-icons/fa";
 import { MdStar } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import Link from "next/link";
 import { useLanguage, useI18n } from "../context/I18nContext";
-
+import { RiTwitterXFill } from "react-icons/ri";
+import { FaLinkedin } from "react-icons/fa6";
+import { BsYoutube } from "react-icons/bs";
+import { BsInstagram } from "react-icons/bs";
 interface ArticleProps {
   article: ArticleType;
 }
@@ -27,8 +30,8 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
         // Check if category is an object with _id property
         const categoryId =
           article.categoryId &&
-          typeof article.categoryId === "object" &&
-          "_id" in article.categoryId
+            typeof article.categoryId === "object" &&
+            "_id" in article.categoryId
             ? (article.categoryId as { _id: string })._id
             : article.categoryId;
 
@@ -241,28 +244,28 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
             <div className="flex flex-col gap-5">
               {article.comments && article.comments.length > 0
                 ? article.comments.map((comment, index) => (
-                    <div
-                      key={index}
-                      className="flex gap-5 items-start max-w-[650px] bg-[rgba(249,247,254,1)] rounded-[20px] p-4"
-                    >
-                      <div className="w-[50px] h-[50px] rounded-[10px] bg-gray-300 flex-shrink-0 overflow-hidden flex items-center justify-center">
-                        <FaUserCircle className="text-gray-400 w-full h-full object-cover" />
-                      </div>
-                      <div className="flex-1">
-                        <div className="mb-3">
-                          <h3 className="text-[rgba(61,51,74,1)] text-sm md:[18px]">
-                            {comment.author}
-                          </h3>
-                          <p className="text-gray-500 text-xs">
-                            {comment.date}
-                          </p>
-                        </div>
-                        <p className="md:text-[18px] text-[16px] text-[rgba(132,111,160,1)] md:leading-[140%] leading-[160%] tracking-[-1%]">
-                          {comment.content}
+                  <div
+                    key={index}
+                    className="flex gap-5 items-start max-w-[650px] bg-[rgba(249,247,254,1)] rounded-[20px] p-4"
+                  >
+                    <div className="w-[50px] h-[50px] rounded-[10px] bg-gray-300 flex-shrink-0 overflow-hidden flex items-center justify-center">
+                      <FaUserCircle className="text-gray-400 w-full h-full object-cover" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="mb-3">
+                        <h3 className="text-[rgba(61,51,74,1)] text-sm md:[18px]">
+                          {comment.author}
+                        </h3>
+                        <p className="text-gray-500 text-xs">
+                          {comment.date}
                         </p>
                       </div>
+                      <p className="md:text-[18px] text-[16px] text-[rgba(132,111,160,1)] md:leading-[140%] leading-[160%] tracking-[-1%]">
+                        {comment.content}
+                      </p>
                     </div>
-                  ))
+                  </div>
+                ))
                 : null}
             </div>
             {article.comments && article.comments.length > 0 && (
@@ -271,7 +274,29 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
               </button>
             )}
           </section>
+          <div className="w-full pr-40 flex flex-col items-center mt-10 md:mb-20 gap-8">
+              <h1 className="text-[18px] leading-[100%] tracking-[-1%] text-[#3D334A]">поделиться в соцсетях</h1>
+              <div className="flex gap-10">
+              <div className="w-14 h-14 bg-white rounded-[5px] items-center justify-center flex cursor-pointer hover:scale-105 duration-300">
+              <FaFacebookF color="black" size={30} />
+              </div>
+              <div className="w-14 h-14 bg-white rounded-[5px] items-center justify-center flex cursor-pointer hover:scale-105 duration-300">
+              <RiTwitterXFill color="black" size={30} />
+              </div>
+              <div className="w-14 h-14 bg-white rounded-[5px] items-center justify-center flex cursor-pointer hover:scale-105 duration-300">
+              <BsInstagram color="black" size={30} />
+              </div>
+              <div className="w-14 h-14 bg-white rounded-[5px] items-center justify-center flex cursor-pointer hover:scale-105 duration-300">
+              <BsYoutube color="black" size={30} />
+              </div>
+              <div className="w-14 h-14 bg-white rounded-[5px] items-center justify-center flex cursor-pointer hover:scale-105 duration-300 ">
+              <FaLinkedin color="black" size={30} className="hover:text-white" />
+              </div>
+              </div>
+          </div>
         </div>
+
+
 
         {/* Right Sidebar */}
         <div className="p-5 bg-[rgba(255,255,255,1)] min-h-[700px] h-[700px] rounded-[20px] max-w-[335px] hidden md:block">

@@ -44,16 +44,13 @@ export default function CategoryFilter({ onCategoryChange, onSubcategoryChange }
     const fetchCategories = async () => {
       try {
         setLoading(true);
-        console.log('Fetching categories...');
         const response = await fetch('http://localhost:4000/categories');
-        console.log('Response status:', response.status);
         
         if (!response.ok) {
           throw new Error('Failed to fetch categories');
         }
         
         const data = await response.json();
-        console.log('Fetched categories:', data);
         setAllCategories(data);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -66,7 +63,6 @@ export default function CategoryFilter({ onCategoryChange, onSubcategoryChange }
   }, []);
 
   const handleCategorySelect = (category: Category | null) => {
-    console.log('Selecting category:', category);
     setSelectedCategory(category);
     setSelectedSubcategory(null);
     onCategoryChange(category?._id || null);
@@ -74,7 +70,6 @@ export default function CategoryFilter({ onCategoryChange, onSubcategoryChange }
   };
 
   const handleSubcategorySelect = (subcategory: Category | null) => {
-    console.log('Selecting subcategory:', subcategory);
     setSelectedSubcategory(subcategory);
     onSubcategoryChange(subcategory?._id || null);
   };

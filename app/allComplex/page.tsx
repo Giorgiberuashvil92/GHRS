@@ -8,7 +8,7 @@ import { CiSearch } from "react-icons/ci";
 import Works from "../components/Works";
 import { useCategories } from "../hooks/useCategories";
 import { useAllSets } from "../hooks/useSets";
-import { useAllExercises } from "../hooks/useExercises";
+// import { useAllExercises } from "../hooks/useExercises";
 import { useI18n } from "../context/I18nContext";
 import Section from "../components/Section";
 import { IoIosArrowDown } from "react-icons/io";
@@ -18,11 +18,11 @@ const AllComplex = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { locale } = useI18n();
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
-  const [visibleWorksCount, setVisibleWorksCount] = useState(1); // რამდენი Works გამოჩნდეს
+  // const [visibleWorksCount, setVisibleWorksCount] = useState(1); // რამდენი Works გამოჩნდეს
 
   const { categories, loading: categoriesLoading } = useCategories();
   const { sets, loading: setsLoading } = useAllSets();
-  const { exercises, loading: exercisesLoading } = useAllExercises();
+  // const { exercises, loading: exercisesLoading } = useAllExercises();
 
   // Helper to get localized text
   const getLocalizedText = (

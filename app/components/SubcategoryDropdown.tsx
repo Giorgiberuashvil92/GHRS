@@ -70,12 +70,6 @@ const SubcategoryDropdown = ({
             onClose();
             // ვქმნით URL-ს პარამეტრებით
             const url = `/categories/section?subcategoryId=${subcategory._id}${categoryId ? `&categoryId=${categoryId}` : ''}`;
-            console.log("🖱️ Navigating to subcategory:", {
-              subcategoryId: subcategory._id,
-              categoryId,
-              url,
-              name: getLocalizedText(subcategory.name, locale)
-            });
             router.push(url);
           }}
           className={`
