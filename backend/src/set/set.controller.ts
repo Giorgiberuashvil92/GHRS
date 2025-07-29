@@ -126,14 +126,27 @@ export class SetController {
     try {
       const parsedData = { ...updateSetDto };
 
-      if (updateSetDto.name) parsedData.name = JSON.parse(updateSetDto.name);
-      if (updateSetDto.description) parsedData.description = JSON.parse(updateSetDto.description);
-      if (updateSetDto.levels) parsedData.levels = JSON.parse(updateSetDto.levels);
-      if (updateSetDto.price) parsedData.price = JSON.parse(updateSetDto.price);
-      if (updateSetDto.additional) parsedData.additional = JSON.parse(updateSetDto.additional);
-      if (updateSetDto.discountedPrice) parsedData.discountedPrice = JSON.parse(updateSetDto.discountedPrice);
-      if (updateSetDto.equipment) parsedData.equipment = JSON.parse(updateSetDto.equipment);
-      if (updateSetDto.warnings) parsedData.warnings = JSON.parse(updateSetDto.warnings);
+      // Helper function to safely parse JSON or return the original value if it's already an object
+      const safeJSONParse = (value: any) => {
+        if (typeof value === 'string') {
+          try {
+            return JSON.parse(value);
+          } catch (e) {
+            return value;
+          }
+        }
+        return value;
+      };
+
+      if (updateSetDto.name) parsedData.name = safeJSONParse(updateSetDto.name);
+      if (updateSetDto.description) parsedData.description = safeJSONParse(updateSetDto.description);
+      if (updateSetDto.levels) parsedData.levels = safeJSONParse(updateSetDto.levels);
+      if (updateSetDto.price) parsedData.price = safeJSONParse(updateSetDto.price);
+      if (updateSetDto.additional) parsedData.additional = safeJSONParse(updateSetDto.additional);
+      if (updateSetDto.discountedPrice) parsedData.discountedPrice = safeJSONParse(updateSetDto.discountedPrice);
+      if (updateSetDto.equipment) parsedData.equipment = safeJSONParse(updateSetDto.equipment);
+      if (updateSetDto.warnings) parsedData.warnings = safeJSONParse(updateSetDto.warnings);
+      if (updateSetDto.recommendations) parsedData.recommendations = safeJSONParse(updateSetDto.recommendations);
 
       console.log('📝 Parsed data:', parsedData);
 
@@ -148,10 +161,10 @@ export class SetController {
 
       const result = await this.setService.update(id, {
         ...parsedData,
-        thumbnailImage,
+        ...(thumbnailImage && { thumbnailImage }),
       });
       
-      console.log('✅ Set updated successfully:', result.name?.ka || 'Set');
+      console.log('✅ Set updated successfully:', result.name?.en || 'Set');
       return result;
     } catch (error) {
       console.error('❌ Set update error:', error);
