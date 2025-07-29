@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useRef } from "react";
 import Image from "next/image";
 import SliderArrows from "./SliderArrows";
 import { FaArrowRightLong } from "react-icons/fa6";
+import CustomBadge from "./CustomBadge";
 
 const Section = ({
   border = 0,
