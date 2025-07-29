@@ -1,6 +1,8 @@
 import React from "react";
 import Image from "next/image";
 import SliderArrows from "./SliderArrows";
+import { FaArrowRightLong } from "react-icons/fa6";
+
 const Section = ({
   border,
   borderColor,
@@ -18,9 +20,14 @@ const Section = ({
           <h1 className="text-[#3D334A] text-[40px] leading-[120%] tracking-[-3%]">
             Разделы
           </h1>
-          <span className="text-[#D4BAFC] text-[24px] leading-[90%] uppercase">
-            Смотреть все →
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="text-[#D4BAFC] text-[24px] leading-[90%] uppercase mr-2">
+              Смотреть все
+            </span>
+            {/* <span className="text-[#D4BAFC] text-[24px] leading-[90%]">→</span> */}
+            <FaArrowRightLong color="#D4BAFC"/>
+
+          </div>
         </div>
         <div>
           <SliderArrows

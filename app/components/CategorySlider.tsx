@@ -185,7 +185,7 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
             return (
               <div
                 key={category._id}
-                className="flex-shrink-0 flex flex-col relative z-10 overflow-visible"
+                className="flex-shrink-0 flex flex-col relative z-10 overflow-visible "
               >
                 <Link
                   href={`/categories/${category._id}`}
@@ -200,19 +200,25 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
                   className="group cursor-pointer transform transition-transform duration-300"
                 >
                   <div
-                    className="bg-conic rounded-[14px] w-[240px] h-[140px] md:w-[455px] md:h-[230px]"
+                    className="bg-conic rounded-[14px] w-[330px] h-[240px] md:w-[550px] md:h-[330px] p-2 "
                     style={{ backgroundImage: `url(${backgroundImageUrl})` }}
                   >
-                    <Image
+                    <div
+                      className="h-[80%] bg-cover bg-center rounded-xl"
+                      style={{ backgroundImage: `url(${categoryImageUrl})` }}
+                    ></div>
+                    {/* <Image
                       src={categoryImageUrl}
                       width={232}
                       height={82}
                       alt={categoryTitle}
-                      className="mx-auto rounded-[14px] p-[6px] md:w-[443px] md:h-[163px]"
-                    />
-                    <div className="flex items-center justify-between bg-white py-2 md:py-4 mt-1 px-4 mx-[4px] rounded-[20px] text-black group-hover:bg-gray-50 transition-colors duration-300">
+                      className="mx-auto rounded-[14px] bg-cover md:w-[443px] md:h-[163px]"
+                    /> */}
+
+                    {/* Bottom Text */}
+                    <div className="flex items-center justify-between bg-white my-2 px-4 rounded-2xl text-black group-hover:bg-gray-50 transition-colors duration-300">
                       <h4
-                        className="text-[24px] bg-conic md:text-[28px] font-bold overflow-hidden whitespace-nowrap leading-[90%] tracking-[-3%] text-ellipsis max-w-[390px]"
+                        className="my-1 md:my-2 text-[22px] bg-conic md:text-[28px] font-bold overflow-hidden whitespace-nowrap tracking-[-3%] text-ellipsis max-w-[390px]"
                         style={{
                           backgroundImage: `url(${backgroundImageUrl})`,
                           WebkitBackgroundClip: "text",
