@@ -7,6 +7,7 @@ import { defaultMenuItems } from "../../components/Header";
 import MobileNavbar from "../../components/Navbar/MobileNavbar";
 import { getArticleById } from "../../api/articles";
 import type { Article as ArticleType } from "../../api/articles";
+import { Footer } from "@/app/components/Footer";
 
 export default function ArticlePage() {
   const params = useParams();
@@ -61,6 +62,7 @@ export default function ArticlePage() {
       <div className="mx-10">
         <Article article={article} />
       </div>
+      <Footer />
     </div>
   );
 }
