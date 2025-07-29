@@ -8,7 +8,9 @@
     "categories": "კატეგორიები",
     "contact": "კონტაქტი",
     "login": "შესვლა",
-    "register": "რეგისტრაცია"
+    "register": "რეგისტრაცია",
+    "all_complexes": "ყველა კომპლექსი",
+    "sets": "კომპლექსები"
   },
   "buttons": {
     "subscribe": "გამოწერა",
@@ -24,6 +26,7 @@
   },
   "common": {
     "months": "თვე",
+    "month": "თვე",
     "price_per_month": "₾/თვე",
     "videos": "ვიდეოები",
     "exercises": "ვარჯიშები",
@@ -40,13 +43,17 @@
     "retry": "თავიდან ცდა",
     "subcategories": "საბკატეგორიები",
     "subcategory": "საბკატეგორია",
-      "sets": "სეტი",
-  "complexes": "კომპლექსები",
-  "no_sets_found": "სეტები ვერ მოიძებნა",
-  "no_sets_description": "ამ ქვეკატეგორიაში ჯერ კიდევ სეტები არ არის დამატებული",
-  "popular_exercises": "პოპულარული ვარჯიშები",
-  "loading_exercises": "ვარჯიშები იტვირთება...",
-  "exercises_error": "ვარჯიშების ჩატვირთვის შეცდომა",
-  "set_not_found": "სეტი ვერ მოიძებნა"
+    "sets": "სეტი",
+    "complexes": "კომპლექსები",
+    "no_sets_found": "სეტები ვერ მოიძებნა",
+    "no_sets_description": "ამ ქვეკატეგორიაში ჯერ კიდევ სეტები არ არის დამატებული",
+    "popular_exercises": "პოპულარული ვარჯიშები",
+    "loading_exercises": "ვარჯიშები იტვირთება...",
+    "exercises_error": "ვარჯიშების ჩატვირთვის შეცდომა",
+    "set_not_found": "სეტი ვერ მოიძებნა",
+    "see_all": "ყველას ნახვა"
+  },
+  "sections": {
+    "professional": "პროფესიონალური"
   }
 } 

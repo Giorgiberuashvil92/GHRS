@@ -8,7 +8,9 @@
     "categories": "Категории",
     "contact": "Контакты",
     "login": "Войти",
-    "register": "Регистрация"
+    "register": "Регистрация",
+    "all_complexes": "Все комплексы",
+    "sets": "Комплексы"
   },
   "buttons": {
     "subscribe": "Подписаться",
@@ -24,6 +26,7 @@
   },
   "common": {
     "months": "месяц",
+    "month": "месяц",
     "price_per_month": "₽/месяц",
     "videos": "видео",
     "exercises": "упражнения", 
@@ -61,6 +64,10 @@
     "sets": "Подходы",
     "restTime": "Отдых",
     "description": "Описание",
-    "markAsComplete": "Отметить как просмотренное"
+    "markAsComplete": "Отметить как просмотренное",
+    "see_all": "Смотреть все"
+  },
+  "sections": {
+    "professional": "Профессиональный"
   }
 } 
