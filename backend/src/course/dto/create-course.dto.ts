@@ -165,4 +165,121 @@ export class CreateCourseDto {
   @IsUrl({}, { each: true })
   @IsOptional()
   certificateImages?: string[];
+}
+
+export class UpdateCourseDto {
+  @ValidateNested()
+  @Type(() => MultilingualContent)
+  @IsOptional()
+  title?: MultilingualContent;
+
+  @ValidateNested()
+  @Type(() => MultilingualContent)
+  @IsOptional()
+  description?: MultilingualContent;
+
+  @ValidateNested()
+  @Type(() => MultilingualContent)
+  @IsOptional()
+  shortDescription?: MultilingualContent;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => Announcement)
+  @IsOptional()
+  announcements?: Announcement[];
+
+  @IsNumber()
+  @Min(0)
+  @IsOptional()
+  price?: number;
+
+  @IsString()
+  @IsUrl()
+  @IsOptional()
+  thumbnail?: string;
+
+  @IsArray()
+  @IsString({ each: true })
+  @IsUrl({}, { each: true })
+  @IsOptional()
+  additionalImages?: string[];
+
+  @IsString()
+  @IsUrl()
+  @IsOptional()
+  advertisementImage?: string;
+
+  @IsString()
+  @IsUrl()
+  @IsOptional()
+  previewVideoUrl?: string;
+
+  @IsNumber()
+  @Min(0)
+  @IsOptional()
+  duration?: number;
+
+  @IsBoolean()
+  @IsOptional()
+  isPublished?: boolean;
+
+  @ValidateNested()
+  @Type(() => InstructorInfo)
+  @IsOptional()
+  instructor?: InstructorInfo;
+
+  @ValidateNested()
+  @Type(() => MultilingualContent)
+  @IsOptional()
+  prerequisites?: MultilingualContent;
+
+  @ValidateNested()
+  @Type(() => MultilingualContent)
+  @IsOptional()
+  certificateDescription?: MultilingualContent;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => MultilingualContent)
+  @IsOptional()
+  learningOutcomes?: MultilingualContent[];
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => SyllabusItem)
+  @IsOptional()
+  syllabus?: SyllabusItem[];
+
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  languages?: string[];
+
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  tags?: string[];
+
+  @IsString()
+  @IsOptional()
+  categoryId?: string;
+
+  @IsString()
+  @IsOptional()
+  subcategoryId?: string;
+
+  @IsDateString()
+  @IsOptional()
+  startDate?: string;
+
+  @IsDateString()
+  @IsOptional()
+  endDate?: string;
+
+  @IsArray()
+  @IsString({ each: true })
+  @IsUrl({}, { each: true })
+  @IsOptional()
+  certificateImages?: string[];
 } 

@@ -4,23 +4,19 @@ import { Article } from './articles';
 export interface Blog {
   _id: string;
   title: {
-    ka: string;
     en: string;
     ru: string;
   };
   description: {
-    ka: string;
     en: string;
     ru: string;
   };
   excerpt: {
-    ka: string;
     en: string;
     ru: string;
   };
   imageUrl: string;
   categoryId: string;
-  link: string;
   tags: string[];
   isPublished: boolean;
   isFeatured: boolean;
@@ -34,23 +30,19 @@ export interface Blog {
 
 export interface CreateBlogDto {
   title: {
-    ka: string;
     en: string;
     ru: string;
   };
   description: {
-    ka: string;
     en: string;
     ru: string;
   };
   excerpt: {
-    ka: string;
     en: string;
     ru: string;
   };
   imageUrl?: string;
   categoryId: string;
-  link: string;
   tags?: string[];
   isPublished?: boolean;
   isFeatured?: boolean;
@@ -97,7 +89,7 @@ export const getBlogById = async (id: string) => {
 // Create blog with JSON
 export const createBlog = async (data: CreateBlogDto) => {
   // Validate translations
-  const validateTranslations = (field: string, translations: { ka: string; en: string; ru: string }) => {
+  const validateTranslations = (field: string, translations: { en: string; ru: string }) => {
     if (!translations.en || !translations.ru) {
       throw new Error(`${field} translations are required`);
     }

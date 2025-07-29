@@ -3,9 +3,6 @@ import { Type } from 'class-transformer';
 
 export class LocalizedStringDto {
   @IsString()
-  ka: string;
-
-  @IsString()
   en: string;
 
   @IsString()
@@ -30,9 +27,6 @@ export class CreateBlogDto {
 
   @IsString()
   categoryId: string;
-
-  @IsString()
-  link: string;
 
   @IsOptional()
   @IsArray()

@@ -6,12 +6,9 @@ export type BlogDocument = Blog & Document;
 @Schema()
 export class LocalizedString {
   @Prop({ required: true })
-  ka: string;
-
-  @Prop({ required: false, default: '' })
   en: string;
 
-  @Prop({ required: false, default: '' })
+  @Prop({ required: true })
   ru: string;
 }
 
@@ -31,9 +28,6 @@ export class Blog {
 
   @Prop({ type: Types.ObjectId, ref: 'Category', required: true })
   categoryId: Types.ObjectId;
-
-  @Prop({ required: true })
-  link: string; // Link to full article/content
 
   @Prop({ type: [String], default: [] })
   tags: string[];

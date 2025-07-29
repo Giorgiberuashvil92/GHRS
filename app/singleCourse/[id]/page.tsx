@@ -1,35 +1,68 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import Image from "next/image";
 import { FaBullhorn, FaBookOpen } from "react-icons/fa";
 import DesktopNavbar from "../../components/Navbar/DesktopNavbar";
 import { defaultMenuItems } from "../../components/Header";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useParams } from "next/navigation";
-import { fetchCourse } from '../../config/api';
+import { fetchCourse, fetchRelatedCourses } from '../../config/api';
+import CourseSlider from "@/app/components/CourseSlider";
+import SliderArrows from "@/app/components/SliderArrows";
+import { Footer } from "@/app/components/Footer";
 
 interface Course {
   _id: string;
   title: {
     en: string;
     ru: string;
+    ka?: string;
   };
   description: {
     en: string;
     ru: string;
+    ka?: string;
+  };
+  shortDescription?: {
+    en: string;
+    ru: string;
+    ka?: string;
   };
   price: number;
   thumbnail: string;
+  additionalImages?: string[];
+  advertisementImage?: string;
+  duration?: number;
+  isPublished?: boolean;
   instructor: {
     name: string;
   };
+  prerequisites?: {
+    en: string;
+    ru: string;
+    ka?: string;
+  };
+  certificateDescription?: {
+    en: string;
+    ru: string;
+    ka?: string;
+  };
+  certificateImages?: string[];
+  learningOutcomes?: Array<{
+    en: string;
+    ru: string;
+    ka?: string;
+  }>;
   announcements?: Array<{
     title: {
       en: string;
       ru: string;
+      ka?: string;
     };
     content: {
       en: string;
       ru: string;
+      ka?: string;
     };
     isActive: boolean;
   }>;
@@ -37,13 +70,20 @@ interface Course {
     title: {
       en: string;
       ru: string;
+      ka?: string;
     };
     description: {
       en: string;
       ru: string;
+      ka?: string;
     };
     duration: number;
   }>;
+  languages?: string[];
+  tags?: string[];
+  categoryId?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export default function SingleCourse() {
@@ -53,12 +93,25 @@ export default function SingleCourse() {
   console.log('Course ID from params:', courseId);
 
   const [course, setCourse] = useState<Course | null>(null);
+  
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [relatedCourses, setRelatedCourses] = useState<Course[]>([]);
+  const [relatedLoading, setRelatedLoading] = useState(false);
+
+  const sliderRef = useRef<HTMLDivElement>(null);
 
   const rightCardImage = "/assets/images/reklamos.png";
   const tabs = ["Описание", "Учебный план", "Объявление", "Отзывы"];
   const [activeTab, setActiveTab] = useState("Описание");
+
+  const scrollLeft = () => {
+    sliderRef.current?.scrollBy({ left: -300, behavior: "smooth" });
+  };
+
+  const scrollRight = () => {
+    sliderRef.current?.scrollBy({ left: 300, behavior: "smooth" });
+  };
 
   useEffect(() => {
     const loadCourse = async () => {
@@ -76,11 +129,28 @@ export default function SingleCourse() {
         console.log('Loaded course data:', data);
         setCourse(data);
         setError(null);
+        
+        // Load related courses if categoryId exists
+        if (data.categoryId) {
+          await loadRelatedCourses(courseId, data.categoryId);
+        }
       } catch (err) {
         console.error('Error loading course:', err);
         setError(err instanceof Error ? err.message : 'Failed to load course');
       } finally {
         setLoading(false);
+      }
+    };
+
+    const loadRelatedCourses = async (currentCourseId: string, categoryId: string) => {
+      try {
+        setRelatedLoading(true);
+        const relatedData = await fetchRelatedCourses(currentCourseId, categoryId, 4);
+        setRelatedCourses(relatedData.courses || []);
+      } catch (err) {
+        console.error('Error loading related courses:', err);
+      } finally {
+        setRelatedLoading(false);
       }
     };
 
@@ -145,23 +215,55 @@ export default function SingleCourse() {
               </span>
             </div>
             <div className="border-t border-[#EEEAFB]" />
-            <div className="flex gap-[10px] py-[18px] items-center">
-              <span className="w-[48px] h-[48px] flex items-center justify-center bg-[#E1D7FA] rounded-[12px]">
-                <FaBullhorn className="text-[#A993F8] text-[26px]" />
-              </span>
-              <span className="font-semibold text-[18px] text-[rgba(132,111,160,1)]">
-                12 слушателей
-              </span>
-            </div>
-            <div className="border-t border-[#EEEAFB]" />
+            
+            {/* Duration Info */}
             <div className="flex gap-[10px] py-[18px] items-center">
               <span className="w-[48px] h-[48px] flex items-center justify-center bg-[#E1D7FA] rounded-[12px]">
                 <FaBookOpen className="text-[#A993F8] text-[26px]" />
               </span>
-              <span className="font-semibold text-[18px] text-[rgba(132,111,160,1)]">
-                5 курсов
-              </span>
+              <div className="flex flex-col">
+                <span className="font-semibold text-[18px] text-[rgba(132,111,160,1)]">
+                  {course.duration ? `${course.duration} минут` : 'Не указано'}
+                </span>
+                <span className="text-sm text-[#A9A6B4]">Продолжительность</span>
+              </div>
             </div>
+            <div className="border-t border-[#EEEAFB]" />
+            
+            {/* Lessons Count */}
+            <div className="flex gap-[10px] py-[18px] items-center">
+              <span className="w-[48px] h-[48px] flex items-center justify-center bg-[#E1D7FA] rounded-[12px]">
+                <FaBullhorn className="text-[#A993F8] text-[26px]" />
+              </span>
+              <div className="flex flex-col">
+                <span className="font-semibold text-[18px] text-[rgba(132,111,160,1)]">
+                  {course.syllabus ? `${course.syllabus.length} уроков` : 'Не указано'}
+                </span>
+                <span className="text-sm text-[#A9A6B4]">Количество уроков</span>
+              </div>
+            </div>
+            
+            {/* Languages */}
+            {course.languages && course.languages.length > 0 && (
+              <>
+                <div className="border-t border-[#EEEAFB]" />
+                <div className="flex gap-[10px] py-[18px] items-center">
+                  <span className="w-[48px] h-[48px] flex items-center justify-center bg-[#E1D7FA] rounded-[12px] text-[#A993F8] font-bold">
+                    🌐
+                  </span>
+                  <div className="flex flex-col">
+                    <div className="flex gap-1 flex-wrap">
+                      {course.languages.map((lang, index) => (
+                        <span key={index} className="text-[rgba(132,111,160,1)] font-semibold text-[14px]">
+                          {lang.toUpperCase()}{index < course.languages!.length - 1 ? ', ' : ''}
+                        </span>
+                      ))}
+                    </div>
+                    <span className="text-sm text-[#A9A6B4]">Языки курса</span>
+                  </div>
+                </div>
+              </>
+            )}
           </div>
 
           {/* მარჯვენა ნაწილი: ფასი, ღილაკი, რეკლამები */}
@@ -179,20 +281,41 @@ export default function SingleCourse() {
               <h2>ПРИОБРЕСТИ КУРС</h2>
             </div>
             <div className="hidden md:flex flex-col gap-4">
-              <Image
-                src={rightCardImage}
-                alt="ad"
-                className="w-full rounded-xl"
-                width={300}
-                height={600}
-              />
-              <Image
-                src={rightCardImage}
-                alt="ad"
-                className="w-full rounded-xl"
-                width={300}
-                height={600}
-              />
+              {course.advertisementImage ? (
+                <>
+                  <Image
+                    src={course.advertisementImage}
+                    alt="Course Advertisement"
+                    className="w-full rounded-xl"
+                    width={300}
+                    height={600}
+                  />
+                  <Image
+                    src={course.advertisementImage}
+                    alt="Course Advertisement"
+                    className="w-full rounded-xl"
+                    width={300}
+                    height={600}
+                  />
+                </>
+              ) : (
+                <>
+                  <Image
+                    src={rightCardImage}
+                    alt="ad"
+                    className="w-full rounded-xl"
+                    width={300}
+                    height={600}
+                  />
+                  <Image
+                    src={rightCardImage}
+                    alt="ad"
+                    className="w-full rounded-xl"
+                    width={300}
+                    height={600}
+                  />
+                </>
+              )}
             </div>
           </aside>
 
@@ -222,67 +345,275 @@ export default function SingleCourse() {
             </div>
             <div className="flex flex-col gap-4 order-4 md:order-2">
               {activeTab === "Описание" && (
-                <article className="bg-white rounded-2xl shadow-[0_7px_32px_0_rgba(141,126,243,0.13)] px-4 md:px-8 py-6 md:py-10 flex flex-col gap-6">
-                  <h1 className="text-2xl font-bold uppercase text-[#302A3A]">
-                    {course.title.ru}
-                  </h1>
-                  <div 
-                    className="text-[#A9A6B4]"
-                    dangerouslySetInnerHTML={{ __html: course.description.ru }}
-                  />
-                </article>
-              )}
-              {activeTab === "Учебный план" && course.syllabus && (
-                <div className="flex flex-col gap-2">
-                  {course.syllabus.map((item, index) => (
-                    <div
-                      key={index}
-                      className="bg-white rounded-2xl px-6 py-4 font-bold text-[#302A3A] text-[15px] mb-2"
-                    >
-                      {index + 1}.
-                      <div dangerouslySetInnerHTML={{ __html: item.title.ru }} />
-                      {item.description && (
+                <div>
+                  <article className="bg-white rounded-2xl shadow-[0_7px_32px_0_rgba(141,126,243,0.13)] px-4 md:px-8 py-6 md:py-10 flex flex-col gap-6">
+                    <h1 className="text-2xl font-bold uppercase text-[#302A3A]">
+                      {course.title.ru}
+                    </h1>
+                    
+                    {/* Short Description */}
+                    {course.shortDescription && (
+                      <div className="bg-[#F1EEFF] p-4 rounded-lg">
+                        <h3 className="font-semibold text-[#8D7EF3] mb-2">Краткое описание:</h3>
                         <div 
-                          className="font-normal mt-2 text-[#A9A6B4]"
-                          dangerouslySetInnerHTML={{ __html: item.description.ru }}
+                          className="text-[#8D7EF3]"
+                          dangerouslySetInnerHTML={{ __html: course.shortDescription.ru }}
                         />
+                      </div>
+                    )}
+                    
+                    {/* Main Description */}
+                    <div 
+                      className="text-[#A9A6B4]"
+                      dangerouslySetInnerHTML={{ __html: course.description.ru }}
+                    />
+                    
+                    {/* Prerequisites */}
+                    {course.prerequisites && (
+                      <div className="bg-[#FFF9E6] p-4 rounded-lg">
+                        <h3 className="font-semibold text-[#B8860B] mb-2">Требования:</h3>
+                        <div 
+                          className="text-[#8B7355]"
+                          dangerouslySetInnerHTML={{ __html: course.prerequisites.ru }}
+                        />
+                      </div>
+                    )}
+                    
+                    {/* Learning Outcomes */}
+                    {course.learningOutcomes && course.learningOutcomes.length > 0 && (
+                      <div>
+                        <h3 className="font-semibold text-[#302A3A] mb-3">Результаты обучения:</h3>
+                        <ul className="list-disc list-inside space-y-2 text-[#A9A6B4]">
+                          {course.learningOutcomes.map((outcome, index) => (
+                            <li key={index} dangerouslySetInnerHTML={{ __html: outcome.ru }} />
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                    
+                    {/* Languages */}
+                    {course.languages && course.languages.length > 0 && (
+                      <div className="flex items-center gap-2">
+                        <span className="font-semibold text-[#302A3A]">Языки курса:</span>
+                        <div className="flex gap-2">
+                          {course.languages.map((lang, index) => (
+                            <span key={index} className="bg-[#E1D7FA] text-[#8D7EF3] px-2 py-1 rounded text-sm">
+                              {lang.toUpperCase()}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Tags */}
+                    {course.tags && course.tags.length > 0 && (
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-semibold text-[#302A3A]">Теги:</span>
+                        <div className="flex gap-2 flex-wrap">
+                          {course.tags.map((tag, index) => (
+                            <span key={index} className="bg-[#F0F0F0] text-[#666] px-2 py-1 rounded text-sm">
+                              {tag}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </article>
+                  
+                  {/* Related Courses Section */}
+                  {relatedCourses.length > 0 && (
+                    <div className="mt-8">
+                      <div className="flex items-center justify-between md:mb-[10px]">
+                        <h2 className="text-2xl font-bold text-[#302A3A] mb-6">
+                          Похожие курсы
+                        </h2>
+                        <SliderArrows
+                          onScrollLeft={scrollLeft}
+                          onScrollRight={scrollRight}
+                        />
+                      </div>
+                      
+                      {relatedLoading ? (
+                        <div className="flex justify-center py-8">
+                          <div className="animate-spin rounded-full h-8 w-8 border-4 border-purple-600 border-t-transparent"></div>
+                        </div>
+                      ) : (
+                        <div
+                          ref={sliderRef}
+                          className="overflow-x-auto scrollbar-hide flex gap-4 mb-6"
+                        >
+                          <CourseSlider courses={relatedCourses as unknown as any[]} />
+                        </div>
                       )}
                     </div>
-                  ))}
+                  )}
+                </div>
+              )}
+              {activeTab === "Учебный план" && course.syllabus && (
+                <div>
+                  <div className="flex flex-col gap-2">
+                    {course.syllabus.map((item, index) => (
+                      <div
+                        key={index}
+                        className="bg-white rounded-2xl px-6 py-4 font-bold text-[#302A3A] text-[15px] mb-2"
+                      >
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-[#8D7EF3]">Урок {index + 1}</span>
+                          {item.duration > 0 && (
+                            <span className="text-[#A9A6B4] text-sm font-normal">
+                              {item.duration} мин
+                            </span>
+                          )}
+                        </div>
+                        <div dangerouslySetInnerHTML={{ __html: item.title.ru }} />
+                        {item.description && (
+                          <div 
+                            className="font-normal mt-2 text-[#A9A6B4]"
+                            dangerouslySetInnerHTML={{ __html: item.description.ru }}
+                          />
+                        )}
+                      </div>
+                    ))}
+                    
+                    {/* Total Duration */}
+                    <div className="bg-[#F1EEFF] rounded-2xl px-6 py-4 mt-4">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-[#8D7EF3]">Общая продолжительность:</span>
+                        <span className="text-[#8D7EF3] font-semibold">
+                          {course.syllabus.reduce((total, item) => total + (item.duration || 0), 0)} минут
+                        </span>
+                      </div>
+                      <div className="text-[#A9A6B4] text-sm mt-1">
+                        {course.syllabus.length} уроков
+                      </div>
+                    </div>
+                  </div>
+                  
+                  {/* Related Courses Section */}
+                  {relatedCourses.length > 0 && (
+                    <div className="mt-8">
+                      <div className="flex items-center justify-between md:mb-[10px]">
+                        <h2 className="text-2xl font-bold text-[#302A3A] mb-6">
+                          Похожие курсы
+                        </h2>
+                        <SliderArrows
+                          onScrollLeft={scrollLeft}
+                          onScrollRight={scrollRight}
+                        />
+                      </div>
+                      
+                      {relatedLoading ? (
+                        <div className="flex justify-center py-8">
+                          <div className="animate-spin rounded-full h-8 w-8 border-4 border-purple-600 border-t-transparent"></div>
+                        </div>
+                      ) : (
+                        <div
+                          ref={sliderRef}
+                          className="overflow-x-auto scrollbar-hide flex gap-4 mb-6"
+                        >
+                          <CourseSlider courses={relatedCourses as unknown as any[]} />
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
               {activeTab === "Объявление" && course.announcements && (
-                <div className="flex flex-col gap-2">
-                  {course.announcements
-                    .filter(announcement => announcement.isActive)
-                    .map((announcement, index) => (
-                    <div
-                      key={index}
-                      className="bg-[#F1EEFF] rounded-2xl px-6 py-4 text-[#8D7EF3] text-[15px] mb-2"
-                    >
-                      <h3 
-                        className="font-bold mb-2"
-                        dangerouslySetInnerHTML={{ __html: announcement.title.ru }}
-                      />
-                      <div dangerouslySetInnerHTML={{ __html: announcement.content.ru }} />
+                <div>
+                  <div className="flex flex-col gap-2">
+                    {course.announcements
+                      .filter(announcement => announcement.isActive)
+                      .map((announcement, index) => (
+                      <div
+                        key={index}
+                        className="bg-[#F1EEFF] rounded-2xl px-6 py-4 text-[#8D7EF3] text-[15px] mb-2"
+                      >
+                        <h3 
+                          className="font-bold mb-2"
+                          dangerouslySetInnerHTML={{ __html: announcement.title.ru }}
+                        />
+                        <div dangerouslySetInnerHTML={{ __html: announcement.content.ru }} />
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {/* Related Courses Section */}
+                  {relatedCourses.length > 0 && (
+                    <div className="mt-8">
+                      <div className="flex items-center justify-between md:mb-[10px]">
+                        <h2 className="text-2xl font-bold text-[#302A3A] mb-6">
+                          Похожие курсы
+                        </h2>
+                        <SliderArrows
+                          onScrollLeft={scrollLeft}
+                          onScrollRight={scrollRight}
+                        />
+                      </div>
+                      
+                      {relatedLoading ? (
+                        <div className="flex justify-center py-8">
+                          <div className="animate-spin rounded-full h-8 w-8 border-4 border-purple-600 border-t-transparent"></div>
+                        </div>
+                      ) : (
+                        <div
+                          ref={sliderRef}
+                          className="overflow-x-auto scrollbar-hide flex gap-4 mb-6"
+                        >
+                          <CourseSlider courses={relatedCourses as unknown as any[]} />
+                        </div>
+                      )}
                     </div>
-                  ))}
+                  )}
                 </div>
               )}
               {activeTab === "Отзывы" && (
-                <div className="bg-white rounded-2xl px-6 py-4 flex flex-col gap-2">
-                  <div className="font-bold text-[#302A3A] text-[15px] mb-4">
-                    ОТЗЫВЫ УЧЕНИКОВ
+                <div>
+                  <div className="bg-white rounded-2xl px-6 py-4 flex flex-col gap-2">
+                    <div className="font-bold text-[#302A3A] text-[15px] mb-4">
+                      ОТЗЫВЫ УЧЕНИКОВ
+                    </div>
+                    <div className="text-[#A9A6B4]">
+                      Пока нет отзывов
+                    </div>
                   </div>
-                  <div className="text-[#A9A6B4]">
-                    Пока нет отзывов
-                  </div>
+                  
+                  {/* Related Courses Section */}
+                  {relatedCourses.length > 0 && (
+                    <div className="mt-8">
+                      <div className="flex items-center justify-between md:mb-[10px]">
+                        <h2 className="text-2xl font-bold text-[#302A3A] mb-6">
+                          Похожие курсы
+                        </h2>
+                        <SliderArrows
+                          onScrollLeft={scrollLeft}
+                          onScrollRight={scrollRight}
+                        />
+                      </div>
+                      
+                      {relatedLoading ? (
+                        <div className="flex justify-center py-8">
+                          <div className="animate-spin rounded-full h-8 w-8 border-4 border-purple-600 border-t-transparent"></div>
+                        </div>
+                      ) : (
+                        <div
+                          ref={sliderRef}
+                          className="overflow-x-auto scrollbar-hide flex gap-4 mb-6"
+                        >
+                          <CourseSlider courses={relatedCourses as unknown as any[]} />
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
               )}
             </div>
+            
           </main>
+          
         </div>
+       
       </div>
+      <Footer blogBg={false} allCourseBg={false} />
     </>
   );
 } 
