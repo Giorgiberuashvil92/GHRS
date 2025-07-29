@@ -110,7 +110,7 @@ const WorksSlider: React.FC<WorksSliderProps> = ({
                 </p>
               </div>
               <div className="flex items-center justify-end">
-                <span className="px-5 py-3 bg-[#D4BAFC] rounded-lg text-white text-[18px] leading-[100%] font-bold mb-8 mr-8">
+                <span className="px-5 py-3 bg-[#D4BAFC] rounded-lg text-white text-[18px] leading-[100%] font-bold mb-8 mr-8 mt-6">
                   {work.monthlyPrice}₾/{t("common.month")}
                 </span>
               </div>

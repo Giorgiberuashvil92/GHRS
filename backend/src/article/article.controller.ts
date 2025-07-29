@@ -72,17 +72,18 @@ export class ArticleController {
         author: JSON.parse(createArticleDto.author),
         tableOfContents: createArticleDto.tableOfContents ? JSON.parse(createArticleDto.tableOfContents) : [],
         tags: createArticleDto.tags ? JSON.parse(createArticleDto.tags) : [],
+        categoryId: createArticleDto.categoryId ? JSON.parse(createArticleDto.categoryId) : [],
+        featuredImages: createArticleDto.featuredImages ? JSON.parse(createArticleDto.featuredImages) : []
       };
 
-      let featuredImages: string[] = [];
+      let featuredImages = parsedData.featuredImages || [];
 
       // Upload images to Cloudinary if provided
       if (files && files.length > 0) {
-        
         const uploadPromises = files.map(file => this.uploadToCloudinary(file, 'image'));
         const uploadResults = await Promise.all(uploadPromises);
-        
-        featuredImages = uploadResults.map((result: any) => result.secure_url);
+        const newImages = uploadResults.map((result: any) => result.secure_url);
+        featuredImages = [...featuredImages, ...newImages];
       }
 
       const articleData = {
@@ -90,7 +91,9 @@ export class ArticleController {
         featuredImages,
       };
 
+      console.log('Creating article with data:', articleData);
       const result = await this.articleService.create(articleData);
+      console.log('Created article result:', result);
       return result;
     } catch (error) {
       console.error('❌ Error in create article controller:', error);
@@ -155,27 +158,31 @@ export class ArticleController {
       if (updateArticleDto.author) parsedData.author = JSON.parse(updateArticleDto.author);
       if (updateArticleDto.tableOfContents) parsedData.tableOfContents = JSON.parse(updateArticleDto.tableOfContents);
       if (updateArticleDto.tags) parsedData.tags = JSON.parse(updateArticleDto.tags);
+      if (updateArticleDto.categoryId) parsedData.categoryId = JSON.parse(updateArticleDto.categoryId);
+      if (updateArticleDto.featuredImages) parsedData.featuredImages = JSON.parse(updateArticleDto.featuredImages);
       
       // Copy other simple fields
-      ['categoryId', 'readTime', 'isPublished', 'isFeatured', 'isActive', 'sortOrder'].forEach(field => {
+      ['readTime', 'isPublished', 'isFeatured', 'isActive', 'sortOrder'].forEach(field => {
         if (updateArticleDto[field] !== undefined) {
           parsedData[field] = updateArticleDto[field];
         }
       });
 
+      let featuredImages = parsedData.featuredImages || [];
+
       // Upload new images if provided
       if (files && files.length > 0) {
-        
         const uploadPromises = files.map(file => this.uploadToCloudinary(file, 'image'));
         const uploadResults = await Promise.all(uploadPromises);
-        
         const newImages = uploadResults.map((result: any) => result.secure_url);
-        
-        // Merge with existing images or replace them
-        parsedData.featuredImages = newImages;
+        featuredImages = [...featuredImages, ...newImages];
       }
 
+      parsedData.featuredImages = featuredImages;
+
+      console.log('Updating article with data:', parsedData);
       const result = await this.articleService.update(id, parsedData);
+      console.log('Updated article result:', result);
       return result;
     } catch (error) {
       console.error('❌ Error in update article controller:', error);

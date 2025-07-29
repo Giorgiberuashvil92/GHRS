@@ -32,6 +32,7 @@ interface Course {
   instructor?: string;
   duration?: string;
   level?: "beginner" | "intermediate" | "advanced";
+  shortDescription?: string;
 }
 
 interface CourseSliderProps {
@@ -129,8 +130,9 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
   const transformedCourses: Course[] = courses.map((course) => ({
     id: course._id || course.id.toString(),
     title: getLocalizedContent(course.title),
-    description: getLocalizedContent(course.shortDescription) || getLocalizedContent(course.description),
-    price: `${course.price} ${course.currency}`,
+    description: getLocalizedContent(course.description),
+    shortDescription: getLocalizedContent(course.shortDescription),
+    price: `${course.price}${language === "ka" ? " ₾" : language === "ru" ? " ₽" : " $"}`,
     image: course.thumbnail || "/assets/images/course.png",
     category: course.category ? {
       id: course.category.id.toString(),
@@ -264,36 +266,42 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
   );
 };
 
-const CourseCard = ({ course }: { course: Course }) => (
-  <Link
-    href={`/singleCourse/${course.id}`}
-    className="block w-full transition-transform duration-300 hover:scale-[1.02]"
-  >
-    <div className="bg-white rounded-[20px] p-1.5 pb-4 w-full">
-      <div className="h-[418px]">     
-        <Image
-        src={course.image}
-        width={674}
-        height={249}
-        alt={`${course.title} course image`}
-        className="mb-5 w-full h-[233px] object-cover rounded-[16px]"
-      />
-      <h5 className="text-[#3D334A] px-4 md:text-[20px] mb-2 mt-4 md:mb-5 leading-[120%]">
-        {course.title}
-      </h5>
-      <p className="text-[#846FA0] px-4 text-[14px] mb-[14px] leading-[120%]">
-        {course.instructor
-          ? `Преподаватель: ${course.instructor}`
-          : "С советами по безопасности, которым нужно следовать до и после перелома Кристен Гасник"}
-      </p>
-      <div className="w-full flex justify-end items-end pr-4 md:mt-5">
-        <button className="bg-[#D4BAFC] py-[5px] px-4 rounded-[3px] md:mt-[19px] md:rounded-[10px] text-[12px] md:text-[18px] leading-[100%] text-white">
-          {course.price} RUB
-        </button>
+const CourseCard = ({ course }: { course: Course }) => {
+  const truncateText = (text: string, maxLength: number = 100) => {
+    const cleanText = text.trim().replace(/\s+/g, ' ');
+    if (cleanText.length <= maxLength) return cleanText;
+    return cleanText.substring(0, maxLength) + '...';
+  };
+
+  return (
+    <Link
+      href={`/singleCourse/${course.id}`}
+      className="block w-full transition-transform duration-300 hover:scale-[1.02]"
+    >
+      <div className="bg-white rounded-[20px] p-1.5 pb-4 w-full">
+        <div className="h-[418px]">     
+          <Image
+            src={course.image}
+            width={674}
+            height={249}
+            alt={`${course.title} course image`}
+            className="mb-5 w-full h-[233px] object-cover rounded-[16px]"
+          />
+          <h5 className="text-[#3D334A] px-4 md:text-[20px] mb-2 mt-4 md:mb-5 leading-[120%]">
+            {course.title}
+          </h5>
+          <p className="text-[#846FA0] px-4 text-[14px] mb-[14px] leading-[120%] line-clamp-1">
+            {truncateText(course.shortDescription || course.description)}
+          </p>
+          <div className="w-full flex justify-end items-end pr-4 md:mt-5">
+            <button className="bg-[#D4BAFC] py-[5px] px-4 rounded-[3px] md:mt-[19px] md:rounded-[10px] text-[12px] md:text-[18px] leading-[100%] text-white">
+              {course.price}
+            </button>
+          </div>
+        </div>
       </div>
-      </div>
-    </div>
-  </Link>
-);
+    </Link>
+  );
+};
 
 export default CourseSlider;

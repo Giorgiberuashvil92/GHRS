@@ -10,7 +10,8 @@
     "login": "Login",
     "register": "Register",
     "all_complexes": "All Complexes",
-    "sets": "Sets"
+    "sets": "Sets",
+    "rightArrow": "→"
   },
   "buttons": {
     "subscribe": "Subscribe",
@@ -20,6 +21,7 @@
     "show_all": "View All",
     "send_request": "Send Request",
     "take_test": "Take Test",
+    "take_survey": "Take Survey",
     "continue": "Continue",
     "back": "Back",
     "show_more": "Show More"
@@ -51,9 +53,25 @@
     "loading_exercises": "Loading exercises...",
     "exercises_error": "Error loading exercises",
     "set_not_found": "Set not found",
-    "see_all": "See All"
+    "see_all": "See All",
+    "article": "article",
+    "articles": "articles"
   },
   "sections": {
     "professional": "Professional"
+  },
+  "works": {
+    "all_sets": "All Sets ({{count}})",
+    "title": "Sets"
+  },
+  "blog": {
+    "see_all": "All Blogs",
+    "articles_count": "{{count}} articles",
+    "articles_count_one": "1 article",
+    "articles_count_other": "{{count}} articles",
+    "all_articles": "All Articles",
+    "read_more": "Read More",
+    "share": "Share",
+    "bookmark": "Bookmark"
   }
 } 

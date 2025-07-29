@@ -53,8 +53,8 @@ export class Article {
   @Prop({ type: Types.ObjectId, ref: 'Blog', required: true })
   blogId: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: 'Category', required: true })
-  categoryId: Types.ObjectId;
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Category' }], required: true })
+  categoryId: Types.ObjectId[];
 
   @Prop({ type: [String], default: [] })
   featuredImages: string[];

@@ -47,6 +47,31 @@ const getNestedValue = (obj: Record<string, unknown>, path: string): string => {
   );
 };
 
+// Deep merge helper to preserve nested keys when combining translation files
+const deepMerge = (
+  target: Record<string, unknown>,
+  source: Record<string, unknown>
+): Record<string, unknown> => {
+  const output = { ...target };
+  Object.keys(source).forEach((key) => {
+    if (
+      key in target &&
+      typeof target[key] === "object" &&
+      target[key] !== null &&
+      typeof source[key] === "object" &&
+      source[key] !== null
+    ) {
+      output[key] = deepMerge(
+        target[key] as Record<string, unknown>,
+        source[key] as Record<string, unknown>
+      );
+    } else {
+      output[key] = source[key];
+    }
+  });
+  return output;
+};
+
 export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
   const [locale, setLocaleState] = useState<Locale>("ka");
   const [translationData, setTranslationData] = useState<
@@ -74,15 +99,22 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
             ),
           ]);
 
-        setTranslationData({
-          ...common,
-          ...home,
-          ...advantages,
-          ...subscribe,
-          ...sets,
-          ...header,
-          ...components,
-        });
+        const translationsArray = [
+          common,
+          home,
+          advantages,
+          subscribe,
+          sets,
+          header,
+          components,
+        ];
+
+        const mergedTranslations = translationsArray.reduce<Record<string, unknown>>(
+          (acc, curr) => deepMerge(acc, curr as Record<string, unknown>),
+          {} as Record<string, unknown>
+        );
+
+        setTranslationData(mergedTranslations);
       } catch (error) {
         console.error("Failed to load translations:", error);
       }

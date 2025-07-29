@@ -10,7 +10,8 @@
     "login": "შესვლა",
     "register": "რეგისტრაცია",
     "all_complexes": "ყველა კომპლექსი",
-    "sets": "კომპლექსები"
+    "sets": "კომპლექსები და სეტები",
+    "rightArrow": "→"
   },
   "buttons": {
     "subscribe": "გამოწერა",
@@ -20,6 +21,7 @@
     "show_all": "ყველას ნახვა",
     "send_request": "განაცხადის გაგზავნა",
     "take_test": "ტესტირების გავლა",
+    "take_survey": "გამოკითხვის გავლა",
     "continue": "გაგრძელება",
     "back": "უკან",
     "show_more": "მეტის ნახვა"
@@ -51,9 +53,25 @@
     "loading_exercises": "ვარჯიშები იტვირთება...",
     "exercises_error": "ვარჯიშების ჩატვირთვის შეცდომა",
     "set_not_found": "სეტი ვერ მოიძებნა",
-    "see_all": "ყველას ნახვა"
+    "see_all": "ყველას ნახვა",
+    "article": "სტატია",
+    "articles": "სტატია"
   },
   "sections": {
     "professional": "პროფესიონალური"
+  },
+  "works": {
+    "all_sets": "ყველა სეტი ({{count}})",
+    "title": "კომპლექსები და სეტები"
+  },
+  "blog": {
+    "see_all": "ყველა ბლოგი",
+    "articles_count": "{{count}} სტატია",
+    "articles_count_one": "1 სტატია",
+    "articles_count_other": "{{count}} სტატია",
+    "all_articles": "ყველა სტატია",
+    "read_more": "ვრცლად",
+    "share": "გაზიარება",
+    "bookmark": "შენახვა"
   }
 } 
