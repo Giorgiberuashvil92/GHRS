@@ -10,26 +10,26 @@ export const Footer: FC = () => {
   return (
     <footer className="bg-[#F9F7FE] rounded-[20px]  px-8 pt-8 pb-4 text-[#3D334A]">
       {/* კონსულტაციის ფორმა */}
-      <div className="mb-8">
-        <h2 className="h1-bowler text-[#3D334A] mb-4">
+      <div className="mb-8 px-16">
+        <h2 className="text-4xl font-bold text-[#3D334A] mb-8">
           ОСТАВЬТЕ ЗАЯВКУ ДЛЯ{" "}
           <span className="text-[#B6A3D9]">КОНСУЛЬТАЦИИ:</span>
         </h2>
-        <form className="flex flex-col md:flex-row gap-4 mb-2">
+        <form className="flex flex-col md:flex-row gap-4 mb-8">
           <input
             type="text"
             placeholder="Имя"
-            className="flex-1 rounded-lg px-4 py-3 bg-white/80 outline-none border border-[#E0D6F9] focus:ring-2 focus:ring-[#B6A3D9] transition"
+            className="flex-1 rounded-lg px-4 py-3 bg-white/80 outline-none focus:ring-2 focus:ring-[#B6A3D9] transition"
           />
           <input
             type="text"
             placeholder="Телефон"
-            className="flex-1 rounded-lg px-4 py-3 bg-white/80 outline-none border border-[#E0D6F9] focus:ring-2 focus:ring-[#B6A3D9] transition"
+            className="flex-1 rounded-lg px-4 py-3 bg-white/80 outline-none focus:ring-2 focus:ring-[#B6A3D9] transition"
           />
           <input
             type="email"
             placeholder="Почта"
-            className="flex-1 rounded-lg px-4 py-3 bg-white/80 outline-none border border-[#E0D6F9] focus:ring-2 focus:ring-[#B6A3D9] transition"
+            className="flex-1 rounded-lg px-4 py-3 bg-white/80 outline-none focus:ring-2 focus:ring-[#B6A3D9] transition"
           />
         </form>
         <div className="flex flex-col md:flex-row items-center gap-4">

@@ -11,7 +11,8 @@ import { useAllSets } from "../hooks/useSets";
 // import { useAllExercises } from "../hooks/useExercises";
 import { useI18n } from "../context/I18nContext";
 import Section from "../components/Section";
-// import { Footer } from "../components/Footer";
+import { IoIosArrowDown } from "react-icons/io";
+import { Footer } from "../components/Footer";
 
 const AllComplex = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -35,7 +36,13 @@ const AllComplex = () => {
       field.ka ||
       ""
     );
-
+    // return (
+    //   field[locale as keyof typeof field] ||
+    //   field.ru ||
+    //   field.en ||
+    //   field.ka ||
+    //   ""
+    // );
   };
 
   useEffect(() => {
@@ -53,11 +60,55 @@ const AllComplex = () => {
     };
   }, []);
 
+  const popularSets = sets.slice(0, 6);
+  const orthopedicSets = sets.filter(
+    (set) =>
+      set.categoryId &&
+      categories.some(
+        (cat) =>
+          cat._id === set.categoryId &&
+          getLocalizedText(cat.name)
+            .toLowerCase()
+            .includes(
+              locale === "ka"
+                ? "ორთოპედ"
+                : locale === "en"
+                ? "orthoped"
+                : "ортопед"
+            )
+      )
+  );
 
+  const allCategoriesText = {
+    ka: "ყველა კატეგორია",
+    en: "All Categories",
+    ru: "Все категории",
+  };
 
-
-
-
+  const realCategories = [
+    {
+      id: "all",
+      title:
+        allCategoriesText[locale as keyof typeof allCategoriesText] ||
+        allCategoriesText.ru,
+      active: true,
+    },
+    {
+      id: "all",
+      title:
+        allCategoriesText[locale as keyof typeof allCategoriesText] ||
+        allCategoriesText.ru,
+      active: true,
+    },
+    ...categories.map((cat) => ({
+      ...categories.map((cat) => ({
+        id: cat._id,
+        title: getLocalizedText(cat.name),
+        active: false,
+      })),
+      active: false,
+    })),
+  ];
 
   const loadingText = {
     ka: "იტვირთება...",
@@ -115,7 +166,11 @@ const AllComplex = () => {
 
   return (
     <div className="bg-[#F9F7FE]">
-      <DesktopNavbar menuItems={defaultMenuItems} blogBg={false} allCourseBg={false} />
+      <DesktopNavbar
+        menuItems={defaultMenuItems}
+        blogBg={false}
+        allCourseBg={false}
+      />
       <MobileNavbar />
 
       <h1 className="md:text-[64px] md:px-10 px-5 leading-[100%] tracking-[-3%] text-[#3D334A]">
@@ -126,7 +181,7 @@ const AllComplex = () => {
       </h1>
 
       <div className="bg-white md:mx-5 md:my-10 md:rounded-[30px]">
-        <Category bgColor="white" customRounded="" customMx="" />
+        <Category bgColor="white" customRounded={""} customMx={""} />
 
         {/* Subcategories section like in categories/[categoryId]/page.tsx */}
       </div>
@@ -141,7 +196,6 @@ const AllComplex = () => {
           />
         </div>
 
-
         <div
           ref={dropdownRef}
           className="w-full px-10 min-h-[64px] bg-white rounded-[40px] mb-6 p-4 flex flex-wrap gap-2 md:gap-3 items-center"
@@ -152,9 +206,9 @@ const AllComplex = () => {
             return (
               <div key={cat._id} className="relative">
                 <button
-                  className={`text-[#3D334A] text-[13px] md:text-[15px] font-medium rounded-[8px] px-3 md:px-5 h-[33px] transition-colors whitespace-nowrap flex items-center gap-1
+                  className={`text-[#3D334A] text-[13px] md:text-lg tracking-wide font-medium rounded-[8px] px-3 md:px-4 py-3 h-[33px] transition-colors whitespace-nowrap flex items-center gap-1
                   ${idx === 0 ? "bg-[#E9DDFB] font-bold" : "bg-[#F9F7FE]"}
-                  ${cat.isActive ? "shadow-sm" : ""}
+                  
                   ${isOpen ? "ring-2 ring-[#D4BAFC] bg-[#F3D57F]" : ""}
                 `}
                   onClick={() => {
@@ -167,11 +221,11 @@ const AllComplex = () => {
                   {getLocalizedText(cat.name)}
                   {isDropdown && (
                     <span
-                      className={`ml-1 text-xs transition-transform ${
+                      className={`ml-1 text-sm  transition-transform p-1 bg-[#E9D9FF] rounded-sm ${
                         isOpen ? "rotate-180" : ""
                       }`}
                     >
-                      ▼
+                      <IoIosArrowDown />
                     </span>
                   )}
                 </button>
@@ -195,7 +249,6 @@ const AllComplex = () => {
       </div>
 
       <Section border={1} borderColor="#D4BAFC" />
-      <Section border={1} borderColor="#D4BAFC" />
 
       {/* <Works title={"Sets"} sets={sets} border={1} borderColor="#D4BAFC" /> */}
       {/* <Works title={"Популярные комплексы "} />
@@ -212,10 +265,23 @@ const AllComplex = () => {
         }
         sets={sets.slice(0, 8)}
         fromMain={true}
-        customMargin="20px"
-        customBorderRadius=""
-        seeAll={true}
-        scrollable={true}
+        customMargin={""}
+        customBorderRadius={""}
+        seeAll={false}
+        scrollable={false}
+      />
+      <Works
+        title={
+          pageTexts.sections.popularComplexes[
+            locale as keyof typeof pageTexts.sections.popularComplexes
+          ] || pageTexts.sections.popularComplexes.ru
+        }
+        sets={sets.slice(0, 8)}
+        fromMain={true}
+        customMargin={""}
+        customBorderRadius={""}
+        seeAll={false}
+        scrollable={false}
       />
       {/* Works components with real data */}
       {/* <Works
@@ -249,6 +315,7 @@ const AllComplex = () => {
         sets={sets.slice(-6)}
         fromMain={true}
       /> */}
+      <Footer />
     </div>
   );
 };
