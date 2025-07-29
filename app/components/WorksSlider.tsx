@@ -72,7 +72,7 @@ const WorksSlider: React.FC<WorksSliderProps> = ({
 
       <div
         id="works-slider"
-        className="overflow-x-auto scrollbar-hide mb-10"
+        className="overflow-x-auto overflow-y-hidden scrollbar-hide mb-10 py-4"
       >
         <div className="flex gap-4">
           {works.map((work) => (
@@ -87,27 +87,27 @@ const WorksSlider: React.FC<WorksSliderProps> = ({
                   ? `/categories/section?categoryId=${work.categoryId || ''}&subcategoryId=${work.subcategoryId || ''}`
                   : `/sets/${work.id}`
               }
-              className="bg-white p-5 w-[335px] h-[493px] flex-shrink-0 rounded-[20px] hover:shadow-lg transition-shadow flex flex-col"
+              className="bg-white  w-[400px] h-[493px] flex-shrink-0 rounded-[20px] hover:shadow-lg transition-shadow flex flex-col"
             >
               <div className="flex-grow">
                 <Image
                   src={work.image}
                   width={319}
-                  height={212}
+                  height={250}
                   alt={work.title}
-                  className="w-full h-[212px] object-cover rounded mb-6"
+                  className="w-full h-[250px] object-cover rounded-2xl mb-6"
                 />
-                <div className="mb-2.5">
-                  <span className="px-2 py-1 bg-[#D4BAFC] inline-block rounded-[6px] text-[#3D334A] text-[14px] leading-[90%] uppercase truncate max-w-[120px]">
+                <div className="mb-2.5 mx-4">
+                  <span className="p-3 bg-[#E9DFF6] inline-block rounded-[6px] text-[#3D334A] text-[14px] font-bold leading-[90%] uppercase truncate max-w-[120px]">
                     {work.categoryName}
                   </span>
                 </div>
-                <p className="line-clamp-4 font-[Pt] text-[#3D334A] leading-[120%] text-[24px] font-bold mb-4">
+                <p className="line-clamp-4 font-[Pt] text-[#3D334A] leading-[120%] text-lg font-black  mx-4">
                   {work.description}  
                 </p>
               </div>
               <div className="flex items-center justify-end">
-                <span className="p-2 bg-[#D4BAFC] rounded-[6px] text-white text-[18px] leading-[100%] font-bold">
+                <span className="px-5 py-3 bg-[#D4BAFC] rounded-lg text-white text-[18px] leading-[100%] font-bold mb-8 mr-8">
                   {work.monthlyPrice}₾/თვე
                 </span>
               </div>

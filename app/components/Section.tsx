@@ -109,7 +109,7 @@ const Section = ({
         {cardData.map((card) => (
           <div
             key={card.id}
-            className="min-w-[558px] h-[283px] relative bg-white p-2 rounded-[20px] shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+            className="min-w-[558px] h-[283px] relative bg-white p-2 rounded-[20px] hover:shadow-md transition-shadow cursor-pointer my-2"
           >
             <div className="absolute top-1 z-10">
               <CustomBadge text={card.category} margin="m-3" />
