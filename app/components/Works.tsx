@@ -84,13 +84,6 @@ const Works: React.FC<WorksProps> = ({
 }) => {
   const { t, locale } = useI18n();
 
-  console.log("🎯 Works component data:", {
-    title,
-    itemsCount: items.length,
-    exercisesCount: exercises.length,
-    setsCount: sets.length,
-    fromMain,
-  });
 
   // Helper to get localized string from object or string
   const getLocalized = (value: unknown): string => {
@@ -121,28 +114,23 @@ const Works: React.FC<WorksProps> = ({
 
   // Helper function to get valid thumbnail URL
   const getValidThumbnailUrl = (url: string | undefined): string => {
-    console.log("🖼️ getValidThumbnailUrl input:", url);
 
     // თუ URL არ არის, ვიყენებთ default-ს
     if (!url) {
-      console.log("🖼️ No URL provided, using default");
       return "/assets/images/workMan.png";
     }
 
     // base64 images-ის support
     if (url.startsWith("data:image")) {
-      console.log("🖼️ Base64 image detected, using it");
       return url; // base64 image-ს ვიყენებთ
     }
 
     // თუ ვალიდური URL-ია
     if (url.startsWith("http") || url.startsWith("/")) {
-      console.log("🖼️ Valid URL detected:", url);
       return url;
     }
 
     // სხვა შემთხვევაში default
-    console.log("🖼️ Invalid URL, using default");
     return "/assets/images/workMan.png";
   };
 
@@ -197,15 +185,7 @@ const Works: React.FC<WorksProps> = ({
       categoryId: set.categoryId || "",
     }));
   } else if (sets.length > 0) {
-    console.log("🎯 Processing sets data:", sets);
     works = sets.map((set) => {
-      console.log("🎯 Processing set:", {
-        id: set._id,
-        categoryId: set.categoryId,
-        name: set.name,
-        thumbnailImage: set.thumbnailImage,
-      });
-
       return {
         id: set._id,
         title: getLocalized(set.name),

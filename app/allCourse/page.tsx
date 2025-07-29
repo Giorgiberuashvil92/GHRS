@@ -91,9 +91,7 @@ const AllCourse = () => {
   };
 
   const handleCourseClick = (courseId: string) => {
-    console.log('Clicking course with ID:', courseId);
     const url = `/singleCourse/${courseId}`;
-    console.log('Navigating to:', url);
     router.push(url);
   };
 

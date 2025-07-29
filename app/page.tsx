@@ -11,28 +11,20 @@ import MarketPlace from "./components/MarketPlace";
 import Blog from "./components/Blog";
 import Download from "./components/Download";
 import Reviews from "./components/Reviews";
-import { useCategories } from "./hooks/useCategories";
-import { useAllExercises } from "./hooks/useExercises";
+// import { useCategories } from "./hooks/useCategories";
+// import { useAllExercises } from "./hooks/useExercises";
 import { useAllSets } from "./hooks/useSets";
 import { Footer } from "./components/Footer";
 // import { useCategoryComplete } from "./hooks/useCategoryComplete";
 // import { useI18n } from "./context/I18nContext";
 
 const Home = () => {
-  const { categories } = useCategories();
-  const { exercises } = useAllExercises();
   // const { categoryComplete } = useCategoryComplete();
   const { sets } = useAllSets();
-  console.log(sets, "Beros setebi");
+  // const { categories } = useCategories();
+  // const { exercises } = useAllExercises();
 
   // const { t } = useI18n();
-
-  console.log("🏠 Home page data:", {
-    setsCount: sets.length,
-    sets: sets.slice(0, 2), // პირველი 2 set-ის ნახვა
-    categoriesCount: categories.length,
-    exercisesCount: exercises.length,
-  });
 
   return (
     <div className="w-full min-h-screen overflow-x-hidden">

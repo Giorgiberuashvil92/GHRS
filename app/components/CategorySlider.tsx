@@ -1,6 +1,5 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import React, {
   useState,
@@ -76,16 +75,6 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
 
     
 
-    console.log("🔍 Categories Data:", {
-      categories,
-      loading,
-      error,
-      firstCategory: categories[0],
-      locale,
-    
-    });
-
-    console.log("✅ Subcategories of first category:", categories[0]?.subcategories);
 
 
     useImperativeHandle(ref, () => sliderRef.current as HTMLDivElement);
@@ -171,14 +160,6 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
           {categories.map((category, index) => {
             const categoryTitle = getLocalizedText(category.name, locale);
 
-            console.log("🎯 Rendering category:", {
-              _id: category._id,
-              name: category.name,
-              title: categoryTitle,
-              locale,
-              sortOrder: category.sortOrder,
-            });
-
             const backgroundImageUrl = backgrounds[index % backgrounds.length];
             const categoryImageUrl = getValidImageUrl(
               category.image,
@@ -196,11 +177,7 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
                 <Link
                   href={`/categories/${category._id}`}
                   onClick={(e) => {
-                    console.log("🖱️ Category clicked:", {
-                      _id: category._id,
-                      title: categoryTitle,
-                      name: category.name,
-                    });
+                   
                     handleCategoryClick(category._id, categoryTitle, e);
                   }}
                   className="group cursor-pointer transform transition-transform duration-300"

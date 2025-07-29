@@ -8,20 +8,20 @@ import { CiSearch } from "react-icons/ci";
 import Works from "../components/Works";
 import { useCategories } from "../hooks/useCategories";
 import { useAllSets } from "../hooks/useSets";
-import { useAllExercises } from "../hooks/useExercises";
+// import { useAllExercises } from "../hooks/useExercises";
 import { useI18n } from "../context/I18nContext";
 import Section from "../components/Section";
-import { Footer } from "../components/Footer";
+// import { Footer } from "../components/Footer";
 
 const AllComplex = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { locale } = useI18n();
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
-  const [visibleWorksCount, setVisibleWorksCount] = useState(1); // რამდენი Works გამოჩნდეს
+  // const [visibleWorksCount, setVisibleWorksCount] = useState(1); // რამდენი Works გამოჩნდეს
 
   const { categories, loading: categoriesLoading } = useCategories();
   const { sets, loading: setsLoading } = useAllSets();
-  const { exercises, loading: exercisesLoading } = useAllExercises();
+  // const { exercises, loading: exercisesLoading } = useAllExercises();
 
   // Helper to get localized text
   const getLocalizedText = (
@@ -35,13 +35,7 @@ const AllComplex = () => {
       field.ka ||
       ""
     );
-    return (
-      field[locale as keyof typeof field] ||
-      field.ru ||
-      field.en ||
-      field.ka ||
-      ""
-    );
+
   };
 
   useEffect(() => {
@@ -59,56 +53,11 @@ const AllComplex = () => {
     };
   }, []);
 
-  const popularSets = sets.slice(0, 6);
-  const orthopedicSets = sets.filter(
-    (set) =>
-      set.categoryId &&
-      categories.some(
-        (cat) =>
-          cat._id === set.categoryId &&
-          getLocalizedText(cat.name)
-            .toLowerCase()
-            .includes(
-              locale === "ka"
-                ? "ორთოპედ"
-                : locale === "en"
-                ? "orthoped"
-                : "ортопед"
-            )
-      )
-  );
 
-  const allCategoriesText = {
-    ka: "ყველა კატეგორია",
-    en: "All Categories",
-    ru: "Все категории",
-    en: "All Categories",
-    ru: "Все категории",
-  };
 
-  const realCategories = [
-    {
-      id: "all",
-      title:
-        allCategoriesText[locale as keyof typeof allCategoriesText] ||
-        allCategoriesText.ru,
-      active: true,
-    {
-      id: "all",
-      title:
-        allCategoriesText[locale as keyof typeof allCategoriesText] ||
-        allCategoriesText.ru,
-      active: true,
-    },
-    ...categories.map((cat) => ({
-    ...categories.map((cat) => ({
-      id: cat._id,
-      title: getLocalizedText(cat.name),
-      active: false,
-    })),
-      active: false,
-    })),
-  ];
+
+
+
 
   const loadingText = {
     ka: "იტვირთება...",
@@ -121,12 +70,10 @@ const AllComplex = () => {
       ka: "ყველა კომპლექსი",
       en: "All Complexes",
       ru: "Все комплексы",
-      ru: "Все комплексы",
     },
     searchPlaceholder: {
       ka: "შეიყვანეთ ვარჯიშის სახელი",
       en: "Enter exercise name",
-      ru: "Введите название упражнения",
       ru: "Введите название упражнения",
     },
     sections: {
@@ -134,19 +81,15 @@ const AllComplex = () => {
         ka: "პოპულარული სექციები",
         en: "Popular Sections",
         ru: "Популярные разделы",
-        ru: "Популярные разделы",
       },
       popularComplexes: {
         ka: "პოპულარული კომპლექსები",
-        en: "Popular Complexes",
-        ru: "Популярные комплексы",
         en: "Popular Complexes",
         ru: "Популярные комплексы",
       },
       orthopedics: {
         ka: "ორთოპედია",
         en: "Orthopedics",
-        ru: "Ортопедия",
         ru: "Ортопедия",
       },
       recommended: {
@@ -183,7 +126,7 @@ const AllComplex = () => {
       </h1>
 
       <div className="bg-white md:mx-5 md:my-10 md:rounded-[30px]">
-        <Category bgColor="white" />
+        <Category bgColor="white" customRounded="" customMx="" />
 
         {/* Subcategories section like in categories/[categoryId]/page.tsx */}
       </div>
@@ -269,6 +212,10 @@ const AllComplex = () => {
         }
         sets={sets.slice(0, 8)}
         fromMain={true}
+        customMargin="20px"
+        customBorderRadius=""
+        seeAll={true}
+        scrollable={true}
       />
       {/* Works components with real data */}
       {/* <Works
