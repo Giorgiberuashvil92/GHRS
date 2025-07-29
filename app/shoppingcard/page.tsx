@@ -6,6 +6,9 @@ import { defaultMenuItems } from "../components/Header";
 import Image from "next/image";
 import PayPalButton from '../components/PayPalButton';
 import type { PaymentResponse } from '../components/PayPalButton';
+import Works from "../components/Works";
+import { Footer } from "../components/Footer";
+import { useAllSets } from "../hooks/useSets";
 
 const subscriptionOptions = [
   { label: "1 МЕСЯЦ", value: 1 },
@@ -50,6 +53,9 @@ const ShoppingCard = () => {
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const [showPayPal, setShowPayPal] = useState(false);
 
+  const { sets } = useAllSets();
+
+  
   useEffect(() => {
     try {
       // Load cart from localStorage
@@ -282,13 +288,14 @@ const ShoppingCard = () => {
                   amount={cart.reduce((sum, i) => sum + i.price, 0)}
                   currency="RUB"
                   onSuccess={handlePaymentSuccess}
-                  onError={handlePaymentError}
-                />
+                  onError={handlePaymentError} setId={""}                />
               </div>
             )}
           </div>
         </div>
       </div>
+      <Works title={"Шейный отдел позвоночника"} customMargin={""} customBorderRadius={""} seeAll={false} scrollable={false} sets={sets} />
+      <Footer />
     </div>
   );
 };

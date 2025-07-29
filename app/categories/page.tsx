@@ -7,6 +7,7 @@ import ReviewSlider from "../components/ReviewSlider";
 import Professional from "../components/Professional";
 import Blog from "../components/Blog";
 import Section from "../components/Section";
+import { Footer } from "../components/Footer";
 export default function CategoriesPage() {
   const homePageWorks = [
     {
@@ -62,7 +63,7 @@ export default function CategoriesPage() {
       <div className="md:pt-[100px] pt-[400px]">
         {/*  */}
         <Section border={0} borderColor="none" />
-        <WorksSlider title="Комплексы" works={homePageWorks} fromMain={false} />
+        <WorksSlider title="Комплексы" works={homePageWorks} fromMain={false} seeAll={false} />
         <div className="md:my-10">
           <Subscribe
             backgroundImage="/assets/images/categorySliderBgs/bg4.jpg"
@@ -78,7 +79,7 @@ export default function CategoriesPage() {
         </div>
         <div className="md:mb-10">
           {" "}
-          <ReviewSlider />
+          <ReviewSlider title="ОТЗЫВЫ О НАС" />
         </div>
         <div
           className="md:mb-10
@@ -89,11 +90,12 @@ export default function CategoriesPage() {
             withBanner={false}
             withSlider={true}
             layoutType="default"
-            title={""}
+            title={"GRS МЕДИА"}
           />
         </div>
-        <Professional withBanner={false} />
+        <Professional withBanner={false} title="GRS Профразвитие" bgColor={"bg-[#F9F7FE]"} withProfText={true} />
       </div>
+      <Footer />
     </div>
   );
 }

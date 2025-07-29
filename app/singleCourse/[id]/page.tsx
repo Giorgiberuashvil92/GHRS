@@ -277,8 +277,8 @@ export default function SingleCourse() {
               </div>
               <div className="text-[#A9A6B4] text-sm">Стоимость курса</div>
             </div>
-            <div className="bg-[#D4BAFC] rounded-2xl flex items-center justify-center px-5 py-3 font-bold text-[#8D7EF3] mb-1 text-lg cursor-pointer hover:bg-[#e2dbff] transition-colors">
-              ПРИОБРЕСТИ КУРС
+            <div className="bg-[url('/assets/images/bluebg.jpg')] bg-cover bg-center h-[48px] rounded-lg flex items-center justify-center px-5 py-3 font-bold text-white duration-300 hover:text-[#8D7EF3] mb-1 text-lg cursor-pointer hover:bg-[#e2dbff] transition-colors">
+              <h2>ПРИОБРЕСТИ КУРС</h2>
             </div>
             <div className="hidden md:flex flex-col gap-4">
               {course.advertisementImage ? (

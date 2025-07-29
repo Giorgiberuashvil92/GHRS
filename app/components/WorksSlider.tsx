@@ -24,6 +24,8 @@ interface WorksSliderProps {
   linkType?: 'sets' | 'complex' | 'section'; // დინამიური ლინკის ტიპი
   categoryData?: any;
   fromMain: boolean
+  seeAll: boolean
+  scrollable: boolean,
 }
 
 const WorksSlider: React.FC<WorksSliderProps> = ({
@@ -31,6 +33,8 @@ const WorksSlider: React.FC<WorksSliderProps> = ({
   works,
   linkType = 'sets', // default არის sets
   fromMain,
+  seeAll = true,
+  scrollable = true
 }) => {
   const scroll = (direction: "left" | "right") => {
     const slider = document.getElementById("works-slider");
@@ -46,15 +50,24 @@ const WorksSlider: React.FC<WorksSliderProps> = ({
   };
 
   return (
-    <div className="md:px-10 px-2 py-2 bg-[#F9F7FE] md:mx-5 md:rounded-[20px]">
+    <div className="md:px-5 px-2 py-2 bg-[#F9F7FE] md:mx-5 md:rounded-[20px]">
       <div className="flex items-center justify-between">
-        <h2 className="text-[20px] md:text-[40px] text-[#3D334A] mb-2.5 md:mb-5">
+        <div className="flex flex-col items-start">
+        <h2 className="text-[20px] md:py-4 md:text-[40px] text-[#3D334A] mb-2.5 md:mb-5">
           {title}
         </h2>
-        <SliderArrows
+       {seeAll && (
+         <span className="text-[#D4BAFC] text-[24px] md:mb-10 leading-[90%] uppercase cursor-pointer hover:text-[#B69EE8] transition-colors">
+         Смотреть все →
+       </span>
+       )}
+        </div>
+        {scrollable && (
+          <SliderArrows
           onScrollLeft={() => scroll("left")}
           onScrollRight={() => scroll("right")}
         />
+        )}
       </div>
 
       <div
@@ -85,16 +98,16 @@ const WorksSlider: React.FC<WorksSliderProps> = ({
                   className="w-full h-[212px] object-cover rounded mb-6"
                 />
                 <div className="mb-2.5">
-                  <span className="px-2 py-1 bg-[#D4BAFC] rounded-[6px] text-[#3D334A] text-[14px] leading-[90%] uppercase truncate max-w-[120px] block">
-                    {/* {work.categoryName} */}
+                  <span className="px-2 py-1 bg-[#D4BAFC] inline-block rounded-[6px] text-[#3D334A] text-[14px] leading-[90%] uppercase truncate max-w-[120px]">
+                    {work.categoryName}
                   </span>
                 </div>
                 <p className="line-clamp-4 font-[Pt] text-[#3D334A] leading-[120%] text-[24px] font-bold mb-4">
-                  {work.description}
+                  {work.description}  
                 </p>
               </div>
               <div className="flex items-center justify-end">
-                <span className="p-2 bg-[#E9DFF6] rounded-[6px] text-[#3D334A] text-[18px] leading-[100%] font-bold">
+                <span className="p-2 bg-[#D4BAFC] rounded-[6px] text-white text-[18px] leading-[100%] font-bold">
                   {work.monthlyPrice}₾/თვე
                 </span>
               </div>

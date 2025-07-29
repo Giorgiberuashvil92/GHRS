@@ -24,16 +24,28 @@ interface Course {
   };
 }
 
-const Professional = ({ withBanner }: { withBanner: boolean }) => {
+const Professional = ({ withBanner, title, bgColor, withProfText }: { withBanner: boolean, title: string, bgColor: string, withProfText: boolean }) => {
   const [courses, setCourses] = useState<Course[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState<boolean>(false);
+  const [canScrollRight, setCanScrollRight] = useState<boolean>(true);
   const { t } = useI18n();
 
   const sliderRef = useRef<HTMLDivElement>(null);
 
+  const checkScrollButtons = (): void => {
+    if (sliderRef.current) {
+      const container = sliderRef.current;
+      setCanScrollLeft(container.scrollLeft > 0);
+      setCanScrollRight(
+        container.scrollLeft < container.scrollWidth - container.clientWidth - 1
+      );
+    }
+  };
+
   useEffect(() => {
-    const fetchCourses = async () => {
+    const fetchCourses = async (): Promise<void> => {
       try {
         setLoading(true);
         const response = await fetch('http://localhost:4000/courses?isPublished=true');
@@ -52,16 +64,42 @@ const Professional = ({ withBanner }: { withBanner: boolean }) => {
     fetchCourses();
   }, []);
 
-  const scrollLeft = () => {
-    sliderRef.current?.scrollBy({ left: -300, behavior: "smooth" });
+  useEffect(() => {
+    const container = sliderRef.current;
+    if (container) {
+      container.addEventListener('scroll', checkScrollButtons);
+      checkScrollButtons(); // Initial check
+      
+      return () => {
+        container.removeEventListener('scroll', checkScrollButtons);
+      };
+    }
+  }, [courses]);
+
+  const scrollLeft = (): void => {
+    if (sliderRef.current) {
+      // Scroll by approximately half of container width
+      const scrollAmount = sliderRef.current.clientWidth / 2;
+      sliderRef.current.scrollBy({ 
+        left: -scrollAmount,
+        behavior: "smooth" 
+      });
+    }
   };
 
-  const scrollRight = () => {
-    sliderRef.current?.scrollBy({ left: 300, behavior: "smooth" });
+  const scrollRight = (): void => {
+    if (sliderRef.current) {
+      // Scroll by approximately half of container width
+      const scrollAmount = sliderRef.current.clientWidth / 2;
+      sliderRef.current.scrollBy({ 
+        left: scrollAmount,
+        behavior: "smooth" 
+      });
+    }
   };
 
   return (
-    <div className="mb-10 md:mx-5 md:rounded-[30px] bg-[#F9F7FE]">
+    <div style={{backgroundColor: bgColor}} className="mb-10 md:mx-5 md:rounded-[30px] ">
       {withBanner && (
         <Banner
           backgroundUrl="/assets/images/bluebg.jpg"
@@ -72,36 +110,36 @@ const Professional = ({ withBanner }: { withBanner: boolean }) => {
         />
       )}
       <div className="md:p-10 px-5">
-        <h1 className="text-[20px] md:mt-10 md:text-[40px] md:tracking-[-3%] text-[#3D334A] leading-[120%] mb-2.5 md:mb-5">
-          {typeof t("professional.title") === "string"
-            ? t("professional.title")
-            : "Professional Development"}
-        </h1>
-        <p className="text-[#846FA0] text-[18px] font-[Pt] font-medium md:max-w-[1320px] md:text-[24px] leading-[120%] md:leading-[100%] mb-5">
-          {typeof t("professional.description") === "string"
-            ? t("professional.description")
-            : ""}
-        </p>
-        <Link
-          className="text-[14px] md:text-[24px] leading-[90%] uppercase text-[#D4BAFC]"
-          href="professional"
-        >
-          {typeof t("professional.learn_more") === "string"
-            ? t("professional.learn_more")
-            : ""}
-        </Link>
-        <hr className="md:mt-10 mt-5 bg-[#D5D1DB] text-[#D5D1DB]" />
-        <div className="bg-[#F9F7FE] mt-4 md:mt-[50px] md:mb-[45px] rounded-2xl">
+        {withProfText && (
+          <div className="">
+          <h1 className="text-[20px] md:mt-10 md:text-[40px] md:tracking-[-3%] text-[#3D334A] leading-[120%] mb-2.5 md:mb-5">
+            {typeof t("professional.title") === "string"
+              ? t("professional.title")
+              : "Professional Development"}
+          </h1>
+          <p className="text-[#3D334A] text-[18px] font-[Pt] font-medium md:max-w-[1320px] md:text-[24px] leading-[120%] md:leading-[120%] mb-5">
+            {typeof t("professional.description") === "string"
+              ? t("professional.description")
+              : ""}
+          </p>
+          <Link
+            className="text-[14px] md:text-[24px] leading-[90%] uppercase text-[#D4BAFC]"
+            href="professional"
+          >
+            {typeof t("professional.learn_more") === "string"
+              ? t("professional.learn_more")
+              : ""}
+          </Link>
+          <hr className="md:mt-10 mt-5 bg-[#D5D1DB] text-[#D5D1DB]" />
+          </div>
+        )}
+        <div style={{backgroundColor: bgColor}} className="bg-[#F9F7FE] mt-4 md:mt-[50px] md:mb-[45px] rounded-2xl">
           <div className="flex items-center justify-between md:mb-[10px]">
             <h1 className="text-[20px] md:text-[40px] md:tracking-[-3%] text-[#3D334A] leading-[120%] mb-2.5 md:mb-5">
               {typeof t("professional.courses.title") === "string"
                 ? t("professional.courses.title")
                 : "Courses"}
             </h1>
-            <SliderArrows
-              onScrollLeft={scrollLeft}
-              onScrollRight={scrollRight}
-            />
           </div>
 
           {loading ? (
@@ -118,17 +156,14 @@ const Professional = ({ withBanner }: { withBanner: boolean }) => {
               <p className="text-gray-500 text-sm">{error}</p>
             </div>
           ) : (
-            <div
-              ref={sliderRef}
-              className="overflow-x-auto scrollbar-hide flex gap-4 mb-6"
-            >
-              <CourseSlider courses={courses} />
-            </div>
+                <div className="flex gap-4 md:mb-8">
+                  <CourseSlider courses={courses} />
+                </div>
           )}
 
           <Link
             href={"/allCourse"}
-            className="md:text-[24px] leading-[90%] uppercase text-[#D4BAFC]"
+            className="md:text-[24px] md:mx-6 leading-[90%] uppercase text-[#D4BAFC]"
           >
             {typeof t("professional.courses.all_courses", {
               count: courses.length.toString(),
@@ -140,6 +175,16 @@ const Professional = ({ withBanner }: { withBanner: boolean }) => {
           </Link>
         </div>
       </div>
+
+      <style jsx>{`
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </div>
   );
 };

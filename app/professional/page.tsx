@@ -12,6 +12,7 @@ import TeacherSlider from "../components/TeacherSlider";
 import Link from "next/link";
 import { useI18n } from "../context/I18nContext";
 import { Footer } from "../components/Footer";
+import Category from "../components/Category";
 
 interface Course {
   _id: string;
@@ -114,7 +115,7 @@ const Professional = () => {
       setLoading(true);
       const url = `http://localhost:4000/courses?isPublished=true&limit=10`;
       const response = await fetch(url);
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch courses');
       }
@@ -134,16 +135,16 @@ const Professional = () => {
       setInstructorsLoading(true);
       const url = `http://localhost:4000/instructors`;
       const response = await fetch(url);
-      
+
       if (!response.ok) {
         throw new Error('Failed to fetch instructors');
       }
 
       const responseData = await response.json();
       const data: BackendInstructor[] = Array.isArray(responseData) ? responseData : responseData.instructors || [];
-      
+
       console.log('Instructors data:', data);
-      
+
       // Transform data to match our interface
       const transformedInstructors: Instructor[] = data
         .filter(instructor => instructor.isActive)
@@ -251,15 +252,9 @@ const Professional = () => {
         </div>
       </div>
 
-      <div className="md:px-5 mt-10">
-        <div className="flex items-center justify-between mb-4">
-          <h1 className="text-[#3D334A] text-[40px]">Курсы</h1>
-          <SliderArrows onScrollLeft={scrollLeft} onScrollRight={scrollRight} />
-        </div>
-        
-        <CategorySlider />
-        
-        <div className="bg-[#F9F7FE] mt-4 md:mt-[50px] md:mb-[45px] rounded-[30px]">
+      <div className=" mt-10">
+        <Category bgColor={""} customRounded={"30px"} customMx={""} />
+        <div className="bg-[#F9F7FE] mt-4 md:mt-[50px] md:mx-5 md:mb-[45px] rounded-[30px]">
           <div className="p-5">
             <div className="flex items-center justify-between md:mb-[10px]">
               <h1 className="text-[20px] md:text-[40px] md:tracking-[-3%] text-[#3D334A] leading-[120%] mb-2.5 md:mb-5">
@@ -303,8 +298,8 @@ const Professional = () => {
                 count: courses?.length.toString() || "0",
               }) === "string"
                 ? t("professional.courses.all_courses", {
-                    count: courses?.length.toString() || "0",
-                  })
+                  count: courses?.length.toString() || "0",
+                })
                 : `All ${courses?.length || 0} courses`}
             </Link>
           </div>
@@ -321,11 +316,25 @@ const Professional = () => {
           <p className="text-gray-500 text-sm">{instructorsError}</p>
         </div>
       ) : (
-        <TeacherSlider teachers={instructors as unknown as Teacher[]} />
+        <div className="md:mb-10 md:mr-10">
+          <TeacherSlider teachers={instructors as unknown as Teacher[]} />
+        </div>
       )}
 
-      <Subscribe />
-      <ReviewSlider />
+      <Subscribe
+        backgroundImage="/assets/images/bluebg.jpg"
+        titleKey="subscription.test_title"
+        buttonTextKey="buttons.take_test"
+        buttonTextColor="#3D334A"
+        buttonBgColor="#FFFFFF"
+        bgCenter={true}
+        containerStyles="custom-class"
+        titleStyles="text-white"
+        buttonStyles="hover:opacity-80"
+      />
+      <div className="md:mb-10">  
+        <ReviewSlider title={""} />
+      </div>
       <Footer />
     </div>
   );

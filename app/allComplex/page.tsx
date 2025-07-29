@@ -11,12 +11,14 @@ import { useAllSets } from "../hooks/useSets";
 import { useAllExercises } from "../hooks/useExercises";
 import { useI18n } from "../context/I18nContext";
 import Section from "../components/Section";
+import { Footer } from "../components/Footer";
 
 const AllComplex = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { locale } = useI18n();
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
-  // Real data hooks
+  const [visibleWorksCount, setVisibleWorksCount] = useState(1); // რამდენი Works გამოჩნდეს
+
   const { categories, loading: categoriesLoading } = useCategories();
   const { sets, loading: setsLoading } = useAllSets();
   const { exercises, loading: exercisesLoading } = useAllExercises();
@@ -33,16 +35,22 @@ const AllComplex = () => {
       field.ka ||
       ""
     );
+    return (
+      field[locale as keyof typeof field] ||
+      field.ru ||
+      field.en ||
+      field.ka ||
+      ""
+    );
   };
 
-  // Close dropdown on outside click
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (
         dropdownRef.current &&
         !dropdownRef.current.contains(event.target as Node)
       ) {
-        // No dropdown state to manage anymore
+        // არავიტარ მოქმედებას არ ვახდენ dropdown-ზე
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
@@ -51,7 +59,6 @@ const AllComplex = () => {
     };
   }, []);
 
-  // Filter sets by categories
   const popularSets = sets.slice(0, 6);
   const orthopedicSets = sets.filter(
     (set) =>
@@ -71,9 +78,10 @@ const AllComplex = () => {
       )
   );
 
-  // Create category buttons from real data
   const allCategoriesText = {
     ka: "ყველა კატეგორია",
+    en: "All Categories",
+    ru: "Все категории",
     en: "All Categories",
     ru: "Все категории",
   };
@@ -85,31 +93,40 @@ const AllComplex = () => {
         allCategoriesText[locale as keyof typeof allCategoriesText] ||
         allCategoriesText.ru,
       active: true,
+    {
+      id: "all",
+      title:
+        allCategoriesText[locale as keyof typeof allCategoriesText] ||
+        allCategoriesText.ru,
+      active: true,
     },
+    ...categories.map((cat) => ({
     ...categories.map((cat) => ({
       id: cat._id,
       title: getLocalizedText(cat.name),
       active: false,
     })),
+      active: false,
+    })),
   ];
 
-  // Loading text
   const loadingText = {
     ka: "იტვირთება...",
     en: "Loading...",
     ru: "Загрузка...",
   };
 
-  // Page texts
   const pageTexts = {
     title: {
       ka: "ყველა კომპლექსი",
       en: "All Complexes",
       ru: "Все комплексы",
+      ru: "Все комплексы",
     },
     searchPlaceholder: {
       ka: "შეიყვანეთ ვარჯიშის სახელი",
       en: "Enter exercise name",
+      ru: "Введите название упражнения",
       ru: "Введите название упражнения",
     },
     sections: {
@@ -117,15 +134,19 @@ const AllComplex = () => {
         ka: "პოპულარული სექციები",
         en: "Popular Sections",
         ru: "Популярные разделы",
+        ru: "Популярные разделы",
       },
       popularComplexes: {
         ka: "პოპულარული კომპლექსები",
+        en: "Popular Complexes",
+        ru: "Популярные комплексы",
         en: "Popular Complexes",
         ru: "Популярные комплексы",
       },
       orthopedics: {
         ka: "ორთოპედია",
         en: "Orthopedics",
+        ru: "Ортопедия",
         ru: "Ортопедия",
       },
       recommended: {
@@ -151,12 +172,16 @@ const AllComplex = () => {
 
   return (
     <div className="bg-[#F9F7FE]">
-      <DesktopNavbar menuItems={defaultMenuItems} blogBg={false} />
+      <DesktopNavbar menuItems={defaultMenuItems} blogBg={false} allCourseBg={false} />
       <MobileNavbar />
+
       <h1 className="md:text-[64px] md:px-10 px-5 leading-[100%] tracking-[-3%] text-[#3D334A]">
         {pageTexts.title[locale as keyof typeof pageTexts.title] ||
           pageTexts.title.ru}
+        {pageTexts.title[locale as keyof typeof pageTexts.title] ||
+          pageTexts.title.ru}
       </h1>
+
       <div className="bg-white md:mx-5 md:my-10 md:rounded-[30px]">
         <Category bgColor="white" />
 
@@ -172,6 +197,7 @@ const AllComplex = () => {
             className="w-full font-[Pt] bg-white text-[#846FA0]  md:text-[19px] font-medium ml-2 md:ml-4"
           />
         </div>
+
 
         <div
           ref={dropdownRef}
@@ -206,7 +232,7 @@ const AllComplex = () => {
                     </span>
                   )}
                 </button>
-                {/* Dropdown menu */}
+
                 {isDropdown && isOpen && (
                   <div className="absolute left-0 top-full mt-1 z-20 bg-white rounded-[10px] shadow-lg min-w-[160px] py-2 animate-fade-in">
                     {cat.subcategories.map((item: string, i: number) => (
@@ -224,6 +250,7 @@ const AllComplex = () => {
           })}
         </div>
       </div>
+
       <Section border={1} borderColor="#D4BAFC" />
       <Section border={1} borderColor="#D4BAFC" />
 

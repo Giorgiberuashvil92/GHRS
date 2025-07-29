@@ -18,6 +18,8 @@ import { useI18n } from "../../context/I18nContext";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useExercisesBySet } from "../../hooks/useExercises";
+import { Footer } from "@/app/components/Footer";
+import WorksSlider from "@/app/components/WorksSlider";
 
 interface Params {
   id: string;
@@ -511,10 +513,20 @@ const Complex = ({ params }: ComplexPageProps) => {
             </div>
           </section>
         </div>
-        <Subscribe />
-        <ReviewSlider />
+        <Subscribe
+          backgroundImage="/assets/images/categorySliderBgs/bg1.jpg"
+          titleKey="subscription.test_title"
+          buttonTextKey="buttons.take_test"
+          buttonTextColor="#3D334A"
+          buttonBgColor="#FFFFFF"
+          bgCenter={true}
+          containerStyles="custom-class"
+          titleStyles="text-white"
+          buttonStyles="hover:opacity-80"
+        />
+        <ReviewSlider title={"ОТЗЫВЫ О комплексе"} />
         <div className="md:my-10">
-          <Works title="Может понравиться" />
+          <WorksSlider title="Может понравиться" seeAll={true} works={[]} fromMain={false} />
         </div>
         <div className="md:my-10">
           <Blog
@@ -532,6 +544,7 @@ const Complex = ({ params }: ComplexPageProps) => {
           </div>
         </Modal>
       </div>
+      <Footer />
     </div>
   );
 };

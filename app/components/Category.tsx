@@ -6,7 +6,7 @@ import CategorySlider from "./CategorySlider";
 import SliderArrows from "./SliderArrows";
 import { useI18n } from "../context/I18nContext";
 
-const Category = ({ bgColor }: { bgColor: string }) => {
+const Category = ({ bgColor, customRounded, customMx }: { bgColor: string, customRounded: string, customMx: string }) => {
   const sliderRef = useRef<HTMLDivElement>(null);
   const { t } = useI18n();
 
@@ -20,7 +20,7 @@ const Category = ({ bgColor }: { bgColor: string }) => {
 
   return (
     <div
-      style={{ backgroundColor: bgColor }}
+      style={{ backgroundColor: bgColor, borderRadius: customRounded, marginInline: customMx }}
       className="bg-[#F9F7FE] md:mx-5 md:px-10 px-4 md:pb-10"
     >
       <div className="flex items-center justify-between">
@@ -29,7 +29,9 @@ const Category = ({ bgColor }: { bgColor: string }) => {
             ? t("category.title")
             : "Categories"}
         </h1>
+        <div className="md:mt-16">
         <SliderArrows onScrollLeft={scrollLeft} onScrollRight={scrollRight} />
+        </div>
       </div>
 
       <Link

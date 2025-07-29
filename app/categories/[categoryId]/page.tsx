@@ -4,7 +4,7 @@ import { use } from "react";
 import { useCategoryComplete } from "../../hooks/useCategoryComplete";
 import Image from "next/image";
 import Link from "next/link";
-import Header from "../../components/Header";
+import Header, { defaultMenuItems } from "../../components/Header";
 import SliderArrows from "../../components/SliderArrows";
 import WorksSlider from "../../components/WorksSlider";
 import Subscribe from "../../components/Subscribe";
@@ -12,6 +12,8 @@ import ReviewSlider from "../../components/ReviewSlider";
 import Professional from "../../components/Professional";
 import Blog from "@/app/components/Blog";
 import { useI18n } from "../../context/I18nContext";
+import { Footer } from "@/app/components/Footer";
+import DesktopNavbar from "@/app/components/Navbar/DesktopNavbar";
 
 export default function CategoriesPage({
   params,
@@ -134,7 +136,7 @@ export default function CategoriesPage({
         }}
       />
       <div className="md:pt-[100px] pt-[400px]">
-        <div className="px-10 py-[50px] rounded-[30px] bg-[#F9F7FE] mx-6">
+        <div className="px-10 py-[50px] rounded-[30px] bg-[#F9F7FE] md:mb-10 mx-6">
           <div className="flex items-center justify-between mb-[20px]">
             <div className="flex flex-col gap-5">
               <h1 className="text-[#3D334A] text-[40px] leading-[120%] tracking-[-3%]">
@@ -205,12 +207,11 @@ export default function CategoriesPage({
               linkType="complex"
               title={t("common.complexes")}
               categoryData={categoryData?.category?._id}
-              fromMain={false}
-            />
+              fromMain={false} seeAll={false} scrollable={false}            />
           </div>
         )}
 
-        <Subscribe
+         <Subscribe
           backgroundImage="/assets/images/categorySliderBgs/bg1.jpg"
           titleKey="subscription.test_title"
           buttonTextKey="buttons.take_test"
@@ -222,7 +223,7 @@ export default function CategoriesPage({
           buttonStyles="hover:opacity-80"
         />
         <div className="my-10">
-          <ReviewSlider />
+          <ReviewSlider title={""} />
         </div>
         <Blog
           withBanner={false}
@@ -231,8 +232,9 @@ export default function CategoriesPage({
           title={getLocalizedText(selectedCategory?.name, locale)}
         />
         <div className="mt-10">
-          <Professional withBanner={false} />
+          <Professional withBanner={false} title={""} bgColor={"#F9F7FE"} withProfText={true} />
         </div>
+        <Footer />
       </div>
     </div>
   );

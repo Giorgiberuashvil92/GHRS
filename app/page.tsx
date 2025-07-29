@@ -36,12 +36,12 @@ const Home = () => {
 
   return (
     <div className="w-full min-h-screen overflow-x-hidden">
-      <Header />
+      <Header variant="default" /> 
       <div>
         <Rehabilitation />
-        <Category bgColor="#F9F7FE" />
+        <Category bgColor="#F9F7FE" customRounded={""} customMx={""} />
         <hr className="text-[#D5D1DB] bg-[#D5D1DB] w-[95%] mx-auto" />
-        <Works title={"Sets"} sets={sets} fromMain={true} />
+        <Works title={"Sets"} sets={sets} fromMain={true} customMargin="20px" customBorderRadius="" seeAll={false} scrollable={true} />
         <Subscribe
           backgroundImage="/assets/images/categorySliderBgs/bg1.jpg"
           titleKey="subscription.title"
@@ -53,7 +53,7 @@ const Home = () => {
           titleStyles="text-white"
           buttonStyles="hover:opacity-80"
         />
-        <Professional withBanner={true} />
+        <Professional withBanner={true} title="" bgColor={"#F9F7FE"} withProfText={true} />
         <div className="mb-10">
           <Blog
             withBanner={true}
