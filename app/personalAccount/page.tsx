@@ -135,7 +135,7 @@ const PersonalAccountContent: React.FC = () => {
       <div className="md:mt-10 mb-[100px]">
         <PersonInfo user={user} />
         {/* Tabs with click handler */}
-        <div className="cursor-pointer px-10">
+        <div className="cursor-pointer px-10 bg-[#E9DFF6] mx-10 rounded-[20px]">
           <div
             className={`md:col-span-2 order-2 md:order-1 md:p-[40px] p-4 rounded-[20px] flex md:gap-[40px] gap-6 items-center relative`}
           >

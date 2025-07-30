@@ -72,10 +72,10 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
             />
           </div>
           <div onClick={(e) => handleProtectedRouteClick(e, "/shoppingcard")}>
-            <NavbarIconButton className="hover:scale-105 duration-300" src="/assets/images/store.svg" alt="Store" />
+            <NavbarIconButton className="hover:scale-105 duration-300 cursor-pointer" src="/assets/images/store.svg" alt="Store" />
           </div>
           <div onClick={(e) => handleProtectedRouteClick(e, "/personalAccount")}>
-            <NavbarIconButton className="hover:scale-105 duration-300" src={"/assets/images/person.svg"} alt="Person" />
+            <NavbarIconButton className="hover:scale-105 duration-300 cursor-pointer" src={"/assets/images/person.svg"} alt="Person" />
           </div>
         </div>
       </header>

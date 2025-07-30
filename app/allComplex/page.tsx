@@ -227,6 +227,8 @@ const AllComplex = () => {
         customBorderRadius={""}
         seeAll={false}
         scrollable={false}
+        border={1} 
+        borderColor="#D4BAFC"
       />
       <Works
         title={
@@ -240,40 +242,27 @@ const AllComplex = () => {
         customBorderRadius={""}
         seeAll={false}
         scrollable={false}
+        border={1} 
+        borderColor="#D4BAFC"
       />
       {/* Works components with real data */}
-      {/* <Works
-        title={
-          pageTexts.sections.popularSections[
-            locale as keyof typeof pageTexts.sections.popularSections
-          ] || pageTexts.sections.popularSections.ru
-        }
+       {/* <Works
+        title={pageTexts.sections.popularSections[locale as keyof typeof pageTexts.sections.popularSections] || pageTexts.sections.popularSections.ru}
         sets={popularSets}
-        fromMain={true}
-      />
+        fromMain={true} customMargin={""} customBorderRadius={""} seeAll={false} scrollable={false}      />
 
       
 
       <Works
-        title={
-          pageTexts.sections.orthopedics[
-            locale as keyof typeof pageTexts.sections.orthopedics
-          ] || pageTexts.sections.orthopedics.ru
-        }
+        title={pageTexts.sections.orthopedics[locale as keyof typeof pageTexts.sections.orthopedics] || pageTexts.sections.orthopedics.ru}
         sets={orthopedicSets.length > 0 ? orthopedicSets : sets.slice(0, 4)}
-        fromMain={true}
-      />
+        fromMain={true} customMargin={""} customBorderRadius={""} seeAll={false} scrollable={false}      /> */}
 
-      <Works
-        title={
-          pageTexts.sections.recommended[
-            locale as keyof typeof pageTexts.sections.recommended
-          ] || pageTexts.sections.recommended.ru
-        }
-        sets={sets.slice(-6)}
-        fromMain={true}
-      /> */}
+    
+      <div className="mt-40">
+
       <Footer />
+      </div>
     </div>
   );
 };
