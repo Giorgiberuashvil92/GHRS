@@ -201,6 +201,9 @@ const AllCourse = () => {
           </div>
         )}
       </div>
+      <div className="mb-40 flex items-center justify-center mx-auto bg-[#D4BAFC] cursor-pointer rounded-[8px] w-[300px] py-[12px] hover:bg-[#be9def] mt-20">
+        <button className="text-white text-[22px] leading-[100%] tracking-[-1%]">Показать еще</button>
+      </div>
       <Footer />
     </div>
   );

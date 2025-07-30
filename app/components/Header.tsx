@@ -52,9 +52,9 @@ const categoryDetailItems = [
 ];
 
 const complexItems = [
-  { id: 1, text: "15 категорий", image: "/assets/icons/card.svg" },
-  { id: 2, text: "36 комплексов", image: "/assets/icons/message.svg" },
-  { id: 3, text: "1000+ уроков", image: "/assets/icons/heat.svg" },
+  { id: 1, text: "15 категорий", image: "/assets/icons/card.svg", route: "/blogs" },
+  { id: 2, text: "36 комплексов", image: "/assets/icons/message.svg", route: "/blogs" },
+  { id: 3, text: "1000+ уроков", image: "/assets/icons/heat.svg", route: "/blogs" },
 ];
 
 const Header: React.FC<HeaderProps> = ({
@@ -97,7 +97,44 @@ const Header: React.FC<HeaderProps> = ({
     setCurrentSlide(0);
   };
 
+  const homePageHeaderItems = [
+    { 
+      id: 1, 
+      text: statistics ? `${statistics.total.sets} комплексов` : "Loading...", 
+      image: "/assets/images/book.svg",
+      route: "/categories"
+    },
+    { 
+      id: 2, 
+      text: statistics ? `${statistics.total.exercises} упражнений` : "Loading...", 
+      image: "/assets/icons/message.svg" 
+    },
+    { 
+      id: 3, 
+      text: statistics ? `${statistics.total.hours} часов` : "Loading...", 
+      image: "/assets/icons/video.svg" 
+    },
+  ];
+
   const sectionItems = [
+    { 
+      id: 1, 
+      text: statistics ? `${statistics.total.sets} комплексов` : "Loading...", 
+      image: "/assets/icons/pulse.svg" 
+    },
+    { 
+      id: 2, 
+      text: statistics ? `${statistics.total.exercises} упражнений` : "Loading...", 
+      image: "/assets/images/camera.svg" 
+    },
+    { 
+      id: 3, 
+      text: statistics ? `${statistics.total.hours} часов` : "Loading...", 
+      image: "/assets/icons/watch.png" 
+    },
+  ];
+
+  const singleComplexHeaderItems = [
     { 
       id: 1, 
       text: statistics ? `${statistics.total.sets} комплексов` : "Loading...", 
@@ -312,51 +349,57 @@ const Header: React.FC<HeaderProps> = ({
                       <>
                         <section className="mt-[50px] md:mt-[29px] mx-2 md:mx-5 flex flex-col md:flex-row md:items-center md:gap-2">
                           {/* პირველი ბარათი */}
+                          <Link href={"/categories"} className="z-50 hover:bg-[rgba(51,47,47,0.2)] cursor-pointer rounded-[12px]">
                           <motion.div
                             initial={{ opacity: 0, x: -100 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ duration: 0.6, ease: "easeOut" }}
                             className="flex items-center gap-2.5 bg-[rgba(61,51,74,0.3)] px-2.5 rounded-[12px] h-[64px] w-full md:w-[246px]"
                           >
-                            <div className="bg-[rgba(255,255,255,0.2)] w-[46px] h-[46px] justify-center items-center flex rounded-[8px]">
+                          
+                            <div className="bg-[rgba(255,255,255,0.2)]  cursor-pointer w-[46px] h-[46px] justify-center items-center flex rounded-[8px]">
                               <Image
-                                src={sectionItems[0].image}
-                                alt={sectionItems[0].text}
+                                src={homePageHeaderItems[0].image}
+                                alt={homePageHeaderItems[0].text}
                                 width={30}
                                 height={30}
-                              />
+                                />
                             </div>
+                        
                             <h3 className="text-white text-sm font-medium font-[Pt]">
-                              {sectionItems[0].text}
+                              {homePageHeaderItems[0].text}
                             </h3>
                           </motion.div>
+                          </Link>
 
                           {/* მეორე და მესამე ბარათები */}
                           <div className="flex flex-row gap-2 mt-2 md:mt-0 w-full font-[Pt]">
-                            {sectionItems.slice(1).map((item) => (
+                            {homePageHeaderItems.slice(1).map((item) => (
+                              <Link href={"/categories"} className="z-50 hover:bg-[rgba(51,47,47,0.2)] cursor-pointer rounded-[12px]">
                               <motion.div
                                 initial={{ opacity: 0, x: -100 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 transition={{ duration: 0.6, ease: "easeOut" }}
                                 key={item.id}
                                 className="flex items-center gap-2.5 bg-[rgba(61,51,74,0.3)] px-2.5 rounded-[12px] h-[64px] w-full md:w-[246px]"
-                              >
+                                >
                                 <div className="bg-[rgba(255,255,255,0.2)] w-[46px] h-[46px] justify-center items-center flex rounded-[8px]">
                                   <Image
                                     src={item.image}
                                     alt={item.text}
                                     width={30}
                                     height={30}
-                                  />
+                                    />
                                 </div>
                                 <h3 className="text-white text-sm font-medium">
                                   {item.text}
                                 </h3>
                               </motion.div>
+                            </Link>
                             ))}
                           </div>
                         </section>
-
+                        
                         <section className="mx-2 md:mt-5 md:mx-5 max-w-[729px]">
                           <div className="bg-[rgba(61,51,74,0.3)]  rounded-[20px] md:gap-[73.2px] gap-5 flex flex-col pl-[30px] pt-[30px] pb-[31px] mt-2">
                             <h2 className="text-[20px] md:text-[40px] leading-[120%] tracking-[-3%]">
@@ -586,12 +629,13 @@ const Header: React.FC<HeaderProps> = ({
               <div className="mb-5 md:mb-0 mx-auto">
                 <section className="mt-[122px] md:mt-[250px] mx-auto md:mx-5 flex flex-col md:flex-row md:items-center md:gap-2">
                   {/* პირველი ბარათი */}
+                  <Link href={"/categories"} className="z-50 hover:bg-[rgba(51,47,47,0.2)] cursor-pointer rounded-[12px]">
                   <motion.div
                     initial={{ opacity: 0, x: -100 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6, ease: "easeOut" }}
                     className="flex items-center gap-2.5 bg-[rgba(61,51,74,0.3)] px-2.5 rounded-[12px] h-[64px] w-full md:w-[246px]"
-                  >
+                    >
                     <div className="bg-[rgba(255,255,255,0.2)] w-[46px] h-[46px] justify-center items-center flex rounded-[8px]">
                       <Image
                         src={complexItems[0].image}
@@ -604,24 +648,26 @@ const Header: React.FC<HeaderProps> = ({
                       {setData?.totalExercises || 0} упражнений
                     </h3>
                   </motion.div>
+                        </Link>
 
                   {/* მეორე და მესამე ბარათები */}
                   <div className="flex flex-row gap-2 mt-2 md:mt-0 w-full font-[Pt]">
                     {complexItems.slice(1).map((item) => (
+                       <Link href={"/categories"} className="z-50 hover:bg-[rgba(51,47,47,0.2)] cursor-pointer rounded-[12px]">
                       <motion.div
                         initial={{ opacity: 0, x: -100 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ duration: 0.6, ease: "easeOut" }}
                         key={item.id}
                         className="flex items-center gap-2.5 bg-[rgba(61,51,74,0.3)] px-2.5 rounded-[12px] h-[64px] w-full md:w-[246px]"
-                      >
+                        >
                         <div className="bg-[rgba(255,255,255,0.2)] w-[46px] h-[46px] justify-center items-center flex rounded-[8px]">
                           <Image
                             src={item.image}
                             alt={item.text}
                             width={30}
                             height={30}
-                          />
+                            />
                         </div>
                         <h3 className="text-white text-sm font-medium">
                           {item.id === 2
@@ -629,24 +675,26 @@ const Header: React.FC<HeaderProps> = ({
                             : item.text}
                         </h3>
                       </motion.div>
+                            </Link>
                     ))}
                   </div>
                 </section>
 
                 <section className="mx-2 md:mt-5 md:mx-5 max-w-[729px]">
-                  <div className="bg-[rgba(61,51,74,0.3)]  rounded-[20px] md:gap-[73.2px] gap-5 flex flex-col pl-[30px] pt-[30px] pb-[90px] mt-2">
+                  <div className="bg-[rgba(61,51,74,0.3)]  rounded-[20px] md:gap-[11.2px] gap-5 flex flex-col pl-[30px] pt-[30px] pb-[90px] mt-2">
                     <h2 className="text-[20px] md:text-[40px] font-[Pt] leading-[120%] tracking-[-3%]">
                       {setData?.name?.ru ||
                         setData?.name?.en ||
                         setData?.name?.ka ||
                         "Обще-восстановительный, поддерживающий комплекс"}
                     </h2>
-                    <p className="md:mt-[100px] text-[24px] font-medium leading-[120%] font-[Pt]">
-                      {setData?.description?.ru ||
-                        setData?.description?.en ||
-                        setData?.description?.ka ||
-                        "Современные израильские методики реабилитации по направлениям ортопедия, неврология, посттравматическая реабилитация походки и др."}
-                    </p>
+                    <p className="md:mt-[10px] text-[24px] font-medium leading-[120%] font-[Pt] break-words line-clamp-3">
+  {setData?.description?.ru ||
+    setData?.description?.en ||
+    setData?.description?.ka ||
+    "Современные израильские методики реабилитации по направлениям ортопедия, неврология, посттравматическая реабилитация походки и др."}
+</p>
+
                   </div>
                 </section>
               </div>
@@ -756,8 +804,8 @@ const Header: React.FC<HeaderProps> = ({
               variant !== "section" && (
                 <div
                   className={`hidden absolute md:flex flex-row items-center right-10 ${
-                    variant == "rehabilitation" ? "bottom-14" : "bottom-84"
-                  } ${currentSlide === 0 && " bottom-0 top-[157px]"} ${
+                    variant == "rehabilitation" ? "bottom-14" : "bottom-80"
+                  } ${currentSlide === 0 && " bottom-0 top-[220px]"} ${
                     currentSlide === 0 && 
                     variant == "rehabilitation" &&
                     " bottom-0 top-[460px]"
