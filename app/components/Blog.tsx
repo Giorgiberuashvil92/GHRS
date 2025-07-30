@@ -5,7 +5,6 @@ import SliderArrows from "./SliderArrows";
 import GridLayouts, { LayoutType } from "./GridLayouts";
 import { useI18n } from "../context/I18nContext";
 import { API_CONFIG, apiRequest } from "../config/api";
-import { Article } from "../api/articles";
 import { useArticles } from "../hooks/useArticles";
 
 interface BlogProps {
@@ -26,8 +25,12 @@ interface Blog {
   excerpt: {
     [key in "ka" | "en" | "ru"]: string;
   };
-  imageUrl: string;
-  articles: Array<{
+  content: {
+    [key in "ka" | "en" | "ru"]: string;
+  };
+  imageUrl?: string;
+  featuredImages: string[];
+  articles?: Array<{
     _id: string;
     title: {
       [key in "ka" | "en" | "ru"]: string;
@@ -58,12 +61,17 @@ const Blog: React.FC<BlogProps> = ({
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { articles, loading: articlesLoading, error: articlesError } = useArticles({
-    page: currentPage,
-  });
-  console.log(articles);
   const { t } = useI18n();
   const blogsPerPage = 4;
+
+  const { articles } = useArticles({
+    page: currentPage,
+    limit: 4,
+  });
+
+  console.log("Blog.tsx - articles data:", articles);
+  console.log("Blog.tsx - first article:", articles?.[0]);
+  console.log("Blog.tsx - articles structure:", articles?.map(a => ({ _id: a._id, title: a.title })));
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -121,7 +129,7 @@ const Blog: React.FC<BlogProps> = ({
   }
 
   return (
-    <div className="bg-[#F9F7FE] md:pb-10 md:mx-5 md:rounded-[20px]">
+    <div className="bg-[#F9F7FE] md:pb-10 md:mx-5 md:rounded-[20px]"> 
       {withBanner && (
         <Banner
           backgroundUrl="/assets/images/blog.png"
@@ -135,22 +143,20 @@ const Blog: React.FC<BlogProps> = ({
       <div className="py-5 md:px-6">
         {withSlider && (
           <div className="flex items-center justify-between mb-4">
-            <div className="w-[200px] md:w-[400px] overflow-hidden">
-              <h2 className="text-[20px] leading-[120%] md:my-5 md:mx-3 text-[#3D334A] md:text-[40px] md:tracking-[-3%] truncate" title={title || t("navigation.blog")}>
-                {title || t("navigation.blog")}
-              </h2>
-            </div>
+            <h2 className="text-[20px] leading-[120%] md:my-5 md:mx-3 text-[#3D334A] md:text-[40px] md:tracking-[-3%]">
+              {title || t("navigation.blog")}
+            </h2>
             <SliderArrows
               onScrollLeft={scrollLeft}
               onScrollRight={scrollRight}
-              canScrollLeft={canScrollLeft}
+              canScrollLeft={canScrollLeft} 
               canScrollRight={canScrollRight}
             />
           </div>
         )}
 
         <GridLayouts
-          blogs={articles as unknown as Article[]}
+          blogs={articles || []}
           layoutType={layoutType}
           scrollRef={scrollRef}
           currentPage={currentPage}

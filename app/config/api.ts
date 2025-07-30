@@ -71,22 +71,23 @@ interface CourseData {
   endDate?: string;
 }
 
-// Public endpoints რომელთაც authorization არ სჭირდება
-const PUBLIC_ENDPOINTS = [
-  '/categories',
-  '/sets',
-  '/exercises',
-  '/articles',
-  '/blogs',
-  '/test',
-  '/users-count'
-];
+// JWT authorization მოშორებულია - ყველა endpoint public-ია
+// const PUBLIC_ENDPOINTS = [
+//   '/categories',
+//   '/sets',
+//   '/exercises',
+//   '/articles',
+//   '/blogs',
+//   '/instructors',
+//   '/test',
+//   '/users-count'
+// ];
 
-function isPublicEndpoint(endpoint: string): boolean {
-  return PUBLIC_ENDPOINTS.some(publicEndpoint => 
-    endpoint.startsWith(publicEndpoint)
-  );
-}
+// function isPublicEndpoint(endpoint: string): boolean {
+//   return PUBLIC_ENDPOINTS.some(publicEndpoint => 
+//     endpoint.startsWith(publicEndpoint)
+//   );
+// }
 
 // API Configuration
 export const API_CONFIG = {
@@ -147,6 +148,13 @@ export const API_CONFIG = {
       CREATE_ORDER: '/payment/create-order',
       CAPTURE_PAYMENT: '/payment/capture-payment',
     },
+    INSTRUCTORS: {
+      ALL: "/instructors",
+      BY_ID: (id: string) => `/instructors/${id}`,
+      TOP: "/instructors/top",
+      COURSES: (id: string) => `/instructors/${id}/courses`,
+      STATS: (id: string) => `/instructors/${id}/stats`,
+    },
   },
 
   HEADERS: {
@@ -167,12 +175,12 @@ export async function apiRequest<T>(
     ...API_CONFIG.HEADERS,
   };
 
-  // მხოლოდ protected endpoints-ისთვის ვუმატებთ Authorization header-ს
-  if (!isPublicEndpoint(endpoint) && 
-      typeof window !== "undefined" && 
-      localStorage.getItem("token")) {
-    headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
-  }
+  // JWT authorization მოშორებულია - ყველა endpoint public-ია
+  // if (!isPublicEndpoint(endpoint) && 
+  //     typeof window !== "undefined" && 
+  //     localStorage.getItem("token")) {
+  //   headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
+  // }
 
   const config: RequestInit = {
     headers,

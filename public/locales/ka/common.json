@@ -92,5 +92,19 @@
     "success_message": "გადახდა წარმატებით დასრულდა! ID: {{id}}",
     "error_message": "შეცდომა გადახდისას: {{error}}",
     "success_indicator": "წარმატებით"
+  },
+  "teacher": {
+    "contents": "შინაარსი",
+    "sampleQuestion": "რა ითვლება მჯდომარე ცხოვრების წესად?",
+    "instructorName": "ინსტრუქტორის სახელი",
+    "professionalTitle": "პროფესიული წოდება",
+    "courses": "კურსი",
+    "certificates": "სერტიფიკატი",
+    "students": "სტუდენტი",
+    "aboutInstructor": "ინსტრუქტორის შესახებ",
+    "bioPlaceholder": "ინსტრუქტორის ბიოგრაფია მალე დაემატება.",
+    "rating": "რეიტინგი",
+    "certificatesTitle": "სერტიფიკატები",
+    "viewCertificate": "სერტიფიკატის ნახვა"
   }
 } 

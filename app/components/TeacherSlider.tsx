@@ -30,33 +30,9 @@ interface TeacherSliderProps {
 }
 
 const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
-  const fallbackTeachers: Teacher[] = [
-    {
-      id: "1",
-      name: "ААРОН ЯКОБИ",
-      position: "Основатель и руководитель",
-      institution: "«Колледжа медицинского массажа»",
-      credentials: "Dr.Аарон Якоби, Ph.D, C.A., P.T.",
-      education: [
-        "выпускник Института Уингейта, Национального института передового опыта в спорте Государства Израиль",
-        "В 1982 году окончил курс Мануальной-терапии в Парамедицинском институте в Карлсруэ, Германия",
-        "В 1996 году он окончил факультет китайской медицины Колледжа комплиментарной медицины в Тель-Авиве"
-      ],
-      imageUrl: "/assets/images/teachers/aaron.jpg",
-      bio: {
-        en: "Aaron Jacoby is the founder and director of the 'College of Medical Massage'.",
-        ru: "Аарон Якоби является основателем и директором 'Колледжа медицинского массажа'.",
-        ka: "არონ იაკობი არის ფონდატორი და დირექტორი 'მედიკალური მასაჟის კოლეჯი'."
-      },
-      htmlContent: {
-        en: "<p>Aaron Jacoby is the founder and director of the 'College of Medical Massage'.</p>",
-        ru: "<p>Аарон Якоби является основателем и директором 'Колледжа медицинского массажа'.</p>",
-        ka: "<p>არონ იაკობი არის ფონდატორი და დირექტორი 'მედიკალური მასაჟის კოლეჯი'.</p>"
-      }
-    },
-  ];
+  
 
-  const allTeachers = teachers.length > 0 ? teachers : fallbackTeachers;
+  const allTeachers = teachers.length > 0 ? teachers : [];
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const scrollLeft = () => {

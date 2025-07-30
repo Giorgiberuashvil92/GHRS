@@ -85,12 +85,26 @@
     "sunday": "Sun"
   },
   "payment": {
-    "user_not_authorized": "User is not authorized",
+    "user_not_authorized": "User not authorized",
     "please_login": "Please log in",
     "total": "Total",
     "test_title": "PayPal Payment Test",
-    "success_message": "Payment completed successfully! ID: {{id}}",
+    "success_message": "Payment successful! ID: {{id}}",
     "error_message": "Payment error: {{error}}",
-    "success_indicator": "successfully"
+    "success_indicator": "Success"
+  },
+  "teacher": {
+    "contents": "Contents",
+    "sampleQuestion": "What is considered a sedentary lifestyle?",
+    "instructorName": "Instructor Name",
+    "professionalTitle": "Professional Title",
+    "courses": "Course",
+    "certificates": "Certificate",
+    "students": "Student",
+    "aboutInstructor": "About Instructor",
+    "bioPlaceholder": "Instructor biography will be added soon.",
+    "rating": "Rating",
+    "certificatesTitle": "Certificates",
+    "viewCertificate": "View Certificate"
   }
 } 

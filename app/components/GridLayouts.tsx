@@ -20,7 +20,11 @@ export interface Blog {
   excerpt: {
     [key in "ka" | "en" | "ru"]: string;
   };
+  content: {
+    [key in "ka" | "en" | "ru"]: string;
+  };
   imageUrl: string;
+  featuredImages: string[];
   articles: Array<{
     _id: string;
     title: {
@@ -57,7 +61,6 @@ const GridLayouts: React.FC<GridLayoutsProps> = ({
   blogs,
 }) => {
   const { locale } = useI18n();
-console.log(blogs)
   // Mobile horizontal scroll wrapper
   return (
     <div className="sm:block flex sm:flex-col flex-row overflow-x-auto gap-4 p-2 sm:overflow-visible sm:gap-0">
