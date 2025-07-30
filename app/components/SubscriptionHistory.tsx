@@ -74,11 +74,11 @@ const SubscriptionHistory: React.FC = () => {
       <h2 className="text-[#3D334A] text-3xl md:text-4xl font-bold mb-8">
         {t("personal_account.subscription_history.title")}
       </h2>
-      <div className="grid md:grid-cols-2 gap-8">
+      <div className="grid md:grid-cols-2 gap-8 items-center">
         {orders.map((order) => (
           <div
             key={order.id}
-            className={`relative bg-white md:w-full md:h-auto rounded-[20px] p-6 shadow-md ${
+            className={`relative bg-white md:w-full md:h-auto rounded-[20px] px-6 pt-6 pb-2 shadow-md ${
               order.faded ? "opacity-30 grayscale" : ""
             }`}
           >
@@ -99,7 +99,8 @@ const SubscriptionHistory: React.FC = () => {
                                   {t(`personal_account.subscription_history.statuses.${order.status}`)}
               </span>
             </div>
-            <div className="flex items-center gap-4">
+            <hr />
+            <div className="flex items-center gap-4 ">
               <Image
                 src={order.product.image}
                 width={120}
@@ -111,7 +112,7 @@ const SubscriptionHistory: React.FC = () => {
                 <div className="text-[#B1A1D9] font-bold text-base md:text-lg uppercase leading-[120%] tracking-[-3%] max-w-[275px]">
                   {order.product.title}
                 </div>
-                <div className="text-[#846FA0] font-[Pt] text-sm md:text-base mb-2">
+                <div className="text-[#846FA0] font-[Pt] text-sm md:text-base mb-2 max-w-[275px]">
                   {order.product.description}
                 </div>
               </div>
@@ -120,8 +121,9 @@ const SubscriptionHistory: React.FC = () => {
                   {order.product.price}
                 </span>
                 {order.product.action && !order.faded && (
-                  <span className="text-[#B1A1D9] text-xs md:text-base font-bold mt-2 cursor-pointer">
+                  <span className="text-[#B1A1D9] text-xs flex items-center gap-1 md:text-base font-bold mt-2 cursor-pointer">
                                           {t(`personal_account.subscription_history.${order.product.action}`)}
+                                          <Image src={"/assets/icons/play.svg"} alt="play" width={14} height={14} />
                   </span>
                 )}
               </div>

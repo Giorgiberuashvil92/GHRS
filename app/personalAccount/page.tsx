@@ -137,7 +137,7 @@ const PersonalAccountContent: React.FC = () => {
         {/* Tabs with click handler */}
         <div className="cursor-pointer px-10">
           <div
-            className={`md:col-span-2 order-2 md:order-1 bg-[rgba(233,223,246,1)] md:p-[40px] p-4 rounded-[20px] flex md:gap-[40px] gap-6 items-center relative`}
+            className={`md:col-span-2 order-2 md:order-1 md:p-[40px] p-4 rounded-[20px] flex md:gap-[40px] gap-6 items-center relative`}
           >
             {tabItems.map((item, idx) => (
               <div

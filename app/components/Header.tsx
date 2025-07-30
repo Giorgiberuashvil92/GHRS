@@ -702,7 +702,7 @@ const Header: React.FC<HeaderProps> = ({
 
             {variant == "default" && (
               <div className="flex md:hidden mt-60 mx-auto items-center justify-center gap-2">
-                <Link href={"/about"}>
+                <Link href={"/rehabilitation"}>
                   <div className="bg-[#3D334A] p-4 rounded-[20px] w-[176px] h-[166px]">
                     Изучить подробнее
                   </div>
@@ -746,7 +746,7 @@ const Header: React.FC<HeaderProps> = ({
                         <div className="purp1">purpple1</div>
                         <div className={`white-cutout `}>
                           {variant !== "complex" && (
-                            <Link href={"/about"}>
+                            <Link href={"/rehabilitation"}>
                               <div
                                 className={`bg-[#3D334A] p-5 -mt-8 hover:scale-105 duration-700`}
                               >
