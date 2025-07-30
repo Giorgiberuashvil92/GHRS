@@ -5,6 +5,7 @@ import "./globals.css";
 import { I18nProvider } from "./context/I18nContext";
 import { AuthProvider } from "./context/AuthContext";
 import CategoryProvider from "./context/CategoryContext";
+import { ModalProvider } from "./context/ModalContext";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -33,9 +34,11 @@ export default function RootLayout({
         <PayPalScriptProvider options={paypalOptions}>
           <I18nProvider>
             <AuthProvider>
-              <CategoryProvider value={{ categories: [], setCategories: () => {} }}>
-                {children}
-              </CategoryProvider>
+              <ModalProvider>
+                <CategoryProvider value={{ categories: [], loading: false, error: null, refetch: async () => {} }}>
+                  {children}
+                </CategoryProvider>
+              </ModalProvider>
             </AuthProvider>
           </I18nProvider>
         </PayPalScriptProvider>

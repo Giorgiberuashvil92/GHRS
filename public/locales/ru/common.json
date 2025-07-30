@@ -91,7 +91,9 @@
     "test_title": "Тест оплаты PayPal",
     "success_message": "Оплата прошла успешно! ID: {{id}}",
     "error_message": "Ошибка оплаты: {{error}}",
-    "success_indicator": "Успешно"
+    "success_indicator": "Успешно",
+    "payment_success": "Оплата успешно завершена! Ваши курсы доступны в личном кабинете.",
+    "payment_completed": "Оплата завершена"
   },
   "teacher": {
     "contents": "Содержание",
@@ -106,5 +108,27 @@
     "rating": "Рейтинг",
     "certificatesTitle": "Сертификаты",
     "viewCertificate": "Посмотреть сертификат"
+  },
+  "modal": {
+    "success": "Успех!",
+    "error": "Ошибка!",
+    "warning": "Предупреждение!",
+    "info": "Информация",
+    "confirm": "Подтверждение",
+    "ok": "ОК",
+    "yes": "Да",
+    "no": "Нет",
+    "cancel": "Отмена",
+    "understood": "Понятно"
+  },
+  "course": {
+    "already_purchased": "У вас уже есть доступ к этому курсу!",
+    "already_purchased_title": "Уже приобретено",
+    "added_to_cart": "Курс добавлен в корзину!",
+    "updated_in_cart": "Курс обновлен в корзине!",
+    "success_title": "Успех",
+    "access_granted": "✓ У ВАС ЕСТЬ ДОСТУП",
+    "purchase_course": "ПРИОБРЕСТИ КУРС",
+    "login_to_purchase": "ВОЙТИ ДЛЯ ПОКУПКИ"
   }
 } 

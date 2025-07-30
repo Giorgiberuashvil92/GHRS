@@ -91,7 +91,9 @@
     "test_title": "PayPal გადახდის ტესტი",
     "success_message": "გადახდა წარმატებით დასრულდა! ID: {{id}}",
     "error_message": "შეცდომა გადახდისას: {{error}}",
-    "success_indicator": "წარმატებით"
+    "success_indicator": "წარმატებით",
+    "payment_success": "გადახდა წარმატებით დასრულდა! თქვენი კურსები ხელმისაწვდომია პირად კაბინეტში.",
+    "payment_completed": "გადახდა დასრულდა"
   },
   "teacher": {
     "contents": "შინაარსი",
@@ -106,5 +108,27 @@
     "rating": "რეიტინგი",
     "certificatesTitle": "სერტიფიკატები",
     "viewCertificate": "სერტიფიკატის ნახვა"
+  },
+  "modal": {
+    "success": "წარმატება!",
+    "error": "შეცდომა!",
+    "warning": "გაფრთხილება!",
+    "info": "ინფორმაცია",
+    "confirm": "დადასტურება",
+    "ok": "კარგი",
+    "yes": "დიახ",
+    "no": "არა",
+    "cancel": "გაუქმება",
+    "understood": "გასაგებია"
+  },
+  "course": {
+    "already_purchased": "თქვენ უკვე გაქვთ ამ კურსზე წვდომა!",
+    "already_purchased_title": "უკვე შეძენილია",
+    "added_to_cart": "კურსი დაემატა კალათაში!",
+    "updated_in_cart": "კურსი განახლდა კალათაში!",
+    "success_title": "წარმატება",
+    "access_granted": "✓ თქვენ გაქვთ წვდომა",
+    "purchase_course": "კურსის შეძენა",
+    "login_to_purchase": "შესვლა შეძენისთვის"
   }
 } 

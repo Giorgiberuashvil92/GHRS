@@ -50,7 +50,7 @@ export class PaymentService {
     }
   }
 
-  async createOrder(amount: number, currency: string = 'RUB', userId: string, setId: string) {
+  async createOrder(amount: number, currency: string = 'RUB', userId: string, itemId: string, itemType: 'set' | 'course' | 'mixed' = 'set') {
     try {
       const accessToken = await this.getAccessToken();
       
@@ -72,7 +72,7 @@ export class PaymentService {
                 currency_code: currency,
                 value: amount.toString(),
               },
-              custom_id: `${userId}:${setId}`,
+              custom_id: `${userId}:${itemId}:${itemType}`,
             },
           ],
         }),
@@ -140,27 +140,38 @@ export class PaymentService {
           );
         }
         
-        const [userId, setIds] = customId.split(':');
+        const parts = customId.split(':');
+        const userId = parts[0];
+        const itemIds = parts[1];
+        const itemType = parts[2] || 'set'; // default to 'set' for backward compatibility
         
-        // Handle multiple setIds (comma-separated)
-        const setIdArray = setIds.split(',');
+        // Handle multiple itemIds (comma-separated)
+        const itemIdArray = itemIds.split(',');
         
         // Get amount from captures (where it actually is in the response)
         const totalAmount = parseFloat(
           paymentData.purchase_units[0].payments.captures[0].amount.value
         );
         const currency = paymentData.purchase_units[0].payments.captures[0].amount.currency_code;
-        const amountPerSet = totalAmount / setIdArray.length;
+        const amountPerItem = totalAmount / itemIdArray.length;
         
-        // Create purchase record for each setId
-        for (const setId of setIdArray) {
-          await this.purchaseService.createPurchase({
+        // Create purchase record for each itemId
+        for (const itemId of itemIdArray) {
+          const purchaseData: any = {
             userId,
-            setId: setId.trim(),
             paymentId: paymentData.id,
-            amount: amountPerSet,
+            amount: amountPerItem,
             currency: currency,
-          });
+            itemType: itemType === 'mixed' ? 'set' : itemType, // mixed-ის შემთხვევაში default set-ზე
+          };
+
+          if (itemType === 'set' || itemType === 'mixed') {
+            purchaseData.setId = itemId.trim();
+          } else if (itemType === 'course') {
+            purchaseData.courseId = itemId.trim();
+          }
+
+          await this.purchaseService.createPurchase(purchaseData);
         }
       }
 

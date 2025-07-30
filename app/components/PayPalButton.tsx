@@ -23,12 +23,13 @@ export interface PaymentResponse {
 interface PayPalButtonProps {
   amount: number;
   currency?: string;
-  setId: string;
+  itemId: string;
+  itemType?: 'set' | 'course' | 'mixed';
   onSuccess: (details: PaymentResponse) => void;
   onError: (error: Error) => void;
 }
 
-export default function PayPalButton({ amount, currency = 'RUB', setId, onSuccess, onError }: PayPalButtonProps) {
+export default function PayPalButton({ amount, currency = 'RUB', itemId, itemType = 'set', onSuccess, onError }: PayPalButtonProps) {
   const { user } = useAuth();
   const { t } = useI18n();
 
@@ -44,7 +45,8 @@ export default function PayPalButton({ amount, currency = 'RUB', setId, onSucces
           amount, 
           currency,
           userId: user.id,
-          setId
+          itemId,
+          itemType
         })
       });
 

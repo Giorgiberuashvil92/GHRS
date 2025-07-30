@@ -9,6 +9,8 @@ import type { PaymentResponse } from '../components/PayPalButton';
 import Works from "../components/Works";
 import { Footer } from "../components/Footer";
 import { useAllSets } from "../hooks/useSets";
+import { useModal } from "../context/ModalContext";
+import { useI18n } from "../context/I18nContext";
 
 const subscriptionOptions = [
   { label: "1 МЕСЯЦ", value: 1 },
@@ -26,25 +28,31 @@ interface CartItem {
   subscription: number;
   totalExercises?: number;
   totalDuration?: string;
+  itemType?: 'set' | 'course';
 }
 
 interface ParsedCartItem {
   id: string;
-  name: {
+  name?: {
     ru: string;
     en: string;
     ka: string;
   };
-  description: {
+  title?: string;
+  description?: {
     ru: string;
     en: string;
     ka: string;
   };
-  image: string;
+  desc?: string;
+  image?: string;
+  img?: string;
   price: number;
-  period: string;
-  totalExercises: number;
-  totalDuration: string;
+  period?: string;
+  totalExercises?: number;
+  totalDuration?: string;
+  itemType?: 'set' | 'course';
+  type?: string;
 }
 
 const ShoppingCard = () => {
@@ -54,6 +62,8 @@ const ShoppingCard = () => {
   const [showPayPal, setShowPayPal] = useState(false);
 
   const { sets } = useAllSets();
+  const { showSuccess } = useModal();
+  const { t } = useI18n();
 
   
   useEffect(() => {
@@ -66,13 +76,14 @@ const ShoppingCard = () => {
         // Transform the data to match our new CartItem interface
         const transformedCart = parsedCart.map((item: ParsedCartItem) => ({
           id: item.id,
-          title: item.name.ru, // Using Russian as default
-          desc: item.description.ru,
-          img: item.image,
-          price: item.price,
-          subscription: parseInt(item.period) || 1,
-          totalExercises: item.totalExercises,
-          totalDuration: item.totalDuration
+          title: item.name?.ru || item.title || 'Unknown',
+          desc: item.description?.ru || item.desc || 'No description',
+          img: item.image || item.img || '',
+          price: item.price || 0,
+          subscription: parseInt(item.period || '1') || 1,
+          totalExercises: item.totalExercises || 0,
+          totalDuration: item.totalDuration || '0:00',
+          itemType: item.itemType || item.type || 'set' // ✅ itemType-ის კოპირება
         }));
         setCart(transformedCart);
       }
@@ -105,7 +116,7 @@ const ShoppingCard = () => {
     // Clear cart after successful payment
     setCart([]);
     localStorage.removeItem('cart');
-    alert('გადახდა წარმატებით დასრულდა!');
+    showSuccess(t('payment.payment_success') || 'Payment completed successfully!', t('payment.payment_completed') || 'Payment Completed');
     // You could also redirect to a success page or show a success message
   };
 
@@ -289,10 +300,20 @@ const ShoppingCard = () => {
                 <PayPalButton
                   amount={cart.reduce((sum, i) => sum + i.price, 0)}
                   currency="RUB"
-                  setId={cart.map(item => item.id).join(',')} // Multiple items as comma-separated
+                  itemId={cart.map(item => item.id).join(',')} // Multiple items as comma-separated
+                  itemType={cart.length === 1 ? (cart[0].itemType || 'set') : 'mixed'} // Single item type or mixed for multiple
                   onSuccess={handlePaymentSuccess}
                   onError={handlePaymentError}
                 />
+                
+                {/* Debug info */}
+                <div className="mt-4 p-4 bg-gray-100 rounded text-sm">
+                  <h4 className="font-bold">🔍 Debug Info:</h4>
+                  <p>Cart items: {cart.length}</p>
+                  <p>Item IDs: {cart.map(item => item.id).join(', ')}</p>
+                  <p>Item Types: {cart.map(item => item.itemType || 'undefined').join(', ')}</p>
+                  <p>Selected Type: {cart.length === 1 ? (cart[0].itemType || 'set') : 'mixed'}</p>
+                </div>
               </div>
             )}
           </div>

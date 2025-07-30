@@ -143,6 +143,7 @@ export const API_CONFIG = {
     PURCHASES: {
       GET_MY_COURSES: '/purchases/my-courses',
       CHECK_ACCESS: (setId: string) => `/purchases/check-access/${setId}`,
+      CHECK_COURSE_ACCESS: (courseId: string) => `/purchases/check-course-access/${courseId}`,
     },
     PAYMENTS: {
       CREATE_ORDER: '/payment/create-order',

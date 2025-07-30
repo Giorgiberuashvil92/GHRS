@@ -20,6 +20,13 @@ export class PurchaseController {
     return this.purchaseService.checkUserAccess(userId, setId);
   }
 
+  @UseGuards(JwtAuthGuard)
+  @Get('check-course-access/:courseId')
+  async checkCourseAccess(@Request() req, @Param('courseId') courseId: string) {
+    const userId = req.user.userId || req.user.id || req.user.sub;
+    return this.purchaseService.checkUserCourseAccess(userId, courseId);
+  }
+
   // Debug endpoint - remove in production
   @Get('debug/:userId')
   async debugPurchases(@Param('userId') userId: string) {

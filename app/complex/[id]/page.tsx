@@ -232,7 +232,8 @@ const Complex = ({ params }: ComplexPageProps) => {
     
     const cartItem = {
       id: setId,
-      type: 'subscription',
+      type: 'set', // ✅ შევცვალე 'subscription'-დან 'set'-ზე
+      itemType: 'set', // ✅ დავამატე itemType ველი
       name: setData.name,
       price: price,
       period: period,
@@ -246,8 +247,15 @@ const Complex = ({ params }: ComplexPageProps) => {
     const existingCart = localStorage.getItem('cart');
     const cart = existingCart ? JSON.parse(existingCart) : [];
     
-    // Add new item
-    cart.push(cartItem);
+    // Check if item already exists in cart
+    const existingItemIndex = cart.findIndex((item: any) => item.id === setId);
+    if (existingItemIndex !== -1) {
+      // Update existing item
+      cart[existingItemIndex] = cartItem;
+    } else {
+      // Add new item
+      cart.push(cartItem);
+    }
     
     // Save back to localStorage
     localStorage.setItem('cart', JSON.stringify(cart));
