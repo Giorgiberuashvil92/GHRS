@@ -127,9 +127,10 @@ const ShoppingCard = () => {
   };
 
   return (
-    <div className="bg-[#F9F7FE]">
-      <DesktopNavbar menuItems={defaultMenuItems} blogBg={false} allCourseBg={false} />
-      <MobileNavbar />
+    <>
+      <div className="bg-[#F9F7FE]">
+        <DesktopNavbar menuItems={defaultMenuItems} blogBg={false} allCourseBg={false} />
+        <MobileNavbar />
       <div className="flex flex-col md:flex-row gap-6 w-full px-2 md:px-10 justify-between md:mb-10 md:pb-10">
         <div className="flex-1 flex flex-col gap-4 items-start p-4 md:p-10 bg-white rounded-[20px]">
           <div className="flex items-center justify-between w-full">
@@ -250,6 +251,7 @@ const ShoppingCard = () => {
       <Works title={"Шейный отдел позвоночника"} customMargin={""} customBorderRadius={""} seeAll={false} scrollable={false} sets={sets} />
       <Footer />
     </div>
+    </>
   );
 };
 
