@@ -206,8 +206,9 @@ const Works: React.FC<WorksProps> = ({
 
   return (
     <div
+    
       style={{ border: `${border}px solid ${borderColor}`, marginInline: `${customMargin}`, borderRadius: `${customBorderRadius}` }}
-      className="bg-[#F9F7FE] md:mt-0 md:pt-6 mt-10 md:mb-10 mb-0   rounded-b-[15px] md:pb-10 pb-0"
+      className="bg-[#F9F7FE] mx-6 rounded-[30px] md:mt-0 md:pt-6 mt-10 md:mb-10 mb-0   rounded-b-[15px] md:pb-10 pb-0"
     >
       {/* Slider */}
       <WorksSlider scrollable={scrollable} seeAll={seeAll} title={title} works={works} fromMain={fromMain} />
