@@ -107,12 +107,6 @@ const getExercises = (exercises: BackendExercise[]): Exercise[] => {
         list: [getLocalizedText(exercise.description, "ru")],
         image: exercise.thumbnailUrl,
       },
-      {
-        step: 2,
-        title: "Рекомендации",
-        list: [getLocalizedText(exercise.description, "ru")], // აქ უნდა იყოს recommendations როცა დაემატება
-        image: exercise.thumbnailUrl,
-      },
     ];
 
     return {
@@ -136,6 +130,11 @@ const getYouTubeVideoId = (url: string) => {
 const getVideoType = (url: string): 'youtube' | 'direct' | 'unknown' => {
   if (!url) return 'unknown';
   
+  // Invalid URLs check
+  if (url === 'thumbnailFile' || url === 'videoFile' || url.length < 10) {
+    return 'unknown';
+  }
+  
   // YouTube URL პატერნები
   const youtubePatterns = [
     /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/,
@@ -148,7 +147,7 @@ const getVideoType = (url: string): 'youtube' | 'direct' | 'unknown' => {
   }
 
   // პირდაპირი ვიდეო URL-ის პატერნები
-  const videoExtensions = /\.(mp4|webm|ogg)$/i;
+  const videoExtensions = /\.(mp4|webm|ogg|m4v|mov|avi|mkv)$/i;
   if (videoExtensions.test(url)) {
     return 'direct';
   }
@@ -336,10 +335,10 @@ function PlayerContent() {
   // შემდეგ/წინა ვარჯიშზე გადასვლა
 
 
-  // ვარჯიშების ფილტრაცია difficulty-ის მიხედვით
-  const exercises = allExercises?.filter(ex => 
+  // ვარჯიშების ფილტრაცია difficulty-ის მიხედვით და რიგის შეცვლა
+  const exercises = (allExercises?.filter(ex => 
     difficulty ? ex.difficulty === difficulty : true
-  ) || [];
+  ) || []).reverse(); // ამოვაბრუნოთ რიგი რომ 1, 2, 3, 4 იყოს
 
   // Set first exercise as current by default
   useEffect(() => {
@@ -463,22 +462,41 @@ function PlayerContent() {
       <MobileNavbar />
       <div className="flex flex-col items-center md:overflow-hidden">
         <div className="w-full max-w-[1400px] aspect-video md:mx-auto px-1 rounded-[20px] md:rounded-[30px] overflow-hidden">
-          {currentExercise?.videoUrl ? (
-            <VideoPlayer 
-              url={currentExercise.videoUrl} 
-              title={getLocalizedText(currentExercise.name)}
-              onVideoComplete={handleVideoComplete}
-              onProgress={handleVideoProgress}
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-[20px] md:rounded-[30px]">
-              <p className="text-gray-500">{t("common.noVideo")}</p>
-            </div>
-          )}
+          {(() => {
+            if (!currentExercise) {
+              return (
+                <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-[20px] md:rounded-[30px]">
+                  <p className="text-gray-500">{t("common.noVideo")}</p>
+                </div>
+              );
+            }
+
+            // Get video URL - use exercise videoUrl if valid, otherwise use set demoVideoUrl
+            let videoUrl = currentExercise.videoUrl;
+            const videoType = getVideoType(videoUrl || '');
+            
+            // If exercise videoUrl is invalid, use set's demoVideoUrl as fallback
+            if (videoType === 'unknown' && setData && 'demoVideoUrl' in setData) {
+              videoUrl = (setData as { demoVideoUrl: string }).demoVideoUrl;
+            }
+            
+            return videoUrl && getVideoType(videoUrl) !== 'unknown' ? (
+              <VideoPlayer 
+                url={videoUrl} 
+                title={getLocalizedText(currentExercise.name)}
+                onVideoComplete={handleVideoComplete}
+                onProgress={handleVideoProgress}
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-[20px] md:rounded-[30px]">
+                <p className="text-gray-500">{t("common.noVideo")}</p>
+              </div>
+            );
+          })()}
         </div>
 
         {/* Progress Bar */}
-        {currentExercise?.videoUrl && (
+        {currentExercise && (
           <div className="w-full max-w-[1400px] px-4 mt-2">
             <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
               <div 
@@ -497,33 +515,45 @@ function PlayerContent() {
             const isWatching = currentExercise?._id === exercise._id;
             const isCompleted = completedExercises.includes(exercise._id);
             
+            // Determine background color based on status
+            let bgColor = 'bg-gray-200'; // Default/locked
+            let textColor = 'text-gray-600';
+            
+            if (isCompleted) {
+              bgColor = 'bg-[#F3D57F]'; // Yellow for completed
+              textColor = 'text-[#92400E]';
+            } else if (isWatching) {
+              bgColor = 'bg-[#E8D5FF]'; // Purple for watching
+              textColor = 'text-[#6D28D9]';
+            } else {
+              bgColor = 'bg-[#F9F7FE]'; // Light purple for available
+              textColor = 'text-[#3D334A]';
+            }
+            
             return (
               <button
                 key={exercise._id}
                 type="button"
                 onClick={() => handleExerciseChange(exercise)}
-                className={`flex flex-row items-center md:w-auto mb-2 md:mb-0 rounded-[10px] px-4 py-2 ${
-                  isWatching ? 'bg-[#E8D5FF]' : 
-                  isCompleted ? 'bg-[#F3D57F]' : 
-                  'bg-[#F9F7FE]'
-                }`}
+                className={`flex flex-col items-center justify-center min-w-[120px] h-[80px] rounded-[10px] px-4 py-2 ${bgColor} transition-all duration-200 hover:scale-105`}
               >
-                <div className="flex flex-col items-start">
-                  <span className="text-sm font-medium text-[#3D334A] mb-1">
-                    {t("common.exercise")} {index + 1}
-                  </span>
-                  <span className="text-sm font-[Pt] text-[#3D334A]">
-                    {getLocalizedText(exercise.name, "ru")}
-                  </span>
-                </div>
+                <span className={`text-xs font-medium ${textColor} mb-1 uppercase`}>
+                  УПРАЖНЕНИЕ {index + 1}
+                </span>
+                <span className={`text-xs font-normal ${textColor} text-center leading-tight`}>
+                  {getLocalizedText(exercise.description, "ru").length > 40 
+                    ? getLocalizedText(exercise.description, "ru").substring(0, 40) + "..."
+                    : getLocalizedText(exercise.description, "ru")
+                  }
+                </span>
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* bg-[#F9F7FE] */}
-      <section className="w-full bg-[#F9F7FE] rounded-[16px] md:rounded-[30px] md:mb-10 flex flex-col items-center min-h-screen py-4 px-2 md:px-5 mt-4 md:mt-8">
+      {/* Exercise Details Section */}
+      <section className="w-full bg-[#F9F7FE] rounded-[16px] md:rounded-[30px] md:mb-10 flex flex-col items-center py-8 px-4 md:px-8 mt-6 md:mt-10">
         <div className="relative w-full flex flex-col gap-4 md:gap-6">
           {/* ვერტიკალური ხაზების კონტეინერი */}
           <div className="hidden md:block absolute left-6 w-[2px] h-full">
@@ -581,31 +611,27 @@ function PlayerContent() {
                 {/* ნომერი წრეში - სტატუსის მიხედვით */}
                 <div className={`hidden md:flex absolute left-0 items-center justify-center w-12 h-12 rounded-full z-10 ${
                   completedExercises.includes(exercise._id) 
-                    ? 'bg-[#F3D57F] border-[#F3D57F]' 
+                    ? 'bg-[#F3D57F] text-[#92400E]' 
                     : currentExercise?._id === exercise._id && allPreviousCompleted
-                      ? 'bg-white border-[#E8D5FF]'
-                      : 'bg-white border-[#F1EEF6]'
-                } border-4`}>
-                  <span className={`text-xl font-semibold ${
-                    completedExercises.includes(exercise._id)
-                      ? 'text-[#92400E]'
-                      : 'text-[#3D334A]'
-                  }`}>
+                      ? 'bg-[#E8D5FF] text-[#6D28D9]'
+                      : 'bg-gray-200 text-gray-600'
+                }`}>
+                  <span className="text-xl font-bold">
                     {exercise.id}
                   </span>
                 </div>
 
                 {/* მთავარი კონტენტი */}
                 <div className="flex-1 ml-0 md:ml-20">
-                  <div className="bg-white rounded-[16px] p-4 shadow-sm">
+                  <div className="bg-white rounded-[16px] p-6 shadow-sm border border-gray-100">
                     <div className="flex items-center justify-between mb-4">
                       <h3 className="text-lg font-semibold text-[#3D334A]">{exercise.title}</h3>
-                      <span className={`px-3 py-1 rounded-full text-sm ${
+                      <span className={`px-4 py-2 rounded-[6px] text-sm font-medium ${
                         completedExercises.includes(exercise._id) 
                           ? 'bg-[#F3D57F] text-[#92400E]' 
                           : currentExercise?._id === exercise._id && allPreviousCompleted
                             ? 'bg-[#E8D5FF] text-[#6D28D9]'
-                            : 'bg-[#F1EEF6] text-[#9CA3AF]'
+                            : 'bg-gray-200 text-gray-600'
                       }`}>
                         {completedExercises.includes(exercise._id)
                           ? "Просмотрено"
@@ -616,25 +642,29 @@ function PlayerContent() {
                     </div>
 
                     {exercise.steps.map((step) => (
-                      <div key={step.step} className="mb-4 last:mb-0">
-                        <h4 className="text-[#6D28D9] font-medium mb-2">{step.title}</h4>
+                      <div key={step.step} className="mb-6 last:mb-0">
+                        <h4 className="text-[#6D28D9] font-semibold mb-3 text-base">
+                          Шаг {step.step}: {step.title}
+                        </h4>
                         <div className="flex gap-4">
                           {step.image && (
-                            <div className="w-24 h-24 flex-shrink-0">
+                            <div className="w-20 h-20 flex-shrink-0">
                               <Image
                                 src={step.image}
                                 alt={step.title}
-                                width={96}
-                                height={96}
-                                className="w-full h-full object-cover rounded-lg"
+                                width={80}
+                                height={80}
+                                className="w-full h-full object-cover rounded-[8px]"
                               />
                             </div>
                           )}
-                          <ul className="flex-1 text-sm text-[#3D334A] space-y-2">
+                          <div className="flex-1">
                             {step.list.map((item, i) => (
-                              <li key={i} className="font-[Pt]">{item}</li>
+                              <p key={i} className="text-sm text-[#3D334A] mb-2 last:mb-0 leading-relaxed">
+                                {i + 1}. {item}
+                              </p>
                             ))}
-                          </ul>
+                          </div>
                         </div>
                       </div>
                     ))}

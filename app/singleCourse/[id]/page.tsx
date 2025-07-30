@@ -5,7 +5,7 @@ import { FaBullhorn, FaBookOpen } from "react-icons/fa";
 import DesktopNavbar from "../../components/Navbar/DesktopNavbar";
 import { defaultMenuItems } from "../../components/Header";
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { fetchCourse, fetchRelatedCourses } from '../../config/api';
 import CourseSlider from "@/app/components/CourseSlider";
 import SliderArrows from "@/app/components/SliderArrows";
@@ -88,6 +88,7 @@ interface Course {
 
 export default function SingleCourse() {
   const params = useParams();
+  const router = useRouter();
   const courseId = params.id as string;
   
   console.log('Course ID from params:', courseId);
@@ -111,6 +112,37 @@ export default function SingleCourse() {
 
   const scrollRight = () => {
     sliderRef.current?.scrollBy({ left: 300, behavior: "smooth" });
+  };
+
+  // კურსის ყიდვის ფუნქცია
+  const handlePurchaseCourse = () => {
+    if (!course) return;
+
+    // კურსის მონაცემები shopping cart-ისთვის
+    const courseItem = {
+      id: course._id,
+      type: 'course',
+      name: course.title,
+      price: course.price,
+      image: course.thumbnail,
+      description: course.shortDescription || course.description,
+      duration: course.duration,
+      instructor: course.instructor.name,
+      lessonsCount: course.syllabus?.length || 0
+    };
+
+    // არსებული cart-ის მოძებნა ან ცარიელი array-ის შექმნა
+    const existingCart = localStorage.getItem('cart');
+    const cart = existingCart ? JSON.parse(existingCart) : [];
+    
+    // ახალი item-ის დამატება
+    cart.push(courseItem);
+    
+    // localStorage-ში შენახვა
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // shopping cart გვერდზე გადასვლა
+    router.push('/shoppingcard');
   };
 
   useEffect(() => {
@@ -277,9 +309,12 @@ export default function SingleCourse() {
               </div>
               <div className="text-[#A9A6B4] text-sm">Стоимость курса</div>
             </div>
-            <div className="bg-[url('/assets/images/bluebg.jpg')] bg-cover bg-center h-[48px] rounded-lg flex items-center justify-center px-5 py-3 font-bold text-white duration-300 hover:text-[#8D7EF3] mb-1 text-lg cursor-pointer hover:bg-[#e2dbff] transition-colors">
+            <button 
+              onClick={handlePurchaseCourse}
+              className="bg-[url('/assets/images/bluebg.jpg')] bg-cover bg-center h-[48px] rounded-lg flex items-center justify-center px-5 py-3 font-bold text-white duration-300 hover:text-[#8D7EF3] mb-1 text-lg cursor-pointer hover:bg-[#e2dbff] transition-colors w-full"
+            >
               <h2>ПРИОБРЕСТИ КУРС</h2>
-            </div>
+            </button>
             <div className="hidden md:flex flex-col gap-4">
               {course.advertisementImage ? (
                 <>

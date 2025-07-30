@@ -175,12 +175,13 @@ export async function apiRequest<T>(
     ...API_CONFIG.HEADERS,
   };
 
-  // JWT authorization მოშორებულია - ყველა endpoint public-ია
-  // if (!isPublicEndpoint(endpoint) && 
-  //     typeof window !== "undefined" && 
-  //     localStorage.getItem("token")) {
-  //   headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
-  // }
+  // Add JWT token for authenticated endpoints
+  if (typeof window !== "undefined") {
+    const token = localStorage.getItem("token");
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+    }
+  }
 
   const config: RequestInit = {
     headers,

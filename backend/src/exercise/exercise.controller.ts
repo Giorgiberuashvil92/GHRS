@@ -1,5 +1,5 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseInterceptors, UploadedFiles, BadRequestException } from '@nestjs/common';
-import { FilesInterceptor } from '@nestjs/platform-express';
+import { FilesInterceptor, AnyFilesInterceptor } from '@nestjs/platform-express';
 import { ExerciseService } from './exercise.service';
 import { CreateExerciseDto } from './dto/create-exercise.dto';
 import * as streamifier from 'streamifier';
@@ -26,17 +26,35 @@ export class ExerciseController {
   };
   
   @Post()
-  @UseInterceptors(FilesInterceptor('file', 2, { storage: memoryStorage() }))
+  @UseInterceptors(AnyFilesInterceptor({ storage: memoryStorage() }))
   async create(@UploadedFiles() files: Express.Multer.File[], @Body() data: any) {
     console.log('--- [CONTROLLER] Create Exercise ---');
     console.log('Files received:', files?.length);
     console.log('Body:', data);
 
     try {
+      // Parse and clean localized fields
+      const nameObj = JSON.parse(data.name);
+      const cleanName = {
+        en: nameObj.en,
+        ru: nameObj.ru,
+        ...(nameObj.ka && { ka: nameObj.ka })
+      };
+
+      let cleanDescription;
+      if (data.description) {
+        const descObj = JSON.parse(data.description);
+        cleanDescription = {
+          en: descObj.en,
+          ru: descObj.ru,
+          ...(descObj.ka && { ka: descObj.ka })
+        };
+      }
+
       const parsedData = {
         ...data,
-        name: JSON.parse(data.name),
-        description: data.description ? JSON.parse(data.description) : undefined,
+        name: cleanName,
+        description: cleanDescription,
       };
 
       let videoUrl = '';
@@ -53,14 +71,18 @@ export class ExerciseController {
       // Handle file uploads
       if (files && files.length > 0) {
         for (const file of files) {
-          // Determine if the file is a video or image based on mimetype
+          // Determine if the file is a video or image based on mimetype and fieldname
           const isVideo = file.mimetype.startsWith('video/');
+          const isThumbnailFile = file.fieldname === 'thumbnailFile' || file.fieldname === 'thumbnail';
+          const isVideoFile = file.fieldname === 'videoFile' || file.fieldname === 'video';
           
           try {
             const uploadedUrl = await this.uploadToCloudinary(file, isVideo ? 'video' : 'image');
-            if (isVideo) {
+            
+            // Determine which field to update based on fieldname or mimetype
+            if (isVideoFile || (isVideo && !isThumbnailFile)) {
               videoUrl = uploadedUrl;
-            } else {
+            } else if (isThumbnailFile || !isVideo) {
               thumbnailUrl = uploadedUrl;
             }
           } catch (error) {
@@ -143,7 +165,7 @@ export class ExerciseController {
   }
 
   @Patch(':id')
-  @UseInterceptors(FilesInterceptor('file', 2, { storage: memoryStorage() }))
+  @UseInterceptors(AnyFilesInterceptor({ storage: memoryStorage() }))
   async update(
     @Param('id') id: string, 
     @Body() data: any,
@@ -152,16 +174,33 @@ export class ExerciseController {
     try {
       console.log('--- [CONTROLLER] Update Exercise ---');
       console.log('Files received:', files?.length);
+      console.log('Files details:', files?.map(f => ({ fieldname: f.fieldname, mimetype: f.mimetype, size: f.size })));
       console.log('Body:', data);
 
       const updateData: any = { ...data };
 
-      // Parse localized fields if they exist
-      if (data.name) updateData.name = JSON.parse(data.name);
-      if (data.description) updateData.description = JSON.parse(data.description);
+      // Parse localized fields if they exist and clean them
+      if (data.name) {
+        const nameObj = JSON.parse(data.name);
+        // Remove any extra fields like _id, id
+        updateData.name = {
+          en: nameObj.en,
+          ru: nameObj.ru,
+          ...(nameObj.ka && { ka: nameObj.ka })
+        };
+      }
+      if (data.description) {
+        const descObj = JSON.parse(data.description);
+        // Remove any extra fields like _id, id
+        updateData.description = {
+          en: descObj.en,
+          ru: descObj.ru,
+          ...(descObj.ka && { ka: descObj.ka })
+        };
+      }
 
       // Handle direct URLs
-      if (data.videoUrl) {
+      if (data.videoUrl && data.videoUrl.trim() !== 'thumbnailFile' && data.videoUrl.trim() !== 'videoFile') {
         updateData.videoUrl = data.videoUrl.trim();
       }
       if (data.thumbnailUrl) {
@@ -172,11 +211,16 @@ export class ExerciseController {
       if (files && files.length > 0) {
         for (const file of files) {
           const isVideo = file.mimetype.startsWith('video/');
+          const isThumbnailFile = file.fieldname === 'thumbnailFile' || file.fieldname === 'thumbnail';
+          const isVideoFile = file.fieldname === 'videoFile' || file.fieldname === 'video';
+          
           try {
             const uploadedUrl = await this.uploadToCloudinary(file, isVideo ? 'video' : 'image');
-            if (isVideo) {
+            
+            // Determine which field to update based on fieldname or mimetype
+            if (isVideoFile || (isVideo && !isThumbnailFile)) {
               updateData.videoUrl = uploadedUrl;
-            } else {
+            } else if (isThumbnailFile || !isVideo) {
               updateData.thumbnailUrl = uploadedUrl;
             }
           } catch (error) {
@@ -193,10 +237,22 @@ export class ExerciseController {
       return this.exerciseService.update(id, updateData);
     } catch (error) {
       console.error('❌ Error updating exercise:', error);
+      console.error('❌ Error details:', {
+        message: error.message,
+        stack: error.stack,
+        name: error.name
+      });
+      
       if (error instanceof BadRequestException) {
         throw error;
       }
-      throw new BadRequestException(error.message);
+      
+      // Provide more detailed error message
+      if (error.message.includes('validation')) {
+        throw new BadRequestException(`Validation error: ${error.message}`);
+      }
+      
+      throw new BadRequestException(`Update failed: ${error.message}`);
     }
   }
 
