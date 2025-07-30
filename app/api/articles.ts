@@ -18,7 +18,21 @@ export interface Article {
     ru: string;
   };
   blogId: string;
-  categoryId: string;
+  categoryId: string | string[];
+  categories?: Array<{
+    _id: string;
+    name: {
+      ka: string;
+      en: string;
+      ru: string;
+    };
+    description?: {
+      ka: string;
+      en: string;
+      ru: string;
+    };
+    image?: string;
+  }>;
   category?: {
     _id: string;
     name: {
@@ -82,7 +96,7 @@ export interface CreateArticleDto {
     ru: string;
   };
   blogId: string;
-  categoryId: string;
+  categoryId: string | string[];
   featuredImages?: string[];
   author: {
     name: string;
@@ -158,7 +172,7 @@ export const createArticle = async (data: CreateArticleDto) => {
   if (!data.blogId) {
     throw new Error('Blog ID is required');
   }
-  if (!data.categoryId) {
+  if (!data.categoryId || (Array.isArray(data.categoryId) && data.categoryId.length === 0)) {
     throw new Error('Category ID is required');
   }
   if (!data.author?.name) {

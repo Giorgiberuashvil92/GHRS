@@ -88,9 +88,23 @@
     "user_not_authorized": "Пользователь не авторизован",
     "please_login": "Пожалуйста, войдите в систему",
     "total": "Итого",
-    "test_title": "Тест PayPal платежа",
-    "success_message": "Платеж успешно завершен! ID: {{id}}",
-    "error_message": "Ошибка при оплате: {{error}}",
-    "success_indicator": "успешно"
+    "test_title": "Тест оплаты PayPal",
+    "success_message": "Оплата прошла успешно! ID: {{id}}",
+    "error_message": "Ошибка оплаты: {{error}}",
+    "success_indicator": "Успешно"
+  },
+  "teacher": {
+    "contents": "Содержание",
+    "sampleQuestion": "Что считается сидячим образом жизни?",
+    "instructorName": "Имя инструктора",
+    "professionalTitle": "Профессиональное звание",
+    "courses": "Курс",
+    "certificates": "Сертификат",
+    "students": "Студент",
+    "aboutInstructor": "Об инструкторе",
+    "bioPlaceholder": "Биография инструктора будет добавлена в ближайшее время.",
+    "rating": "Рейтинг",
+    "certificatesTitle": "Сертификаты",
+    "viewCertificate": "Посмотреть сертификат"
   }
 } 
