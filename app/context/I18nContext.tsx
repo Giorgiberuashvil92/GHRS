@@ -7,6 +7,7 @@ interface I18nContextType {
   locale: Locale;
   setLocale: (locale: Locale) => void;
   t: (key: string, options?: Record<string, string>) => string;
+  isLoading: boolean;
 }
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
@@ -19,7 +20,6 @@ export const useI18n = () => {
   return context;
 };
 
-// Add useLanguage hook
 export const useLanguage = () => {
   const context = useContext(I18nContext);
   if (!context) {
@@ -34,17 +34,22 @@ interface I18nProviderProps {
 
 // Helper function to get nested values from object
 const getNestedValue = (obj: Record<string, unknown>, path: string): string => {
-  return (
-    (path
-      .split(".")
-      .reduce(
-        (o: unknown, p: string) =>
-          o && typeof o === "object" && p in o
-            ? (o as Record<string, unknown>)[p]
-            : undefined,
-        obj
-      ) as string) || path
-  );
+  const value = path
+    .split(".")
+    .reduce(
+      (o: unknown, p: string) => {
+        return o && typeof o === "object" && p in o
+          ? (o as Record<string, unknown>)[p]
+          : undefined;
+      },
+      obj
+    );
+
+  if (value === undefined) {
+    return path;
+  }
+
+  return value as string;
 };
 
 // Deep merge helper to preserve nested keys when combining translation files
@@ -73,16 +78,25 @@ const deepMerge = (
 };
 
 export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
-  const [locale, setLocaleState] = useState<Locale>("ka");
-  const [translationData, setTranslationData] = useState<
-    Record<string, unknown>
-  >({});
+  const [locale, setLocaleState] = useState<Locale>(() => {
+    // Try to get locale from localStorage first
+    if (typeof window !== 'undefined') {
+      const savedLocale = localStorage.getItem("locale") as Locale;
+      if (savedLocale && ["ka", "ru", "en"].includes(savedLocale)) {
+        return savedLocale;
+      }
+    }
+    return "ka";
+  });
+  const [translationData, setTranslationData] = useState<Record<string, unknown>>({});
+  const [isLoading, setIsLoading] = useState(true);
 
   // Load translation files
   useEffect(() => {
     const loadTranslations = async () => {
+      setIsLoading(true);
       try {
-        const [common, home, advantages, subscribe, sets, header, components] =
+        const [common, home, advantages, subscribe, sets, header, components, personalAccount] =
           await Promise.all([
             fetch(`/locales/${locale}/common.json`).then((res) => res.json()),
             fetch(`/locales/${locale}/home.json`).then((res) => res.json()),
@@ -94,9 +108,8 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
             ),
             fetch(`/locales/${locale}/sets.json`).then((res) => res.json()),
             fetch(`/locales/${locale}/header.json`).then((res) => res.json()),
-            fetch(`/locales/${locale}/components.json`).then((res) =>
-              res.json()
-            ),
+            fetch(`/locales/${locale}/components.json`).then((res) => res.json()),
+            fetch(`/locales/${locale}/personalAccount.json`).then((res) => res.json()),
           ]);
 
         const translationsArray = [
@@ -107,6 +120,7 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
           sets,
           header,
           components,
+          personalAccount,
         ];
 
         const mergedTranslations = translationsArray.reduce<Record<string, unknown>>(
@@ -117,6 +131,8 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
         setTranslationData(mergedTranslations);
       } catch (error) {
         console.error("Failed to load translations:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -124,25 +140,18 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
   }, [locale]);
 
   const setLocale = (newLocale: Locale) => {
-    setLocaleState(newLocale);
-    // Store in localStorage
-    localStorage.setItem("locale", newLocale);
-  };
-
-  // Load locale from localStorage on mount
-  useEffect(() => {
-    const savedLocale = localStorage.getItem("locale") as Locale;
-    if (savedLocale && ["ka", "ru", "en"].includes(savedLocale)) {
-      setLocaleState(savedLocale);
+    if (newLocale !== locale) {
+      setLocaleState(newLocale);
+      localStorage.setItem("locale", newLocale);
+      window.location.reload(); // Force reload to ensure all components get new translations
     }
-  }, []);
+  };
 
   const t = (key: string, options?: Record<string, string>): string => {
     let translation = getNestedValue(translationData, key);
 
     // If translation not found, return the key
     if (translation === key) {
-      console.warn(`Translation missing for key: ${key}`);
       return key;
     }
 
@@ -176,8 +185,19 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
     return translation;
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-600 border-t-transparent mb-4 mx-auto"></div>
+          <h2 className="text-2xl font-semibold text-gray-700">Loading translations...</h2>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <I18nContext.Provider value={{ locale, setLocale, t }}>
+    <I18nContext.Provider value={{ locale, setLocale, t, isLoading }}>
       {children}
     </I18nContext.Provider>
   );

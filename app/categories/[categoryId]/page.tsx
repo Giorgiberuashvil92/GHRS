@@ -4,7 +4,7 @@ import { use } from "react";
 import { useCategoryComplete } from "../../hooks/useCategoryComplete";
 import Image from "next/image";
 import Link from "next/link";
-import Header, { defaultMenuItems } from "../../components/Header";
+import Header from "../../components/Header";
 import SliderArrows from "../../components/SliderArrows";
 import WorksSlider from "../../components/WorksSlider";
 import Subscribe from "../../components/Subscribe";
@@ -13,7 +13,7 @@ import Professional from "../../components/Professional";
 import Blog from "@/app/components/Blog";
 import { useI18n } from "../../context/I18nContext";
 import { Footer } from "@/app/components/Footer";
-import DesktopNavbar from "@/app/components/Navbar/DesktopNavbar";
+// import DesktopNavbar from "@/app/components/Navbar/DesktopNavbar";
 
 export default function CategoriesPage({
   params,
@@ -64,7 +64,6 @@ export default function CategoriesPage({
     );
   }
 
-  // ვიღებთ ენის პარამეტრს locale storage-იდან
   const getLocale = () => {
     if (typeof window !== "undefined") {
       const storedLocale = localStorage.getItem("locale");
@@ -229,7 +228,7 @@ export default function CategoriesPage({
           withBanner={false}
           withSlider={true}
           layoutType="default"
-          title={getLocalizedText(selectedCategory?.name, locale)}
+          title={'GRS МЕДИА'}
         />
         <div className="mt-10">
           <Professional withBanner={false} title={""} bgColor={"#F9F7FE"} withProfText={true} />

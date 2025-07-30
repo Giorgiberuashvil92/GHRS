@@ -130,7 +130,7 @@ export default function SubcategoryPage({
       <div className="md:pt-[100px] pt-[400px]">
         {Array.isArray(formattedSets) && formattedSets.length > 0 && (
           <div>
-            <WorksSlider title={t("common.complexes")} works={formattedSets} linkType="complex" />
+            <WorksSlider title={t("common.complexes")} works={formattedSets} linkType="complex" fromMain={false} seeAll={false} scrollable={false} />
           </div>
         )}
 

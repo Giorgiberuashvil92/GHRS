@@ -101,9 +101,11 @@ const ShoppingCard = () => {
   };
 
   const handlePaymentSuccess = (details: PaymentResponse) => {
+    console.log('Payment successful:', details);
     // Clear cart after successful payment
     setCart([]);
     localStorage.removeItem('cart');
+    alert('გადახდა წარმატებით დასრულდა!');
     // You could also redirect to a success page or show a success message
   };
 
@@ -287,8 +289,10 @@ const ShoppingCard = () => {
                 <PayPalButton
                   amount={cart.reduce((sum, i) => sum + i.price, 0)}
                   currency="RUB"
+                  setId={cart.map(item => item.id).join(',')} // Multiple items as comma-separated
                   onSuccess={handlePaymentSuccess}
-                  onError={handlePaymentError} setId={""}                />
+                  onError={handlePaymentError}
+                />
               </div>
             )}
           </div>

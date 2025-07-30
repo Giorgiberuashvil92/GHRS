@@ -1,4 +1,5 @@
 {
+  "grs_media": "GRS МЕДИА",
   "navigation": {
     "home": "Главная",
     "about": "О нас",
@@ -73,5 +74,23 @@
     "read_more": "Подробнее",
     "share": "Поделиться",
     "bookmark": "Сохранить"
+  },
+  "days": {
+    "monday": "Пн",
+    "tuesday": "Вт",
+    "wednesday": "Ср",
+    "thursday": "Чт",
+    "friday": "Пт",
+    "saturday": "Сб",
+    "sunday": "Вс"
+  },
+  "payment": {
+    "user_not_authorized": "Пользователь не авторизован",
+    "please_login": "Пожалуйста, войдите в систему",
+    "total": "Итого",
+    "test_title": "Тест PayPal платежа",
+    "success_message": "Платеж успешно завершен! ID: {{id}}",
+    "error_message": "Ошибка при оплате: {{error}}",
+    "success_indicator": "успешно"
   }
 } 

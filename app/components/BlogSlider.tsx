@@ -6,7 +6,7 @@ import { IoIosShareAlt } from "react-icons/io";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useI18n } from "../context/I18nContext";
-import { useCategories } from "../hooks/useCategories";
+// import { useCategories } from "../hooks/useCategories";
 
 interface Blog {
   _id: string;
@@ -106,12 +106,12 @@ const BlogSlider: React.FC<BlogSliderProps> = ({
     return `/article/${articleId}`;
   };
 
-  const getArticleCount = (count: number) => {
-    if (count === 1) {
-      return t("blog.articles_count_one");
-    }
-    return t("blog.articles_count", { count: String(count) });
-  };
+  // const getArticleCount = (count: number) => {
+  //   if (count === 1) {
+  //     return t("blog.articles_count_one");
+  //   }
+  //   return t("blog.articles_count", { count: String(count) });
+  // };
 
   return (
     <div className="w-full font-[Pt]">

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import ChallengeCard from "./ChallengeCard";
+import { useI18n } from "../context/I18nContext";
 
 type Achievement = {
   id: string;
@@ -22,12 +23,13 @@ const Achievements: React.FC<Props> = ({ achievements, alwaysShowAll }) => {
   const visibleAchievements = showEverything
     ? achievements
     : achievements.slice(0, 4);
+  const { t } = useI18n();
 
   return (
     <div>
       <div className="p-4 md:px-10 md:mx-10 rounded-[20px] bg-[#F9F7FE] mt-2 md:mt-5">
         <h1 className="text-[#3D334A] mb-4 text-[18px] md:text-[40px] leading-[120%] tracking-[-3%]">
-          Достижения
+          {t("personal_account.achievements.title")}
         </h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-5">
           {visibleAchievements.map((item) => (
@@ -41,8 +43,8 @@ const Achievements: React.FC<Props> = ({ achievements, alwaysShowAll }) => {
           onClick={() => setShowAll((prev) => !prev)}
         >
           {showAll
-            ? "Скрыть достижения"
-            : "Поделиться статистикой и достижениями"}
+                      ? t("personal_account.achievements.hide")
+          : t("personal_account.achievements.share")}
         </button>
       )}
     </div>

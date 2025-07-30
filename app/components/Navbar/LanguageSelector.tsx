@@ -1,14 +1,9 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useI18n } from "../../context/I18nContext";
 
-interface LanguageSelectorProps {
-  currentLanguage?: string;
-  onSelectLanguage?: (lang: string) => void;
-}
-
-const LanguageSelector: React.FC<LanguageSelectorProps> = () => {
+const LanguageSelector: React.FC = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { locale, setLocale } = useI18n();
 
@@ -24,8 +19,18 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = () => {
 
   const handleLanguageChange = (langCode: "ka" | "ru" | "en") => {
     setLocale(langCode);
+    localStorage.setItem("locale", langCode);
     setIsDropdownOpen(false);
+    window.location.reload(); // Force reload to ensure all components get new translations
   };
+
+  // Load saved language on mount
+  useEffect(() => {
+    const savedLocale = localStorage.getItem("locale") as "ka" | "ru" | "en";
+    if (savedLocale && savedLocale !== locale) {
+      setLocale(savedLocale);
+    }
+  }, []);
 
   return (
     <div className="relative font-[Pt]">

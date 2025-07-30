@@ -1,4 +1,5 @@
 {
+  "grs_media": "GRS MEDIA",
   "navigation": {
     "home": "Home",
     "about": "About Us",
@@ -73,5 +74,23 @@
     "read_more": "Read More",
     "share": "Share",
     "bookmark": "Bookmark"
+  },
+  "days": {
+    "monday": "Mon",
+    "tuesday": "Tue",
+    "wednesday": "Wed",
+    "thursday": "Thu",
+    "friday": "Fri",
+    "saturday": "Sat",
+    "sunday": "Sun"
+  },
+  "payment": {
+    "user_not_authorized": "User is not authorized",
+    "please_login": "Please log in",
+    "total": "Total",
+    "test_title": "PayPal Payment Test",
+    "success_message": "Payment completed successfully! ID: {{id}}",
+    "error_message": "Payment error: {{error}}",
+    "success_indicator": "successfully"
   }
 } 

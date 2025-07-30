@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import DayBoxes from "../DayBoxes";
+import { useI18n } from "../../context/I18nContext";
 
 type DaysInRowProps = {
   currentStreak: number;
@@ -15,6 +16,8 @@ const DaysInRow: React.FC<DaysInRowProps> = ({
   multiplier = 1,
   timer = "00:00:00",
 }) => {
+  const { t } = useI18n();
+
   return (
     <div className="border-2 border-[#D4BAFC] rounded-[10px] p-5 md:w-full flex flex-col justify-between">
       <div className="flex items-start gap-2.5 mb-10">
@@ -26,10 +29,10 @@ const DaysInRow: React.FC<DaysInRowProps> = ({
         />
         <div className="flex flex-col md:w-full">
           <h4 className="text-[#D4BAFC] text-[18px] md:text-[24px] tracking-[-3%]">
-            {currentStreak} ДНЯ ПОДРЯД
+            {currentStreak} {t("personal_account.days_in_row.days_streak")}
           </h4>
           <span className="text-[#846FA0] font-[Pt] font-medium md:text-[18px] leading-[120%]">
-            Рекорд: {recordStreak} дней подряд
+            {t("personal_account.days_in_row.record", { count: recordStreak.toString() })}
           </span>
         </div>
         <h4 className="text-[#D4BAFC] md:text-[24px] md:tracking-[-3%] md:w-full md:text-end">

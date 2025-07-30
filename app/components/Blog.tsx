@@ -105,6 +105,13 @@ const Blog: React.FC<BlogProps> = ({
   const canScrollLeft = currentPage > 0;
   const canScrollRight = currentPage < totalPages - 1;
 
+  // Add debugging
+  console.log('Blog component props:', {
+    title,
+    withSlider,
+    layoutType
+  });
+
   if (loading) {
     return <div>{t("common.loading")}</div>;
   }
@@ -128,9 +135,11 @@ const Blog: React.FC<BlogProps> = ({
       <div className="py-5 md:px-6">
         {withSlider && (
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-[20px] leading-[120%] md:my-5 md:mx-3 text-[#3D334A] md:text-[40px] md:tracking-[-3%]">
-              {title || t("navigation.blog")}
-            </h2>
+            <div className="w-[200px] md:w-[400px] overflow-hidden">
+              <h2 className="text-[20px] leading-[120%] md:my-5 md:mx-3 text-[#3D334A] md:text-[40px] md:tracking-[-3%] truncate" title={title || t("navigation.blog")}>
+                {title || t("navigation.blog")}
+              </h2>
+            </div>
             <SliderArrows
               onScrollLeft={scrollLeft}
               onScrollRight={scrollRight}

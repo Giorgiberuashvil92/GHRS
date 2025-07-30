@@ -299,9 +299,7 @@ const Complex = ({ params }: ComplexPageProps) => {
                     pathname: '/player',
                     query: { 
                       setId,
-                      difficulty: 'easy',
-                      exercises: JSON.stringify(exercises?.filter(ex => ex.difficulty === 'easy')),
-                      set: JSON.stringify(setData)
+                      difficulty: 'easy'
                     }
                   }}
                 >
@@ -453,9 +451,7 @@ const Complex = ({ params }: ComplexPageProps) => {
                       pathname: '/player',
                       query: { 
                         setId,
-                        difficulty: 'medium',
-                        exercises: JSON.stringify(exercises?.filter(ex => ex.difficulty === 'medium')),
-                        set: JSON.stringify(setData)
+                        difficulty: 'medium'
                       }
                     }}
                   >
@@ -487,9 +483,7 @@ const Complex = ({ params }: ComplexPageProps) => {
                       pathname: '/player',
                       query: { 
                         setId,
-                        difficulty: 'hard',
-                        exercises: JSON.stringify(exercises?.filter(ex => ex.difficulty === 'hard')),
-                        set: JSON.stringify(setData)
+                        difficulty: 'hard'
                       }
                     }}
                   >

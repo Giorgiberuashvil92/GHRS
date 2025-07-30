@@ -3,13 +3,15 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PurchaseController } from './purchase.controller';
 import { PurchaseService } from './purchase.service';
 import { Purchase, PurchaseSchema } from '../schemas/purchase.schema';
+import { Set, SetSchema } from '../schemas/set.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: Purchase.name, schema: PurchaseSchema }
+      { name: Purchase.name, schema: PurchaseSchema },
+      { name: 'sets', schema: SetSchema }
     ])
-  ],
+  ],  
   controllers: [PurchaseController],
   providers: [PurchaseService],
   exports: [PurchaseService],
