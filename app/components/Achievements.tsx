@@ -27,7 +27,7 @@ const Achievements: React.FC<Props> = ({ achievements, alwaysShowAll }) => {
 
   return (
     <div>
-      <div className="p-4 md:px-10 md:mx-10 rounded-[20px] bg-[#F9F7FE] mt-2 md:mt-5">
+      <div className="p-4 md:px-10 md:mx-10 rounded-[20px] bg-red-500 mt-2 md:mt-5">
         <h1 className="text-[#3D334A] mb-4 text-[18px] md:text-[40px] leading-[120%] tracking-[-3%]">
           {t("personal_account.achievements.title")}
         </h1>
