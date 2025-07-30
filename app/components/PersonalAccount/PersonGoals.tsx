@@ -5,6 +5,7 @@ import Image from "next/image";
 import DayBoxes from "../DayBoxes";
 import Select from "react-select";
 import { IoMdClose } from "react-icons/io";
+import { useI18n } from "../../context/I18nContext";
 
 type Goals = {
   currentStreak: number;
@@ -30,6 +31,7 @@ const PersonGoals: React.FC<Props> = ({ goals }) => {
       (option) => option.value === goals.calendarIntegration
     )
   );
+  const { t } = useI18n();
 
   return (
     <>
@@ -42,18 +44,17 @@ const PersonGoals: React.FC<Props> = ({ goals }) => {
             height={59}
           />
           <h2 className="text-white text-[26px] md:text-[32px] tracking-[-3%]">
-            Давайте поставим цель
+            {t("personal_account.person_goals.title")}
           </h2>
         </div>
         <p className="mt-2.5 md:mb-[19px] px-5 py-3.5 font-[Pt] md:text-[18px] bg-[#3D334A33] rounded-[10px] text-[14px] font-medium backdrop-blur-[20px] text-center mb-2">
-          Регулярные занятия помогут вам сохранить мотивацию. Настройте
-          уведомления и мы поможем вам не забыть о занятии.
+          {t("personal_account.person_goals.description")}
         </p>
         <button
           onClick={() => setIsOpen(true)}
           className="bg-white text-[#3D334A] py-[17px] pr-[43px] rounded-[10px] text-[18px] leading-[100%] tracking-[-1%] w-full"
         >
-          Поставить цель
+          {t("personal_account.person_goals.set_goal")}
         </button>
       </div>
 
@@ -70,14 +71,13 @@ const PersonGoals: React.FC<Props> = ({ goals }) => {
               />
             </button>
             <h2 className="text-[#3D334A] text-[20px] font-semibold mb-6">
-              Нaстроить напоминания
+              {t("personal_account.person_goals.reminder_settings")}
             </h2>
             <p className="text-[#846FA0] text-[16px] mb-4">
-              Занимаясь хотя бы 4 раза в неделю вы постепенно привыкните к
-              ритму.
+                              {t("personal_account.person_goals.reminder_description")}
             </p>
             <p className="mb-[30px] text-[#846FA0]">
-              По каким дням вы хотите заниматься?
+                              {t("personal_account.person_goals.which_days")}
             </p>
 
             <div className="w-full flex justify-center mb-[27px]">
@@ -86,14 +86,18 @@ const PersonGoals: React.FC<Props> = ({ goals }) => {
 
             <div className="grid grid-cols-2 gap-4 w-full mb-4">
               <div className="flex items-center gap-[15px]">
-                <label className="text-[#3D334A] mb-1 text-sm">С</label>
+                <label className="text-[#3D334A] mb-1 text-sm">
+                                      {t("personal_account.person_goals.from")}
+                </label>
                 <input
                   type="time"
                   className="border border-[#D4BAFC] w-[100px] md:w-auto rounded-[6px] px-3 py-2 text-[#3D334A]"
                 />
               </div>
               <div className="flex items-center gap-[15px]">
-                <label className="text-[#3D334A] mb-1 text-sm">До</label>
+                <label className="text-[#3D334A] mb-1 text-sm">
+                                      {t("personal_account.person_goals.to")}
+                </label>
                 <input
                   type="time"
                   className="border border-[#D4BAFC] rounded-[6px] w-[100px] md:w-auto px-3 py-2 text-[#3D334A]"
@@ -103,7 +107,7 @@ const PersonGoals: React.FC<Props> = ({ goals }) => {
 
             <div className="mb-4 w-full">
               <label className="text-[#3D334A] block mb-2">
-                Выберите календарь для отображения уведомлений
+                {t("personal_account.person_goals.calendar_select")}
               </label>
               <Select
                 options={calendarOptions}
@@ -133,7 +137,7 @@ const PersonGoals: React.FC<Props> = ({ goals }) => {
               onClick={() => setIsOpen(false)}
               className="mt-2 bg-[#D4BAFC] text-white py-2 px-4 rounded-[8px] w-full"
             >
-              Сохранить
+                              {t("personal_account.person_goals.save")}
             </button>
           </div>
         </div>

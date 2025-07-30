@@ -3,14 +3,16 @@ import React, { useRef, useState, useMemo, useEffect } from "react";
 import Banner from "./Banner";
 import SliderArrows from "./SliderArrows";
 import GridLayouts, { LayoutType } from "./GridLayouts";
-import { useLanguage } from "../context/I18nContext";
+import { useI18n } from "../context/I18nContext";
 import { API_CONFIG, apiRequest } from "../config/api";
+import { Article } from "../api/articles";
+import { useArticles } from "../hooks/useArticles";
 
 interface BlogProps {
   withBanner: boolean;
   withSlider: boolean;
   layoutType?: LayoutType;
-  title: string;
+  title?: string;
 }
 
 interface Blog {
@@ -49,14 +51,18 @@ const Blog: React.FC<BlogProps> = ({
   withBanner,
   withSlider,
   layoutType = "default",
-  title = "Blog",
+  title,
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const { language } = useLanguage();
+  const { articles, loading: articlesLoading, error: articlesError } = useArticles({
+    page: currentPage,
+  });
+  console.log(articles);
+  const { t } = useI18n();
   const blogsPerPage = 4;
 
   useEffect(() => {
@@ -99,12 +105,19 @@ const Blog: React.FC<BlogProps> = ({
   const canScrollLeft = currentPage > 0;
   const canScrollRight = currentPage < totalPages - 1;
 
+  // Add debugging
+  console.log('Blog component props:', {
+    title,
+    withSlider,
+    layoutType
+  });
+
   if (loading) {
-    return <div>Loading...</div>;
+    return <div>{t("common.loading")}</div>;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div>{t("common.error")}: {error}</div>;
   }
 
   return (
@@ -122,9 +135,11 @@ const Blog: React.FC<BlogProps> = ({
       <div className="py-5 md:px-6">
         {withSlider && (
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-[20px] leading-[120%] md:my-5 md:mx-3 text-[#3D334A] md:text-[40px] md:tracking-[-3%]">
-              {title}
-            </h2>
+            <div className="w-[200px] md:w-[400px] overflow-hidden">
+              <h2 className="text-[20px] leading-[120%] md:my-5 md:mx-3 text-[#3D334A] md:text-[40px] md:tracking-[-3%] truncate" title={title || t("navigation.blog")}>
+                {title || t("navigation.blog")}
+              </h2>
+            </div>
             <SliderArrows
               onScrollLeft={scrollLeft}
               onScrollRight={scrollRight}
@@ -135,12 +150,11 @@ const Blog: React.FC<BlogProps> = ({
         )}
 
         <GridLayouts
-          blogs={blogs}
+          blogs={articles as unknown as Article[]}
           layoutType={layoutType}
           scrollRef={scrollRef}
           currentPage={currentPage}
           blogsPerPage={blogsPerPage}
-          language={language}
         />
       </div>
     </div>

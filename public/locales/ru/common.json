@@ -1,4 +1,5 @@
 {
+  "grs_media": "GRS МЕДИА",
   "navigation": {
     "home": "Главная",
     "about": "О нас",
@@ -10,7 +11,8 @@
     "login": "Войти",
     "register": "Регистрация",
     "all_complexes": "Все комплексы",
-    "sets": "Комплексы"
+    "sets": "Комплексы",
+    "rightArrow": "→"
   },
   "buttons": {
     "subscribe": "Подписаться",
@@ -20,6 +22,7 @@
     "show_all": "Смотреть все",
     "send_request": "Отправить заявку",
     "take_test": "Пройти тестирование",
+    "take_survey": "Пройти опрос",
     "continue": "Продолжить",
     "back": "Назад",
     "show_more": "Показать ещё"
@@ -51,23 +54,43 @@
     "loading_exercises": "Упражнения загружаются...",
     "exercises_error": "Ошибка загрузки упражнений",
     "set_not_found": "Сет не найден",
-    "exercise": "Упражнение",
-    "completed": "Просмотрено",
-    "watching": "Смотрите сейчас",
-    "notStarted": "Не начато",
-    "noVideo": "Видео не найдено",
-    "previous": "Предыдущее",
-    "next": "Следующее",
-    "duration": "Длительность",
-    "difficulty": "Сложность",
-    "repetitions": "Повторения",
-    "sets": "Подходы",
-    "restTime": "Отдых",
-    "description": "Описание",
-    "markAsComplete": "Отметить как просмотренное",
-    "see_all": "Смотреть все"
+    "see_all": "Смотреть все",
+    "article": "статья",
+    "articles": "статьи"
   },
   "sections": {
     "professional": "Профессиональный"
+  },
+  "works": {
+    "all_sets": "Все сеты ({{count}})",
+    "title": "Комплексы и сеты"
+  },
+  "blog": {
+    "see_all": "Все блоги",
+    "articles_count": "{{count}} статей",
+    "articles_count_one": "1 статья",
+    "articles_count_other": "{{count}} статей",
+    "all_articles": "Все статьи",
+    "read_more": "Подробнее",
+    "share": "Поделиться",
+    "bookmark": "Сохранить"
+  },
+  "days": {
+    "monday": "Пн",
+    "tuesday": "Вт",
+    "wednesday": "Ср",
+    "thursday": "Чт",
+    "friday": "Пт",
+    "saturday": "Сб",
+    "sunday": "Вс"
+  },
+  "payment": {
+    "user_not_authorized": "Пользователь не авторизован",
+    "please_login": "Пожалуйста, войдите в систему",
+    "total": "Итого",
+    "test_title": "Тест PayPal платежа",
+    "success_message": "Платеж успешно завершен! ID: {{id}}",
+    "error_message": "Ошибка при оплате: {{error}}",
+    "success_indicator": "успешно"
   }
 } 

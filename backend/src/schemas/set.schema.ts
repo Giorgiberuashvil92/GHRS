@@ -28,6 +28,7 @@ interface Levels {
 }
 
 @Schema({ 
+  collection: 'sets',
   timestamps: true,
   toJSON: { virtuals: true },
   toObject: { virtuals: true }

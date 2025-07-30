@@ -44,7 +44,7 @@ export class ArticleService {
         ...createArticleDto,
         slug,
         blogId: new Types.ObjectId(createArticleDto.blogId),
-        categoryId: new Types.ObjectId(createArticleDto.categoryId),
+        categoryId: createArticleDto.categoryId.map(id => new Types.ObjectId(id)),
       });
 
       const result = await createdArticle.save();
@@ -149,7 +149,7 @@ export class ArticleService {
 
       const updateData = { ...updateArticleDto };
       if (updateArticleDto.categoryId) {
-        updateData.categoryId = new Types.ObjectId(updateArticleDto.categoryId) as any;
+        updateData.categoryId = updateArticleDto.categoryId.map(id => new Types.ObjectId(id)) as any;
       }
 
       const updatedArticle = await this.articleModel

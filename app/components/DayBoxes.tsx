@@ -1,14 +1,17 @@
 import React from "react";
+import { useI18n } from "../context/I18nContext";
 
 const DayBoxes = () => {
+  const { t } = useI18n();
+  
   const days = [
-    { label: "Пн", color: "#D4BAFC" },
-    { label: "Вт", color: "#D4BAFC" },
-    { label: "СР", color: "#D4BAFC" },
-    { label: "ЧТ", color: "#D4BAFC" },
-    { label: "ПТ", color: "#F9F7FE" },
-    { label: "СБ", color: "#F9F7FE" },
-    { label: "ВС", color: "#F9F7FE" },
+    { label: t("days.monday"), color: "#D4BAFC" },
+    { label: t("days.tuesday"), color: "#D4BAFC" },
+    { label: t("days.wednesday"), color: "#D4BAFC" },
+    { label: t("days.thursday"), color: "#D4BAFC" },
+    { label: t("days.friday"), color: "#F9F7FE" },
+    { label: t("days.saturday"), color: "#F9F7FE" },
+    { label: t("days.sunday"), color: "#F9F7FE" },
   ];
 
   return (

@@ -108,15 +108,17 @@ const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
             </h3>
 
             <div className="mb-4 md:mb-6 space-y-1">
-              <p className="text-[18px] md:text-[20px] text-[#3D334A] font-medium">
+              <div className="text-[18px] md:text-[20px] text-[#3D334A] font-medium">
                 {teacher.position}
-              </p>
-              <p className="text-[18px] md:text-[20px] text-[#3D334A]">
+              </div>
+              <div className="text-[18px] md:text-[20px] text-[#3D334A]">
                 {teacher.institution}
-              </p>
+              </div>
             </div>
 
-            <p className="text-[16px] text-[#3D334A] mb-4 md:mb-6">{teacher.credentials}</p>
+            <div className="text-[16px] text-[#3D334A] mb-4 md:mb-6">
+              {teacher.credentials}
+            </div>
 
             <div
               className="space-y-3 text-[16px] text-[#846FA0] leading-relaxed max-w-[750px]"

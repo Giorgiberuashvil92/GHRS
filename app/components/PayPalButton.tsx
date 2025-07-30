@@ -3,6 +3,7 @@
 import { PayPalButtons } from '@paypal/react-paypal-js';
 import { apiRequest, API_CONFIG } from '../config/api';
 import { useAuth } from '../context/AuthContext';
+import { useI18n } from '../context/I18nContext';
 
 export interface PaymentResponse {
   id: string;
@@ -29,11 +30,12 @@ interface PayPalButtonProps {
 
 export default function PayPalButton({ amount, currency = 'RUB', setId, onSuccess, onError }: PayPalButtonProps) {
   const { user } = useAuth();
+  const { t } = useI18n();
 
   const createOrder = async () => {
     try {
       if (!user) {
-        throw new Error('მომხმარებელი არ არის ავტორიზებული');
+        throw new Error(t('payment.user_not_authorized'));
       }
 
       const response = await apiRequest<PaymentResponse>(API_CONFIG.ENDPOINTS.PAYMENTS.CREATE_ORDER, {
@@ -60,7 +62,7 @@ export default function PayPalButton({ amount, currency = 'RUB', setId, onSucces
     }
   };
 
-  const handleApprove = async (data: any) => {
+  const handleApprove = async (data: { orderID: string }) => {
     try {
       console.log('PayPal payment approved:', data);
       
@@ -88,13 +90,13 @@ export default function PayPalButton({ amount, currency = 'RUB', setId, onSucces
   };
 
   if (!user) {
-    return <div className="text-center text-red-500 p-4">გთხოვთ გაიაროთ ავტორიზაცია</div>;
+    return <div className="text-center text-red-500 p-4">{t('payment.please_login')}</div>;
   }
 
   return (
     <div className="w-full">
       <div className="mb-4 text-center text-gray-700">
-        ჯამი: {amount} {currency}
+        {t('payment.total')}: {amount} {currency}
       </div>
       <PayPalButtons
         style={{

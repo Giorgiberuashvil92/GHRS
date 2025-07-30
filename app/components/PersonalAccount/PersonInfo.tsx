@@ -4,6 +4,7 @@ import { CgMail } from "react-icons/cg";
 import { MdOutlineLocationOn } from "react-icons/md";
 import { FaPhone } from "react-icons/fa6";
 import Link from "next/link";
+import { useI18n } from "../../context/I18nContext";
 
 export type User = {
   id: string;
@@ -19,21 +20,23 @@ type Props = {
 };
 
 const PersonInfo: React.FC<Props> = ({ user }) => {
+  const { t } = useI18n();
+
   const personalLinks = [
     {
       icon: <CgMail size={20} color="#846FA0" />,
       text: user.email,
-      label: "Эл. почта",
+      label: t("personal_account.person_info.email"),
     },
     {
       icon: <MdOutlineLocationOn size={20} color="#846FA0" />,
       text: user.location,
-      label: "Местоположение",
+      label: t("personal_account.person_info.location"),
     },
     {
       icon: <FaPhone size={15} color="#846FA0" />,
       text: user.phone,
-      label: "Телефон",
+      label: t("personal_account.person_info.phone"),
     },
   ];
 
@@ -44,7 +47,7 @@ const PersonInfo: React.FC<Props> = ({ user }) => {
           src={user.image || "/assets/images/personImage.png"}
           width={359}
           height={216}
-          alt={user.name || "Фото профиля"}
+          alt={user.name || t("personal_account.person_info.profile_photo")}
           className="md:w-[190px] md:h-[190px] md:object-cover md:rounded-[10px]"
         />
         <div className="md:w-full">
@@ -63,7 +66,7 @@ const PersonInfo: React.FC<Props> = ({ user }) => {
           </div>
           <Link href={`/personalAccount/${user.id}/edit`}>
             <h3 className="text-[#D4BAFC] md:text-[24px] md:font-medium cursor-pointer text-end text-[14px] uppercase leading-[90%] mt-8">
-              Редактировать →
+              {t("personal_account.person_info.edit")}
             </h3>
           </Link>
         </div>

@@ -52,8 +52,9 @@ export class CreateArticleDto {
   @IsString()
   blogId: string;
 
-  @IsString()
-  categoryId: string;
+  @IsArray()
+  @IsString({ each: true })
+  categoryId: string[];
 
   @IsOptional()
   @IsArray()

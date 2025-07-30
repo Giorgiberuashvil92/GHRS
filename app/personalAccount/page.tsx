@@ -12,17 +12,12 @@ import DaysInRow from "../components/PersonalAccount/DaysInRow";
 import ContinueWatchingBanner from "../components/PersonalAccount/ContinueWatchingBanner";
 import PurchasedCourses from "../components/PersonalAccount/PurchasedCourses";
 import { useAuth } from "../context/AuthContext";
+import { useI18n } from "../context/I18nContext";
 import { FaRegCheckCircle, FaStar } from "react-icons/fa";
 import WorksSlider from "../components/WorksSlider";
 import { chapterSliderInfo } from "../chapter/page";
 import { users } from "../data/dummyUsers";
 import SubscriptionHistory from "../components/SubscriptionHistory";
-
-const tabItems = [
-  { label: "Описание", href: "#description" },
-  { label: "Дополнительно", href: "#extra" },
-  { label: "Демо-видео", href: "#demo" },
-];
 
 const dummyData = {
   goals: {
@@ -62,7 +57,14 @@ const dummyData = {
 
 const PersonalAccountContent: React.FC = () => {
   const { isAuthenticated, user, isLoading } = useAuth();
+  const { t } = useI18n();
   const router = useRouter();
+
+  const tabItems = [
+    { label: t("personal_account.tabs.description"), href: "#description" },
+    { label: t("personal_account.tabs.additional"), href: "#extra" },
+    { label: t("personal_account.tabs.demo_video"), href: "#demo" },
+  ];
 
   // Tab state
   const [activeTab, setActiveTab] = React.useState(0);
@@ -78,7 +80,9 @@ const PersonalAccountContent: React.FC = () => {
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">
           <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-600 border-t-transparent mb-4 mx-auto"></div>
-          <h2 className="text-2xl font-semibold text-gray-700">Загрузка...</h2>
+          <h2 className="text-2xl font-semibold text-gray-700">
+            {t("personal_account.loading")}
+          </h2>
         </div>
       </div>
     );
@@ -89,9 +93,11 @@ const PersonalAccountContent: React.FC = () => {
       <div className="flex items-center justify-center min-h-screen md:px-10">
         <div className="text-center">
           <h2 className="text-2xl font-bold text-[#3D334A] mb-4">
-            Пользователь не найден
+            {t("personal_account.user_not_found")}
           </h2>
-          <p className="text-[#846FA0]">Необходима авторизация</p>
+          <p className="text-[#846FA0]">
+            {t("personal_account.auth_required")}
+          </p>
         </div>
       </div>
     );
@@ -164,12 +170,14 @@ const PersonalAccountContent: React.FC = () => {
           <>
             {renderTabContent()}
             <WorksSlider 
-              title="Рекомендуем" 
+              title={t("personal_account.recommendations")}
               works={chapterSliderInfo.map(item => ({
                 ...item,
-                categoryId: item.id // დროებითი გადაწყვეტა
+                categoryId: item.id
               }))} 
               fromMain={false}
+              seeAll={false}
+              scrollable={true}
             />
             <Statistics statistics={users[0].statistics} />
             <Achievements achievements={users[0].achievements} />
@@ -181,6 +189,8 @@ const PersonalAccountContent: React.FC = () => {
 };
 
 const PersonalAccount: React.FC = () => {
+  const { t } = useI18n();
+  
   return (
     <Suspense
       fallback={
@@ -188,7 +198,7 @@ const PersonalAccount: React.FC = () => {
           <div className="text-center">
             <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-600 border-t-transparent mb-4 mx-auto"></div>
             <h2 className="text-2xl font-semibold text-gray-700">
-              Загрузка...
+              {t("personal_account.loading")}
             </h2>
           </div>
         </div>

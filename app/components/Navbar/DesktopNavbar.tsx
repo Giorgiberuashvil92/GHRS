@@ -1,5 +1,7 @@
 "use client";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "../../context/AuthContext";
 
 import { SimpleLogo } from "../Logo";
 import NavbarIconButton from "./NavbarIconButton";
@@ -19,6 +21,17 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
   allCourseBg,
 }) => {
   const [language, setLanguage] = useState("RU");
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  const handleProtectedRouteClick = (e: React.MouseEvent, route: string) => {
+    e.preventDefault();
+    if (!isAuthenticated) {
+      router.push("/auth/login");
+    } else {
+      router.push(route);
+    }
+  };
 
   return (
     <>
@@ -53,17 +66,17 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
 
         <div className="flex items-center gap-4 ml-4">
           <div className="hover:scale-105 duration-300">
-          <LanguageSelector
-            currentLanguage={language}
-            onSelectLanguage={setLanguage}
+            <LanguageSelector
+              currentLanguage={language}
+              onSelectLanguage={setLanguage}
             />
-            </div>
-          <Link href={"/shoppingcard"}>
+          </div>
+          <div onClick={(e) => handleProtectedRouteClick(e, "/shoppingcard")}>
             <NavbarIconButton className="hover:scale-105 duration-300" src="/assets/images/store.svg" alt="Store" />
-          </Link>
-          <Link href={"/personalAccount"}>
+          </div>
+          <div onClick={(e) => handleProtectedRouteClick(e, "/personalAccount")}>
             <NavbarIconButton className="hover:scale-105 duration-300" src={"/assets/images/person.svg"} alt="Person" />
-          </Link>
+          </div>
         </div>
       </header>
     </>

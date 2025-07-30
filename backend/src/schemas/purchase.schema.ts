@@ -8,7 +8,7 @@ export class Purchase {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   userId: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: 'Set', required: true })
+  @Prop({ type: Types.ObjectId, ref: 'sets', required: true })
   setId: Types.ObjectId;
 
   @Prop({ required: true })

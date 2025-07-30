@@ -13,9 +13,9 @@ export class PaymentService {
     private configService: ConfigService,
     private purchaseService: PurchaseService,
   ) {
-    this.clientId = 'AdGUXBKzSaUCAZ_j7UO8YOYCbWRQCIcBl9o0pC6GJ7PQmT6uMucRdWCGegdB65JJbGewVP97-iU7EiAl';
-    this.clientSecret = 'ELMXhk_ovajHdeUxaFcNSYtPZyWxyvxCZ7vbVuBZXAFh0Wa3CSw5Zof3wvjFNATZJCQFp8QiaCpZP9lm';
-    this.baseUrl = 'https://api-m.paypal.com'; // live URL
+    this.clientId = 'AQtqwl189MSBEbnUWNGIfPsAl3ynUUUKr506gJa5SDXhnXzje33FVtEJaTjcqRXE9FCnUPWu3kaVlfEO';
+    this.clientSecret = 'EEXA7Fu-fqLpaUFcVH2vIbkZijgccjRLiRHD9S0U-gNJ_jwP-zQPODmUyw9RiWCcE4p0tVRxo0A-guLR';
+    this.baseUrl = 'https://api-m.sandbox.paypal.com'; // sandbox URL
   }
 
   private async getAccessToken(): Promise<string> {
@@ -63,6 +63,9 @@ export class PaymentService {
         },
         body: JSON.stringify({
           intent: 'CAPTURE',
+          application_context: {
+            shipping_preference: 'NO_SHIPPING'
+          },
           purchase_units: [
             {
               amount: {
@@ -116,18 +119,49 @@ export class PaymentService {
       }
 
       const paymentData = await response.json();
+      console.log('PayPal payment data:', JSON.stringify(paymentData, null, 2));
       
       if (paymentData.status === 'COMPLETED') {
-        const customId = paymentData.purchase_units[0].custom_id;
-        const [userId, setId] = customId.split(':');
+        // Try to get custom_id from different locations in PayPal response
+        let customId = paymentData.purchase_units?.[0]?.custom_id;
         
-        await this.purchaseService.createPurchase({
-          userId,
-          setId,
-          paymentId: paymentData.id,
-          amount: parseFloat(paymentData.purchase_units[0].amount.value),
-          currency: paymentData.purchase_units[0].amount.currency_code,
-        });
+        // If not found in purchase_units, try captures
+        if (!customId) {
+          customId = paymentData.purchase_units?.[0]?.payments?.captures?.[0]?.custom_id;
+        }
+        
+        console.log('Custom ID:', customId);
+        
+        if (!customId) {
+          console.error('No custom_id found in payment data');
+          throw new HttpException(
+            'Payment data missing custom_id',
+            HttpStatus.BAD_REQUEST
+          );
+        }
+        
+        const [userId, setIds] = customId.split(':');
+        
+        // Handle multiple setIds (comma-separated)
+        const setIdArray = setIds.split(',');
+        
+        // Get amount from captures (where it actually is in the response)
+        const totalAmount = parseFloat(
+          paymentData.purchase_units[0].payments.captures[0].amount.value
+        );
+        const currency = paymentData.purchase_units[0].payments.captures[0].amount.currency_code;
+        const amountPerSet = totalAmount / setIdArray.length;
+        
+        // Create purchase record for each setId
+        for (const setId of setIdArray) {
+          await this.purchaseService.createPurchase({
+            userId,
+            setId: setId.trim(),
+            paymentId: paymentData.id,
+            amount: amountPerSet,
+            currency: currency,
+          });
+        }
       }
 
       return paymentData;

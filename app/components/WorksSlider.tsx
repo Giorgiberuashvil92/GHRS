@@ -5,7 +5,7 @@ import Image from "next/image";
 import React from "react";
 import SliderArrows from "./SliderArrows";
 import Link from "next/link";
-import { useI18n } from "../context/I18nContext";
+import { useI18n, useLanguage } from "../context/I18nContext";
 
 interface WorkItem {
   id: string;
@@ -38,7 +38,7 @@ const WorksSlider: React.FC<WorksSliderProps> = ({
   scrollable = true
 }) => {
   const { t } = useI18n();
-
+  const { language } = useLanguage(); 
   const scroll = (direction: "left" | "right") => {
     const slider = document.getElementById("works-slider");
     if (slider) {
@@ -110,8 +110,8 @@ const WorksSlider: React.FC<WorksSliderProps> = ({
                 </p>
               </div>
               <div className="flex items-center justify-end">
-                <span className="px-5 py-3 bg-[#D4BAFC] rounded-lg text-white text-[18px] leading-[100%] font-bold mb-8 mr-8">
-                  {work.monthlyPrice}₾/{t("common.month")}
+                <span className="px-5 py-3 bg-[#D4BAFC] rounded-lg text-white text-[18px] leading-[100%] font-bold mb-8 mr-8 mt-6">
+                  {work.monthlyPrice}${language === "ka" ? "₾" : language === "ru" ? "₽" : "$"}/{t("common.month")}
                 </span>
               </div>
             </Link>

@@ -1,0 +1,57 @@
+{
+  "personal_account": {
+    "loading": "Loading...",
+    "user_not_found": "User not found",
+    "auth_required": "Authorization required",
+    "tabs": {
+      "description": "Description",
+      "additional": "Additional",
+      "demo_video": "Demo Video"
+    },
+    "recommendations": "Recommended",
+    "continue_watching": {
+      "title": "You haven't finished watching the video exercise. Would you like to continue?",
+      "button": "Continue watching"
+    },
+    "person_goals": {
+      "title": "Let's set a goal",
+      "description": "Regular exercise will help you maintain motivation. Set up notifications and we'll help you not forget about your workout.",
+      "set_goal": "Set goal",
+      "reminder_settings": "Set reminders",
+      "reminder_description": "By exercising at least 4 times a week, you will gradually get used to the rhythm.",
+      "which_days": "Which days do you want to exercise?",
+      "from": "From",
+      "to": "To",
+      "calendar_select": "Select calendar for notifications",
+      "save": "Save"
+    },
+    "days_in_row": {
+      "days_streak": "DAYS IN A ROW",
+      "record": "Record: {{count}} days in a row"
+    },
+    "person_info": {
+      "profile_photo": "Profile photo",
+      "email": "Email",
+      "location": "Location",
+      "phone": "Phone",
+      "edit": "Edit →"
+    },
+    "subscription_history": {
+      "title": "Subscription History",
+      "order_from": "ORDER FROM {{date}}",
+      "cancel_subscription": "CANCEL SUBSCRIPTION",
+      "view": "VIEW",
+      "pay": "PAY",
+      "statuses": {
+        "completed": "Completed",
+        "awaiting_payment": "Awaiting payment",
+        "expired": "Subscription expired"
+      }
+    },
+    "achievements": {
+      "title": "Achievements",
+      "hide": "Hide achievements",
+      "share": "Share statistics and achievements"
+    }
+  }
+}

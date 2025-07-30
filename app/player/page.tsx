@@ -6,6 +6,11 @@ import Image from "next/image";
 import MobileNavbar from "../components/Navbar/MobileNavbar";
 import { useSearchParams } from "next/navigation";
 import { useI18n } from "../context/I18nContext";
+import { useAuth } from "../context/AuthContext";
+import { useUserAccess } from "../hooks/useUserAccess";
+import PurchasePrompt from "../components/PurchasePrompt";
+import { useExercisesBySet } from "../hooks/useExercises";
+import { useSet } from "../hooks/useSet";
 
 // ----- Types -----
 interface LocalizedString {
@@ -20,8 +25,8 @@ interface BackendExercise {
   _id: string;
   name: LocalizedString;
   description: LocalizedString;
-  videoUrl: string;
-  thumbnailUrl: string;
+  videoUrl?: string;
+  thumbnailUrl?: string;
   videoDuration: string;
   duration: string;
   difficulty: 'easy' | 'medium' | 'hard';
@@ -30,65 +35,29 @@ interface BackendExercise {
   restTime: string;
   isActive: boolean;
   isPublished: boolean;
-  isPopular: boolean;
   sortOrder: number;
   setId: string;
   categoryId: string;
+  subCategoryId?: string;
   createdAt: string;
   updatedAt: string;
+  __v?: number;
   set?: {
     _id: string;
     name: LocalizedString;
     description: LocalizedString;
-    id: string;
   };
   category?: {
     _id: string;
     name: LocalizedString;
   };
-  subcategory: null | unknown;
-  id: string;
+  subcategory?: {
+    _id: string;
+    name: LocalizedString;
+  } | null;
 }
 
-interface BackendSet {
-  _id: string;
-  name: LocalizedString;
-  description: LocalizedString;
-  recommendations: LocalizedString;
-  thumbnailImage: string;
-  totalExercises: number;
-  totalDuration: string;
-  difficultyLevels: number;
-  levels: {
-    beginner: {
-      exerciseCount: number;
-      isLocked: boolean;
-    };
-    intermediate: {
-      exerciseCount: number;
-      isLocked: boolean;
-    };
-    advanced: {
-      exerciseCount: number;
-      isLocked: boolean;
-    };
-  };
-  price: {
-    monthly: number;
-    threeMonths: number;
-    sixMonths: number;
-    yearly: number;
-  };
-  isActive: boolean;
-  isPublished: boolean;
-  sortOrder: number;
-  categoryId: string;
-  subCategoryId?: string;
-  exercises?: BackendExercise[];
-  createdAt: string;
-  updatedAt: string;
-  id: string;
-}
+
 
 type ExerciseStatus = "done" | "waiting" | "locked";
 
@@ -321,14 +290,21 @@ const VideoPlayer = ({
 function PlayerContent() {
   const searchParams = useSearchParams();
   const { t } = useI18n();
+  const { isAuthenticated } = useAuth();
   const [currentExercise, setCurrentExercise] = useState<BackendExercise | null>(null);
   const [completedExercises, setCompletedExercises] = useState<string[]>([]);
   const [videoProgress, setVideoProgress] = useState<number>(0);
 
   // URL-დან პარამეტრების ამოღება
   const setId = searchParams.get('setId') || '';
-  const exercisesFromUrl = searchParams.get('exercises');
-  const setFromUrl = searchParams.get('set');
+  const difficulty = searchParams.get('difficulty') || '';
+
+  // API-დან მონაცემების მოღება
+  const { set: setData, loading: setLoading, error: setError } = useSet(setId);
+  const { exercises: allExercises, loading: exercisesLoading } = useExercisesBySet(setId);
+
+  // Access control
+  const { hasAccess, loading: accessLoading } = useUserAccess(setId);
 
   // ვარჯიშების დასრულების სტატუსის ჩატვირთვა
   useEffect(() => {
@@ -360,27 +336,26 @@ function PlayerContent() {
   // შემდეგ/წინა ვარჯიშზე გადასვლა
 
 
-  // JSON-ის პარსვა
-  let exercises: BackendExercise[] = [];
-  let setData: BackendSet | null = null;
-  try {
-    exercises = exercisesFromUrl ? JSON.parse(exercisesFromUrl) : [];
-    setData = setFromUrl ? JSON.parse(setFromUrl) : null;
-    
-    // Set first exercise as current by default
+  // ვარჯიშების ფილტრაცია difficulty-ის მიხედვით
+  const exercises = allExercises?.filter(ex => 
+    difficulty ? ex.difficulty === difficulty : true
+  ) || [];
+
+  // Set first exercise as current by default
+  useEffect(() => {
     if (exercises.length > 0 && !currentExercise) {
       setCurrentExercise(exercises[0]);
     }
+  }, [exercises, currentExercise]);
 
-    console.log('🎯 Player Data:', {
-      setId,
-      exercisesCount: exercises.length,
-      exercises: exercises,
-      set: setData
-    });
-  } catch (error) {
-    console.error('Error parsing data:', error);
-  }
+  console.log('🎯 Player Data:', {
+    setId,
+    difficulty,
+    exercisesCount: exercises.length,
+    exercises: exercises,
+    set: setData,
+    loading: setLoading || exercisesLoading
+  });
 
   // Function to change current exercise
   const handleExerciseChange = (exercise: BackendExercise) => {
@@ -404,7 +379,7 @@ function PlayerContent() {
     console.log('📊 Video progress:', progress.toFixed(1) + '%');
   }, []);
 
-  const loading = false;
+  const loading = setLoading || exercisesLoading;
 
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   // const [centers, setCenters] = useState<number[]>([]);
@@ -416,6 +391,46 @@ function PlayerContent() {
   //     )
   //   );
   // }, []);
+
+  // Access control checks
+  if (accessLoading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-600 border-t-transparent mb-4 mx-auto"></div>
+          <h2 className="text-2xl font-semibold text-gray-700">
+            იტვირთება...
+          </h2>
+        </div>
+      </div>
+    );
+  }
+
+  // Access denied - show purchase prompt
+  if (!isAuthenticated || !hasAccess) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        {/* Simple header for unauthorized view */}
+        <div className="bg-white shadow-sm border-b">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex justify-between items-center py-4">
+              <div className="flex items-center">
+                <Image src="/assets/images/logo.png" alt="Logo" width={120} height={40} />
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div className="max-w-4xl mx-auto py-12 px-4">
+          <PurchasePrompt 
+            setId={setId} 
+            setName={setData?.name ? getLocalizedText(setData.name) : undefined}
+          />
+        </div>
+      </div>
+    );
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
@@ -424,6 +439,19 @@ function PlayerContent() {
           <h2 className="text-2xl font-cinzel font-semibold text-gray-700">
             {t("common.loading")}
           </h2>
+        </div>
+      </div>
+    );
+  }
+
+  if (setError) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold text-red-600 mb-4">
+            Error loading set data
+          </h2>
+          <p className="text-gray-600">{setError}</p>
         </div>
       </div>
     );
@@ -499,7 +527,7 @@ function PlayerContent() {
         <div className="relative w-full flex flex-col gap-4 md:gap-6">
           {/* ვერტიკალური ხაზების კონტეინერი */}
           <div className="hidden md:block absolute left-6 w-[2px] h-full">
-            {getExercises(setData?.exercises || []).map((exercise, idx, arr) => {
+            {getExercises(exercises || []).map((exercise, idx, arr) => {
               const nextExercise = arr[idx + 1];
               if (!nextExercise) return null;
               
@@ -535,7 +563,7 @@ function PlayerContent() {
             })}
           </div>
           
-          {getExercises(setData?.exercises || []).map((exercise, idx, arr) => {
+          {getExercises(exercises || []).map((exercise, idx, arr) => {
             // ვამოწმებთ წინა ვარჯიშების დასრულების სტატუსს
             const prevExercises = arr.slice(0, idx);
             const allPreviousCompleted = prevExercises.every(ex => 
