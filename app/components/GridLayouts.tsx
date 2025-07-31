@@ -4,10 +4,12 @@ import React from "react";
 import BlogSlider from "./BlogSlider";
 import OtherGrid from "./OtherGrid";
 import ThirdGrid from "./ThirdGrid";
+import { useI18n } from "../context/I18nContext";
+import { Article } from "../api/articles";
 
 export type LayoutType = "default" | "other" | "thirdGrid";
 
-interface Blog {
+export interface Blog {
   _id: string;
   title: {
     [key in "ka" | "en" | "ru"]: string;
@@ -18,7 +20,11 @@ interface Blog {
   excerpt: {
     [key in "ka" | "en" | "ru"]: string;
   };
+  content: {
+    [key in "ka" | "en" | "ru"]: string;
+  };
   imageUrl: string;
+  featuredImages: string[];
   articles: Array<{
     _id: string;
     title: {
@@ -44,8 +50,7 @@ interface GridLayoutsProps {
   scrollRef: React.RefObject<HTMLDivElement | null>;
   currentPage: number;
   blogsPerPage: number;
-  blogs: Blog[];
-  language: "ka" | "en" | "ru";
+  blogs: Article[];
 }
 
 const GridLayouts: React.FC<GridLayoutsProps> = ({
@@ -54,8 +59,8 @@ const GridLayouts: React.FC<GridLayoutsProps> = ({
   currentPage,
   blogsPerPage,
   blogs,
-  language
 }) => {
+  const { locale } = useI18n();
   // Mobile horizontal scroll wrapper
   return (
     <div className="sm:block flex sm:flex-col flex-row overflow-x-auto gap-4 p-2 sm:overflow-visible sm:gap-0">
@@ -65,31 +70,31 @@ const GridLayouts: React.FC<GridLayoutsProps> = ({
           case "default":
             return (
               <BlogSlider
-                blogs={blogs}
+                blogs={blogs as unknown as Blog[]}
                 scrollRef={scrollRef}
                 currentPage={currentPage}
                 blogsPerPage={blogsPerPage}
-                language={language}
+                language={locale}
               />
             );
           case "other":
             return (
               <OtherGrid
-                blogs={blogs}
+                blogs={blogs as unknown as Blog[]}
                 scrollRef={scrollRef}
                 currentPage={currentPage}
                 blogsPerPage={blogsPerPage}
-                language={language}
+                language={locale}
               />
             );
           case "thirdGrid":
             return (
               <ThirdGrid
-                blogs={blogs}
+                blogs={blogs as unknown as Blog[]}
                 scrollRef={scrollRef}
                 currentPage={currentPage}
                 blogsPerPage={blogsPerPage}
-                language={language}
+                language={locale}
               />
             );
           default:

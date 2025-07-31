@@ -31,7 +31,6 @@ const Section = ({
 }) => {
   const scrollRef = useRef(null);
   const { locale } = useI18n();
-  console.log(subcategories, "skip data");
   const getLocalizedText = (field: { ka: string; en: string; ru: string } | undefined): string => {
     if (!field) return "";
     return field[locale as keyof typeof field] || field.ru || field.en || field.ka || "";

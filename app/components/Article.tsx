@@ -23,17 +23,87 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
   const { language } = useLanguage();
   const { t } = useI18n();
 
+  // Extract headings from article content for automatic table of contents
+  const extractHeadingsFromContent = (content: string) => {
+    if (!content) return [];
+    
+    // Find all h1-h6 tags and extract their text content
+    const headingRegex = /<h([1-6])[^>]*>(.*?)<\/h[1-6]>/gi;
+    const headings = [];
+    let match;
+    let index = 1;
+    
+    while ((match = headingRegex.exec(content)) !== null) {
+      const level = parseInt(match[1]);
+      const headingText = match[2]
+        .replace(/<[^>]*>/g, '') // Remove any HTML tags inside heading
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&amp;/g, '&')
+        .trim();
+      
+      if (headingText) {
+        // Create anchor ID from text with unique index to avoid duplicates
+        let anchor = headingText
+          .toLowerCase()
+          .replace(/<[^>]+>/g, "")
+          .replace(/[^a-z0-9\s-]/g, "")
+          .replace(/\s+/g, "-");
+        
+        // Add index to make it unique
+        anchor = `${anchor}-${index}`;
+        
+        headings.push({
+          anchor,
+          title: {
+            [language]: headingText,
+            en: headingText,
+            ru: headingText,
+            ka: headingText
+          },
+          level,
+          index
+        });
+        index++;
+      }
+    }
+    
+    return headings;
+  };
+
+  // Get table of contents - use provided or generate from content
+  const getTableOfContents = () => {
+    if (article.tableOfContents && article.tableOfContents.length > 0) {
+      return article.tableOfContents;
+    }
+    
+    // Generate from content if no predefined table of contents
+    return extractHeadingsFromContent(article.content[language]);
+  };
+
+  const tableOfContents = getTableOfContents();
+
   useEffect(() => {
     const fetchSimilarArticles = async () => {
       try {
         setIsLoading(true);
-        // Check if category is an object with _id property
-        const categoryId =
-          article.categoryId &&
-            typeof article.categoryId === "object" &&
-            "_id" in article.categoryId
-            ? (article.categoryId as { _id: string })._id
-            : article.categoryId;
+        // Get the first category ID for fetching similar articles
+        let categoryId: string;
+        
+        if (Array.isArray(article.categoryId)) {
+          // If it's an array, use the first non-empty category ID
+          categoryId = article.categoryId.find(id => id && id.trim() !== '') || '';
+        } else if (article.categoryId && typeof article.categoryId === "object" && "_id" in article.categoryId) {
+          // Check if category is an object with _id property
+          categoryId = (article.categoryId as { _id: string })._id;
+        } else {
+          categoryId = article.categoryId as string;
+        }
+
+        if (!categoryId) {
+          setSimilarArticles([]);
+          return;
+        }
 
         const articles = await getArticlesByCategory(categoryId);
         // Filter out the current article and limit to 3
@@ -53,12 +123,15 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
     }
   }, [article.categoryId, article._id]);
 
-  // Helper function to get category name
-  const getCategoryName = (article: ArticleType): string => {
-    if (article.category?.name) {
-      return article.category.name[language];
+  // Helper function to get category names
+  const getCategoryNames = (article: ArticleType): string[] => {
+    if (article.categories && article.categories.length > 0) {
+      return article.categories.map(cat => cat.name[language]);
     }
-    return "Category";
+    if (article.category?.name) {
+      return [article.category.name[language]];
+    }
+    return ["Category"];
   };
 
   const handleScrollToSection = (anchor: string) => {
@@ -99,35 +172,41 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
 
       <main className="flex justify-between gap-[30px] text-[#3D334A] mt-10">
         {/* Left Sidebar - Table of Contents */}
-        <div className="p-5 bg-[rgba(255,255,255,1)] min-h-[700px] h-[700px] rounded-[20px] max-w-[335px] hidden md:block">
-          <h2 className="text-lg font-semibold mb-4 text-[rgba(61,51,74,1)]">
-            {t("article.table_of_contents")}
-          </h2>
+        {tableOfContents.length > 0 && (
+          <div className="p-5 bg-[rgba(255,255,255,1)] min-h-[700px] h-[700px] rounded-[20px] max-w-[335px] hidden md:block">
+            <h2 className="text-lg font-semibold mb-4 text-[rgba(61,51,74,1)]">
+              {t("article.table_of_contents")}
+            </h2>
 
-          <div className="space-y-3">
-            {article.tableOfContents?.map((item, index) => (
-              <div
-                key={item.anchor}
-                className="flex items-start gap-3 cursor-pointer hover:opacity-80 transition-opacity"
-                onClick={() => handleScrollToSection(item.anchor)}
-              >
-                <span className="text-[rgba(61,51,74,1)]">{index + 1}.</span>
-                <span className="text-[rgba(61,51,74,1)] underline tracking-[-2%]">
-                  {item.title[language]}
-                </span>
-              </div>
-            ))}
+            <div className="space-y-3">
+              {tableOfContents.map((item, index) => (
+                <div
+                  key={item.anchor}
+                  className="flex items-start gap-3 cursor-pointer hover:opacity-80 transition-opacity"
+                  onClick={() => handleScrollToSection(item.anchor)}
+                >
+                  <span className="text-[rgba(61,51,74,1)]">{index + 1}.</span>
+                  <span className="text-[rgba(61,51,74,1)] underline tracking-[-2%]">
+                    {item.title[language]}
+                  </span>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Main Content */}
-        <div className="md:max-w-[890px] w-[890px] mt-0">
+        <div className={`mt-0 ${tableOfContents.length > 0 ? 'md:max-w-[890px] w-[890px]' : 'w-full max-w-full'}`}>
           <section className="bg-[rgba(255,255,255,1)] rounded-[20px] p-4">
             <header className="hidden md:flex flex-col gap-[30px]">
               <div className="flex justify-between items-center">
-                <button className="bg-[rgba(233,223,246,1)] rounded-[6px] p-[8px] text-[18px] uppercase leading-[90%]">
-                  {getCategoryName(article)}
-                </button>
+                <div className="flex flex-wrap gap-2">
+                  {getCategoryNames(article).map((categoryName, index) => (
+                    <button key={index} className="bg-[rgba(233,223,246,1)] rounded-[6px] p-[8px] text-[18px] uppercase leading-[90%]">
+                      {categoryName}
+                    </button>
+                  ))}
+                </div>
                 <div className="flex justify-between items-center gap-[6px]">
                   <div className="w-[40px] h-[40px] hover:scale-105 duration-500 cursor-pointer hover:bg-[#dbc9f2] rounded-[6px] bg-[rgba(233,223,246,1)] flex items-center justify-center">
                     <CiBookmark className="" />
@@ -162,8 +241,38 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
               dangerouslySetInnerHTML={{
                 __html: addAnchorsToContent(article.content[language]),
               }}
-              className="mt-[60px] prose max-w-none text-[rgba(132,111,160,1)]"
+              className="mt-[60px] prose max-w-none text-[rgba(132,111,160,1)] article-content"
             />
+
+            {/* Global styles for article links */}
+            <style jsx global>{`
+              .article-content a {
+                color: #6D28D9 !important;
+                text-decoration: underline !important;
+                text-decoration-color: rgba(109, 40, 217, 0.3) !important;
+                text-underline-offset: 3px !important;
+                transition: all 0.3s ease !important;
+                font-weight: 500 !important;
+              }
+              
+              .article-content a:hover {
+                color: #5B21B6 !important;
+                text-decoration-color: #5B21B6 !important;
+                background-color: rgba(109, 40, 217, 0.1) !important;
+                padding: 2px 4px !important;
+                border-radius: 4px !important;
+                text-shadow: 0 1px 2px rgba(109, 40, 217, 0.2) !important;
+              }
+              
+              .article-content a:visited {
+                color: #7C3AED !important;
+              }
+              
+              .article-content a:active {
+                color: #4C1D95 !important;
+                transform: translateY(1px) !important;
+              }
+            `}</style>
 
             {/* Featured Images */}
             {article.featuredImages?.map((image, index) => (
@@ -182,7 +291,7 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
           </section>
 
           {/* Rating Section */}
-          <section className="md:max-w-[690px] px-5 pt-5 md:pb-[40px] pb-6 bg-[rgba(255,255,255,1)] rounded-[20px] mt-5">
+          <section className="w-full px-5 pt-5 md:pb-[40px] pb-6 bg-[rgba(255,255,255,1)] rounded-[20px] mt-5">
             <h2 className="md:text-2xl text-[18px] text-[rgba(61,51,74,1)] leading-[100%] tracking-[-1%] md:mb-[40px] mb-5">
               {t("article.rate_article")}
             </h2>
@@ -209,7 +318,7 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
           </section>
 
           {/* Comments Section */}
-          <section className="md:max-w-[690px] px-5 pt-5 md:pb-[40px] pb-6 bg-[rgba(255,255,255,1)] rounded-[20px] mt-5">
+          <section className="w-full px-5 pt-5 md:pb-[40px] pb-6 bg-[rgba(255,255,255,1)] rounded-[20px] mt-5">
             <h2 className="md:text-2xl text-[18px] text-[rgba(61,51,74,1)] leading-[100%] tracking-[-1%] md:mb-[40px] mb-5">
               {t("article.comments")}
             </h2>
@@ -328,10 +437,17 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
                     />
                   </div>
                   <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1">
-                      <span className="text-xs text-[rgba(132,111,160,1)] bg-[rgba(249,247,254,1)] px-2 py-1 rounded-full">
-                        {getCategoryName(similarArticle)}
-                      </span>
+                    <div className="flex items-center gap-2 mb-1 flex-wrap">
+                      {getCategoryNames(similarArticle).slice(0, 2).map((categoryName, index) => (
+                        <span key={index} className="text-xs text-[rgba(132,111,160,1)] bg-[rgba(249,247,254,1)] px-2 py-1 rounded-full">
+                          {categoryName}
+                        </span>
+                      ))}
+                      {getCategoryNames(similarArticle).length > 2 && (
+                        <span className="text-xs text-[rgba(132,111,160,1)] bg-[rgba(249,247,254,1)] px-2 py-1 rounded-full">
+                          +{getCategoryNames(similarArticle).length - 2}
+                        </span>
+                      )}
                     </div>
                     <h3 className="text-[rgba(61,51,74,1)] text-sm font-medium mb-2">
                       {similarArticle.title[language]}
@@ -356,16 +472,22 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
 
 // Helper function to add anchor IDs to content headers
 const addAnchorsToContent = (content: string): string => {
+  let index = 1;
+  
   // Add id attributes to h1-h6 tags that match the anchors
   return content.replace(
     /<h([1-6])([^>]*)>(.*?)<\/h[1-6]>/g,
     (match, level, attrs, text) => {
-      // Create anchor ID from text (simplified version)
-      const anchor = text
+      // Create anchor ID from text (same logic as extractHeadingsFromContent)
+      let anchor = text
         .toLowerCase()
         .replace(/<[^>]+>/g, "") // Remove HTML tags
         .replace(/[^a-z0-9\s-]/g, "") // Remove special characters
         .replace(/\s+/g, "-"); // Replace spaces with hyphens
+
+      // Add index to make it unique
+      anchor = `${anchor}-${index}`;
+      index++;
 
       return `<h${level}${attrs} id="${anchor}">${text}</h${level}>`;
     }

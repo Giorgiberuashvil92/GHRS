@@ -46,7 +46,6 @@ export class InstructorController {
     return this.instructorService.findOne(id);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Patch(':id')
   update(
     @Param('id') id: string,

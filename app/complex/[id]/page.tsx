@@ -11,13 +11,15 @@ import { useState, useRef, useEffect } from "react";
 import ReactPlayer from "react-player";
 import { CiLock } from "react-icons/ci";
 import Blog from "../../components/Blog";
-import Works from "../../components/Works";
 import { useCategoryComplete } from "../../hooks/useCategoryComplete";
 import { useSet } from "../../hooks/useSet";
 import { useI18n } from "../../context/I18nContext";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useExercisesBySet } from "../../hooks/useExercises";
+import { useUserAccess } from "../../hooks/useUserAccess";
+import { useAuth } from "../../context/AuthContext";
+import { useExerciseProgress } from "../../hooks/useExerciseProgress";
 import { Footer } from "@/app/components/Footer";
 import WorksSlider from "@/app/components/WorksSlider";
 
@@ -67,6 +69,33 @@ const Complex = ({ params }: ComplexPageProps) => {
 
   // ვიღებთ სავარჯიშოებს
   const { exercises, loading: exercisesLoading } = useExercisesBySet(setId);
+  
+  // ვამოწმებთ user-ის access-ს
+  const { hasAccess, loading: accessLoading, error: accessError } = useUserAccess(setId);
+  const { isAuthenticated, user } = useAuth();
+  
+  // ვარჯიშების პროგრესის ტრეკინგი
+  const progressInfo = useExerciseProgress(setId, exercises);
+  
+  // Debug info
+
+
+  // Helper ფუნქცია - უნდა ჩანდეს play ღილაკი თუ არა
+  const shouldShowPlayButton = (difficulty: string) => {
+    const exerciseCount = exercisesByDifficulty?.[difficulty] || 0;
+    // Play button ჩანს თუ user-ს აქვს access და არის ვარჯიშები
+    return hasAccess && exerciseCount > 0;
+  };
+
+  // Helper ფუნქცია - უნდა ჩანდეს lock icon თუ არა  
+  const shouldShowLockIcon = (difficulty: string) => {
+    const exerciseCount = exercisesByDifficulty?.[difficulty] || 0;
+    // Lock icon ჩანს თუ:
+    // 1. User-ს არ აქვს access, ან
+    // 2. Specific difficulty-ს 0 ვარჯიშო აქვს
+    const result = !hasAccess || exerciseCount === 0;
+    return result;
+  };
 
   // ვითვლით სავარჯიშოების რაოდენობას სირთულის მიხედვით
   const exercisesByDifficulty = exercises?.reduce((acc, exercise) => {
@@ -194,7 +223,8 @@ const Complex = ({ params }: ComplexPageProps) => {
     
     const cartItem = {
       id: setId,
-      type: 'subscription',
+      type: 'set', // ✅ შევცვალე 'subscription'-დან 'set'-ზე
+      itemType: 'set', // ✅ დავამატე itemType ველი
       name: setData.name,
       price: price,
       period: period,
@@ -208,8 +238,15 @@ const Complex = ({ params }: ComplexPageProps) => {
     const existingCart = localStorage.getItem('cart');
     const cart = existingCart ? JSON.parse(existingCart) : [];
     
-    // Add new item
-    cart.push(cartItem);
+    // Check if item already exists in cart
+    const existingItemIndex = cart.findIndex((item: any) => item.id === setId);
+    if (existingItemIndex !== -1) {
+      // Update existing item
+      cart[existingItemIndex] = cartItem;
+    } else {
+      // Add new item
+      cart.push(cartItem);
+    }
     
     // Save back to localStorage
     localStorage.setItem('cart', JSON.stringify(cart));
@@ -220,6 +257,7 @@ const Complex = ({ params }: ComplexPageProps) => {
 
   return (
     <div>
+      
       <Header variant="complex" onPriceClick={() => setPopoverOpen(true)} setData={setData} />
       <div className="">
         <section className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-20 md:mt-40 px-4">
@@ -292,27 +330,35 @@ const Complex = ({ params }: ComplexPageProps) => {
                   </h3>
                   <span className="text-[rgba(132,111,160,1)] md:text-[14px] text-xs leading-[90%] tracking-[0%] uppercase">
                     {exercisesByDifficulty?.easy || 0} упражнений
+                    
                   </span>
                 </div>
-                <Link 
-                  href={{
-                    pathname: '/player',
-                    query: { 
-                      setId,
-                      difficulty: 'easy',
-                      exercises: JSON.stringify(exercises?.filter(ex => ex.difficulty === 'easy')),
-                      set: JSON.stringify(setData)
-                    }
-                  }}
-                >
-                  <button ref={playBtnRef} className="relative z-10">
-                    <CiPlay1
-                      size={20}
-                      color="white"
-                      className="hover:text-[#846FA0] hover:text-2xl hover:scale-125"
-                    />
-                  </button>
-                </Link>
+                {shouldShowPlayButton('easy') && (
+                  <Link 
+                    href={{
+                      pathname: '/player',
+                      query: { 
+                        setId,
+                        difficulty: 'easy'
+                      }
+                    }}
+                  >
+                    <button ref={playBtnRef} className="relative z-10">
+                      <CiPlay1
+                        size={20}
+                        color="white"
+                        className="hover:text-[#846FA0] hover:text-2xl hover:scale-125"
+                      />
+                    </button>
+                  </Link>
+                )}
+                {shouldShowLockIcon('easy') && (
+                  <CiLock
+                    color="#1a1a1a"
+                    className="relative z-10"
+                    size={28}
+                  />
+                )}
                 {popoverOpen && (
                   <div
                     ref={popoverRef}
@@ -431,31 +477,38 @@ const Complex = ({ params }: ComplexPageProps) => {
               </div>
 
               {/* Intermediate Level */}
-              <div className="bg-[rgba(249,247,254,1)] p-5 rounded-[10px] flex justify-between items-center">
+              <div className={`p-5 rounded-[10px] flex justify-between items-center ${
+                shouldShowPlayButton('medium') 
+                  ? "bg-[url('/assets/images/blog.png')] bg-cover bg-center bg-no-repeat" 
+                  : "bg-[rgba(249,247,254,1)]"
+              }`}>
                 <div className="flex md:flex-row md:gap-[40px] flex-col md:items-center">
-                  <h3 className="text-[rgba(132,111,160,1)] md:text-2xl text-[18px] leading-[120%] tracking-[-3%] uppercase">
+                  <h3 className={`md:text-2xl text-[18px] leading-[120%] tracking-[-3%] uppercase ${
+                    shouldShowPlayButton('medium') 
+                      ? "text-[rgba(255,255,255,1)]" 
+                      : "text-[rgba(132,111,160,1)]"
+                  }`}>
                     Средний уровень
                   </h3>
                   <span className="text-[rgba(132,111,160,1)] md:text-[14px] text-xs leading-[90%] tracking-[0%] uppercase">
                     {exercisesByDifficulty?.medium || 0} упражнений
+                   
                   </span>
-                  {setData.levels.intermediate.isLocked && (
+                  {shouldShowLockIcon('medium') && (
                     <CiLock
-                      color="#846FA0"
+                      color="#2D1B3D"
                       className="absolute right-8"
-                      size={24}
+                      size={28}
                     />
                   )}
                 </div>
-                {!setData.levels.intermediate.isLocked && (
+                {shouldShowPlayButton('medium') && (
                   <Link 
                     href={{
                       pathname: '/player',
                       query: { 
                         setId,
-                        difficulty: 'medium',
-                        exercises: JSON.stringify(exercises?.filter(ex => ex.difficulty === 'medium')),
-                        set: JSON.stringify(setData)
+                        difficulty: 'medium'
                       }
                     }}
                   >
@@ -465,31 +518,38 @@ const Complex = ({ params }: ComplexPageProps) => {
               </div>
 
               {/* Advanced Level */}
-              <div className="bg-[rgba(249,247,254,1)] p-5 rounded-[10px] flex justify-between items-center">
+              <div className={`p-5 rounded-[10px] flex justify-between items-center ${
+                shouldShowPlayButton('hard') 
+                  ? "bg-[url('/assets/images/blog.png')] bg-cover bg-center bg-no-repeat" 
+                  : "bg-[rgba(249,247,254,1)]"
+              }`}>
                 <div className="flex md:flex-row md:gap-[40px] flex-col md:items-center">
-                  <h3 className="text-[rgba(132,111,160,1)] md:text-2xl text-[18px] leading-[120%] tracking-[-3%] uppercase">
+                  <h3 className={`md:text-2xl text-[18px] leading-[120%] tracking-[-3%] uppercase ${
+                    shouldShowPlayButton('hard') 
+                      ? "text-[rgba(255,255,255,1)]" 
+                      : "text-[rgba(132,111,160,1)]"
+                  }`}>
                     Продвинутый уровень
                   </h3>
                   <span className="text-[rgba(132,111,160,1)] md:text-[14px] text-xs leading-[90%] tracking-[0%] uppercase">
                     {exercisesByDifficulty?.hard || 0} упражнений
+                    
                   </span>
-                  {setData.levels.advanced.isLocked && (
+                  {shouldShowLockIcon('hard') && (
                     <CiLock
-                      color="#846FA0"
+                      color="#2D1B3D"
                       className="absolute right-8"
-                      size={24}
+                      size={28}
                     />
                   )}
                 </div>
-                {!setData.levels.advanced.isLocked && (
+                {shouldShowPlayButton('hard') && (
                   <Link 
                     href={{
                       pathname: '/player',
                       query: { 
                         setId,
-                        difficulty: 'hard',
-                        exercises: JSON.stringify(exercises?.filter(ex => ex.difficulty === 'hard')),
-                        set: JSON.stringify(setData)
+                        difficulty: 'hard'
                       }
                     }}
                   >
@@ -513,7 +573,7 @@ const Complex = ({ params }: ComplexPageProps) => {
         />
         <ReviewSlider title={"ОТЗЫВЫ О комплексе"} />
         <div className="md:my-10">
-          <WorksSlider title="Может понравиться" seeAll={true} works={[]} fromMain={false} />
+          <WorksSlider title="Может понравиться" seeAll={true} works={[]} fromMain={false} scrollable={true} />
         </div>
         <div className="md:my-10">
           <Blog

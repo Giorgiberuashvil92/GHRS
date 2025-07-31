@@ -1,5 +1,5 @@
 import { IsString, IsEnum, IsBoolean, IsOptional, IsNumber, IsMongoId, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
+import { Type, Transform } from 'class-transformer';
 
 class LocalizedStringDto {
   @IsString()
@@ -7,6 +7,10 @@ class LocalizedStringDto {
 
   @IsString()
   ru: string;
+
+  @IsOptional()
+  @IsString()
+  ka?: string;
 }
 
 export class CreateExerciseDto {
@@ -45,12 +49,24 @@ export class CreateExerciseDto {
   @IsString()
   restTime: string;
 
-  @IsBoolean()
   @IsOptional()
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      return value === 'true';
+    }
+    return value;
+  })
+  @IsBoolean()
   isActive?: boolean;
 
-  @IsBoolean()
   @IsOptional()
+  @Transform(({ value }) => {
+    if (typeof value === 'string') {
+      return value === 'true';
+    }
+    return value;
+  })
+  @IsBoolean()
   isPublished?: boolean;
 
   @IsNumber()

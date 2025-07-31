@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { API_CONFIG } from "../config/api";
 
 interface Subcategory {
   _id: string;
@@ -25,12 +27,29 @@ interface SubcategoryDropdownProps {
 }
 
 const SubcategoryDropdown = ({
-  subcategories,
   isOpen,
   onClose,
   categoryId,
 }: SubcategoryDropdownProps) => {
   const router = useRouter();
+  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
+
+  useEffect(() => {
+    const fetchSubcategories = async () => {
+      try {
+        const response = await fetch(`${API_CONFIG.BASE_URL}/categories/${categoryId}/subcategories`);
+        const data = await response.json();
+        setSubcategories(data);
+      } catch (error) {
+        console.error('Error fetching subcategories:', error);
+      }
+    };
+
+    if (categoryId) {
+      fetchSubcategories();
+    }
+  }, [categoryId]);
+
   if (!isOpen || subcategories.length === 0) return null;
 
   // ვიღებთ ენის პარამეტრს
@@ -68,7 +87,6 @@ const SubcategoryDropdown = ({
           type="button"
           onClick={() => {
             onClose();
-            // ვქმნით URL-ს პარამეტრებით
             const url = `/categories/section?subcategoryId=${subcategory._id}${categoryId ? `&categoryId=${categoryId}` : ''}`;
             router.push(url);
           }}

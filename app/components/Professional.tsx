@@ -124,7 +124,7 @@ const Professional = ({ withBanner, title, bgColor, withProfText }: { withBanner
           </p>
           <Link
             className="text-[14px] md:text-[24px] leading-[90%] uppercase text-[#D4BAFC]"
-            href="professional"
+            href="/professional"
           >
             {typeof t("professional.learn_more") === "string"
               ? t("professional.learn_more")

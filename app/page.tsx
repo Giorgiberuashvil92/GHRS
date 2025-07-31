@@ -11,29 +11,30 @@ import MarketPlace from "./components/MarketPlace";
 import Blog from "./components/Blog";
 import Download from "./components/Download";
 import Reviews from "./components/Reviews";
-// import { useCategories } from "./hooks/useCategories";
-// import { useAllExercises } from "./hooks/useExercises";
 import { useAllSets } from "./hooks/useSets";
 import { Footer } from "./components/Footer";
-// import { useCategoryComplete } from "./hooks/useCategoryComplete";
-// import { useI18n } from "./context/I18nContext";
+import { useI18n } from "./context/I18nContext";
 
 const Home = () => {
-  // const { categoryComplete } = useCategoryComplete();
   const { sets } = useAllSets();
-  // const { categories } = useCategories();
-  // const { exercises } = useAllExercises();
-
-  // const { t } = useI18n();
+  const { t } = useI18n();
 
   return (
     <div className="w-full min-h-screen overflow-x-hidden">
-      <Header variant="default" /> 
+      <Header variant="default" />
       <div>
         <Rehabilitation />
         <Category bgColor="#F9F7FE" customRounded={""} customMx={""} />
         <hr className="text-[#D5D1DB] bg-[#D5D1DB] w-[95%] mx-auto" />
-        <Works title={"Sets"} sets={sets} fromMain={true} customMargin="20px" customBorderRadius="" seeAll={false} scrollable={true} />
+        <Works 
+          title={t("navigation.sets")} 
+          sets={sets} 
+          fromMain={true} 
+          customMargin="20px" 
+          customBorderRadius="" 
+          seeAll={false} 
+          scrollable={true} 
+        />
         <Subscribe
           backgroundImage="/assets/images/categorySliderBgs/bg1.jpg"
           titleKey="subscription.title"
@@ -45,13 +46,18 @@ const Home = () => {
           titleStyles="text-white"
           buttonStyles="hover:opacity-80"
         />
-        <Professional withBanner={true} title="" bgColor={"#F9F7FE"} withProfText={true} />
+        <Professional 
+          withBanner={true} 
+          title={t("sections.professional")} 
+          bgColor={"#F9F7FE"} 
+          withProfText={true} 
+        />
         <div className="mb-10">
           <Blog
             withBanner={true}
             withSlider={true}
             layoutType="default"
-            title={"Blog"}
+            title={t("navigation.blog")}
           />
         </div>
         <MarketPlace />

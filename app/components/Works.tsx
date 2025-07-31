@@ -72,7 +72,7 @@ const Works: React.FC<WorksProps> = ({
   items = [],
   exercises = [],
   sets = [],
-  linkHref = "/exercises",
+  linkHref = "/allComplex",
   linkText = "All exercises",
   fromMain = false, // Default value დამატებული
   border,
@@ -185,14 +185,21 @@ const Works: React.FC<WorksProps> = ({
       categoryId: set.categoryId || "",
     }));
   } else if (sets.length > 0) {
+    console.log('Processing sets in Works component:', sets);
     works = sets.map((set) => {
+      console.log('Set category info:', {
+        setName: getLocalized(set.name),
+        categoryId: set.categoryId,
+        category: set.category,
+        categoryName: set.category ? getLocalized(set.category.name) : 'კატეგორია'
+      });
       return {
         id: set._id,
         title: getLocalized(set.name),
         description: getLocalized(set.description),
         image: getValidThumbnailUrl(set.thumbnailImage),
         exerciseCount: set.totalExercises,
-        categoryName: "Default Category", // ეს უნდა გადაკეთდეს category name-ით
+        categoryName: set.category ? getLocalized(set.category.name) : 'კატეგორია',
         monthlyPrice: set.price.monthly,
         categoryId: set.categoryId || "",
         subcategoryId: set.subCategoryId,
@@ -202,16 +209,17 @@ const Works: React.FC<WorksProps> = ({
     console.log("⚠️ No exercises, items, or sets to process!");
   }
 
-  console.log("🎯 Final works data:", works);
 
   return (
     <div
+    
       style={{ border: `${border}px solid ${borderColor}`, marginInline: `${customMargin}`, borderRadius: `${customBorderRadius}` }}
-      className="bg-[#F9F7FE] md:mt-0 md:pt-6 mt-10 md:mb-10 mb-0   rounded-b-[15px] md:pb-10 pb-0"
+      className="bg-[#F9F7FE] mx-6 rounded-[30px] md:mt-0 md:pt-6 mt-10 md:mb-10 mb-0   rounded-b-[15px] md:pb-10 pb-0"
     >
       {/* Slider */}
       <WorksSlider scrollable={scrollable} seeAll={seeAll} title={title} works={works} fromMain={fromMain} />
-      <Link
+      { seeAll && (
+        <Link
         href={linkHref}
         className="text-[14px] px-5 md:px-0 md:text-[24px] leading-[90%] uppercase text-[#D4BAFC]"
       >
@@ -223,6 +231,7 @@ const Works: React.FC<WorksProps> = ({
             : linkText}
         </span>
       </Link>
+      )}
     </div>
   );
 };

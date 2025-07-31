@@ -130,7 +130,7 @@ export default function SubcategoryPage({
       <div className="md:pt-[100px] pt-[400px]">
         {Array.isArray(formattedSets) && formattedSets.length > 0 && (
           <div>
-            <WorksSlider title={t("common.complexes")} works={formattedSets} linkType="complex" />
+            <WorksSlider title={t("common.complexes")} works={formattedSets} linkType="complex" fromMain={false} seeAll={false} scrollable={false} />
           </div>
         )}
 
@@ -152,7 +152,7 @@ export default function SubcategoryPage({
           withBanner={false}
           withSlider={true}
           layoutType="default"
-          title={getLocalizedText(selectedSubcategory?.name as { ka: string; en: string; ru: string }, locale)}
+          title={t("common.grs_media")}
         />
         <Professional />
       </div>

@@ -1,4 +1,7 @@
 {
+  "grs_media": "GRS Media",
+  "loading": "Loading...",
+  "retry": "Retry",
   "navigation": {
     "home": "Home",
     "about": "About Us",
@@ -8,7 +11,10 @@
     "categories": "Categories",
     "contact": "Contact",
     "login": "Login",
-    "register": "Register"
+    "register": "Register",
+    "all_complexes": "All Complexes",
+    "sets": "Sets",
+    "rightArrow": "→"
   },
   "buttons": {
     "subscribe": "Subscribe",
@@ -18,12 +24,14 @@
     "show_all": "View All",
     "send_request": "Send Request",
     "take_test": "Take Test",
+    "take_survey": "Take Survey",
     "continue": "Continue",
     "back": "Back",
     "show_more": "Show More"
   },
   "common": {
     "months": "month",
+    "month": "month",
     "price_per_month": "₾/month",
     "videos": "videos",
     "exercises": "exercises",
@@ -47,6 +55,82 @@
     "popular_exercises": "Popular Exercises",
     "loading_exercises": "Loading exercises...",
     "exercises_error": "Error loading exercises",
-    "set_not_found": "Set not found"
+    "set_not_found": "Set not found",
+    "see_all": "See All",
+    "article": "article",
+    "articles": "articles"
+  },
+  "sections": {
+    "professional": "Professional"
+  },
+  "works": {
+    "all_sets": "All Sets ({{count}})",
+    "title": "Sets"
+  },
+  "blog": {
+    "see_all": "All Blogs",
+    "articles_count": "{{count}} articles",
+    "articles_count_one": "1 article",
+    "articles_count_other": "{{count}} articles",
+    "all_articles": "All Articles",
+    "read_more": "Read More",
+    "share": "Share",
+    "bookmark": "Bookmark"
+  },
+  "days": {
+    "monday": "Mon",
+    "tuesday": "Tue",
+    "wednesday": "Wed",
+    "thursday": "Thu",
+    "friday": "Fri",
+    "saturday": "Sat",
+    "sunday": "Sun"
+  },
+  "payment": {
+    "user_not_authorized": "User not authorized",
+    "please_login": "Please log in",
+    "total": "Total",
+    "test_title": "PayPal Payment Test",
+    "success_message": "Payment successful! ID: {{id}}",
+    "error_message": "Payment error: {{error}}",
+    "success_indicator": "Success",
+    "payment_success": "Payment completed successfully! Your courses are available in your personal account.",
+    "payment_completed": "Payment Completed"
+  },
+  "teacher": {
+    "contents": "Contents",
+    "sampleQuestion": "What is considered a sedentary lifestyle?",
+    "instructorName": "Instructor Name",
+    "professionalTitle": "Professional Title",
+    "courses": "Course",
+    "certificates": "Certificate",
+    "students": "Student",
+    "aboutInstructor": "About Instructor",
+    "bioPlaceholder": "Instructor biography will be added soon.",
+    "rating": "Rating",
+    "certificatesTitle": "Certificates",
+    "viewCertificate": "View Certificate"
+  },
+  "modal": {
+    "success": "Success!",
+    "error": "Error!",
+    "warning": "Warning!",
+    "info": "Information",
+    "confirm": "Confirmation",
+    "ok": "OK",
+    "yes": "Yes",
+    "no": "No",
+    "cancel": "Cancel",
+    "understood": "Understood"
+  },
+  "course": {
+    "already_purchased": "You already have access to this course!",
+    "already_purchased_title": "Already Purchased",
+    "added_to_cart": "Course added to cart!",
+    "updated_in_cart": "Course updated in cart!",
+    "success_title": "Success",
+    "access_granted": "✓ YOU HAVE ACCESS",
+    "purchase_course": "PURCHASE COURSE",
+    "login_to_purchase": "LOGIN TO PURCHASE"
   }
 } 

@@ -5,6 +5,8 @@ import Category from "../components/Category";
 import Rehabilitation from "../components/Rehabilitation";
 import Works from "../components/Works";
 import TeacherInfo from "../components/TeacherInfo";
+import StaticTeacher from "../components/StaticTeacher";
+import { Footer } from "../components/Footer";
 
 const About = () => {
   return (
@@ -48,7 +50,11 @@ const About = () => {
             </div>
           </div>
         </div>
-        <TeacherInfo />
+        {/* <TeacherInfo /> */}
+        <StaticTeacher />
+      </div>
+      <div className="mt-20">
+      <Footer />
       </div>
     </div>
   );

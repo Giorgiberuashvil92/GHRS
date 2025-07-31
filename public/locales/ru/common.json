@@ -1,4 +1,7 @@
 {
+  "grs_media": "GRS медиа",
+  "loading": "Загружается...",
+  "retry": "Повторить попытку",
   "navigation": {
     "home": "Главная",
     "about": "О нас",
@@ -8,7 +11,10 @@
     "categories": "Категории",
     "contact": "Контакты",
     "login": "Войти",
-    "register": "Регистрация"
+    "register": "Регистрация",
+    "all_complexes": "Все комплексы",
+    "sets": "Комплексы",
+    "rightArrow": "→"
   },
   "buttons": {
     "subscribe": "Подписаться",
@@ -18,12 +24,14 @@
     "show_all": "Смотреть все",
     "send_request": "Отправить заявку",
     "take_test": "Пройти тестирование",
+    "take_survey": "Пройти опрос",
     "continue": "Продолжить",
     "back": "Назад",
     "show_more": "Показать ещё"
   },
   "common": {
     "months": "месяц",
+    "month": "месяц",
     "price_per_month": "₽/месяц",
     "videos": "видео",
     "exercises": "упражнения", 
@@ -48,19 +56,81 @@
     "loading_exercises": "Упражнения загружаются...",
     "exercises_error": "Ошибка загрузки упражнений",
     "set_not_found": "Сет не найден",
-    "exercise": "Упражнение",
-    "completed": "Просмотрено",
-    "watching": "Смотрите сейчас",
-    "notStarted": "Не начато",
-    "noVideo": "Видео не найдено",
-    "previous": "Предыдущее",
-    "next": "Следующее",
-    "duration": "Длительность",
-    "difficulty": "Сложность",
-    "repetitions": "Повторения",
-    "sets": "Подходы",
-    "restTime": "Отдых",
-    "description": "Описание",
-    "markAsComplete": "Отметить как просмотренное"
+    "see_all": "Смотреть все",
+    "article": "статья",
+    "articles": "статьи"
+  },
+  "sections": {
+    "professional": "Профессиональный"
+  },
+  "works": {
+    "all_sets": "Все сеты ({{count}})",
+    "title": "Комплексы и сеты"
+  },
+  "blog": {
+    "see_all": "Все статьи",
+    "articles_count": "{{count}} статей",
+    "articles_count_one": "1 статья",
+    "articles_count_other": "{{count}} статей",
+    "all_articles": "Все статьи",
+    "read_more": "Подробнее",
+    "share": "Поделиться",
+    "bookmark": "Сохранить"
+  },
+  "days": {
+    "monday": "Пн",
+    "tuesday": "Вт",
+    "wednesday": "Ср",
+    "thursday": "Чт",
+    "friday": "Пт",
+    "saturday": "Сб",
+    "sunday": "Вс"
+  },
+  "payment": {
+    "user_not_authorized": "Пользователь не авторизован",
+    "please_login": "Пожалуйста, войдите в систему",
+    "total": "Итого",
+    "test_title": "Тест оплаты PayPal",
+    "success_message": "Оплата прошла успешно! ID: {{id}}",
+    "error_message": "Ошибка оплаты: {{error}}",
+    "success_indicator": "Успешно",
+    "payment_success": "Оплата успешно завершена! Ваши курсы доступны в личном кабинете.",
+    "payment_completed": "Оплата завершена"
+  },
+  "teacher": {
+    "contents": "Содержание",
+    "sampleQuestion": "Что считается сидячим образом жизни?",
+    "instructorName": "Имя инструктора",
+    "professionalTitle": "Профессиональное звание",
+    "courses": "Курс",
+    "certificates": "Сертификат",
+    "students": "Студент",
+    "aboutInstructor": "Об инструкторе",
+    "bioPlaceholder": "Биография инструктора будет добавлена в ближайшее время.",
+    "rating": "Рейтинг",
+    "certificatesTitle": "Сертификаты",
+    "viewCertificate": "Посмотреть сертификат"
+  },
+  "modal": {
+    "success": "Успех!",
+    "error": "Ошибка!",
+    "warning": "Предупреждение!",
+    "info": "Информация",
+    "confirm": "Подтверждение",
+    "ok": "ОК",
+    "yes": "Да",
+    "no": "Нет",
+    "cancel": "Отмена",
+    "understood": "Понятно"
+  },
+  "course": {
+    "already_purchased": "У вас уже есть доступ к этому курсу!",
+    "already_purchased_title": "Уже приобретено",
+    "added_to_cart": "Курс добавлен в корзину!",
+    "updated_in_cart": "Курс обновлен в корзине!",
+    "success_title": "Успех",
+    "access_granted": "✓ У ВАС ЕСТЬ ДОСТУП",
+    "purchase_course": "ПРИОБРЕСТИ КУРС",
+    "login_to_purchase": "ВОЙТИ ДЛЯ ПОКУПКИ"
   }
 } 

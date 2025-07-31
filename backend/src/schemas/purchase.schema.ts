@@ -8,8 +8,14 @@ export class Purchase {
   @Prop({ type: Types.ObjectId, ref: 'User', required: true })
   userId: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: 'Set', required: true })
-  setId: Types.ObjectId;
+  @Prop({ type: Types.ObjectId, ref: 'sets', required: false })
+  setId?: Types.ObjectId;
+
+  @Prop({ type: Types.ObjectId, ref: 'Course', required: false })
+  courseId?: Types.ObjectId;
+
+  @Prop({ required: true, enum: ['set', 'course'], default: 'set' })
+  itemType: string;
 
   @Prop({ required: true })
   paymentId: string;

@@ -121,6 +121,9 @@ export class AuthService {
       throw new UnauthorizedException('არასწორი ელ-ფოსტა ან პაროლი');
     }
 
+    // ავტომატური achievements-ების ინიციალიზაცია
+    await this.initializeUserAchievements(user);
+
     const { password: _, ...result } = user.toObject();
     return {
       id: result._id?.toString() || '',
@@ -174,6 +177,10 @@ export class AuthService {
     });
 
     const savedUser = await newUser.save();
+    
+    // ახალი მომხმარებლისთვის achievements-ების ინიციალიზაცია
+    await this.initializeUserAchievements(savedUser);
+    
     const { password, ...result } = savedUser.toObject();
 
     return {
@@ -190,5 +197,110 @@ export class AuthService {
         image: result.image,
       },
     };
+  }
+
+  // ახალი მეთოდი achievements-ების ინიციალიზაციისთვის
+  private async initializeUserAchievements(user: UserDocument) {
+    // თუ უკვე აქვს achievements, არაფერი არ გავაკეთოთ
+    if (user.achievements && user.achievements.length > 0) {
+      return;
+    }
+
+    // საწყისი სტატისტიკის ინიციალიზაცია
+    if (!user.statistics) {
+      user.statistics = {
+        totalTimeSpent: 0,
+        totalExercisesCompleted: 0,
+        currentStreak: 0,
+        recordStreak: 0,
+        totalSetsCompleted: 0,
+        totalCoursesCompleted: 0,
+        completedExerciseIds: [],
+        completedSetIds: [],
+        completedCourseIds: [],
+        activityDates: [],
+      } as any;
+    }
+
+    // დემო მიღწევების დამატება (რომ რაღაც ჩანდეს)
+    const demoAchievements = [
+      {
+        id: 'welcome',
+        title: {
+          en: 'Welcome!',
+          ru: 'Добро пожаловать!',
+          ka: 'კეთილი იყოს თქვენი მობრძანება!'
+        },
+        description: {
+          en: 'You joined our platform',
+          ru: 'Вы присоединились к нашей платформе',
+          ka: 'თქვენ შეუერთდით ჩვენს პლატფორმას'
+        },
+        current: 1,
+        total: 1,
+        isCompleted: true,
+        image: '/assets/icons/Icon.svg',
+        imageBg: '#D4BAFC',
+        unlockedAt: new Date(),
+        completedAt: new Date()
+      },
+      {
+        id: 'first-exercise',
+        title: {
+          en: 'First Exercise',
+          ru: 'Первое упражнение',
+          ka: 'პირველი ვარჯიში'
+        },
+        description: {
+          en: 'Complete your first exercise',
+          ru: 'Завершите первое упражнение',
+          ka: 'დაასრულეთ პირველი ვარჯიში'
+        },
+        current: 0,
+        total: 1,
+        isCompleted: false,
+        image: '/assets/icons/play.svg',
+        imageBg: '#F3D57F'
+      },
+      {
+        id: 'five-day-streak',
+        title: {
+          en: '5 Day Streak',
+          ru: '5 дней подряд',
+          ka: '5 დღე ზედიზედ'
+        },
+        description: {
+          en: 'Exercise for 5 days in a row',
+          ru: 'Тренируйтесь 5 дней подряд',
+          ka: 'ივარჯიშეთ 5 დღე ზედიზედ'
+        },
+        current: 0,
+        total: 5,
+        isCompleted: false,
+        image: '/assets/icons/heat.svg',
+        imageBg: '#B1E5FC'
+      },
+      {
+        id: 'professional',
+        title: {
+          en: 'Professional',
+          ru: 'Профессионал',
+          ka: 'პროფესიონალი'
+        },
+        description: {
+          en: 'Complete 50 exercises',
+          ru: 'Завершите 50 упражнений',
+          ka: 'დაასრულეთ 50 ვარჯიში'
+        },
+        current: 0,
+        total: 50,
+        isCompleted: false,
+        image: '/assets/icons/pulse.svg',
+        imageBg: '#FFD700'
+      }
+    ];
+
+    user.achievements = demoAchievements as any;
+    await user.save();
   }
 }

@@ -290,9 +290,9 @@ function ComplexContent() {
           </section>
         </div>
         <Subscribe />
-        <ReviewSlider />
+        <ReviewSlider title={""} />
         <div className="md:my-10">
-          <Works title="Может понравиться" />
+          <Works title="Может понравиться" customMargin={""} customBorderRadius={""} seeAll={false} scrollable={false} />
         </div>
         <div className="md:my-10">
           <Blog

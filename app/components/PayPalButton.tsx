@@ -3,6 +3,7 @@
 import { PayPalButtons } from '@paypal/react-paypal-js';
 import { apiRequest, API_CONFIG } from '../config/api';
 import { useAuth } from '../context/AuthContext';
+import { useI18n } from '../context/I18nContext';
 
 export interface PaymentResponse {
   id: string;
@@ -22,18 +23,20 @@ export interface PaymentResponse {
 interface PayPalButtonProps {
   amount: number;
   currency?: string;
-  setId: string;
+  itemId: string;
+  itemType?: 'set' | 'course' | 'mixed';
   onSuccess: (details: PaymentResponse) => void;
   onError: (error: Error) => void;
 }
 
-export default function PayPalButton({ amount, currency = 'RUB', setId, onSuccess, onError }: PayPalButtonProps) {
+export default function PayPalButton({ amount, currency = 'RUB', itemId, itemType = 'set', onSuccess, onError }: PayPalButtonProps) {
   const { user } = useAuth();
+  const { t } = useI18n();
 
   const createOrder = async () => {
     try {
       if (!user) {
-        throw new Error('მომხმარებელი არ არის ავტორიზებული');
+        throw new Error(t('payment.user_not_authorized'));
       }
 
       const response = await apiRequest<PaymentResponse>(API_CONFIG.ENDPOINTS.PAYMENTS.CREATE_ORDER, {
@@ -42,12 +45,12 @@ export default function PayPalButton({ amount, currency = 'RUB', setId, onSucces
           amount, 
           currency,
           userId: user.id,
-          setId
+          itemId,
+          itemType
         })
       });
 
-      console.log('PayPal order created:', response);
-      
+
       if (!response.id) {
         throw new Error('PayPal order ID is missing');
       }
@@ -60,16 +63,12 @@ export default function PayPalButton({ amount, currency = 'RUB', setId, onSucces
     }
   };
 
-  const handleApprove = async (data: any) => {
+  const handleApprove = async (data: { orderID: string }) => {
     try {
-      console.log('PayPal payment approved:', data);
-      
       const response = await apiRequest<PaymentResponse>(API_CONFIG.ENDPOINTS.PAYMENTS.CAPTURE_PAYMENT, {
         method: 'POST',
         body: JSON.stringify({ orderId: data.orderID })
       });
-      
-      console.log('PayPal payment captured:', response);
       
       onSuccess(response);
     } catch (error) {
@@ -79,7 +78,6 @@ export default function PayPalButton({ amount, currency = 'RUB', setId, onSucces
   };
 
   const handleCancel = () => {
-    console.log('PayPal payment cancelled');
   };
 
   const handleError = (error: unknown) => {
@@ -88,13 +86,13 @@ export default function PayPalButton({ amount, currency = 'RUB', setId, onSucces
   };
 
   if (!user) {
-    return <div className="text-center text-red-500 p-4">გთხოვთ გაიაროთ ავტორიზაცია</div>;
+    return <div className="text-center text-red-500 p-4">{t('payment.please_login')}</div>;
   }
 
   return (
     <div className="w-full">
       <div className="mb-4 text-center text-gray-700">
-        ჯამი: {amount} {currency}
+        {t('payment.total')}: {amount} {currency}
       </div>
       <PayPalButtons
         style={{

@@ -9,13 +9,20 @@ export class PaymentController {
   @UseGuards(JwtAuthGuard)
   @Post('create-order')
   async createOrder(
-    @Body() data: { amount: number; currency: string; userId: string; setId: string },
+    @Body() data: { 
+      amount: number; 
+      currency: string; 
+      userId: string; 
+      itemId: string; 
+      itemType?: 'set' | 'course' | 'mixed';
+    },
   ) {
     return this.paymentService.createOrder(
       data.amount,
       data.currency,
       data.userId,
-      data.setId,
+      data.itemId,
+      data.itemType || 'set',
     );
   }
 

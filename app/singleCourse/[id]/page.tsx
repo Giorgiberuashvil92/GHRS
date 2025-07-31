@@ -5,11 +5,15 @@ import { FaBullhorn, FaBookOpen } from "react-icons/fa";
 import DesktopNavbar from "../../components/Navbar/DesktopNavbar";
 import { defaultMenuItems } from "../../components/Header";
 import React, { useState, useEffect, useRef } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { fetchCourse, fetchRelatedCourses } from '../../config/api';
 import CourseSlider from "@/app/components/CourseSlider";
 import SliderArrows from "@/app/components/SliderArrows";
 import { Footer } from "@/app/components/Footer";
+import { useUserAccess } from "../../hooks/useUserAccess";
+import { useAuth } from "../../context/AuthContext";
+import { useModal } from "../../context/ModalContext";
+import { useI18n } from "../../context/I18nContext";
 
 interface Course {
   _id: string;
@@ -88,6 +92,7 @@ interface Course {
 
 export default function SingleCourse() {
   const params = useParams();
+  const router = useRouter();
   const courseId = params.id as string;
   
   console.log('Course ID from params:', courseId);
@@ -98,6 +103,18 @@ export default function SingleCourse() {
   const [error, setError] = useState<string | null>(null);
   const [relatedCourses, setRelatedCourses] = useState<Course[]>([]);
   const [relatedLoading, setRelatedLoading] = useState(false);
+
+  // Auth context
+  const { isAuthenticated } = useAuth();
+  
+  // I18n context
+  const { t } = useI18n();
+  
+  // Modal context
+  const { showError, showSuccess } = useModal();
+  
+  // Course access check
+  const { hasAccess, loading: accessLoading } = useUserAccess(undefined, courseId);
 
   const sliderRef = useRef<HTMLDivElement>(null);
 
@@ -111,6 +128,59 @@ export default function SingleCourse() {
 
   const scrollRight = () => {
     sliderRef.current?.scrollBy({ left: 300, behavior: "smooth" });
+  };
+
+  // კურსის ყიდვის ფუნქცია
+  const handlePurchaseCourse = () => {
+    if (!course) return;
+    
+    // Check if user already has access
+    if (hasAccess) {
+      showError(t('course.already_purchased') || 'You already have access to this course!', t('course.already_purchased_title') || 'Already Purchased');
+      return;
+    }
+    
+    // Check if user is authenticated
+    if (!isAuthenticated) {
+      router.push('/auth/login');
+      return;
+    }
+
+    // კურსის მონაცემები shopping cart-ისთვის
+    const courseItem = {
+      id: course._id,
+      title: course.title.ru || course.title.en, // ✅ title ველი
+      desc: course.shortDescription?.ru || course.description?.ru || 'No description', // ✅ desc ველი
+      img: course.thumbnail, // ✅ img ველი
+      price: course.price,
+      subscription: 1, // ✅ default subscription
+      totalExercises: course.syllabus?.length || 0,
+      totalDuration: course.duration ? `${course.duration} წუთი` : '0:00',
+      itemType: 'course', // ✅ itemType ველი
+      type: 'course' // ✅ backward compatibility
+    };
+
+    // არსებული cart-ის მოძებნა ან ცარიელი array-ის შექმნა
+    const existingCart = localStorage.getItem('cart');
+    const cart = existingCart ? JSON.parse(existingCart) : [];
+    
+    // Check if item already exists in cart
+    const existingItemIndex = cart.findIndex((item: any) => item.id === courseId);
+    if (existingItemIndex !== -1) {
+      // Update existing item with new data
+      cart[existingItemIndex] = courseItem;
+      showSuccess(t('course.updated_in_cart') || 'Course updated in cart!', t('course.success_title') || 'Success');
+    } else {
+      // Add new item
+      cart.push(courseItem);
+      showSuccess(t('course.added_to_cart') || 'Course added to cart!', t('course.success_title') || 'Success');
+    }
+    
+    // localStorage-ში შენახვა
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // shopping cart გვერდზე გადასვლა
+    router.push('/shoppingcard');
   };
 
   useEffect(() => {
@@ -277,9 +347,30 @@ export default function SingleCourse() {
               </div>
               <div className="text-[#A9A6B4] text-sm">Стоимость курса</div>
             </div>
-            <div className="bg-[url('/assets/images/bluebg.jpg')] bg-cover bg-center h-[48px] rounded-lg flex items-center justify-center px-5 py-3 font-bold text-white duration-300 hover:text-[#8D7EF3] mb-1 text-lg cursor-pointer hover:bg-[#e2dbff] transition-colors">
-              <h2>ПРИОБРЕСТИ КУРС</h2>
-            </div>
+            {/* Purchase Button or Access Indicator */}
+            {accessLoading ? (
+              <div className="h-[48px] rounded-lg flex items-center justify-center px-5 py-3 bg-gray-200 mb-1 text-lg w-full">
+                <div className="animate-spin rounded-full h-6 w-6 border-2 border-purple-600 border-t-transparent"></div>
+              </div>
+            ) : hasAccess ? (
+              <div className="bg-green-500 h-[48px] rounded-lg flex items-center justify-center px-5 py-3 font-bold text-white mb-1 text-lg w-full">
+                <h2>{t('course.access_granted') || '✓ YOU HAVE ACCESS'}</h2>
+              </div>
+            ) : isAuthenticated ? (
+              <button 
+                onClick={handlePurchaseCourse}
+                className="bg-[url('/assets/images/bluebg.jpg')] bg-cover bg-center h-[48px] rounded-lg flex items-center justify-center px-5 py-3 font-bold text-white duration-300 hover:text-[#8D7EF3] mb-1 text-lg cursor-pointer hover:bg-[#e2dbff] transition-colors w-full"
+              >
+                <h2>{t('course.purchase_course') || 'PURCHASE COURSE'}</h2>
+              </button>
+            ) : (
+              <button 
+                onClick={() => router.push('/auth/login')}
+                className="bg-gray-500 h-[48px] rounded-lg flex items-center justify-center px-5 py-3 font-bold text-white duration-300 hover:bg-gray-600 mb-1 text-lg cursor-pointer transition-colors w-full"
+              >
+                <h2>{t('course.login_to_purchase') || 'LOGIN TO PURCHASE'}</h2>
+              </button>
+            )}
             <div className="hidden md:flex flex-col gap-4">
               {course.advertisementImage ? (
                 <>
@@ -613,7 +704,7 @@ export default function SingleCourse() {
         </div>
        
       </div>
-      <Footer blogBg={false} allCourseBg={false} />
+      <Footer />
     </>
   );
 } 

@@ -5,6 +5,7 @@ import Image from "next/image";
 import React from "react";
 import SliderArrows from "./SliderArrows";
 import Link from "next/link";
+import { useI18n, useLanguage } from "../context/I18nContext";
 
 interface WorkItem {
   id: string;
@@ -29,13 +30,15 @@ interface WorksSliderProps {
 }
 
 const WorksSlider: React.FC<WorksSliderProps> = ({
-  title = "სეტები",
+  title,
   works,
   linkType = 'sets', // default არის sets
   fromMain,
   seeAll = true,
   scrollable = true
 }) => {
+  const { t } = useI18n();
+  const { language } = useLanguage(); 
   const scroll = (direction: "left" | "right") => {
     const slider = document.getElementById("works-slider");
     if (slider) {
@@ -58,8 +61,8 @@ const WorksSlider: React.FC<WorksSliderProps> = ({
         </h2>
        {seeAll && (
          <span className="text-[#D4BAFC] text-[24px] md:mb-10 leading-[90%] uppercase cursor-pointer hover:text-[#B69EE8] transition-colors">
-         Смотреть все →
-       </span>
+          {t("common.see_all")} →
+         </span>
        )}
         </div>
         {scrollable && (
@@ -107,8 +110,8 @@ const WorksSlider: React.FC<WorksSliderProps> = ({
                 </p>
               </div>
               <div className="flex items-center justify-end">
-                <span className="px-5 py-3 bg-[#D4BAFC] rounded-lg text-white text-[18px] leading-[100%] font-bold mb-8 mr-8">
-                  {work.monthlyPrice}₾/თვე
+                <span className="px-5 py-3 bg-[#D4BAFC] rounded-lg text-white text-[18px] leading-[100%] font-bold mb-8 mr-8 mt-6">
+                  {work.monthlyPrice}${language === "ka" ? "₾" : language === "ru" ? "₽" : "$"}/{t("common.month")}
                 </span>
               </div>
             </Link>

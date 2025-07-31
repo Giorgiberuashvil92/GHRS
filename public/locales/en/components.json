@@ -1,8 +1,42 @@
 {
   "rehabilitation": {
     "title": "Rehabilitation",
-    "description": "Modern Israeli rehabilitation techniques for restoring and maintaining mobility and work capacity",
-    "learn_more": "Explore →"
+    "description": "Modern Israeli rehabilitation methods for restoring and maintaining mobility and work capacity",
+    "learn_more": "Learn more →",
+    "page": {
+      "subscription": {
+        "title": "Subscription",
+        "payment": {
+          "title": "Various Payment Methods",
+          "description": "You can pay for the subscription using a bank card or QR code in your personal account"
+        },
+        "planning": {
+          "title": "Planning",
+          "description": "Ability to create a training schedule and receive notifications from the platform about the next training session"
+        },
+        "trial": {
+          "title": "Trial Subscription",
+          "description": "This is a 3 or 5 calendar day subscription with the option of automatic renewal for 3 or 5 calendar days"
+        },
+        "course_access": {
+          "title": "Course Access",
+          "description": "After paying for the subscription, access to your chosen video exercise complex will be automatically activated in your personal account"
+        },
+        "cancellation": {
+          "title": "Cancel Subscription",
+          "description": "You can cancel automatic subscription renewal in your personal account by removing the corresponding mark"
+        },
+        "discount": {
+          "title": "10% discount for 3 months and 25% for 6 months subscription",
+          "button": "Purchase Subscription"
+        }
+      },
+      "no_plan": {
+        "title": "No Rehabilitation Plan?",
+        "description": "Schedule a consultation with a rehabilitation doctor",
+        "button": "Book Consultation"
+      }
+    }
   },
   "category": {
     "title": "Categories",
@@ -13,8 +47,8 @@
   },
   "professional": {
     "title": "Professional Development",
-    "description": "Educational and professional development section in rehabilitation, physiotherapy and therapeutic-restorative massage - this is a collaboration with Israeli specialists and training centers, such as the College of Medical Massage, founded and led by Dr. Aaron Yacobi.",
-    "learn_more": "Explore →",
+    "description": "The department of education and professional development in rehabilitation, physiotherapy, and therapeutic massage - this is a collaboration with Israeli specialists and training centers, such as the Medical Massage College, founded and directed by Dr. Aaron Yakobi.",
+    "learn_more": "Learn more →",
     "courses": {
       "title": "Courses",
       "error": "Error loading courses",
@@ -22,25 +56,51 @@
     }
   },
   "marketplace": {
-    "description": "We are developing the MARKETPLACE direction. Our partners in this direction can be rehabilitation centers, clinics, sanatoriums, sports clubs, massage ...",
+    "description": "We are developing the marketplace direction. Our partners in this direction can be rehabilitation centers, clinics, sanatoriums, sports clubs, massage …",
     "status": "In development"
   },
   "blog": {
     "title": "Blog"
   },
   "download": {
-    "title": "Interaction capabilities <br /> across different platforms"
+    "title": "Interaction <br /> possibility on <br /> different platforms"
   },
   "article": {
     "table_of_contents": "Table of Contents",
     "comments": "Comments",
     "comment_count": "{{count}} comments",
-    "read_time": "{{time}} min read",
-    "rate_article": "Rate Article",
-    "ratings": "{{count}} ratings",
+    "read_time": "{{time}} min",
+    "rate_article": "Rate article",
+    "ratings": "({{count}} ratings)",
     "write_comment": "Write a comment",
-    "show_more_comments": "Show More",
-    "similar_articles": "Similar Articles",
+    "show_more_comments": "Show more",
+    "similar_articles": "Similar articles",
     "no_similar_articles": "No similar articles found"
+  },
+  "video_notification": {
+    "title": "Video Exercises",
+    "exercise_complexes": {
+      "title": "Exercise Complexes",
+      "description": "The rehabilitation section provides exercise complexes in the following areas: orthopedics, neurology, obesity, rehabilitation for the elderly, post-COVID-19 rehabilitation, gait rehabilitation, aphasia, and dysarthria. All exercise complexes are developed by Israeli specialists in accordance with Israeli rehabilitation protocols."
+    },
+    "for_children": {
+      "title": "For Children",
+      "description": "Children aged 10 and above and teenagers will find relevant sections related to posture, juvenile scoliosis and thoracic spine, as well as shoulder girdle problems, lower limb issues, and correction."
+    },
+    "articles": {
+      "title": "Articles",
+      "description": "Our library features articles that serve as theoretical introductions to each area of Rehabilitation and cover possible problems and pathologies, anatomy, physiology, and biomechanics."
+    },
+    "purchase": {
+      "premium_content": "Premium Content",
+      "set_requires_purchase": "The \"{{setName}}\" set requires purchase",
+      "content_requires_purchase": "This content requires purchase",
+      "what_you_get": "What you get:",
+      "unlimited_access": "Unlimited access",
+      "all_exercises": "All exercises",
+      "progress_tracking": "Progress tracking",
+      "buy_now": "Buy Now",
+      "browse_courses": "Browse Courses"
+    }
   }
 } 

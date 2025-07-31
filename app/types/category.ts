@@ -68,6 +68,17 @@ export interface Set {
   exercises?: Exercise[];
   createdAt?: string;
   updatedAt?: string;
+  // populated fields from backend
+  category?: {
+    _id: string;
+    name: LocalizedString;
+    description?: LocalizedString;
+  };
+  subcategory?: {
+    _id: string;
+    name: LocalizedString;
+    description?: LocalizedString;
+  };
 }
 
 export interface Exercise {

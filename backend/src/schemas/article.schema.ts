@@ -5,13 +5,13 @@ export type ArticleDocument = Article & Document;
 
 @Schema()
 export class LocalizedString {
-  @Prop({ required: true })
+  @Prop({ required: false, default: '' })
   ka: string;
 
-  @Prop({ required: false, default: '' })
+  @Prop({ required: true })
   en: string;
 
-  @Prop({ required: false, default: '' })
+  @Prop({ required: true })
   ru: string;
 }
 
@@ -53,8 +53,8 @@ export class Article {
   @Prop({ type: Types.ObjectId, ref: 'Blog', required: true })
   blogId: Types.ObjectId;
 
-  @Prop({ type: Types.ObjectId, ref: 'Category', required: true })
-  categoryId: Types.ObjectId;
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'Category' }], required: true })
+  categoryId: Types.ObjectId[];
 
   @Prop({ type: [String], default: [] })
   featuredImages: string[];

@@ -71,20 +71,36 @@ interface CourseData {
   endDate?: string;
 }
 
-// Public endpoints რომელთაც authorization არ სჭირდება
-const PUBLIC_ENDPOINTS = [
-  '/categories',
-  '/sets',
-  '/exercises',
-  '/articles',
-  '/blogs',
-  '/test',
-  '/users-count'
+// JWT authorization მოშორებულია - ყველა endpoint public-ია
+// const PUBLIC_ENDPOINTS = [
+//   '/categories',
+//   '/sets',
+//   '/exercises',
+//   '/articles',
+//   '/blogs',
+//   '/instructors',
+//   '/test',
+//   '/users-count'
+// ];
+
+// function isPublicEndpoint(endpoint: string): boolean {
+//   return PUBLIC_ENDPOINTS.some(publicEndpoint => 
+//     endpoint.startsWith(publicEndpoint)
+//   );
+// }
+
+// Protected endpoints that require JWT token
+const PROTECTED_ENDPOINTS = [
+  '/users/me',
+  '/purchases/my-courses',
+  '/purchases/check-access',
+  '/purchases/check-course-access',
+  '/payment/',
 ];
 
-function isPublicEndpoint(endpoint: string): boolean {
-  return PUBLIC_ENDPOINTS.some(publicEndpoint => 
-    endpoint.startsWith(publicEndpoint)
+function requiresAuth(endpoint: string): boolean {
+  return PROTECTED_ENDPOINTS.some(protectedEndpoint => 
+    endpoint.startsWith(protectedEndpoint)
   );
 }
 
@@ -142,10 +158,18 @@ export const API_CONFIG = {
     PURCHASES: {
       GET_MY_COURSES: '/purchases/my-courses',
       CHECK_ACCESS: (setId: string) => `/purchases/check-access/${setId}`,
+      CHECK_COURSE_ACCESS: (courseId: string) => `/purchases/check-course-access/${courseId}`,
     },
     PAYMENTS: {
       CREATE_ORDER: '/payment/create-order',
       CAPTURE_PAYMENT: '/payment/capture-payment',
+    },
+    INSTRUCTORS: {
+      ALL: "/instructors",
+      BY_ID: (id: string) => `/instructors/${id}`,
+      TOP: "/instructors/top",
+      COURSES: (id: string) => `/instructors/${id}/courses`,
+      STATS: (id: string) => `/instructors/${id}/stats`,
     },
   },
 
@@ -167,16 +191,45 @@ export async function apiRequest<T>(
     ...API_CONFIG.HEADERS,
   };
 
-  // მხოლოდ protected endpoints-ისთვის ვუმატებთ Authorization header-ს
-  if (!isPublicEndpoint(endpoint) && 
-      typeof window !== "undefined" && 
-      localStorage.getItem("token")) {
-    headers.Authorization = `Bearer ${localStorage.getItem("token")}`;
+  // Add JWT token only for protected endpoints
+  if (typeof window !== "undefined" && requiresAuth(endpoint)) {
+    const token = localStorage.getItem("token");
+    console.log('🔐 localStorage token check:', {
+      endpoint,
+      requiresAuth: true,
+      windowUndefined: typeof window === "undefined",
+      tokenExists: !!token,
+      tokenLength: token?.length,
+      tokenStart: token?.substring(0, 50)
+    });
+    
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
+      console.log('🔐 Authorization header set:', headers.Authorization.substring(0, 50) + '...');
+    } else {
+      console.log('🔐 No token found in localStorage');
+    }
+  } else if (typeof window !== "undefined") {
+    console.log('🔐 Public endpoint - no auth required:', endpoint);
+  } else {
+    console.log('🔐 Window is undefined - SSR mode');
   }
 
+  // Debug logs
+  console.log('🌐 API Request:', {
+    url,
+    method: options.method || 'GET',
+    hasToken: !!headers.Authorization,
+    tokenPreview: headers.Authorization ? headers.Authorization.substring(0, 30) + '...' : 'No token',
+    headers
+  });
+
   const config: RequestInit = {
-    headers,
     ...options,
+    headers: {
+      ...headers,
+      ...(options.headers as Record<string, string> || {}),
+    },
   };
 
   const controller = new AbortController();
@@ -190,6 +243,13 @@ export async function apiRequest<T>(
 
     clearTimeout(timeoutId);
 
+    console.log('📡 API Response:', {
+      url,
+      status: response.status,
+      statusText: response.statusText,
+      ok: response.ok
+    });
+
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
@@ -197,6 +257,7 @@ export async function apiRequest<T>(
     return await response.json();
   } catch (error) {
     clearTimeout(timeoutId);
+    console.error('❌ API Error:', { url, error });
     throw error;
   }
 }

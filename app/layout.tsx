@@ -5,18 +5,15 @@ import "./globals.css";
 import { I18nProvider } from "./context/I18nContext";
 import { AuthProvider } from "./context/AuthContext";
 import CategoryProvider from "./context/CategoryContext";
+import { ModalProvider } from "./context/ModalContext";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 const inter = Inter({ subsets: ["latin"] });
 
 const paypalOptions = {
-  clientId: "AdGUXBKzSaUCAZ_j7UO8YOYCbWRQCIcBl9o0pC6GJ7PQmT6uMucRdWCGegdB65JJbGewVP97-iU7EiAl",
+  clientId: "AQtqwl189MSBEbnUWNGIfPsAl3ynUUUKr506gJa5SDXhnXzje33FVtEJaTjcqRXE9FCnUPWu3kaVlfEO",
   currency: "RUB",
   intent: "capture",
-  disableFunding: "bancontact,blik,eps,giropay,ideal,mercadopago,mybank,p24,sepa,sofort,venmo",
-  enableFunding: "card,credit,paypal",
-  commit: true,
-  vault: false,
   components: "buttons"
 };
 
@@ -37,9 +34,11 @@ export default function RootLayout({
         <PayPalScriptProvider options={paypalOptions}>
           <I18nProvider>
             <AuthProvider>
-              <CategoryProvider value={{ categories: [], setCategories: () => {} }}>
-                {children}
-              </CategoryProvider>
+              <ModalProvider>
+                <CategoryProvider value={{ categories: [], loading: false, error: null, refetch: async () => {} }}>
+                  {children}
+                </CategoryProvider>
+              </ModalProvider>
             </AuthProvider>
           </I18nProvider>
         </PayPalScriptProvider>

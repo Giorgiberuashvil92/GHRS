@@ -36,6 +36,17 @@ interface BackendSet {
   sortOrder: number;
   categoryId: string;
   subCategoryId?: string;
+  // populated fields from backend
+  category?: {
+    _id: string;
+    name: LocalizedString;
+    description?: LocalizedString;
+  };
+  subcategory?: {
+    _id: string;
+    name: LocalizedString;
+    description?: LocalizedString;
+  };
 }
 
 interface UseSetsReturn {
@@ -61,6 +72,9 @@ const transformSet = (backendSet: BackendSet): Set => {
     sortOrder: backendSet.sortOrder,
     categoryId: backendSet.categoryId,
     subCategoryId: backendSet.subCategoryId,
+    // populated fields
+    category: backendSet.category,
+    subcategory: backendSet.subcategory,
   };
 };
 
