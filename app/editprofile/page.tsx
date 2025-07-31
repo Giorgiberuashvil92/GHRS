@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { defaultMenuItems } from "../components/Header";
 import DesktopNavbar from "../components/Navbar/DesktopNavbar";
@@ -7,7 +9,7 @@ import PersonInfo from "../components/PersonalAccount/PersonInfo";
 const EditProfile = () => {
   return (
     <div>
-      <DesktopNavbar menuItems={defaultMenuItems} blogBg={false} />
+      <DesktopNavbar menuItems={defaultMenuItems} blogBg={false} allCourseBg={false} />
       <MobileNavbar />
       <PersonInfo
         user={{
