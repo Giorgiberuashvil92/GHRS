@@ -6,6 +6,7 @@ import SliderArrows from "./SliderArrows";
 import CourseSlider from "./CourseSlider";
 import Banner from "./Banner";
 import { useI18n } from "../context/I18nContext";
+import { API_CONFIG } from "../config/api";
 
 interface Course {
   _id: string;
@@ -48,7 +49,7 @@ const Professional = ({ withBanner, title, bgColor, withProfText }: { withBanner
     const fetchCourses = async (): Promise<void> => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:4000/courses?isPublished=true');
+        const response = await fetch(`${API_CONFIG.BASE_URL}/courses?isPublished=true`);
         if (!response.ok) {
           throw new Error('Failed to fetch courses');
         }

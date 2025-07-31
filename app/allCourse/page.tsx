@@ -9,6 +9,7 @@ import CategoryFilter from "../components/CategoryFilter";
 import { useRouter } from "next/navigation";
 import { Footer } from "../components/Footer";
 import CustomBadge from "../components/CustomBadge";
+import { API_CONFIG } from "../config/api";
 
 interface Course {
   _id: string;
@@ -46,7 +47,7 @@ const AllCourse = () => {
   const fetchAllCourses = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:4000/courses?limit=1000&isPublished=true`);
+      const response = await fetch(`${API_CONFIG.BASE_URL}/courses?limit=1000&isPublished=true`);
       
       if (!response.ok) {
         throw new Error('Failed to fetch courses');

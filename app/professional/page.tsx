@@ -13,6 +13,7 @@ import Link from "next/link";
 import { useI18n } from "../context/I18nContext";
 import { Footer } from "../components/Footer";
 import Category from "../components/Category";
+import { API_CONFIG } from "../config/api";
 
 interface Course {
   _id: string;
@@ -113,7 +114,7 @@ const Professional = () => {
   const fetchCourses = async () => {
     try {
       setLoading(true);
-      const url = `http://localhost:4000/courses?isPublished=true&limit=10`;
+      const url = `${API_CONFIG.BASE_URL}/courses?isPublished=true&limit=10`;
       const response = await fetch(url);
 
       if (!response.ok) {
@@ -133,7 +134,7 @@ const Professional = () => {
   const fetchInstructors = async () => {
     try {
       setInstructorsLoading(true);
-      const url = `http://localhost:4000/instructors`;
+      const url = `${API_CONFIG.BASE_URL}/instructors`;
       const response = await fetch(url);
 
       if (!response.ok) {
