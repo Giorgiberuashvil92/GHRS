@@ -11,6 +11,7 @@ import { useUserAccess } from "../hooks/useUserAccess";
 import PurchasePrompt from "../components/PurchasePrompt";
 import { useExercisesBySet } from "../hooks/useExercises";
 import { useSet } from "../hooks/useSet";
+import { useActivityTracker } from "../hooks/useAchievements";
 
 // ----- Types -----
 interface LocalizedString {
@@ -290,9 +291,11 @@ function PlayerContent() {
   const searchParams = useSearchParams();
   const { t } = useI18n();
   const { isAuthenticated } = useAuth();
+  const { recordActivity } = useActivityTracker();
   const [currentExercise, setCurrentExercise] = useState<BackendExercise | null>(null);
   const [completedExercises, setCompletedExercises] = useState<string[]>([]);
   const [videoProgress, setVideoProgress] = useState<number>(0);
+  const [exerciseStartTime, setExerciseStartTime] = useState<number | null>(null);
 
   // URL-დან პარამეტრების ამოღება
   const setId = searchParams.get('setId') || '';
@@ -314,9 +317,28 @@ function PlayerContent() {
     }
   }, [setId]);
 
+  // ვარჯიშის დაწყების დრო
+  useEffect(() => {
+    if (currentExercise && !exerciseStartTime) {
+      setExerciseStartTime(Date.now());
+    }
+  }, [currentExercise, exerciseStartTime]);
+
   // ვარჯიშის დასრულების ფუნქცია
-  const handleExerciseComplete = useCallback((exerciseId: string) => {
+  const handleExerciseComplete = useCallback(async (exerciseId: string) => {
     console.log('✅ Completing exercise:', exerciseId);
+    
+    // გამოვთვალოთ დახარჯული დრო
+    const timeSpent = exerciseStartTime ? Math.floor((Date.now() - exerciseStartTime) / 1000 / 60) : 0; // წუთებში
+    
+    // ჩავწეროთ აქტივობა
+    try {
+      await recordActivity('exercise', exerciseId, timeSpent);
+      console.log('📊 Activity recorded:', { exerciseId, timeSpent });
+    } catch (error) {
+      console.error('❌ Failed to record activity:', error);
+    }
+    
     setCompletedExercises(prev => {
       const newCompleted = [...prev];
       const index = newCompleted.indexOf(exerciseId);
@@ -330,7 +352,10 @@ function PlayerContent() {
       localStorage.setItem(`exercise_progress_${setId}`, JSON.stringify(newCompleted));
       return newCompleted;
     });
-  }, [setId]);
+
+    // Reset start time for next exercise
+    setExerciseStartTime(null);
+  }, [setId, recordActivity, exerciseStartTime]);
 
   // შემდეგ/წინა ვარჯიშზე გადასვლა
 
@@ -359,7 +384,25 @@ function PlayerContent() {
   // Function to change current exercise
   const handleExerciseChange = (exercise: BackendExercise) => {
     setCurrentExercise(exercise);
+    // Reset start time when changing exercise
+    setExerciseStartTime(null);
   };
+
+  // Check if set is completed and record set activity
+  useEffect(() => {
+    if (!exercises.length || !setId) return;
+    
+    const allExercisesCompleted = exercises.every(ex => completedExercises.includes(ex._id));
+    
+    if (allExercisesCompleted && exercises.length > 0) {
+      // Set completed - record set activity
+      recordActivity('set', setId).then(() => {
+        console.log('🎯 Set completed and recorded:', setId);
+      }).catch(error => {
+        console.error('❌ Failed to record set completion:', error);
+      });
+    }
+  }, [completedExercises, exercises, setId, recordActivity]);
 
   // ვიდეოს დასრულების ჰენდლერი
   const handleVideoComplete = useCallback(() => {

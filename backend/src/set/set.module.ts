@@ -5,11 +5,13 @@ import { memoryStorage } from 'multer';
 import { SetController } from './set.controller';
 import { SetService } from './set.service';
 import { Set, SetSchema } from '../schemas/set.schema';
+import { Category, CategorySchema } from '../schemas/category.schema';
 
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: Set.name, schema: SetSchema }
+      { name: Set.name, schema: SetSchema },
+      { name: Category.name, schema: CategorySchema }
     ]),
     MulterModule.register({
       storage: memoryStorage(),

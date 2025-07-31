@@ -291,7 +291,7 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
           </section>
 
           {/* Rating Section */}
-          <section className="md:max-w-[690px] px-5 pt-5 md:pb-[40px] pb-6 bg-[rgba(255,255,255,1)] rounded-[20px] mt-5">
+          <section className="w-full px-5 pt-5 md:pb-[40px] pb-6 bg-[rgba(255,255,255,1)] rounded-[20px] mt-5">
             <h2 className="md:text-2xl text-[18px] text-[rgba(61,51,74,1)] leading-[100%] tracking-[-1%] md:mb-[40px] mb-5">
               {t("article.rate_article")}
             </h2>
@@ -318,7 +318,7 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
           </section>
 
           {/* Comments Section */}
-          <section className="md:max-w-[690px] px-5 pt-5 md:pb-[40px] pb-6 bg-[rgba(255,255,255,1)] rounded-[20px] mt-5">
+          <section className="w-full px-5 pt-5 md:pb-[40px] pb-6 bg-[rgba(255,255,255,1)] rounded-[20px] mt-5">
             <h2 className="md:text-2xl text-[18px] text-[rgba(61,51,74,1)] leading-[100%] tracking-[-1%] md:mb-[40px] mb-5">
               {t("article.comments")}
             </h2>

@@ -205,8 +205,9 @@ export default function CategoriesPage({
               works={formattedSets}
               linkType="complex"
               title={t("common.complexes")}
+              seeAll={true}
               categoryData={categoryData?.category?._id}
-              fromMain={false} seeAll={false} scrollable={false}            />
+              fromMain={false} scrollable={false} />
           </div>
         )}
 

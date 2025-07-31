@@ -229,20 +229,11 @@ const ShoppingCard = () => {
                 <PayPalButton
                   amount={cart.reduce((sum, i) => sum + i.price, 0)}
                   currency="RUB"
-                  itemId={cart.map(item => item.id).join(',')} // Multiple items as comma-separated
-                  itemType={cart.length === 1 ? (cart[0].itemType || 'set') : 'mixed'} // Single item type or mixed for multiple
+                  itemId={cart.map(item => item.id).join(',')} 
+                  itemType={cart.length === 1 ? (cart[0].itemType || 'set') : 'mixed'}
                   onSuccess={handlePaymentSuccess}
                   onError={handlePaymentError}
                 />
-                
-                {/* Debug info */}
-                <div className="mt-4 p-4 bg-gray-100 rounded text-sm">
-                  <h4 className="font-bold">🔍 Debug Info:</h4>
-                  <p>Cart items: {cart.length}</p>
-                  <p>Item IDs: {cart.map(item => item.id).join(', ')}</p>
-                  <p>Item Types: {cart.map(item => item.itemType || 'undefined').join(', ')}</p>
-                  <p>Selected Type: {cart.length === 1 ? (cart[0].itemType || 'set') : 'mixed'}</p>
-                </div>
               </div>
             )}
           </div>
@@ -250,7 +241,6 @@ const ShoppingCard = () => {
       </div>
       <Works title={"Шейный отдел позвоночника"} customMargin={""} customBorderRadius={""} seeAll={false} scrollable={false} sets={sets} />
       <Footer />
-    </div>
     </>
   );
 };

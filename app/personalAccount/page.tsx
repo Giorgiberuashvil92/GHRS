@@ -15,9 +15,11 @@ import { useAuth } from "../context/AuthContext";
 import { useI18n } from "../context/I18nContext";
 import { FaRegCheckCircle, FaStar } from "react-icons/fa";
 import WorksSlider from "../components/WorksSlider";
-import { chapterSliderInfo } from "../chapter/page";
 import { users } from "../data/dummyUsers";
 import SubscriptionHistory from "../components/SubscriptionHistory";
+import { useAllSets } from "../hooks/useSets";
+import { useCategories } from "../hooks/useCategories";
+import { useActivityTracker } from "../hooks/useAchievements";
 
 const dummyData = {
   goals: {
@@ -57,8 +59,11 @@ const dummyData = {
 
 const PersonalAccountContent: React.FC = () => {
   const { isAuthenticated, user, isLoading } = useAuth();
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const router = useRouter();
+  const { sets } = useAllSets();
+  const { categories } = useCategories();
+  const { recordActivity } = useActivityTracker();
 
   const tabItems = [
     { label: t("personal_account.tabs.description"), href: "#description" },
@@ -74,6 +79,37 @@ const PersonalAccountContent: React.FC = () => {
       router.push("/auth/login");
     }
   }, [isLoading, isAuthenticated, router]);
+
+  // Test functions for achievements
+  const testExerciseCompletion = async () => {
+    try {
+      await recordActivity('exercise', 'test-exercise-1', 5);
+      alert('Exercise activity recorded! Check achievements.');
+    } catch (error) {
+      console.error('Failed to record exercise:', error);
+      alert('Failed to record exercise activity.');
+    }
+  };
+
+  const testSetCompletion = async () => {
+    try {
+      await recordActivity('set', 'test-set-1', 30);
+      alert('Set activity recorded! Check achievements.');
+    } catch (error) {
+      console.error('Failed to record set:', error);
+      alert('Failed to record set activity.');
+    }
+  };
+
+  const testCourseCompletion = async () => {
+    try {
+      await recordActivity('course', 'test-course-1', 120);
+      alert('Course activity recorded! Check achievements.');
+    } catch (error) {
+      console.error('Failed to record course:', error);
+      alert('Failed to record course activity.');
+    }
+  };
 
   if (isLoading) {
     return (
@@ -165,22 +201,85 @@ const PersonalAccountContent: React.FC = () => {
         {activeTab === 2 ? (
           <SubscriptionHistory />
         ) : activeTab === 1 ? (
-          <Achievements achievements={users[0].achievements} alwaysShowAll />
+          <div>
+            <Achievements alwaysShowAll />
+            
+            {/* Test buttons for achievements - Development only */}
+            {process.env.NODE_ENV === 'development' && (
+              <div className="p-4 md:px-10 md:mx-10 rounded-[20px] bg-yellow-50 border border-yellow-200 mt-6">
+                <h3 className="text-lg font-semibold text-yellow-800 mb-4">🧪 Test Achievements (Dev Only)</h3>
+                <div className="flex flex-wrap gap-3">
+                  <button
+                    onClick={testExerciseCompletion}
+                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
+                  >
+                    Test Exercise Completion
+                  </button>
+                  <button
+                    onClick={testSetCompletion}
+                    className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                  >
+                    Test Set Completion
+                  </button>
+                  <button
+                    onClick={testCourseCompletion}
+                    className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
+                  >
+                    Test Course Completion
+                  </button>
+                </div>
+                <p className="text-sm text-yellow-700 mt-2">
+                  Click these buttons to simulate activities and test achievements!
+                </p>
+              </div>
+            )}
+          </div>
         ) : (
           <>
             {renderTabContent()}
             <WorksSlider 
               title={t("personal_account.recommendations")}
-              works={chapterSliderInfo.map(item => ({
-                ...item,
-                categoryId: item.id
-              }))} 
+              works={sets?.map(set => {
+                const category = categories?.find(cat => cat._id === set.categoryId);
+                
+                const getCategoryName = () => {
+                  if (!category) return 'კატეგორია';
+                  if (locale === 'ka') return category.name.ka || category.name.ru || category.name.en;
+                  if (locale === 'ru') return category.name.ru || category.name.en;
+                  return category.name.en || category.name.ru;
+                };
+                
+                const getSetTitle = () => {
+                  if (locale === 'ka') return set.name.ru || set.name.en; // Use Russian as fallback for Georgian
+                  if (locale === 'ru') return set.name.ru || set.name.en;
+                  return set.name.en || set.name.ru;
+                };
+                
+                const getSetDescription = () => {
+                  if (locale === 'ka') return set.description.ru || set.description.en; // Use Russian as fallback for Georgian
+                  if (locale === 'ru') return set.description.ru || set.description.en;
+                  return set.description.en || set.description.ru;
+                };
+                
+                return {
+                  id: set._id,
+                  title: getSetTitle(),
+                  description: getSetDescription(),
+                  image: set.thumbnailImage || '',
+                  exerciseCount: set.totalExercises,
+                  categoryName: getCategoryName(),
+                  monthlyPrice: set.price?.monthly || 0,
+                  categoryId: set.categoryId,
+                  subcategoryId: set.subCategoryId
+                };
+              }) || []} 
+              linkType="complex"
               fromMain={false}
               seeAll={false}
               scrollable={true}
             />
             <Statistics statistics={users[0].statistics} />
-            <Achievements achievements={users[0].achievements} />
+            <Achievements />
           </>
         )}
       </div>

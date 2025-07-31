@@ -21,8 +21,8 @@ const AllComplex = () => {
   const [subcategories, setSubcategories] = useState([]);
   // const [visibleWorksCount, setVisibleWorksCount] = useState(1); // რამდენი Works გამოჩნდეს
 
-  const { categories, loading: categoriesLoading } = useCategories();
-  const { sets, loading: setsLoading } = useAllSets();
+  const { categories } = useCategories();
+  const { sets } = useAllSets();
 
   // Helper to get localized text
   const getLocalizedText = (
@@ -66,7 +66,6 @@ const AllComplex = () => {
         const response = await fetch(`${API_CONFIG.BASE_URL}/categories/subcategories/all`);
         const data = await response.json();
         setSubcategories(data);
-        console.log(data, "subcategories");
       } catch (error) {
         console.error("Error fetching subcategories:", error);
       }
@@ -215,6 +214,7 @@ const AllComplex = () => {
 
       {/* Category bar with real data */}
 
+      {/* Popular Complexes - All sets */}
       <Works
         title={
           pageTexts.sections.popularComplexes[
@@ -230,21 +230,28 @@ const AllComplex = () => {
         border={1} 
         borderColor="#D4BAFC"
       />
-      <Works
-        title={
-          pageTexts.sections.popularComplexes[
-            locale as keyof typeof pageTexts.sections.popularComplexes
-          ] || pageTexts.sections.popularComplexes.ru
-        }
-        sets={sets.slice(0, 8)}
-        fromMain={true}
-        customMargin={""}
-        customBorderRadius={""}
-        seeAll={false}
-        scrollable={false}
-        border={1} 
-        borderColor="#D4BAFC"
-      />
+
+      {/* Dynamic Works components for each category */}
+      {categories.map((category) => {
+        const categorySets = sets.filter(set => set.categoryId === category._id);
+        // Only render if category has sets
+        if (categorySets.length === 0) return null;
+        
+        return (
+          <Works
+            key={category._id}
+            title={getLocalizedText(category.name)}
+            sets={categorySets}
+            fromMain={true}
+            customMargin={""}
+            customBorderRadius={""}
+            seeAll={false}
+            scrollable={false}
+            border={1} 
+            borderColor="#D4BAFC"
+          />
+        );
+      })}
       {/* Works components with real data */}
        {/* <Works
         title={pageTexts.sections.popularSections[locale as keyof typeof pageTexts.sections.popularSections] || pageTexts.sections.popularSections.ru}

@@ -1,5 +1,7 @@
 {
-  "grs_media": "GRS МЕДИА",
+  "grs_media": "GRS медиа",
+  "loading": "Загружается...",
+  "retry": "Повторить попытку",
   "navigation": {
     "home": "Главная",
     "about": "О нас",
@@ -66,7 +68,7 @@
     "title": "Комплексы и сеты"
   },
   "blog": {
-    "see_all": "Все блоги",
+    "see_all": "Все статьи",
     "articles_count": "{{count}} статей",
     "articles_count_one": "1 статья",
     "articles_count_other": "{{count}} статей",

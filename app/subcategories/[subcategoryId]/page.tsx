@@ -152,7 +152,7 @@ export default function SubcategoryPage({
           withBanner={false}
           withSlider={true}
           layoutType="default"
-          title={getLocalizedText(selectedSubcategory?.name as { ka: string; en: string; ru: string }, locale)}
+          title={t("common.grs_media")}
         />
         <Professional />
       </div>

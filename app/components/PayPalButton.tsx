@@ -50,8 +50,7 @@ export default function PayPalButton({ amount, currency = 'RUB', itemId, itemTyp
         })
       });
 
-      console.log('PayPal order created:', response);
-      
+
       if (!response.id) {
         throw new Error('PayPal order ID is missing');
       }
@@ -66,14 +65,10 @@ export default function PayPalButton({ amount, currency = 'RUB', itemId, itemTyp
 
   const handleApprove = async (data: { orderID: string }) => {
     try {
-      console.log('PayPal payment approved:', data);
-      
       const response = await apiRequest<PaymentResponse>(API_CONFIG.ENDPOINTS.PAYMENTS.CAPTURE_PAYMENT, {
         method: 'POST',
         body: JSON.stringify({ orderId: data.orderID })
       });
-      
-      console.log('PayPal payment captured:', response);
       
       onSuccess(response);
     } catch (error) {
@@ -83,7 +78,6 @@ export default function PayPalButton({ amount, currency = 'RUB', itemId, itemTyp
   };
 
   const handleCancel = () => {
-    console.log('PayPal payment cancelled');
   };
 
   const handleError = (error: unknown) => {

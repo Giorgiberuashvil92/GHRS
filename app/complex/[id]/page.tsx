@@ -78,15 +78,7 @@ const Complex = ({ params }: ComplexPageProps) => {
   const progressInfo = useExerciseProgress(setId, exercises);
   
   // Debug info
-  console.log('🔍 Complex page debug:', { 
-    setId, 
-    hasAccess, 
-    accessLoading, 
-    accessError,
-    isAuthenticated,
-    user: user?.email,
-    shouldShowLock: !hasAccess 
-  });
+
 
   // Helper ფუნქცია - უნდა ჩანდეს play ღილაკი თუ არა
   const shouldShowPlayButton = (difficulty: string) => {
@@ -102,7 +94,6 @@ const Complex = ({ params }: ComplexPageProps) => {
     // 1. User-ს არ აქვს access, ან
     // 2. Specific difficulty-ს 0 ვარჯიშო აქვს
     const result = !hasAccess || exerciseCount === 0;
-    console.log('🔒 shouldShowLockIcon:', { difficulty, hasAccess, exerciseCount, result });
     return result;
   };
 
@@ -339,11 +330,7 @@ const Complex = ({ params }: ComplexPageProps) => {
                   </h3>
                   <span className="text-[rgba(132,111,160,1)] md:text-[14px] text-xs leading-[90%] tracking-[0%] uppercase">
                     {exercisesByDifficulty?.easy || 0} упражнений
-                    {progressInfo.completedByDifficulty.easy > 0 && (
-                      <span className="ml-2 text-green-400">
-                        ✅ {progressInfo.completedByDifficulty.easy} просмотрено
-                      </span>
-                    )}
+                    
                   </span>
                 </div>
                 {shouldShowPlayButton('easy') && (
@@ -505,11 +492,7 @@ const Complex = ({ params }: ComplexPageProps) => {
                   </h3>
                   <span className="text-[rgba(132,111,160,1)] md:text-[14px] text-xs leading-[90%] tracking-[0%] uppercase">
                     {exercisesByDifficulty?.medium || 0} упражнений
-                    {progressInfo.completedByDifficulty.medium > 0 && (
-                      <span className="ml-2 text-green-400">
-                        ✅ {progressInfo.completedByDifficulty.medium} просмотрено
-                      </span>
-                    )}
+                   
                   </span>
                   {shouldShowLockIcon('medium') && (
                     <CiLock
@@ -550,11 +533,7 @@ const Complex = ({ params }: ComplexPageProps) => {
                   </h3>
                   <span className="text-[rgba(132,111,160,1)] md:text-[14px] text-xs leading-[90%] tracking-[0%] uppercase">
                     {exercisesByDifficulty?.hard || 0} упражнений
-                    {progressInfo.completedByDifficulty.hard > 0 && (
-                      <span className="ml-2 text-green-400">
-                        ✅ {progressInfo.completedByDifficulty.hard} просмотрено
-                      </span>
-                    )}
+                    
                   </span>
                   {shouldShowLockIcon('hard') && (
                     <CiLock

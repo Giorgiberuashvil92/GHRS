@@ -1,5 +1,7 @@
 {
-  "grs_media": "GRS MEDIA",
+  "grs_media": "GRS Media",
+  "loading": "Loading...",
+  "retry": "Retry",
   "navigation": {
     "home": "Home",
     "about": "About Us",

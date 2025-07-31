@@ -1,5 +1,7 @@
 {
   "grs_media": "GRS მედია",
+  "loading": "იტვირთება...",
+  "retry": "ხელახლა ცდა",
   "navigation": {
     "home": "მთავარი",
     "about": "ჩვენ შესახებ",

@@ -31,6 +31,60 @@ interface TeacherSliderProps {
 
 const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
   
+  // Function to clean and format HTML content
+  const cleanHtmlContent = (htmlContent: string) => {
+    let headingIndex = 1;
+    
+    return htmlContent
+      // First, let's handle the outer container div with monospace styling
+      .replace(/<div style="color: #7b88a1; font-size: 12px; font-family: Menlo, Monaco, 'Courier New', monospace;">/g, '<div class="text-gray-600">')
+      
+      // Replace specific colored spans - these seem to be for syntax highlighting
+      .replace(/<span style="color: #81a1c1;">/g, '<strong class="text-blue-600">')
+      .replace(/<span style="color: #7b88a1;">/g, '<span class="text-gray-700">')
+      
+      // Clean up any remaining style attributes
+      .replace(/style="[^"]*"/g, '')
+      
+      // Handle HTML tag representations (these appear to be showing HTML code)
+      .replace(/&lt;/g, '<')
+      .replace(/&gt;/g, '>')
+      
+      // Add proper spacing to elements
+      .replace(/<div>/g, '<div class="mb-3">')
+      // Add IDs to h3 headings for table of contents navigation
+      .replace(/<h3>/g, () => `<h3 id="heading-${headingIndex++}" class="text-xl font-bold text-[#3D334A] mt-6 mb-3">`)
+      .replace(/<p>/g, '<p class="mb-4 leading-relaxed">')
+      .replace(/<ul>/g, '<ul class="list-disc ml-6 mb-4 space-y-2">')
+      .replace(/<li>/g, '<li class="text-gray-700">')
+      
+      // Handle line breaks
+      .replace(/<br>/g, '<br class="mb-2" />')
+      
+      // Close any unclosed tags properly
+      .replace(/<\/span>/g, '</span>')
+      .replace(/<\/strong>/g, '</strong>');
+  };
+
+  // Function to truncate HTML content for preview
+  const truncateHtmlContent = (htmlContent: string, maxLength: number = 200) => {
+    // First clean the HTML
+    const cleanedContent = cleanHtmlContent(htmlContent);
+    
+    // Remove HTML tags to get plain text for length calculation
+    const textContent = cleanedContent.replace(/<[^>]*>/g, '');
+    
+    // If content is short enough, return cleaned HTML
+    if (textContent.length <= maxLength) {
+      return cleanedContent;
+    }
+    
+    // Truncate plain text and add ellipsis
+    const truncatedText = textContent.substring(0, maxLength).trim() + '...';
+    
+    // Return as simple paragraph for preview
+    return `<p class="mb-4 leading-relaxed">${truncatedText}</p>`;
+  };
 
   const allTeachers = teachers.length > 0 ? teachers : [];
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -97,10 +151,11 @@ const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
             </div>
 
             <div
-              className="space-y-3 text-[16px] text-[#846FA0] leading-relaxed max-w-[750px]"
+              className="space-y-3 text-[16px] text-[#846FA0] leading-relaxed max-w-[750px] prose prose-sm max-w-none"
               dangerouslySetInnerHTML={{
-                __html:
-                  teacher.htmlContent.ru || teacher.htmlContent.en || "",
+                __html: truncateHtmlContent(
+                  teacher.htmlContent.ru || teacher.htmlContent.en || ""
+                ),
               }}
             />
 

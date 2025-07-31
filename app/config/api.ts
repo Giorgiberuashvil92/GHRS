@@ -89,6 +89,21 @@ interface CourseData {
 //   );
 // }
 
+// Protected endpoints that require JWT token
+const PROTECTED_ENDPOINTS = [
+  '/users/me',
+  '/purchases/my-courses',
+  '/purchases/check-access',
+  '/purchases/check-course-access',
+  '/payment/',
+];
+
+function requiresAuth(endpoint: string): boolean {
+  return PROTECTED_ENDPOINTS.some(protectedEndpoint => 
+    endpoint.startsWith(protectedEndpoint)
+  );
+}
+
 // API Configuration
 export const API_CONFIG = {
   // URL კონფიგურაცია გარემოს მიხედვით
@@ -176,17 +191,45 @@ export async function apiRequest<T>(
     ...API_CONFIG.HEADERS,
   };
 
-  // Add JWT token for authenticated endpoints
-  if (typeof window !== "undefined") {
+  // Add JWT token only for protected endpoints
+  if (typeof window !== "undefined" && requiresAuth(endpoint)) {
     const token = localStorage.getItem("token");
+    console.log('🔐 localStorage token check:', {
+      endpoint,
+      requiresAuth: true,
+      windowUndefined: typeof window === "undefined",
+      tokenExists: !!token,
+      tokenLength: token?.length,
+      tokenStart: token?.substring(0, 50)
+    });
+    
     if (token) {
       headers.Authorization = `Bearer ${token}`;
+      console.log('🔐 Authorization header set:', headers.Authorization.substring(0, 50) + '...');
+    } else {
+      console.log('🔐 No token found in localStorage');
     }
+  } else if (typeof window !== "undefined") {
+    console.log('🔐 Public endpoint - no auth required:', endpoint);
+  } else {
+    console.log('🔐 Window is undefined - SSR mode');
   }
 
+  // Debug logs
+  console.log('🌐 API Request:', {
+    url,
+    method: options.method || 'GET',
+    hasToken: !!headers.Authorization,
+    tokenPreview: headers.Authorization ? headers.Authorization.substring(0, 30) + '...' : 'No token',
+    headers
+  });
+
   const config: RequestInit = {
-    headers,
     ...options,
+    headers: {
+      ...headers,
+      ...(options.headers as Record<string, string> || {}),
+    },
   };
 
   const controller = new AbortController();
@@ -200,6 +243,13 @@ export async function apiRequest<T>(
 
     clearTimeout(timeoutId);
 
+    console.log('📡 API Response:', {
+      url,
+      status: response.status,
+      statusText: response.statusText,
+      ok: response.ok
+    });
+
     if (!response.ok) {
       throw new Error(`HTTP ${response.status}: ${response.statusText}`);
     }
@@ -207,6 +257,7 @@ export async function apiRequest<T>(
     return await response.json();
   } catch (error) {
     clearTimeout(timeoutId);
+    console.error('❌ API Error:', { url, error });
     throw error;
   }
 }

@@ -23,9 +23,10 @@ interface Category {
 interface CategoryFilterProps {
   onCategoryChange: (categoryId: string | null) => void;
   onSubcategoryChange: (subcategoryId: string | null) => void;
+  onSortChange?: (sortBy: string) => void;
 }
 
-export default function CategoryFilter({ onCategoryChange, onSubcategoryChange }: CategoryFilterProps) {
+export default function CategoryFilter({ onCategoryChange, onSubcategoryChange, onSortChange }: CategoryFilterProps) {
   const [allCategories, setAllCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
@@ -135,11 +136,16 @@ export default function CategoryFilter({ onCategoryChange, onSubcategoryChange }
         <span className="text-[#a29bb6]">Сортировать:</span>
         <select
           value={sort}
-          onChange={(e) => setSort(e.target.value)}
+          onChange={(e) => {
+            setSort(e.target.value);
+            onSortChange?.(e.target.value);
+          }}
           className="bg-[#f7f4ff] border-none text-[19px] outline-none text-[#1e1b29] cursor-pointer px-3 py-1 rounded-md"
         >
           <option>По популярности</option>
           <option>По новизне</option>
+          <option>По цене (возрастание)</option>
+          <option>По цене (убывание)</option>
         </select>
       </div>
     </div>

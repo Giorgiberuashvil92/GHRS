@@ -5,13 +5,13 @@ export type ArticleDocument = Article & Document;
 
 @Schema()
 export class LocalizedString {
-  @Prop({ required: true })
+  @Prop({ required: false, default: '' })
   ka: string;
 
-  @Prop({ required: false, default: '' })
+  @Prop({ required: true })
   en: string;
 
-  @Prop({ required: false, default: '' })
+  @Prop({ required: true })
   ru: string;
 }
 

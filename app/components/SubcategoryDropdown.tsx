@@ -51,7 +51,6 @@ const SubcategoryDropdown = ({
   }, [categoryId]);
 
   if (!isOpen || subcategories.length === 0) return null;
-  console.log(subcategories);
 
   // ვიღებთ ენის პარამეტრს
   const getLocale = () => {

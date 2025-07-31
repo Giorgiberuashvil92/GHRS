@@ -51,7 +51,9 @@
     "achievements": {
       "title": "Achievements",
       "hide": "Hide achievements",
-      "share": "Share statistics and achievements"
+      "share": "Share statistics and achievements",
+      "no_achievements": "You don't have any achievements yet",
+      "start_exercising": "Start exercising to earn achievements"
     }
   }
 }

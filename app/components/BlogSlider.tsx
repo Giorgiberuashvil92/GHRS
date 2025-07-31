@@ -6,6 +6,7 @@ import { IoIosShareAlt } from "react-icons/io";
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useI18n } from "../context/I18nContext";
+import router from "next/router";
 // import { useCategories } from "../hooks/useCategories";
 
 interface Blog {
@@ -79,20 +80,16 @@ const BlogSlider: React.FC<BlogSliderProps> = ({
   const featuredBlog = blogs[0];
   const otherBlogs = blogs.slice(1);
   const { t } = useI18n();
-  
-  console.log("BlogSlider - featuredBlog:", featuredBlog);
-  console.log("BlogSlider - featuredBlog._id:", featuredBlog?._id);
-  console.log("BlogSlider - blogs structure:", blogs.map(b => ({ _id: b._id, title: b.title })));
 
   const getCurrentBlogs = () => {
     const startIndex = currentPage * blogsPerPage;
     const endIndex = startIndex + blogsPerPage;
     return otherBlogs.slice(startIndex, endIndex);
   };
+  console.log(blogs)
 
   // Helper function to get article link
   const getArticleLink = (blog: Blog) => {
-    // Check if blog exists
     if (!blog || !blog._id) {
       return '#';
     }
@@ -210,8 +207,8 @@ const BlogSlider: React.FC<BlogSliderProps> = ({
           </div>
         )}
       </div>
-      <span className="text-[#D4BAFC] leading-[90%] text-[15px] md:text-[24px] md:px-5 px-0 cursor-pointer">
-        {t("blog.see_all")} {t("navigation.rightArrow")}
+      <span className="text-[#D4BAFC] leading-[90%] text-[15px] md:text-[24px] md:px-5 px-0 cursor-pointer" onClick={() => router.push("/blog")}>
+        {t("blog.see_all")} {blogs.length} {t("navigation.rightArrow")}
       </span>
     </div>
   );
