@@ -11,7 +11,7 @@ import { Footer } from "../components/Footer";
 const About = () => {
   return (
     <div>
-      <Header variant="default" />
+      <Header variant="about" />
       <div className="mt-40">
         <Rehabilitation />
         <Category />
