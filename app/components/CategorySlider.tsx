@@ -73,7 +73,7 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
       }
     }, []);
 
-    
+
 
 
 
@@ -172,36 +172,28 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
             return (
               <div
                 key={category._id}
-                className="flex-shrink-0 flex flex-col relative z-10 overflow-visible "
+                className="flex-shrink-0  flex flex-col relative z-10 overflow-visible "
               >
                 <Link
                   href={`/categories/${category._id}`}
                   onClick={(e) => {
-                   
+
                     handleCategoryClick(category._id, categoryTitle, e);
                   }}
                   className="group cursor-pointer transform transition-transform duration-300"
                 >
                   <div
-                    className="bg-conic rounded-[14px] w-[330px] h-[240px] md:w-[550px] md:h-[330px] p-2 "
+                    className="bg-conic rounded-[14px] w-[330px] h-[240px] md:w-[550px] md:h-[330px] p-2 transition-all duration-300 ease-in-out transform hover:scale-[1.01] my-2 mx-1 hover:shadow-[rgba(115,_78,_164,_0.3)_0px_20px_40px]"
                     style={{ backgroundImage: `url(${backgroundImageUrl})` }}
                   >
                     <div
                       className="h-[80%] bg-cover bg-center rounded-xl"
                       style={{ backgroundImage: `url(${categoryImageUrl})` }}
                     ></div>
-                    {/* <Image
-                      src={categoryImageUrl}
-                      width={232}
-                      height={82}
-                      alt={categoryTitle}
-                      className="mx-auto rounded-[14px] bg-cover md:w-[443px] md:h-[163px]"
-                    /> */}
 
-                    {/* Bottom Text */}
                     <div className="flex items-center justify-between bg-white my-2 px-4 rounded-2xl text-black group-hover:bg-gray-50 transition-colors duration-300">
                       <h4
-                        className="my-1 md:my-2 text-[22px] bg-conic md:text-[28px] font-bold overflow-hidden whitespace-nowrap tracking-[-3%] text-ellipsis max-w-[390px]"
+                        className="my-1 md:my-2 text-[22px] md:text-[28px] font-bold overflow-hidden whitespace-nowrap tracking-[-3%] text-ellipsis max-w-[390px]"
                         style={{
                           backgroundImage: `url(${backgroundImageUrl})`,
                           WebkitBackgroundClip: "text",
@@ -227,9 +219,8 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
                           viewBox="0 0 24 24"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
-                          className={`transition-transform duration-200 ${
-                            isDropdownOpen(category._id) ? "rotate-90" : ""
-                          }`}
+                          className={`transition-transform duration-200 ${isDropdownOpen(category._id) ? "rotate-90" : ""
+                            }`}
                         >
                           <path
                             d="M9 18L15 12L9 6"
@@ -242,6 +233,7 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
                       </div>
                     </div>
                   </div>
+
                 </Link>
                 <SubcategoryDropdown
                   // subcategories={[]} // subcategories არ არის populated useCategories hook-ში

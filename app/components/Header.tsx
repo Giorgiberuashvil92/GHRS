@@ -785,7 +785,7 @@ const Header: React.FC<HeaderProps> = ({
                     Изучить подробнее
                   </div>
                 </Link>
-                <div className="bg-[url('/assets/images/categorySliderBgs/bg1.jpg')] bg-cover bg-center p-4 rounded-[20px] w-[176px] h-[166px] ">
+                <div className="bg-[url('/assets/images/categorySliderBgs/bg4.jpg')] bg-cover bg-center p-4 rounded-[20px] w-[176px] h-[166px] ">
                   В каталог
                 </div>
               </div>
@@ -839,7 +839,7 @@ const Header: React.FC<HeaderProps> = ({
 
                           {variant == "default" && (
                             <Link href={"/chapter"}>
-                              <div className="bg-[url('/assets/images/marketPlace.png')] hover:scale-105 duration-700 bg-cover p-5 -mt-8">
+                              <div className="bg-[url('/assets/images/marketPlace.png')] hover:scale-105 duration-700 bg-cover bg-center p-5 -mt-8">
                                 <h3 className="text-[24px]">В каталог</h3>
                               </div>
                             </Link>

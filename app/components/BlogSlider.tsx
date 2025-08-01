@@ -113,7 +113,7 @@ const BlogSlider: React.FC<BlogSliderProps> = ({
         {featuredBlog && isDesktop && (
           <Link href={getArticleLink(featuredBlog)}>
             <div className="bg-white md:p-2 md:pb-5 md:h-[518px] w-[280px] md:w-auto flex-shrink-0 rounded-[20px] flex-col justify-between snap-center">
-              <div className="relative min-w-[300px] max-w-[690px]">
+              <div className="relative min-w-[300px] max-w-[690px] ">
                 <Image
                   src={featuredBlog.featuredImages?.[0] || featuredBlog.imageUrl || ''}
                   width={694}

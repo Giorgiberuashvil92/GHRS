@@ -323,7 +323,7 @@ const Complex = ({ params }: ComplexPageProps) => {
             </div>
             <div className="order-1 md:order-3 flex flex-col md:gap-4 gap-5">
               {/* Beginner Level */}
-              <div className="relative bg-[url('/assets/images/blog.png')] bg-cover bg-center bg-no-repeat p-5 rounded-[10px] flex justify-between items-center">
+              <div className="relative bg-[url('/assets/images/categorySliderBgs/bg2.jpg')] bg-cover bg-center  bg-no-repeat p-5 rounded-[10px] flex justify-between items-center">
                 <div className="flex md:flex-row md:gap-[40px] flex-col md:items-center">
                   <h3 className="text-[rgba(255,255,255,1))] md:text-2xl text-[18px] leading-[120%] tracking-[-3%] uppercase">
                     Начальный уровень
