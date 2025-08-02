@@ -183,7 +183,7 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
                   className="group cursor-pointer transform transition-transform duration-300"
                 >
                   <div
-                    className="bg-conic rounded-[14px] w-[330px] h-[240px] md:w-[550px] md:h-[330px] p-2 transition-all duration-300 ease-in-out transform hover:scale-[1.01] my-2 mx-1 hover:shadow-[rgba(115,_78,_164,_0.3)_0px_20px_40px]"
+                    className="bg-conic rounded-[14px] w-[330px] h-[240px] md:w-[550px] md:h-[330px] hover:shadow-lg transition-all p-2 duration-300 ease-in-out transform hover:scale-[1.01] my-2 mx-1"
                     style={{ backgroundImage: `url(${backgroundImageUrl})` }}
                   >
                     <div
@@ -206,7 +206,7 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
                         {categoryTitle}
                       </h4>
                       <div
-                        className="bg-[#E9DFF6] w-6 h-6 flex items-center justify-center rounded group-hover:bg-[#D4BAFC] transition-colors cursor-pointer relative z-20 dropdown-arrow"
+                        className="bg-[#E9DFF6] w-8 h-8 flex items-center justify-center rounded group-hover:bg-[#D4BAFC] transition-colors cursor-pointer relative z-20 dropdown-arrow"
                         onClick={(e) => {
                           if (hasSubcategories) {
                             handleDropdownToggle(category._id, e);

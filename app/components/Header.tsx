@@ -904,11 +904,8 @@ const Header: React.FC<HeaderProps> = ({
                     " bottom-0 top-[360px]"
                     } ${currentSlide === 1 &&
                     variant == "rehabilitation" &&
-                    " bottom-0 top-[450px]"
-                    }  ${currentSlide === 1 &&
-                    variant == "rehabilitation" &&
-                    " bottom-0 top-[450px]"
-                    }   `}
+                    " bottom-0 top-[360px]"
+                    }  `}
                 >
                   <div
                     onClick={handleLeftArrowClick}

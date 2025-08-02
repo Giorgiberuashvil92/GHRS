@@ -80,7 +80,7 @@ const SubcategoryDropdown = ({
   const locale = getLocale();
 
   return (
-    <div className="sticky top-[10px] left-[2px] z-[99999] bg-white border border-[#E9DFF6] rounded-[20px] shadow-lg dropdown-content animate-in fade-in-0 zoom-in-95 duration-200 mt-2 w-[240px] md:w-[455px]">
+    <div className="sticky top-[10px] left-[2px] z-[99999]  bg-white border border-[#E9DFF6] rounded-[20px] shadow-lg dropdown-content animate-in fade-in-0 zoom-in-95 duration-200 mt-2 w-[240px] md:w-full">
       {subcategories.map((subcategory: { _id: React.Key | null | undefined; name: { ka: string; en: string; ru: string; } | undefined; }, index: number) => (
         <button
           key={subcategory._id}
