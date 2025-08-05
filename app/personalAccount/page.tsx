@@ -205,7 +205,7 @@ const PersonalAccountContent: React.FC = () => {
             <Achievements alwaysShowAll />
             
             {/* Test buttons for achievements - Development only */}
-            {process.env.NODE_ENV === 'development' && (
+            {/* {process.env.NODE_ENV === 'development' && (
               <div className="p-4 md:px-10 md:mx-10 rounded-[20px] bg-yellow-50 border border-yellow-200 mt-6">
                 <h3 className="text-lg font-semibold text-yellow-800 mb-4">🧪 Test Achievements (Dev Only)</h3>
                 <div className="flex flex-wrap gap-3">
@@ -232,7 +232,7 @@ const PersonalAccountContent: React.FC = () => {
                   Click these buttons to simulate activities and test achievements!
                 </p>
               </div>
-            )}
+            )} */}
           </div>
         ) : (
           <>

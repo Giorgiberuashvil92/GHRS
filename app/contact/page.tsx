@@ -5,6 +5,7 @@ import { defaultMenuItems } from "../components/Header";
 import { FaPhoneAlt } from "react-icons/fa";
 import { CiMail } from "react-icons/ci";
 import Image from "next/image";
+import { Footer } from "../components/Footer";
 
 const ClockIcon = () => (
   <svg
@@ -132,6 +133,7 @@ const Contact = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

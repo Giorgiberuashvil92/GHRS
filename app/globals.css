@@ -32,8 +32,18 @@
 
 body {
   background: white;
-  color: white;
-  font-family: "Bowler";
+  color: white;  /* Main text color instead of white */
+  font-family: "Bowler", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Ensure Bowler font is applied to all elements */
+*, *::before, *::after {
+  font-family: inherit;
+}
+
+/* Bowler font utility class */
+.font-bowler {
+  font-family: "Bowler", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 }
 
 /* ვარიანტები */

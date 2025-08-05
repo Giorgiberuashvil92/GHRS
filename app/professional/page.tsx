@@ -203,7 +203,7 @@ const Professional = () => {
 
   return (
     <div>
-      <Header />
+      <Header  variant="professional" />
       <div className="mt-52 md:mt-40 md:px-5">
         <div className="flex flex-col md:flex-row justify-center gap-5 md:gap-0 md:justify-between">
           <div className="md:w-[500px] w-[359px] relative bg-[url('/assets/images/bluebg.jpg')] bg-cover h-[288px] rounded-[20px]">

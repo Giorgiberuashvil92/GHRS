@@ -21,10 +21,12 @@ const VideoNotification = ({ variant }: VideoNotificationProps) => {
           : "Video Exercises"}
       </h2>
       <div className="flex flex-col md:flex-row gap-4 md:gap-5 w-full items-center md:justify-between mx-auto">
-        <div className="md:p-[30px] p-4 md:w-[456px] md:h-[505px] md:rounded-[40px] w-[359px] h-[397px] rounded-3xl bg-[rgba(212,186,252,1)]">
+        <div className="md:p-[30px] p-4 md:w-[456px] md:h-[505px] md:rounded-[40px] w-[359px] h-[397px] rounded-3xl"
+        style={{ backgroundImage: "url('/assets/images/background-reh.png')" }}>
           <h3 className="md:pb-[34px] pb-8 md:text-[40px] text-4xl text-[rgba(255,255,255,1)] tracking-[-3%] leading-[120%]">
             {typeof t("video_notification.exercise_complexes.title") === "string"
               ? t("video_notification.exercise_complexes.title")
+              
               : "Exercise Complexes"}
           </h3>
           <p className=" md:text-[18px] font-[Pt] font-medium text-[14px] text-[rgba(255,255,255,1)] tracking-[-3%]  leading-[120%]">
@@ -33,7 +35,7 @@ const VideoNotification = ({ variant }: VideoNotificationProps) => {
               : ""}
           </p>
         </div>
-        <div className="relative md:p-[30px] p-4 md:w-[456px] md:h-[505px] md:rounded-[40px] w-[359px] h-[397px] rounded-3xl bg-[rgba(212,186,252,1)]">
+        <div className="relative md:p-[30px] p-4 md:w-[456px] md:h-[505px] md:rounded-[40px] w-[359px] h-[397px] rounded-3xl" style={{ backgroundImage: "url('/assets/images/background-reh.png')" }}>
           <h3 className="md:pb-[34px] pb-8 md:text-[40px] text-4xl text-[rgba(255,255,255,1)] tracking-[-3%] leading-[120%]">
             {typeof t("video_notification.for_children.title") === "string"
               ? t("video_notification.for_children.title")
@@ -58,7 +60,7 @@ const VideoNotification = ({ variant }: VideoNotificationProps) => {
           </div>
         </div>
 
-        <div className=" relative md:p-[30px] p-4 md:w-[456px] md:h-[505px] md:rounded-[40px] w-[359px] h-[397px] rounded-3xl bg-[rgba(212,186,252,1)]">
+        <div className=" relative md:p-[30px] p-4 md:w-[456px] md:h-[505px] md:rounded-[40px] w-[359px] h-[397px] rounded-3xl" style={{ backgroundImage: "url('/assets/images/background-reh.png')" }}>
           <h3 className=" md:pb-[34px] pb-8 md:text-[40px] text-4xl text-[rgba(255,255,255,1)] tracking-[-3%] leading-[120%]">
             {typeof t("video_notification.articles.title") === "string"
               ? t("video_notification.articles.title")

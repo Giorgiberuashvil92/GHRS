@@ -103,6 +103,22 @@ const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
 
   const teacher = allTeachers[currentIndex];
 
+  // Return early if no teachers available
+  if (!teacher) {
+    return (
+      <div className="w-full px-4 md:px-6 md:mx-5 py-12 bg-[#F9F7FE] rounded-[30px] overflow-hidden">
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-[32px] md:text-[40px] text-[#3D334A] font-bold">
+            НАШИ ПРЕПОДАВАТЕЛИ
+          </h2>
+        </div>
+        <div className="text-center py-10">
+          <p className="text-gray-500">Преподаватели загружаются...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="w-full px-4 md:px-6 md:mx-5 py-12 bg-[#F9F7FE] rounded-[30px] overflow-hidden">
       <div className="flex justify-between items-center mb-6">

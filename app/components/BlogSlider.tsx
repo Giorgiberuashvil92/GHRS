@@ -112,8 +112,8 @@ const BlogSlider: React.FC<BlogSliderProps> = ({
         {/* Featured Blog */}
         {featuredBlog && isDesktop && (
           <Link href={getArticleLink(featuredBlog)}>
-            <div className="bg-white md:p-2 md:pb-5 md:h-[518px] w-[280px] md:w-auto flex-shrink-0 rounded-[20px] flex-col justify-between snap-center">
-              <div className="relative min-w-[300px] max-w-[690px]">
+            <div className="bg-white md:p-2 md:pb-5 hover:shadow-lg duration-300 transition-shadow md:h-[518px] w-[280px] md:w-auto flex-shrink-0 rounded-[20px] flex-col justify-between snap-center">
+              <div className="relative min-w-[300px] max-w-[690px] ">
                 <Image
                   src={featuredBlog.featuredImages?.[0] || featuredBlog.imageUrl || ''}
                   width={694}
@@ -151,7 +151,7 @@ const BlogSlider: React.FC<BlogSliderProps> = ({
             <div className="grid grid-cols-2 grid-rows-2 gap-5">
               {getCurrentBlogs().map((blog) => (
                 <Link key={blog._id} href={getArticleLink(blog)}>
-                  <div className="min-w-[200px] max-w-full md:h-[249px] p-5 bg-white flex flex-col justify-between rounded-[20px]">
+                  <div className="min-w-[200px] hover:shadow-lg duratio-300 transition-shadow max-w-full md:h-[249px] p-5 bg-white flex flex-col justify-between rounded-[20px]">
                     <p className="text-[#3D334A] text-[18px] leading-[120%] line-clamp-2 font-bold md:text-[24px]">
                       {blog.title[language]}
                     </p>

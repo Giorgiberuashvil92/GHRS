@@ -134,8 +134,8 @@ const Professional = ({ withBanner, title, bgColor, withProfText }: { withBanner
           <hr className="md:mt-10 mt-5 bg-[#D5D1DB] text-[#D5D1DB]" />
           </div>
         )}
-        <div style={{backgroundColor: bgColor}} className="bg-[#F9F7FE] mt-4 md:mt-[50px] md:mb-[45px] rounded-2xl">
-          <div className="flex items-center justify-between md:mb-[10px]">
+        <div style={{backgroundColor: bgColor}} className="bg-red-500 w-full mt-4 md:mt-[50px] md:mb-[45px] rounded-2xl">
+          <div className="flex items-center justify-between md:mb-[10px] ">
             <h1 className="text-[20px] md:text-[40px] md:tracking-[-3%] text-[#3D334A] leading-[120%] mb-2.5 md:mb-5">
               {typeof t("professional.courses.title") === "string"
                 ? t("professional.courses.title")

@@ -53,7 +53,7 @@ const WorksSlider: React.FC<WorksSliderProps> = ({
   };
 
   return (
-    <div className="md:px-5 px-2 py-2 bg-[#F9F7FE] md:mx-5 md:rounded-[20px]">
+    <div className="md:px-5 px-2 py-2 bg-[#F9F7FE] md:mx-5 md:rounded-[20px] ">
       <div className="flex items-center justify-between">
         <div className="flex flex-col items-start">
         <h2 className="text-[20px] md:py-4 md:text-[40px] text-[#3D334A] mb-2.5 md:mb-5">
@@ -75,7 +75,7 @@ const WorksSlider: React.FC<WorksSliderProps> = ({
 
       <div
         id="works-slider"
-        className="overflow-x-auto overflow-y-hidden scrollbar-hide mb-10 py-4"
+        className="overflow-x-hidden overflow-y-hidden mb-10 py-4"
       >
         <div className="flex gap-4">
           {works.map((work) => (
