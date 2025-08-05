@@ -133,8 +133,9 @@ export function useInstructors() {
       const { apiRequest, API_CONFIG } = await import("../config/api");
       const endpoint = API_CONFIG.ENDPOINTS.INSTRUCTORS.ALL;
 
-      const response = await apiRequest<Instructor[]>(endpoint);
-      setInstructors(response);
+      const response = await apiRequest<{instructors: Instructor[], total: number}>(endpoint);
+      // Extract instructors array from the response object
+      setInstructors(response.instructors || []);
     } catch (err) {
       console.error("❌ Error fetching instructors:", err);
       setError(err instanceof Error ? err.message : "API Error");

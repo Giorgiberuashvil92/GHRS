@@ -15,7 +15,7 @@ export class PaymentService {
   ) {
     this.clientId = 'AQtqwl189MSBEbnUWNGIfPsAl3ynUUUKr506gJa5SDXhnXzje33FVtEJaTjcqRXE9FCnUPWu3kaVlfEO';
     this.clientSecret = 'EEXA7Fu-fqLpaUFcVH2vIbkZijgccjRLiRHD9S0U-gNJ_jwP-zQPODmUyw9RiWCcE4p0tVRxo0A-guLR';
-    this.baseUrl = 'https://api-m.sandbox.paypal.com'; // sandbox URL
+    this.baseUrl = 'https://api-m.sandbox.paypal.com'; // sandbox URL 
   }
 
   private async getAccessToken(): Promise<string> {

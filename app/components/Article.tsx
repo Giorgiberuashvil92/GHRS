@@ -23,6 +23,32 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
   const { language } = useLanguage();
   const { t } = useI18n();
 
+  // Calculate reading time based on content
+  const calculateReadingTime = (content: string): number => {
+    if (!content) return 1;
+    
+    // Remove HTML tags and decode HTML entities
+    const cleanText = content
+      .replace(/<[^>]*>/g, '') // Remove HTML tags
+      .replace(/&nbsp;/g, ' ') // Replace &nbsp; with space
+      .replace(/&[a-zA-Z0-9#]+;/g, '') // Remove other HTML entities
+      .trim();
+    
+    // Count words (split by whitespace and filter empty strings)
+    const words = cleanText.split(/\s+/).filter(word => word.length > 0);
+    const wordCount = words.length;
+    
+    // Average reading speed is 200-250 words per minute
+    // We'll use 220 words per minute as average
+    const wordsPerMinute = 220;
+    const readingTimeMinutes = Math.ceil(wordCount / wordsPerMinute);
+    
+    // Minimum reading time should be 1 minute
+    return Math.max(1, readingTimeMinutes);
+  };
+
+  const dynamicReadTime = calculateReadingTime(article.content[language]);
+
   // Extract headings from article content for automatic table of contents
   const extractHeadingsFromContent = (content: string) => {
     if (!content) return [];
@@ -230,7 +256,7 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
                     })}
                   </span>
                   <span className="text-[rgba(61,51,74,1)] leading-[120%] tracking-[0%] text-[16px] font-medium">
-                    {t("article.read_time", { time: String(article.readTime) })}
+                    {t("article.read_time", { time: String(dynamicReadTime) })}
                   </span>
                 </div>
               </section>
@@ -244,8 +270,9 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
               className="mt-[60px] prose max-w-none text-[rgba(132,111,160,1)] article-content"
             />
 
-            {/* Global styles for article links */}
+            {/* Global styles for article content */}
             <style jsx global>{`
+              /* Article Links */
               .article-content a {
                 color: #6D28D9 !important;
                 text-decoration: underline !important;
@@ -271,6 +298,269 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
               .article-content a:active {
                 color: #4C1D95 !important;
                 transform: translateY(1px) !important;
+              }
+
+              /* Article Headings */
+              .article-content h1 {
+                font-family: "Bowler", sans-serif !important;
+                font-size: 2.5rem !important;
+                font-weight: 700 !important;
+                line-height: 1.2 !important;
+                color: #3D334A !important;
+                margin: 2rem 0 1rem 0 !important;
+                padding-bottom: 0.5rem !important;
+                border-bottom: 2px solid #D4BAFC !important;
+              }
+
+              .article-content h2 {
+                font-family: "Bowler", sans-serif !important;
+                font-size: 2rem !important;
+                font-weight: 600 !important;
+                line-height: 1.3 !important;
+                color: #3D334A !important;
+                margin: 1.5rem 0 0.75rem 0 !important;
+                padding-bottom: 0.25rem !important;
+                border-bottom: 1px solid #E9DFF6 !important;
+              }
+
+              .article-content h3 {
+                font-family: "Bowler", sans-serif !important;
+                font-size: 1.5rem !important;
+                font-weight: 600 !important;
+                line-height: 1.4 !important;
+                color: #3D334A !important;
+                margin: 1.25rem 0 0.5rem 0 !important;
+              }
+
+              .article-content h4 {
+                font-family: "Bowler", sans-serif !important;
+                font-size: 1.25rem !important;
+                font-weight: 500 !important;
+                line-height: 1.4 !important;
+                color: #3D334A !important;
+                margin: 1rem 0 0.5rem 0 !important;
+              }
+
+              .article-content h5 {
+                font-family: "Bowler", sans-serif !important;
+                font-size: 1.125rem !important;
+                font-weight: 500 !important;
+                line-height: 1.4 !important;
+                color: #3D334A !important;
+                margin: 0.75rem 0 0.5rem 0 !important;
+              }
+
+              .article-content h6 {
+                font-family: "Bowler", sans-serif !important;
+                font-size: 1rem !important;
+                font-weight: 500 !important;
+                line-height: 1.4 !important;
+                color: #3D334A !important;
+                margin: 0.75rem 0 0.5rem 0 !important;
+              }
+
+              /* Article Paragraphs */
+              .article-content p {
+                font-family: "PT", sans-serif !important;
+                font-size: 1.125rem !important;
+                line-height: 1.7 !important;
+                color: #846FA0 !important;
+                margin: 1rem 0 !important;
+                text-align: justify !important;
+              }
+
+              /* Article Lists */
+              .article-content ul,
+              .article-content ol {
+                font-family: "PT", sans-serif !important;
+                font-size: 1.125rem !important;
+                line-height: 1.7 !important;
+                color: #846FA0 !important;
+                margin: 1rem 0 !important;
+                padding-left: 2rem !important;
+              }
+
+              .article-content li {
+                margin: 0.5rem 0 !important;
+              }
+
+              .article-content ul li {
+                list-style-type: disc !important;
+              }
+
+              .article-content ol li {
+                list-style-type: decimal !important;
+              }
+
+              /* Article Images */
+              .article-content img {
+                max-width: 100% !important;
+                height: auto !important;
+                border-radius: 10px !important;
+                margin: 1.5rem auto !important;
+                display: block !important;
+                box-shadow: 0 4px 20px rgba(61, 51, 74, 0.1) !important;
+              }
+
+              /* Article Videos */
+              .article-content video {
+                max-width: 100% !important;
+                height: auto !important;
+                border-radius: 10px !important;
+                margin: 1.5rem auto !important;
+                display: block !important;
+                box-shadow: 0 4px 20px rgba(61, 51, 74, 0.1) !important;
+                background: #000 !important;
+              }
+
+              /* Video Container for responsive videos */
+              .article-content .video-container {
+                position: relative !important;
+                width: 100% !important;
+                height: 0 !important;
+                padding-bottom: 56.25% !important; /* 16:9 aspect ratio */
+                margin: 1.5rem 0 !important;
+                border-radius: 10px !important;
+                overflow: hidden !important;
+                box-shadow: 0 4px 20px rgba(61, 51, 74, 0.1) !important;
+              }
+
+              .article-content .video-container iframe,
+              .article-content .video-container video {
+                position: absolute !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 100% !important;
+                height: 100% !important;
+                border: none !important;
+                border-radius: 10px !important;
+              }
+
+              .article-content iframe {
+                max-width: 100% !important;
+                height: auto !important;
+                min-height: 315px !important;
+                border-radius: 10px !important;
+                margin: 1.5rem auto !important;
+                display: block !important;
+                border: none !important;
+                box-shadow: 0 4px 20px rgba(61, 51, 74, 0.1) !important;
+              }
+
+              /* YouTube and Vimeo specific */
+              .article-content iframe[src*="youtube.com"],
+              .article-content iframe[src*="youtu.be"],
+              .article-content iframe[src*="vimeo.com"] {
+                aspect-ratio: 16 / 9 !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: 315px !important;
+              }
+
+              @media (max-width: 768px) {
+                .article-content iframe {
+                  min-height: 200px !important;
+                }
+                
+                .article-content iframe[src*="youtube.com"],
+                .article-content iframe[src*="youtu.be"],
+                .article-content iframe[src*="vimeo.com"] {
+                  min-height: 200px !important;
+                }
+              }
+
+              /* Article Blockquotes */
+              .article-content blockquote {
+                font-family: "PT", sans-serif !important;
+                font-size: 1.25rem !important;
+                line-height: 1.6 !important;
+                color: #6D28D9 !important;
+                background: #F9F7FE !important;
+                border-left: 4px solid #D4BAFC !important;
+                padding: 1.5rem !important;
+                margin: 2rem 0 !important;
+                border-radius: 8px !important;
+                font-style: italic !important;
+              }
+
+              /* Article Code */
+              .article-content code {
+                font-family: 'Courier New', monospace !important;
+                font-size: 0.9rem !important;
+                background: #F3F4F6 !important;
+                color: #374151 !important;
+                padding: 0.25rem 0.5rem !important;
+                border-radius: 4px !important;
+                border: 1px solid #E5E7EB !important;
+              }
+
+              .article-content pre {
+                font-family: 'Courier New', monospace !important;
+                font-size: 0.9rem !important;
+                background: #1F2937 !important;
+                color: #F9FAFB !important;
+                padding: 1.5rem !important;
+                border-radius: 8px !important;
+                overflow-x: auto !important;
+                margin: 1.5rem 0 !important;
+              }
+
+              .article-content pre code {
+                background: transparent !important;
+                color: inherit !important;
+                padding: 0 !important;
+                border: none !important;
+              }
+
+              /* Article Tables */
+              .article-content table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+                margin: 1.5rem 0 !important;
+                background: white !important;
+                border-radius: 8px !important;
+                overflow: hidden !important;
+                box-shadow: 0 2px 10px rgba(61, 51, 74, 0.1) !important;
+              }
+
+              .article-content th,
+              .article-content td {
+                font-family: "PT", sans-serif !important;
+                padding: 0.75rem 1rem !important;
+                text-align: left !important;
+                border-bottom: 1px solid #E9DFF6 !important;
+              }
+
+              .article-content th {
+                background: #F9F7FE !important;
+                font-weight: 600 !important;
+                color: #3D334A !important;
+              }
+
+              .article-content td {
+                color: #846FA0 !important;
+              }
+
+              /* Article Dividers */
+              .article-content hr {
+                border: none !important;
+                height: 2px !important;
+                background: linear-gradient(to right, transparent, #D4BAFC, transparent) !important;
+                margin: 2rem 0 !important;
+              }
+
+              /* Article Strong/Bold */
+              .article-content strong,
+              .article-content b {
+                font-weight: 700 !important;
+                color: #3D334A !important;
+              }
+
+              /* Article Emphasis/Italic */
+              .article-content em,
+              .article-content i {
+                font-style: italic !important;
+                color: #6D28D9 !important;
               }
             `}</style>
 
@@ -470,12 +760,54 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
   );
 };
 
-// Helper function to add anchor IDs to content headers
+// Helper function to add anchor IDs to content headers and process videos
 const addAnchorsToContent = (content: string): string => {
   let index = 1;
   
+  // First, process shortcodes
+  const processedContent = content
+    // Process [su_youtube] shortcodes
+    .replace(
+      /\[su_youtube\s+([^\]]+)\]/g,
+      (match, attributes) => {
+        // Parse attributes using a more flexible approach
+        const urlMatch = attributes.match(/url=["']([^"']+)["']/);
+        const widthMatch = attributes.match(/width=["']?(\d+)["']?/);
+        const heightMatch = attributes.match(/height=["']?(\d+)["']?/);
+        const titleMatch = attributes.match(/title=["']([^"']*)["']/);
+        
+        if (!urlMatch) return match; // Return original if no URL found
+        
+        const url = urlMatch[1];
+        const width = widthMatch ? widthMatch[1] : '560';
+        const height = heightMatch ? heightMatch[1] : '315';
+        const title = titleMatch ? titleMatch[1] : '';
+        
+        // Extract video ID from various YouTube URL formats
+        const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+        const matchResult = url.match(youtubeRegex);
+        
+        if (matchResult) {
+          const videoId = matchResult[1];
+          return `<div class="video-container"><iframe src="https://www.youtube.com/embed/${videoId}" width="${width}" height="${height}" title="${title}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`;
+        }
+        
+        return match; // Return original if can't parse
+      }
+    )
+    // Wrap iframe videos (YouTube, Vimeo, etc.)
+    .replace(
+      /<iframe([^>]*src=["'][^"']*(?:youtube\.com|youtu\.be|vimeo\.com)[^"']*["'][^>]*)><\/iframe>/g,
+      '<div class="video-container"><iframe$1></iframe></div>'
+    )
+    // Wrap regular video tags
+    .replace(
+      /<video([^>]*)>(.*?)<\/video>/g,
+      '<div class="video-container"><video$1>$2</video></div>'
+    );
+  
   // Add id attributes to h1-h6 tags that match the anchors
-  return content.replace(
+  return processedContent.replace(
     /<h([1-6])([^>]*)>(.*?)<\/h[1-6]>/g,
     (match, level, attrs, text) => {
       // Create anchor ID from text (same logic as extractHeadingsFromContent)

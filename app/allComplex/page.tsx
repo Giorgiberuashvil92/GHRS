@@ -14,11 +14,20 @@ import { IoIosArrowDown } from "react-icons/io";
 import { Footer } from "../components/Footer";
 import { API_CONFIG } from "../config/api";
 
+interface Subcategory {
+  _id: string;
+  name: {
+    ka: string;
+    en: string;
+    ru: string;
+  };
+}
+
 const AllComplex = () => {
   const dropdownRef = useRef<HTMLDivElement>(null);
   const { locale } = useI18n();
   const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
-  const [subcategories, setSubcategories] = useState([]);
+  const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
   // const [visibleWorksCount, setVisibleWorksCount] = useState(1); // რამდენი Works გამოჩნდეს
 
   const { categories } = useCategories();
@@ -189,14 +198,20 @@ const AllComplex = () => {
 
                 {isDropdown && isOpen && (
                   <div className="absolute left-0 top-full mt-1 z-20 bg-white rounded-[10px] shadow-lg min-w-[160px] py-2 animate-fade-in">
-                    {cat.subcategories.map((item: string, i: number) => (
-                      <div
-                        key={i}
-                        className="px-4 py-2 hover:bg-[#F3D57F] cursor-pointer text-[#3D334A] text-[13px]"
-                      >
-                        {item}
-                      </div>
-                    ))}
+                    {cat.subcategories.map((subcategoryId: string, i: number) => {
+                      // ვპოულობთ subcategory-ს ID-ის მიხედვით
+                      const subcategory = subcategories.find((sub: Subcategory) => sub._id === subcategoryId);
+                      const subcategoryName = subcategory ? getLocalizedText(subcategory.name) : subcategoryId;
+                      
+                      return (
+                        <div
+                          key={i}
+                          className="px-4 py-2 hover:bg-[#F3D57F] cursor-pointer text-[#3D334A] text-[13px]"
+                        >
+                          {subcategoryName}
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </div>

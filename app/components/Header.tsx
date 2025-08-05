@@ -765,7 +765,7 @@ const Header: React.FC<HeaderProps> = ({
                         setData?.name?.ka ||
                         "Мы GHRS"}
                     </h2>
-                    <p className="md:mt-[10px] text-[24px] max-w-[779px] font-medium leading-[120%] font-[Pt] ">
+                    <p className="md:mt-[10px] text-[18px] max-w-[779px] font-medium leading-[120%] font-[Pt] ">
                       {setData?.description?.ru ||
                         setData?.description?.en ||
                         setData?.description?.ka ||

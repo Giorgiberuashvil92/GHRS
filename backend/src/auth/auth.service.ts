@@ -67,7 +67,7 @@ export class AuthService {
     const existingUser = await this.userModel.findOne({ email });
     if (existingUser) {
       throw new UnauthorizedException(
-        'მომხმარებელი ამ ელ-ფოსტით უკვე არსებობს',
+        'This member already exists',
       );
     }
 
@@ -84,7 +84,7 @@ export class AuthService {
 
     return {
       success: true,
-      message: 'ვერიფიკაციის კოდი გაიგზავნა ელ-ფოსტაზე',
+      message: 'Verification code sent to email',
     };
   }
 
@@ -101,24 +101,24 @@ export class AuthService {
     const isValid = await this.verifyCode(email, code);
 
     if (!isValid) {
-      throw new UnauthorizedException('არასწორი ან ვადაგასული კოდი');
+      throw new UnauthorizedException('Invalid or expired code');
     }
 
     return {
       success: true,
-      message: 'კოდი წარმატებით დადასტურდა',
+      message: 'Code verified successfully',
     };
   }
 
   async validateUser(email: string, password: string): Promise<UserResponse> {
     const user = await this.userModel.findOne({ email });
     if (!user) {
-      throw new UnauthorizedException('არასწორი ელ-ფოსტა ან პაროლი');
+      throw new UnauthorizedException('Invalid email or password');
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('არასწორი ელ-ფოსტა ან პაროლი');
+      throw new UnauthorizedException('Invalid email or password');
     }
 
     // ავტომატური achievements-ების ინიციალიზაცია
@@ -150,7 +150,7 @@ export class AuthService {
     });
     if (existingUser) {
       throw new UnauthorizedException(
-        'მომხმარებელი ამ ელ-ფოსტით უკვე არსებობს',
+        'This member already exists',
       );
     }
 
@@ -162,7 +162,7 @@ export class AuthService {
         true, // აქ ვშლით კოდს წარმატებული რეგისტრაციისას
       ))
     ) {
-      throw new UnauthorizedException('არასწორი ვერიფიკაციის კოდი');
+      throw new UnauthorizedException('Invalid verification code');
     }
 
     const hashedPassword = await bcrypt.hash(registrationData.password, 10);
@@ -222,7 +222,6 @@ export class AuthService {
       } as any;
     }
 
-    // დემო მიღწევების დამატება (რომ რაღაც ჩანდეს)
     const demoAchievements = [
       {
         id: 'welcome',

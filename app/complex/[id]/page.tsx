@@ -520,13 +520,13 @@ const Complex = ({ params }: ComplexPageProps) => {
               {/* Advanced Level */}
               <div className={`p-5 rounded-[10px] flex justify-between items-center ${
                 shouldShowPlayButton('hard') 
-                  ? "bg-[url('/assets/images/blog.png')] bg-cover bg-center bg-no-repeat" 
+                  ? "bg-cover bg-center bg-no-repeat bg-[rgba(249,247,254,1)]"
                   : "bg-[rgba(249,247,254,1)]"
               }`}>
                 <div className="flex md:flex-row md:gap-[40px] flex-col md:items-center">
-                  <h3 className={`md:text-2xl text-[18px] leading-[120%] tracking-[-3%] uppercase ${
+                  <h3 className={`md:text-2xl text-[18px] text-[rgba(61,51,74,1)] leading-[120%] tracking-[-3%] uppercase ${
                     shouldShowPlayButton('hard') 
-                      ? "text-[rgba(255,255,255,1)]" 
+                      ? "text-[rgba(132,111,160,1)]" 
                       : "text-[rgba(132,111,160,1)]"
                   }`}>
                     Продвинутый уровень
@@ -537,7 +537,7 @@ const Complex = ({ params }: ComplexPageProps) => {
                   </span>
                   {shouldShowLockIcon('hard') && (
                     <CiLock
-                      color="#2D1B3D"
+                      color="#text-[rgba(132,111,160,1)]"
                       className="absolute right-8"
                       size={28}
                     />
