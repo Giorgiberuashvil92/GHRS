@@ -97,7 +97,7 @@ const reviewSliderItems = [
   },
 ];
 
-const ReviewSlider = ({title}: {title: string}) => {
+const ReviewSlider = ({ title }: { title: string }) => {
   const scrollContainerRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -115,11 +115,11 @@ const ReviewSlider = ({title}: {title: string}) => {
   useEffect(() => {
     const container = scrollContainerRef.current as HTMLDivElement | null;
     if (container) {
-      container.addEventListener('scroll', checkScrollButtons);
+      container.addEventListener("scroll", checkScrollButtons);
       checkScrollButtons(); // Initial check
 
       return () => {
-        container.removeEventListener('scroll', checkScrollButtons);
+        container.removeEventListener("scroll", checkScrollButtons);
       };
     }
   }, []);
@@ -152,20 +152,22 @@ const ReviewSlider = ({title}: {title: string}) => {
         <h1 className="text-[20px] leading-[120%] text-[#3D334A] md:text-[40px] md:tracking-[-3%] font-bold">
           {title || "ОТЗЫВЫ О GRS"}
         </h1>
-        <SliderArrows
-          onScrollLeft={handleScrollLeft}
-          onScrollRight={handleScrollRight}
-          canScrollLeft={canScrollLeft}
-          canScrollRight={canScrollRight}
-        />
+        <div className="hidden lg:flex">
+          <SliderArrows
+            onScrollLeft={handleScrollLeft}
+            onScrollRight={handleScrollRight}
+            canScrollLeft={canScrollLeft}
+            canScrollRight={canScrollRight}
+          />
+        </div>
       </div>
       <div className="px-4 md:px-5 rounded-[30px] w-full overflow-hidden">
         <div
           ref={scrollContainerRef}
           className="flex gap-5 overflow-x-auto scroll-smooth scrollbar-hide"
           style={{
-            scrollbarWidth: 'none',
-            msOverflowStyle: 'none',
+            scrollbarWidth: "none",
+            msOverflowStyle: "none",
           }}
         >
           {reviewSliderItems.map((item, index) => (
@@ -182,15 +184,15 @@ const ReviewSlider = ({title}: {title: string}) => {
                 {item.name}
               </h4>
               <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 hover:scale-105 duration-300 cursor-pointer w-[50px] h-[50px] md:w-[70px] md:h-[70px] lg:w-[100px] lg:h-[100px] bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                <svg 
-                  width="24" 
-                  height="28" 
-                  viewBox="0 0 24 28" 
-                  fill="none" 
+                <svg
+                  width="24"
+                  height="28"
+                  viewBox="0 0 24 28"
+                  fill="none"
                   className="ml-1"
                 >
-                  <path 
-                    d="M22 12.268c1.333.77 1.333 2.694 0 3.464L4 25.856c-1.333.77-3-.192-3-1.732V3.876c0-1.54 1.667-2.502 3-1.732L22 12.268z" 
+                  <path
+                    d="M22 12.268c1.333.77 1.333 2.694 0 3.464L4 25.856c-1.333.77-3-.192-3-1.732V3.876c0-1.54 1.667-2.502 3-1.732L22 12.268z"
                     fill="white"
                   />
                 </svg>

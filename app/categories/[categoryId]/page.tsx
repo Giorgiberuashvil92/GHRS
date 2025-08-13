@@ -24,10 +24,8 @@ export default function CategoriesPage({
   const { categoryData, loading, error } = useCategoryComplete(categoryId);
   const { t } = useI18n();
 
-
   // ახლა სრული მონაცემები გვაქვს
   const selectedCategory = categoryData?.category;
-
 
   if (loading) {
     return (
@@ -122,7 +120,6 @@ export default function CategoriesPage({
     subcategoryId: set.subCategoryId || "",
   }));
 
-
   return (
     <div className="">
       <Header
@@ -134,14 +131,14 @@ export default function CategoriesPage({
           exercisesCount,
         }}
       />
-      <div className="md:pt-[100px] pt-[400px]">
-        <div className="px-10 py-[50px] rounded-[30px] bg-[#F9F7FE] md:mb-10 mx-6">
+      <div className="md:pt-[100px] pt-[40px] ">
+        <div className="md:px-10 md:py-[50px] py-[20px] px-4 rounded-[30px] bg-[#F9F7FE] md:mb-10 mx-2">
           <div className="flex items-center justify-between mb-[20px]">
-            <div className="flex flex-col gap-5">
-              <h1 className="text-[#3D334A] text-[40px] leading-[120%] tracking-[-3%]">
+            <div className="flex flex-col md:gap-5 gap-2">
+              <h1 className="text-[#3D334A] md:text-[40px] text-[20px] leading-[120%] tracking-[-3%]">
                 {t("common.subcategories")}
               </h1>
-              <span className="text-[#D4BAFC] text-[24px] leading-[90%] uppercase">
+              <span className="text-[#D4BAFC] md:text-[24px] text-[12px] leading-[90%] uppercase">
                 {subcategoriesCount} {t("common.subcategory")}
               </span>
             </div>
@@ -157,12 +154,12 @@ export default function CategoriesPage({
             </div>
           </div>
 
-          <div className="flex flex-row items-center gap-[28px] overflow-x-auto">
+          <div className="flex flex-row items-center gap-[28px] overflow-x-auto ">
             {categoryData?.subcategories?.map((subcategory) => (
               <Link
                 key={subcategory._id}
                 href={`/categories/section?categoryId=${categoryId}&subcategoryId=${subcategory._id}`}
-                className="mt-[48px] min-w-[558px] bg-white p-2 rounded-[20px] cursor-pointer hover:shadow-lg transition-shadow"
+                className="md:mt-[48px]  md:min-w-[558px] w-[327px] p-2 rounded-[20px] cursor-pointer hover:shadow-lg transition-shadow"
               >
                 <Image
                   src={subcategory.image || "/assets/images/category1.png"}
@@ -172,10 +169,10 @@ export default function CategoriesPage({
                     subcategory.name as { ka: string; en: string; ru: string },
                     locale
                   )}
-                  className="w-full h-[181px] object-cover rounded-[15px]"
+                  className=" md:h-[181px] md:w-full w-[315px] h-[91px] object-cover rounded-[15px]"
                 />
-                <div className="flex items-center justify-between mt-[22px]">
-                  <h1 className="text-[#3D334A] w-[342px] text-[28px] leading-[100%]">
+                <div className="flex items-center justify-between mt-[22px] w-full">
+                  <h1 className="text-[#3D334A] md:w-[442px] w-[158px] md:text-[28px] text-[12px] leading-[100%]">
                     {getLocalizedText(
                       subcategory.name as {
                         ka: string;
@@ -185,7 +182,7 @@ export default function CategoriesPage({
                       locale
                     )}
                   </h1>
-                  <span className="text-[#D4BAFC] leading-[120%] font-medium">
+                  <span className="text-[#D4BAFC] flex leading-[120%] font-pt text-[14px] md:text-[18px] font-medium">
                     {
                       subcategorySets.filter(
                         (set) => set.subCategoryId === subcategory._id
@@ -207,11 +204,13 @@ export default function CategoriesPage({
               title={t("common.complexes")}
               seeAll={true}
               categoryData={categoryData?.category?._id}
-              fromMain={false} scrollable={false} />
+              fromMain={false}
+              scrollable={false}
+            />
           </div>
         )}
 
-         <Subscribe
+        <Subscribe
           backgroundImage="/assets/images/categorySliderBgs/bg1.jpg"
           titleKey="subscription.test_title"
           buttonTextKey="buttons.take_test"
@@ -229,10 +228,15 @@ export default function CategoriesPage({
           withBanner={false}
           withSlider={true}
           layoutType="default"
-          title={'GRS МЕДИА'}
+          title={"GRS МЕДИА"}
         />
         <div className="mt-10">
-          <Professional withBanner={false} title={""} bgColor={"#F9F7FE"} withProfText={true} />
+          <Professional
+            withBanner={false}
+            title={""}
+            bgColor={"#F9F7FE"}
+            withProfText={true}
+          />
         </div>
         <Footer />
       </div>

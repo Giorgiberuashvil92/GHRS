@@ -258,7 +258,7 @@ const OtherGrid: React.FC<OtherGridProps> = ({ blogs, language }) => {
         {orderedBlogs.map((blog, idx) => (
           <Link key={blog._id} href={`/blogs/${blog._id}`}>
             <div
-              className={`min-w-[200px] max-w-full p-5 bg-white flex flex-col justify-between rounded-[20px] ${gridClasses[idx]}`}
+              className={`w-[201px] max-w-full p-5  flex flex-col justify-between rounded-[20px] ${gridClasses[idx]}`}
             >
               <Image
                 src={blog.imageUrl}

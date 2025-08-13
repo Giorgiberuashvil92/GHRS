@@ -70,34 +70,34 @@ const SubscriptionHistory: React.FC = () => {
   const { t } = useI18n();
 
   return (
-    <div className="relative px-10 mx-10 py-5 my-5 w-full  bg-[#F9F7FE] rounded-[20px]">
-      <h2 className="text-[#3D334A] text-3xl md:text-4xl font-bold mb-8">
+    <div className="relative px-6 sm:px-10 py-5 my-5 w-full bg-[#F9F7FE] rounded-[20px]">
+      <h2 className="text-[#3D334A] hidden md:flex text-2xl sm:text-3xl md:text-4xl font-bold mb-6 sm:mb-8">
         {t("personal_account.subscription_history.title")}
       </h2>
-      <div className="grid md:grid-cols-2 gap-8 items-center">
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 sm:gap-8 items-center">
         {orders.map((order) => (
           <div
             key={order.id}
-            className={`relative bg-white md:w-full md:h-auto rounded-[20px] px-6 pt-6 pb-2 shadow-md ${
+            className={`relative bg-white w-full rounded-[20px] px-6 pt-6 pb-2 shadow-md ${
               order.faded ? "opacity-30 grayscale" : ""
             }`}
           >
-            <div className="flex justify-between items-center mb-2">
-              <span className="font-bold text-lg md:text-[24px] text-[#3D334A]">
+            <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-2">
+              <span className="font-bold text-lg sm:text-[20px] md:text-[24px] text-[#3D334A]">
                 {t("personal_account.subscription_history.order_from", {
                   date: order.date,
                 })}
               </span>
               {order.action && !order.faded && (
-                <span className="ml-2 cursor-pointer text-sm md:text-base font-bold text-[#F36B6B]">
+                <span className="ml-2 cursor-pointer text-sm sm:text-base font-bold text-[#F36B6B]">
                   {t(`personal_account.subscription_history.${order.action}`)}{" "}
                   <span className="text-[#F36B6B]">✖</span>
                 </span>
               )}
             </div>
-            <div className="flex items-center gap-4 mb-16">
+            <div className="flex flex-wrap sm:flex-nowrap items-center gap-4 mb-6 sm:mb-16">
               <span
-                className={`px-4 py-1 rounded-[8px] font-pt text-xs md:text-sm font-bold ${order.statusColor}`}
+                className={`px-4 py-1 rounded-[8px] font-pt text-xs sm:text-sm font-bold ${order.statusColor}`}
               >
                 {t(
                   `personal_account.subscription_history.statuses.${order.status}`
@@ -105,33 +105,33 @@ const SubscriptionHistory: React.FC = () => {
               </span>
             </div>
             <hr />
-            <div className="flex items-center gap-4 ">
+            <div className="flex flex-col sm:flex-row items-center gap-4 mt-4 sm:mt-6">
               <Image
                 src={order.product.image}
-                width={120}
-                height={120}
+                width={100}
+                height={100}
                 alt={order.product.title}
-                className="rounded-[20px] object-cover"
+                className="rounded-[20px] object-cover mb-4 sm:mb-0"
               />
               <div className="flex-1">
-                <div className="text-[#B1A1D9] font-bold text-base md:text-lg uppercase leading-[120%] tracking-[-3%] max-w-[275px]">
+                <div className="text-[#B1A1D9] font-bold text-base sm:text-lg md:text-xl uppercase leading-[120%] tracking-[-3%] max-w-[230px] sm:max-w-[275px]">
                   {order.product.title}
                 </div>
-                <div className="text-[#846FA0] font-pt text-sm md:text-base mb-2 max-w-[275px]">
+                <div className="text-[#846FA0] font-pt text-sm sm:text-base mb-2 max-w-[230px] sm:max-w-[275px]">
                   {order.product.description}
                 </div>
               </div>
               <div className="flex flex-col items-end">
-                <span className="text-[#B1A1D9] font-bold text-xl md:text-2xl">
+                <span className="text-[#B1A1D9] font-bold text-xl sm:text-2xl">
                   {order.product.price}
                 </span>
                 {order.product.action && !order.faded && (
-                  <span className="text-[#B1A1D9] text-xs flex items-center gap-1 md:text-base font-bold mt-2 cursor-pointer">
+                  <span className="text-[#B1A1D9] text-xs sm:text-sm flex items-center gap-1 font-bold mt-2 cursor-pointer">
                     {t(
                       `personal_account.subscription_history.${order.product.action}`
                     )}
                     <Image
-                      src={"/assets/icons/play.svg"}
+                      src="/assets/icons/play.svg"
                       alt="play"
                       width={14}
                       height={14}

@@ -100,7 +100,7 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
-  
+
   const fallbackCourses: Course[] = Array.from({ length: 10 }, (_, i) => ({
     id: `fallback-${i + 1}`,
     title: "Ортопедия",
@@ -113,16 +113,20 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
   const [showAll, setShowAll] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
 
-  const getLocalizedContent = (content: string | LocalizedContent | undefined): string => {
+  const getLocalizedContent = (
+    content: string | LocalizedContent | undefined
+  ): string => {
     if (!content) return "";
     if (typeof content === "string") return content;
     if (typeof content === "object") {
       if (content[language]) return content[language]!;
       if (content.en) return content.en;
-      const availableLang = Object.keys(content).find(key =>
-        ["ka", "ru", "en"].includes(key) && typeof content[key] === "string"
+      const availableLang = Object.keys(content).find(
+        (key) =>
+          ["ka", "ru", "en"].includes(key) && typeof content[key] === "string"
       );
-      if (availableLang && content[availableLang]) return content[availableLang]!;
+      if (availableLang && content[availableLang])
+        return content[availableLang]!;
     }
     return "";
   };
@@ -132,18 +136,25 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
     title: getLocalizedContent(course.title),
     description: getLocalizedContent(course.description),
     shortDescription: getLocalizedContent(course.shortDescription),
-    price: `${course.price}${language === "ka" ? " ₾" : language === "ru" ? " ₽" : " $"}`,
+    price: `${course.price}${
+      language === "ka" ? " ₾" : language === "ru" ? " ₽" : " $"
+    }`,
     image: course.thumbnail || "/assets/images/course.png",
-    category: course.category ? {
-      id: course.category.id.toString(),
-      name: getLocalizedContent(course.category.name)
-    } : undefined,
-    instructor: course.instructor?.name ? getLocalizedContent(course.instructor.name) : undefined,
+    category: course.category
+      ? {
+          id: course.category.id.toString(),
+          name: getLocalizedContent(course.category.name),
+        }
+      : undefined,
+    instructor: course.instructor?.name
+      ? getLocalizedContent(course.instructor.name)
+      : undefined,
     duration: course.duration,
-    level: course.level
+    level: course.level,
   }));
 
-  const allCourses = transformedCourses.length > 0 ? transformedCourses : fallbackCourses;
+  const allCourses =
+    transformedCourses.length > 0 ? transformedCourses : fallbackCourses;
 
   // Check scroll position and update arrow states
   const checkScrollPosition = () => {
@@ -162,7 +173,7 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
       const scrollAmount = cardWidth + gap;
       scrollRef.current.scrollBy({
         left: -scrollAmount,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
     }
   };
@@ -174,7 +185,7 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
       const scrollAmount = cardWidth + gap;
       scrollRef.current.scrollBy({
         left: scrollAmount,
-        behavior: 'smooth'
+        behavior: "smooth",
       });
     }
   };
@@ -193,19 +204,19 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
     if (scrollElement) {
       // Initial check
       checkScrollPosition();
-      
+
       // Add scroll event listener
-      scrollElement.addEventListener('scroll', checkScrollPosition);
-      
+      scrollElement.addEventListener("scroll", checkScrollPosition);
+
       // Check on resize
       const handleResize = () => {
         setTimeout(checkScrollPosition, 100);
       };
-      window.addEventListener('resize', handleResize);
+      window.addEventListener("resize", handleResize);
 
       return () => {
-        scrollElement.removeEventListener('scroll', checkScrollPosition);
-        window.removeEventListener('resize', handleResize);
+        scrollElement.removeEventListener("scroll", checkScrollPosition);
+        window.removeEventListener("resize", handleResize);
       };
     }
   }, [allCourses.length]);
@@ -216,18 +227,16 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
     <div className="w-full relative">
       {/* Header with arrows */}
       <div className="flex justify-between items-center mb-4 absolute -top-20 right-0">
-
         <SliderArrows
           onScrollLeft={scrollLeft}
           onScrollRight={scrollRight}
           canScrollLeft={canScrollLeft}
           canScrollRight={canScrollRight}
-          
         />
       </div>
 
       {/* Scrollable horizontal layout for all screen sizes */}
-      <div 
+      <div
         ref={scrollRef}
         className="flex gap-4 overflow-x-auto scrollbar-hide pb-2 scroll-smooth"
       >
@@ -262,15 +271,15 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
           display: none;
         }
       `}</style>
-    </div>  
+    </div>
   );
 };
 
 const CourseCard = ({ course }: { course: Course }) => {
   const truncateText = (text: string, maxLength: number = 100) => {
-    const cleanText = text.trim().replace(/\s+/g, ' ');
+    const cleanText = text.trim().replace(/\s+/g, " ");
     if (cleanText.length <= maxLength) return cleanText;
-    return cleanText.substring(0, maxLength) + '...';
+    return cleanText.substring(0, maxLength) + "...";
   };
 
   return (
@@ -279,7 +288,7 @@ const CourseCard = ({ course }: { course: Course }) => {
       className="block w-full transition-transform duration-300 hover:scale-[1.02]"
     >
       <div className="bg-white rounded-[20px] p-1.5 pb-4 w-full">
-        <div className="h-[418px]">     
+        <div className="h-[418px]">
           <Image
             src={course.image}
             width={674}
@@ -294,7 +303,7 @@ const CourseCard = ({ course }: { course: Course }) => {
             {truncateText(course.shortDescription || course.description)}
           </p>
           <div className="w-full flex justify-end items-end pr-4 md:mt-5">
-            <button className="bg-[#D4BAFC] py-[5px] px-4 rounded-[3px] md:mt-[19px] md:rounded-[10px] text-[12px] md:text-[18px] leading-[100%] text-white">
+            <button className="bg-[#D4BAFC] py-[5px] px-4  rounded-[3px] md:mt-[19px] md:rounded-[10px] text-[12px] md:text-[18px] leading-[100%] text-white">
               {course.price}
             </button>
           </div>

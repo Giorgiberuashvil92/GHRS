@@ -26,14 +26,14 @@ const Home = () => {
         <Rehabilitation />
         <Category bgColor="#F9F7FE" customRounded={""} customMx={""} />
         <hr className="text-[#D5D1DB] bg-[#D5D1DB] w-[95%] mx-auto" />
-        <Works 
-          title={t("navigation.sets")} 
-          sets={sets} 
-          fromMain={true} 
-          customMargin="20px" 
-          customBorderRadius="" 
-          seeAll={false} 
-          scrollable={true} 
+        <Works
+          title={t("navigation.sets")}
+          sets={sets}
+          fromMain={true}
+          customMargin="20px"
+          customBorderRadius=""
+          seeAll={false}
+          scrollable={true}
         />
         <Subscribe
           backgroundImage="/assets/images/categorySliderBgs/bg1.jpg"
@@ -46,11 +46,11 @@ const Home = () => {
           titleStyles="text-white"
           buttonStyles="hover:opacity-80"
         />
-        <Professional 
-          withBanner={true} 
-          title={t("sections.professional")} 
-          bgColor={"#F9F7FE"} 
-          withProfText={true} 
+        <Professional
+          withBanner={true}
+          title={t("sections.professional")}
+          bgColor={"#F9F7FE"}
+          withProfText={true}
         />
         <div className="mb-10">
           <Blog

@@ -382,7 +382,7 @@ const Header: React.FC<HeaderProps> = ({
                       transition={{ duration: 0.3, ease: "easeOut" }}
                     >
                       <>
-                        <section className="mt-[50px] md:mt-[30px] mx-2 md:mx-5 flex flex-col md:flex-row md:items-center md:gap-2">
+                        <section className="mt-[250px] md:mt-[30px] mx-2 md:mx-5 flex flex-col md:flex-row md:items-center md:gap-2">
                           {/* პირველი ბარათი */}
                           <Link
                             href={"/categories"}
@@ -521,7 +521,7 @@ const Header: React.FC<HeaderProps> = ({
               </div>
             )}
             {variant == "categories" && (
-              <div className="mb-5 md:mb-0 mx-auto md:pt-[400px]">
+              <div className="mb-5 md:mb-0 mx-auto md:pt-[400px] pt-[400px]">
                 <section className="mx-auto md:mx-5 flex flex-col md:flex-row md:items-center md:gap-2">
                   {/* პირველი ბარათი */}
                   <motion.div
@@ -750,7 +750,7 @@ const Header: React.FC<HeaderProps> = ({
             )}
 
             {variant == "professional" && (
-              <div className="mb-5 md:mb-0 mx-auto md:mt-[385px]">
+              <div className="mb-5 md:mb-0 mx-auto md:mt-[385px] mt-[440px]">
                 <section className="mx-2 md:mt-5 md:mx-5 max-w-[729px]">
                   <div className="bg-[rgba(61,51,74,0.3)]  rounded-[20px] md:gap-[11.2px] gap-5 flex flex-col pl-[30px] pt-[30px] pb-[90px] mt-2">
                     <h2 className="text-[20px] md:text-[40px] font-pt max-w-[598px] leading-[120%] tracking-[-3%]">
@@ -771,7 +771,7 @@ const Header: React.FC<HeaderProps> = ({
             )}
 
             {variant == "about" && (
-              <div className="mb-5 md:mb-0 mx-auto md:mt-[375px]">
+              <div className="mb-5 md:mb-0 mx-auto md:mt-[375px] mt-[100px]">
                 <section className="mx-2 md:mt-5 md:mx-5 max-w-[837px]">
                   <div className="bg-[rgba(61,51,74,0.3)]  rounded-[20px] md:gap-[11.2px] gap-5 flex flex-col pl-[30px] pt-[30px] pb-[90px] mt-2">
                     <h2 className="text-[20px] md:text-[40px] font-pt max-w-[598px] leading-[120%] tracking-[-3%]">
@@ -792,13 +792,13 @@ const Header: React.FC<HeaderProps> = ({
             )}
 
             {variant == "default" && (
-              <div className="flex md:hidden mt-60 mx-auto items-center justify-center gap-2">
+              <div className="flex md:hidden mt-10 mx-auto items-center justify-center gap-2">
                 <Link href={"/rehabilitation"}>
                   <div className="bg-[#3D334A] p-4 rounded-[20px] w-[176px] h-[166px]">
                     Изучить подробнее
                   </div>
                 </Link>
-                <div className="bg-[url('/assets/images/categorySliderBgs/bg4.jpg')] bg-cover bg-center p-4 rounded-[20px] w-[176px] h-[166px] ">
+                <div className="bg-[url('/assets/images/categorySliderBgs/bg2.jpg')] bg-cover bg-center p-4 rounded-[20px] w-[176px] h-[166px] ">
                   В каталог
                 </div>
               </div>

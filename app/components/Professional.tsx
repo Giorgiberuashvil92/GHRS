@@ -125,7 +125,7 @@ const Professional = ({
           iconWidth={170}
         />
       )}
-      <div className="md:p-10 px-5">
+      <div className="md:p-10 px-5 pb-5 ">
         {withProfText && (
           <div className="">
             <h1 className="text-[20px] md:mt-10 md:text-[40px] md:tracking-[-3%] text-[#3D334A] leading-[120%] mb-2.5 md:mb-5">

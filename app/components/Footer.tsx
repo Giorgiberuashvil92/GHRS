@@ -8,14 +8,14 @@ import { FacebookIcon } from "./socialIcons/FacebookIcon";
 
 export const Footer: FC = () => {
   return (
-    <footer className="bg-[#F9F7FE] rounded-[20px]  px-8 pt-8 pb-4 text-[#3D334A]">
-      {/* კონსულტაციის ფორმა */}
-      <div className="mb-8 px-16">
-        <h2 className="text-4xl font-bold text-[#3D334A] mb-8">
+    <footer className="bg-[#F9F7FE] rounded-[20px] px-4 sm:px-8 pt-8 pb-4 text-[#3D334A]">
+      {/* Consultation form */}
+      <div className="mb-8 px-4 sm:px-16">
+        <h2 className="text-3xl sm:text-4xl font-bold text-[#3D334A] mb-8">
           ОСТАВЬТЕ ЗАЯВКУ ДЛЯ{" "}
           <span className="text-[#B6A3D9]">КОНСУЛЬТАЦИИ:</span>
         </h2>
-        <form className="flex flex-col md:flex-row gap-4 mb-8">
+        <form className="flex flex-col sm:flex-row gap-4 mb-8">
           <input
             type="text"
             placeholder="Имя"
@@ -32,20 +32,22 @@ export const Footer: FC = () => {
             className="flex-1 rounded-lg px-4 py-3 bg-white/80 outline-none focus:ring-2 focus:ring-[#B6A3D9] transition"
           />
         </form>
-        <div className="flex flex-col md:flex-row items-center gap-4">
-          <button className="bg-[#B6A3D9] text-white px-10 py-3 rounded-lg font-bold flex items-center gap-2 hover:bg-[#846FA0] transition-all text-lg shadow-md w-full md:w-auto">
+        <div className="flex flex-col sm:flex-row items-center gap-4">
+          <button className="bg-[#B6A3D9] text-white px-10 py-3 rounded-lg font-bold flex items-center gap-2 hover:bg-[#846FA0] transition-all text-lg shadow-md w-full sm:w-auto">
             ОТПРАВИТЬ ЗАЯВКУ <span className="text-2xl">→</span>
           </button>
-          <span className="text-xs text-[#8B7BAA] mt-2 md:mt-0">
+          <span className="text-xs text-[#8B7BAA] mt-2 sm:mt-0">
             Нажимая на кнопку вы даете согласие на обработку персональных данных
           </span>
         </div>
       </div>
+
       <hr className="my-6 border-[#E0D6F9]" />
-      {/* მთავარი ბლოკი */}
-      <div className="flex flex-col md:flex-row md:justify-between gap-8 mb-8 items-center md:items-start px-16">
-        {/* მარცხენა */}
-        <div className="flex flex-col md:flex-row gap-2 min-w-[220px] items-center">
+
+      {/* Main block */}
+      <div className="flex flex-col sm:flex-row sm:justify-between gap-8 mb-8 items-center sm:items-start px-4 sm:px-16">
+        {/* Left section */}
+        <div className="flex flex-col sm:flex-row gap-2 min-w-[220px] items-center">
           <Image
             src="/assets/images/footerLogo.svg"
             alt="GRS Logo"
@@ -69,44 +71,45 @@ export const Footer: FC = () => {
           </div>
         </div>
 
-        {/* სოციალური ღილაკები */}
-        <div className="flex gap-3 items-center mt-4">
+        {/* Social buttons */}
+        <div className="flex gap-3 items-center mt-4 sm:mt-0">
           <a
             href="#"
             className="hover:bg-[#B6A3D9]/30 rounded-full p-1 transition"
           >
-            <LinkedinIcon className="w-12 h-12" />
+            <LinkedinIcon className="w-10 h-10 sm:w-12 sm:h-12" />
           </a>
           <a
             href="#"
             className="hover:bg-[#B6A3D9]/30 rounded-full p-1 transition"
           >
-            <InstagramIcon className="w-12 h-12" />
+            <InstagramIcon className="w-10 h-10 sm:w-12 sm:h-12" />
           </a>
           <a
             href="#"
             className="hover:bg-[#B6A3D9]/30 rounded-full p-1 transition"
           >
-            <YoutubeIcon className="w-12 h-12" />
+            <YoutubeIcon className="w-10 h-10 sm:w-12 sm:h-12" />
           </a>
           <a
             href="#"
             className="hover:bg-[#B6A3D9]/30 rounded-full p-1 transition"
           >
-            <VkIcon className="w-12 h-12" />
+            <VkIcon className="w-10 h-10 sm:w-12 sm:h-12" />
           </a>
           <a
             href="#"
             className="hover:bg-[#B6A3D9]/30 rounded-full p-1 transition"
           >
-            <FacebookIcon className="w-12 h-12" />
+            <FacebookIcon className="w-10 h-10 sm:w-12 sm:h-12" />
           </a>
         </div>
       </div>
+
       <hr className="my-6 border-[#E0D6F9]" />
 
-      {/* ლინკები */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-x-8 gap-y-2 mb-8 px-16 text-[#846FA0]">
+      {/* Links */}
+      <div className="grid grid-cols-2 font-pt sm:grid-cols-4 gap-x-8 gap-y-2 mb-8 px-4 sm:px-16 text-[#846FA0]">
         <div className="flex flex-col gap-1">
           <a href="#">Главная</a>
           <a href="#">Реабилитация</a>
@@ -122,7 +125,6 @@ export const Footer: FC = () => {
           <a href="#">Все комплексы</a>
           <a href="#">Ортопедия</a>
           <ul className="pl-4">
-            {/*  */}
             <li>
               <a href="#">Шейный отдел позвоночника</a>
             </li>
@@ -143,7 +145,6 @@ export const Footer: FC = () => {
             </li>
           </ul>
           <a href="#">Неврология</a>
-          {/*  */}
           <ul className="pl-4">
             <li>
               <a href="#">Болезнь Паркинсона</a>
@@ -167,8 +168,9 @@ export const Footer: FC = () => {
           <a href="#">Реабилитация после Covid-19</a>
         </div>
       </div>
-      {/* ქვედა ლოგოები */}
-      <div className="flex flex-col md:flex-row justify-between items-center mb-4 px-16">
+
+      {/* Partner logos */}
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-4 px-4 sm:px-16">
         <Image
           src="/assets/images/services/asuta.png"
           alt="Assuta"
@@ -188,8 +190,9 @@ export const Footer: FC = () => {
           height={48}
         />
       </div>
-      {/* ქვედა ტექსტი */}
-      <div className="flex flex-col md:flex-row justify-between items-center text-sm text-[#8B7BAA] border-t border-[#E0D6F9] pt-2 text-center md:text-left px-16">
+
+      {/* Bottom text */}
+      <div className="flex flex-col font-pt sm:flex-row justify-between items-center text-sm text-[#8B7BAA] border-t border-[#E0D6F9] pt-2 text-center sm:text-left px-4 sm:px-16">
         <span>Copyright © 2023 GHRS LLC</span>
         <a href="#" className="hover:underline">
           Пользовательское соглашение

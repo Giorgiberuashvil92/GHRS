@@ -65,15 +65,15 @@ const Blog: React.FC<BlogProps> = ({
   const { t, locale } = useI18n();
   const { categories } = useCategories();
   const blogsPerPage = 4;
-  console.log(title)
+  console.log(title);
 
   const { articles } = useArticles({
     page: currentPage,
     limit: 4,
   });
 
-  console.log('Blog Categories:', categories);
-  console.log('Blog Articles:', articles);
+  console.log("Blog Categories:", categories);
+  console.log("Blog Articles:", articles);
 
   // Helper to get localized text
   const getLocalizedText = (
@@ -89,17 +89,19 @@ const Blog: React.FC<BlogProps> = ({
     );
   };
 
-
-
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
         setLoading(true);
-        const data = await apiRequest<Blog[]>(API_CONFIG.ENDPOINTS.BLOGS.WITH_ARTICLES);
+        const data = await apiRequest<Blog[]>(
+          API_CONFIG.ENDPOINTS.BLOGS.WITH_ARTICLES
+        );
         setBlogs(data);
       } catch (error) {
-        console.error('Error fetching blogs:', error);
-        setError(error instanceof Error ? error.message : 'Failed to fetch blogs');
+        console.error("Error fetching blogs:", error);
+        setError(
+          error instanceof Error ? error.message : "Failed to fetch blogs"
+        );
       } finally {
         setLoading(false);
       }
@@ -107,7 +109,6 @@ const Blog: React.FC<BlogProps> = ({
 
     fetchBlogs();
   }, []);
-
 
   const totalPages = useMemo(() => {
     const otherBlogs = blogs.slice(1);
@@ -131,18 +132,20 @@ const Blog: React.FC<BlogProps> = ({
   const canScrollLeft = currentPage > 0;
   const canScrollRight = currentPage < totalPages - 1;
 
-
-
   if (loading) {
     return <div>{t("common.loading")}</div>;
   }
 
   if (error) {
-    return <div>{t("common.error")}: {error}</div>;
+    return (
+      <div>
+        {t("common.error")}: {error}
+      </div>
+    );
   }
 
   return (
-    <div className="bg-[#F9F7FE] md:pb-10 md:mx-5 md:rounded-[20px]"> 
+    <div className="bg-[#F9F7FE] md:pb-10 md:mx-5 md:rounded-[20px]">
       {withBanner && (
         <Banner
           backgroundUrl="/assets/images/blog.png"
@@ -163,7 +166,7 @@ const Blog: React.FC<BlogProps> = ({
             <SliderArrows
               onScrollLeft={scrollLeft}
               onScrollRight={scrollRight}
-              canScrollLeft={canScrollLeft} 
+              canScrollLeft={canScrollLeft}
               canScrollRight={canScrollRight}
             />
           </div>
@@ -179,40 +182,52 @@ const Blog: React.FC<BlogProps> = ({
 
         {/* Dynamic Blog sections for each category */}
         {categories.map((category) => {
-          const categoryArticles = articles?.filter(article => {
-            // Handle both single categoryId and array of categoryIds
-            if (Array.isArray(article.categoryId)) {
-              // Check if any of the article's categoryIds match this category
-              // or if any of them are subcategories of this category
-              return article.categoryId.some(catId => {
-                // Direct match with main category
-                if (catId === category._id) return true;
-                
-                // Check if this catId is a subcategory of current category
-                return category.subcategories && category.subcategories.includes(catId);
-              });
-            }
-            
-            // Single categoryId case
-            if (article.categoryId === category._id) return true;
-            
-            // Check if single categoryId is a subcategory of current category
-            return category.subcategories && category.subcategories.includes(article.categoryId);
-          }) || [];
-          
-          console.log(`Category: ${getLocalizedText(category.name)} (${category._id})`);
+          const categoryArticles =
+            articles?.filter((article) => {
+              // Handle both single categoryId and array of categoryIds
+              if (Array.isArray(article.categoryId)) {
+                // Check if any of the article's categoryIds match this category
+                // or if any of them are subcategories of this category
+                return article.categoryId.some((catId) => {
+                  // Direct match with main category
+                  if (catId === category._id) return true;
+
+                  // Check if this catId is a subcategory of current category
+                  return (
+                    category.subcategories &&
+                    category.subcategories.includes(catId)
+                  );
+                });
+              }
+
+              // Single categoryId case
+              if (article.categoryId === category._id) return true;
+
+              // Check if single categoryId is a subcategory of current category
+              return (
+                category.subcategories &&
+                category.subcategories.includes(article.categoryId)
+              );
+            }) || [];
+
+          console.log(
+            `Category: ${getLocalizedText(category.name)} (${category._id})`
+          );
           console.log(`Category subcategories:`, category.subcategories);
           console.log(`Articles found: ${categoryArticles.length}`);
           if (categoryArticles.length > 0) {
-            console.log('Category articles:', categoryArticles.map(a => ({
-              title: a.title.en,
-              categoryId: a.categoryId
-            })));
+            console.log(
+              "Category articles:",
+              categoryArticles.map((a) => ({
+                title: a.title.en,
+                categoryId: a.categoryId,
+              }))
+            );
           }
-          
+
           // Only render if category has articles
           if (categoryArticles.length === 0) return null;
-          
+
           return (
             <div key={category._id} className="mt-10">
               <div className="flex items-center justify-between mb-4">
@@ -220,7 +235,7 @@ const Blog: React.FC<BlogProps> = ({
                   {getLocalizedText(category.name)}
                 </h2>
               </div>
-              
+
               <GridLayouts
                 blogs={categoryArticles}
                 layoutType={layoutType}

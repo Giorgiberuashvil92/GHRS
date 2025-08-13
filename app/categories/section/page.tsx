@@ -143,7 +143,7 @@ function SectionContent() {
           exercisesCount,
         }}
       />
-      <div className="md:pt-[100px] pt-[400px]">
+      <div className="md:pt-[100px] pt-[20px]">
         {Array.isArray(formattedSets) && formattedSets.length > 0 && (
           <div className="md:mb-10">
             <WorksSlider

@@ -59,7 +59,7 @@ export default function ArticlePage() {
       />
       <MobileNavbar />
 
-      <div className="mx-10">
+      <div className="md:mx-10 mx-0 overflow-hidden">
         <Article article={article} />
       </div>
       <Footer />

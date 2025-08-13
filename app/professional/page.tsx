@@ -32,7 +32,7 @@ interface Course {
     name: string;
   };
   duration?: string;
-  level: 'beginner' | 'intermediate' | 'advanced';
+  level: "beginner" | "intermediate" | "advanced";
   isActive: boolean;
   isFeatured: boolean;
 }
@@ -118,14 +118,14 @@ const Professional = () => {
       const response = await fetch(url);
 
       if (!response.ok) {
-        throw new Error('Failed to fetch courses');
+        throw new Error("Failed to fetch courses");
       }
 
       const data = await response.json();
       setCourses(data.courses);
       setError(null);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
       setLoading(false);
     }
@@ -138,47 +138,54 @@ const Professional = () => {
       const response = await fetch(url);
 
       if (!response.ok) {
-        throw new Error('Failed to fetch instructors');
+        throw new Error("Failed to fetch instructors");
       }
 
       const responseData = await response.json();
-      const data: BackendInstructor[] = Array.isArray(responseData) ? responseData : responseData.instructors || [];
+      const data: BackendInstructor[] = Array.isArray(responseData)
+        ? responseData
+        : responseData.instructors || [];
 
-      console.log('Instructors data:', data);
+      console.log("Instructors data:", data);
 
       // Transform data to match our interface
       const transformedInstructors: Instructor[] = data
-        .filter(instructor => instructor.isActive)
+        .filter((instructor) => instructor.isActive)
         .map((instructor) => ({
           id: instructor._id,
           name: instructor.name,
           position: instructor.profession || "Преподаватель",
           institution: "«Колледжа медицинского массажа»",
-          credentials: `${instructor.name}, ${instructor.profession || "Преподаватель"}`,
+          credentials: `${instructor.name}, ${
+            instructor.profession || "Преподаватель"
+          }`,
           education: [
             instructor.bio?.en || "",
-            instructor.htmlContent?.en?.replace(/<[^>]*>/g, '') || ""
-          ].filter(text => text.length > 0),
-          imageUrl: instructor.profileImage || "/assets/images/teachers/default.jpg",
+            instructor.htmlContent?.en?.replace(/<[^>]*>/g, "") || "",
+          ].filter((text) => text.length > 0),
+          imageUrl:
+            instructor.profileImage || "/assets/images/teachers/default.jpg",
           bio: {
             en: instructor.bio?.en || "",
             ru: instructor.bio?.ru || "",
-            ka: instructor.bio?.ka
+            ka: instructor.bio?.ka,
           },
           htmlContent: {
             en: instructor.htmlContent?.en || "",
             ru: instructor.htmlContent?.ru || "",
-            ka: instructor.htmlContent?.ka
-          }
+            ka: instructor.htmlContent?.ka,
+          },
         }));
 
-      console.log('Transformed instructors:', transformedInstructors);
+      console.log("Transformed instructors:", transformedInstructors);
 
       setInstructors(transformedInstructors);
       setInstructorsError(null);
     } catch (err) {
-      console.error('Error fetching instructors:', err);
-      setInstructorsError(err instanceof Error ? err.message : 'An error occurred');
+      console.error("Error fetching instructors:", err);
+      setInstructorsError(
+        err instanceof Error ? err.message : "An error occurred"
+      );
     } finally {
       setInstructorsLoading(false);
     }
@@ -203,9 +210,9 @@ const Professional = () => {
 
   return (
     <div>
-      <Header  variant="professional" />
-      <div className="mt-52 md:mt-40 md:px-5">
-        <div className="flex flex-col md:flex-row justify-center gap-5 md:gap-0 md:justify-between">
+      <Header variant="professional" />
+      <div className="mt-[20px] md:mt-40 md:px-5">
+        <div className="flex flex-col md:flex-row mx-2 justify-center gap-5 md:gap-0 md:justify-between">
           <div className="md:w-[500px] w-[359px] relative bg-[url('/assets/images/bluebg.jpg')] bg-cover h-[288px] rounded-[20px]">
             <Image
               src={"/assets/images/medal.png"}
@@ -299,8 +306,8 @@ const Professional = () => {
                 count: courses?.length.toString() || "0",
               }) === "string"
                 ? t("professional.courses.all_courses", {
-                  count: courses?.length.toString() || "0",
-                })
+                    count: courses?.length.toString() || "0",
+                  })
                 : `All ${courses?.length || 0} courses`}
             </Link>
           </div>
@@ -333,7 +340,7 @@ const Professional = () => {
         titleStyles="text-white"
         buttonStyles="hover:opacity-80"
       />
-      <div className="md:mb-10">  
+      <div className="md:mb-10">
         <ReviewSlider title={""} />
       </div>
       <Footer />
