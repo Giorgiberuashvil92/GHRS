@@ -41,8 +41,6 @@ function SectionContent() {
     categoryData?.sets?.filter((set) => set.subCategoryId === subcategoryId) ||
     [];
 
-
-
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
@@ -145,7 +143,7 @@ function SectionContent() {
       />
       <div className="md:pt-[100px] pt-[20px]">
         {Array.isArray(formattedSets) && formattedSets.length > 0 && (
-          <div className="md:mb-10">
+          <div className="md:mb-10 m-2 md:m-6">
             <WorksSlider
               title={getLocalizedText(
                 selectedSubcategory?.name as {
@@ -157,7 +155,10 @@ function SectionContent() {
               )}
               works={formattedSets}
               linkType="complex"
-              fromMain={false} seeAll={false} scrollable={false}            />
+              fromMain={false}
+              seeAll={false}
+              scrollable={false}
+            />
           </div>
         )}
 
@@ -199,7 +200,7 @@ function SectionContent() {
           </div>
         )}
 
-<Subscribe
+        <Subscribe
           backgroundImage="/assets/images/categorySliderBgs/bg1.jpg"
           titleKey="subscription.test_title"
           buttonTextKey="buttons.take_test"
@@ -232,7 +233,12 @@ function SectionContent() {
           />
         </div>
 
-        <Professional withBanner={false} title={""} bgColor={"#F9F7FE"} withProfText={true} />
+        <Professional
+          withBanner={false}
+          title={""}
+          bgColor={"#F9F7FE"}
+          withProfText={true}
+        />
       </div>
       <Footer />
     </div>

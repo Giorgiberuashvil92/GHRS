@@ -670,7 +670,7 @@ const Header: React.FC<HeaderProps> = ({
 
             {variant == "complex" && (
               <div className="mb-5 md:mb-0 mx-auto">
-                <section className="mt-[122px] md:mt-[250px] mx-auto md:mx-5 flex flex-col md:flex-row md:items-center md:gap-2">
+                <section className="mt-[240px] md:mt-[250px] mx-auto md:mx-5 flex flex-col md:flex-row md:items-center md:gap-2">
                   {/* პირველი ბარათი */}
                   <Link
                     href={"/categories"}
@@ -801,6 +801,18 @@ const Header: React.FC<HeaderProps> = ({
                 <div className="bg-[url('/assets/images/categorySliderBgs/bg2.jpg')] bg-cover bg-center p-4 rounded-[20px] w-[176px] h-[166px] ">
                   В каталог
                 </div>
+              </div>
+            )}
+
+            {variant == "rehabilitation" && (
+              <div className="flex md:hidden flex-col justify-end mx-4 mt-[450px] gap-2">
+                <p className="text-[32px] leading-[100%] tracking-[-3%] max-w-[343px]">
+                  СОВРЕМЕННЫЕ ИЗРАИЛЬСКИЕ МЕТОДИКИ РЕАБИЛИТАЦИИ
+                </p>
+                <p className="font-pt font-medium leading-[100%] max-w-[311px]">
+                  Для восстановления и поддержания подвижности и
+                  трудоспособности
+                </p>
               </div>
             )}
 

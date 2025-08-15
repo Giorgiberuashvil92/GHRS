@@ -264,13 +264,13 @@ const Complex = ({ params }: ComplexPageProps) => {
   };
 
   return (
-    <div>
+    <div className="">
       <Header
         variant="complex"
         onPriceClick={() => setPopoverOpen(true)}
         setData={setData}
       />
-      <div className="">
+      <div className="-mt-14 md:-mt-0">
         <section className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-20 md:mt-40 px-4">
           <Tabs
             items={tabItems}
@@ -601,34 +601,36 @@ const Complex = ({ params }: ComplexPageProps) => {
             </div>
           </section>
         </div>
-        <Subscribe
-          backgroundImage="/assets/images/categorySliderBgs/bg1.jpg"
-          titleKey="subscription.test_title"
-          buttonTextKey="buttons.take_test"
-          buttonTextColor="#3D334A"
-          buttonBgColor="#FFFFFF"
-          bgCenter={true}
-          containerStyles="custom-class"
-          titleStyles="text-white"
-          buttonStyles="hover:opacity-80"
-        />
-        <ReviewSlider title={"ОТЗЫВЫ О комплексе"} />
-        <div className="md:my-10">
-          <WorksSlider
-            title="Может понравиться"
-            seeAll={true}
-            works={[]}
-            fromMain={false}
-            scrollable={true}
+        <div className="mx-2 md:mx-0">
+          <Subscribe
+            backgroundImage="/assets/images/categorySliderBgs/bg1.jpg"
+            titleKey="subscription.test_title"
+            buttonTextKey="buttons.take_test"
+            buttonTextColor="#3D334A"
+            buttonBgColor="#FFFFFF"
+            bgCenter={true}
+            containerStyles="custom-class"
+            titleStyles="text-white"
+            buttonStyles="hover:opacity-80"
           />
-        </div>
-        <div className="md:my-10">
-          <Blog
-            withBanner={false}
-            withSlider={true}
-            layoutType="default"
-            title={"GRS МЕДИА"}
-          />
+          <ReviewSlider title={"ОТЗЫВЫ О комплексе"} />
+          <div className="md:my-10 my-4 mx-0 md:mx-6">
+            <WorksSlider
+              title="Может понравиться"
+              seeAll={true}
+              works={[]}
+              fromMain={false}
+              scrollable={true}
+            />
+          </div>
+          <div className="md:my-10">
+            <Blog
+              withBanner={false}
+              withSlider={true}
+              layoutType="default"
+              title={"GRS МЕДИА"}
+            />
+          </div>
         </div>
 
         <Modal open={modalOpen} onClose={() => setModalOpen(false)}>

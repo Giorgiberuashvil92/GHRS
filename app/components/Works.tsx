@@ -212,7 +212,7 @@ const Works: React.FC<WorksProps> = ({
   }
 
   return (
-    <div className="bg-[#F9F7FE] md:mx-6 md:rounded-b-[30px] md:mt-0 md:pt-6 pt-6 px-6 md:mb-10 mb-0   md:pb-10 pb-0">
+    <div className="bg-[#F9F7FE] md:mx-6 md:rounded-b-[30px] md:mt-0 md:pt-6 pt-6 px-4 md:mb-10 mb-0   md:pb-10 pb-0">
       {/* Slider */}
       <WorksSlider
         scrollable={scrollable}

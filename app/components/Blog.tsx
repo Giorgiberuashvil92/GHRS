@@ -160,7 +160,7 @@ const Blog: React.FC<BlogProps> = ({
         {/* Popular Articles - All articles */}
         {withSlider && (
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-[20px] leading-[120%] md:my-5 md:mx-3 text-[#3D334A] md:text-[40px] md:tracking-[-3%]">
+            <h2 className="text-[20px] leading-[120%] md:my-5 md:mx-3 mx-4 text-[#3D334A] md:text-[40px] md:tracking-[-3%]">
               {title || t("navigation.blog")}
             </h2>
             <SliderArrows
@@ -229,7 +229,7 @@ const Blog: React.FC<BlogProps> = ({
           if (categoryArticles.length === 0) return null;
 
           return (
-            <div key={category._id} className="mt-10">
+            <div key={category._id} className="">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-[20px] leading-[120%] md:my-5 md:mx-3 text-[#3D334A] md:text-[40px] md:tracking-[-3%]">
                   {getLocalizedText(category.name)}

@@ -73,10 +73,6 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
       }
     }, []);
 
-
-
-
-
     useImperativeHandle(ref, () => sliderRef.current as HTMLDivElement);
 
     const sliderRef = React.useRef<HTMLDivElement | null>(null);
@@ -177,23 +173,22 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
                 <Link
                   href={`/categories/${category._id}`}
                   onClick={(e) => {
-
                     handleCategoryClick(category._id, categoryTitle, e);
                   }}
                   className="group cursor-pointer transform transition-transform duration-300"
                 >
                   <div
-                    className="bg-conic rounded-[14px] w-[330px] h-[240px] md:w-[550px] md:h-[330px] hover:shadow-lg transition-all p-2 duration-300 ease-in-out transform hover:scale-[1.01] my-2 mx-1"
+                    className="bg-conic rounded-[14px] w-[232px] h-[122px] md:w-[550px] md:h-[330px] hover:shadow-lg transition-all p-1 md:p-2 duration-300 ease-in-out transform hover:scale-[1.01] my-2 mx-1"
                     style={{ backgroundImage: `url(${backgroundImageUrl})` }}
                   >
                     <div
-                      className="h-[80%] bg-cover bg-center rounded-xl"
+                      className="md:h-[80%] h-[70%] bg-cover bg-center rounded-xl"
                       style={{ backgroundImage: `url(${categoryImageUrl})` }}
                     ></div>
 
-                    <div className="flex items-center justify-between bg-white my-2 px-4 rounded-2xl text-black group-hover:bg-gray-50 transition-colors duration-300">
+                    <div className="flex items-center justify-between bg-white my-[2px] md:my-2 px-4 rounded-2xl text-black group-hover:bg-gray-50 transition-colors duration-300">
                       <h4
-                        className="my-1 md:my-2 text-[22px] md:text-[28px] font-bold overflow-hidden whitespace-nowrap tracking-[-3%] text-ellipsis max-w-[390px]"
+                        className="my-1 md:my-2 text-[14px] mt-2  md:text-[28px] font-bold overflow-hidden whitespace-nowrap tracking-[-3%] text-ellipsis max-w-[390px]"
                         style={{
                           backgroundImage: `url(${backgroundImageUrl})`,
                           WebkitBackgroundClip: "text",
@@ -206,7 +201,7 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
                         {categoryTitle}
                       </h4>
                       <div
-                        className="bg-[#E9DFF6] w-8 h-8 flex items-center justify-center rounded group-hover:bg-[#D4BAFC] transition-colors cursor-pointer relative z-20 dropdown-arrow"
+                        className="bg-[#E9DFF6] w-4 h-4 md:w-8 md:h-8 flex items-center justify-center rounded group-hover:bg-[#D4BAFC] transition-colors cursor-pointer relative z-20 dropdown-arrow"
                         onClick={(e) => {
                           if (hasSubcategories) {
                             handleDropdownToggle(category._id, e);
@@ -219,8 +214,9 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
                           viewBox="0 0 24 24"
                           fill="none"
                           xmlns="http://www.w3.org/2000/svg"
-                          className={`transition-transform duration-200 ${isDropdownOpen(category._id) ? "rotate-90" : ""
-                            }`}
+                          className={`transition-transform duration-200 ${
+                            isDropdownOpen(category._id) ? "rotate-90" : ""
+                          }`}
                         >
                           <path
                             d="M9 18L15 12L9 6"
@@ -233,7 +229,6 @@ const CategorySlider = forwardRef<HTMLDivElement, CategorySliderProps>(
                       </div>
                     </div>
                   </div>
-
                 </Link>
                 <SubcategoryDropdown
                   // subcategories={[]} // subcategories არ არის populated useCategories hook-ში

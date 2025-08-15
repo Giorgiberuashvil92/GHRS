@@ -92,7 +92,7 @@ const WorksSlider: React.FC<WorksSliderProps> = ({
                     }&subcategoryId=${work.subcategoryId || ""}`
                   : `/sets/${work.id}`
               }
-              className="bg-white  w-[400px] h-[493px] flex-shrink-0 rounded-[20px] hover:shadow-lg transition-shadow flex flex-col"
+              className="bg-white  md:w-[400px] md:h-[493px] w-[176px] flex-shrink-0 rounded-[20px] hover:shadow-lg transition-shadow flex flex-col"
             >
               <div className="flex-grow">
                 <Image
@@ -100,19 +100,19 @@ const WorksSlider: React.FC<WorksSliderProps> = ({
                   width={319}
                   height={250}
                   alt={work.title}
-                  className="w-full h-[250px] object-cover rounded-2xl mb-6"
+                  className="md:h-[212px] md:w-full w-[164px] h-[114px] object-cover rounded-2xl mb-6"
                 />
                 <div className="mb-2.5 mx-4">
-                  <span className="p-3 bg-[#E9DFF6] inline-block rounded-[6px] text-[#3D334A] text-[14px] font-bold leading-[90%] uppercase truncate max-w-[120px]">
+                  <span className="md:p-3 p-1 bg-[#E9DFF6] inline-block rounded-[6px] text-[#3D334A] md:text-[14px] text-[10px] font-bold leading-[90%] uppercase truncate max-w-[120px]">
                     {work.categoryName}
                   </span>
                 </div>
-                <p className="line-clamp-4 font-pt text-[#3D334A] leading-[120%] text-lg font-black  mx-4">
+                <p className="line-clamp-4 font-pt text-[#3D334A] leading-[120%] md:text-lg text-[14px] font-black  mx-4">
                   {work.description}
                 </p>
               </div>
-              <div className="flex items-center justify-end">
-                <span className="px-5 py-3 bg-[#D4BAFC] rounded-lg text-white text-[18px] leading-[100%] font-bold mb-8 mr-8 mt-6">
+              <div className="flex md:items-center justify-end md:w-full w-[140px] items-end font-pt">
+                <span className="md:px-5 md:py-3 py-[5px] px-4 bg-[#D4BAFC] rounded-lg text-white md:text-[18px] text-[12px] leading-[100%] font-bold mb-8 md:mr-8 -mr-2 mt-6">
                   {work.monthlyPrice}$
                   {language === "ka" ? "₾" : language === "ru" ? "₽" : "$"}/
                   {t("common.month")}

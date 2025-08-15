@@ -60,10 +60,18 @@ export default function CategoriesPage() {
     <div className="">
       {/* Header Section */}
       <Header variant="categories" />
-      <div className="md:pt-[100px] pt-[400px]">
+      <div className="md:pt-[100px] pt-[50px]">
         {/*  */}
         <Section border={0} borderColor="none" />
-        <WorksSlider title="Комплексы" works={homePageWorks} fromMain={false} seeAll={true} scrollable={true} />
+        <div className="m-2 md:m-6">
+          <WorksSlider
+            title="Комплексы"
+            works={homePageWorks}
+            fromMain={false}
+            seeAll={true}
+            scrollable={true}
+          />
+        </div>
         <div className="md:my-10">
           <Subscribe
             backgroundImage="/assets/images/categorySliderBgs/bg4.jpg"
@@ -96,7 +104,9 @@ export default function CategoriesPage() {
         <Professional
           title={"GRS Профразвитие"}
           bgColor={"#F9F7FE"}
-          withProfText={true} withBanner={false} />
+          withProfText={true}
+          withBanner={false}
+        />
       </div>
       <Footer />
     </div>

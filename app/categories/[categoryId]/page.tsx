@@ -132,7 +132,7 @@ export default function CategoriesPage({
         }}
       />
       <div className="md:pt-[100px] pt-[40px] ">
-        <div className="md:px-10 md:py-[50px] py-[20px] px-4 rounded-[30px] bg-[#F9F7FE] md:mb-10 mx-2">
+        <div className="md:px-10 md:py-[50px] py-[20px] px-4 rounded-[30px] bg-[#F9F7FE] md:mb-10 mx-2 md:m-6">
           <div className="flex items-center justify-between mb-[20px]">
             <div className="flex flex-col md:gap-5 gap-2">
               <h1 className="text-[#3D334A] md:text-[40px] text-[20px] leading-[120%] tracking-[-3%]">
@@ -197,7 +197,7 @@ export default function CategoriesPage({
         </div>
 
         {Array.isArray(formattedSets) && formattedSets.length > 0 && (
-          <div className="mt-10 mb-10">
+          <div className="mt-10 mb-10 mx-2 md:m-6">
             <WorksSlider
               works={formattedSets}
               linkType="complex"

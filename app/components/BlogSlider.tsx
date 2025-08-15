@@ -108,12 +108,12 @@ const BlogSlider: React.FC<BlogSliderProps> = ({
   // };
 
   return (
-    <div className="w-full font-pt">
+    <div className="w-full font-pt ">
       <div className="flex md:flex-row flex-col gap-2.5 mb-10 w-full px-0">
         {/* Featured Blog */}
         {featuredBlog && isDesktop && (
           <Link href={getArticleLink(featuredBlog)}>
-            <div className="bg-white md:p-2 md:pb-5 hover:shadow-lg duration-300 transition-shadow md:h-[518px] w-[280px] md:w-auto flex-shrink-0 rounded-[20px] flex-col justify-between snap-center">
+            <div className=" md:p-2 md:pb-5 hover:shadow-lg duration-300 transition-shadow md:h-[518px] w-[280px] md:w-auto flex-shrink-0 rounded-[20px] flex-col justify-between snap-center">
               <div className="relative md:min-w-[300px] md:w-[690px] w-[201px]">
                 <Image
                   src={
@@ -191,7 +191,7 @@ const BlogSlider: React.FC<BlogSliderProps> = ({
           >
             {otherBlogs.map((blog) => (
               <Link key={blog._id} href={getArticleLink(blog)}>
-                <div className="w-[200px] flex-shrink-0 p-3 bg-white flex flex-col justify-between rounded-[10px] snap-center">
+                <div className="w-[200px] h-[289px] flex-shrink-0 p-3 bg-white flex flex-col justify-between rounded-[10px] snap-center">
                   <Image
                     src={blog.featuredImages?.[0] || blog.imageUrl || ""}
                     width={189}

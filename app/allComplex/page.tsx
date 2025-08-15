@@ -141,7 +141,7 @@ const AllComplex = () => {
       />
       <MobileNavbar />
 
-      <h1 className="md:text-[64px] md:px-10 px-5 leading-[100%] tracking-[-3%] text-[#3D334A]">
+      <h1 className="md:text-[64px] text-[32px] mt-2 md:px-10 px-5 leading-[100%] tracking-[-3%] text-[#3D334A]">
         {pageTexts.title[locale as keyof typeof pageTexts.title] ||
           pageTexts.title.ru}
       </h1>
@@ -164,43 +164,54 @@ const AllComplex = () => {
 
         <div
           ref={dropdownRef}
-          className="w-full px-10 min-h-[64px] bg-white rounded-[40px] mb-6 p-4 flex flex-wrap gap-2 md:gap-3 items-center"
+          className="w-full px-4 sm:px-6 md:px-10 min-h-[64px] bg-white rounded-[40px] mb-6 py-4 flex flex-wrap gap-2 md:gap-3 items-center"
         >
           {categories.map((cat, idx) => {
             const isDropdown = !!cat.subcategories;
             const isOpen = openDropdownId === cat._id;
+
             return (
               <div key={cat._id} className="relative">
                 <button
-                  className={`text-[#3D334A] text-[13px] md:text-lg tracking-wide font-medium rounded-[8px] px-3 md:px-4 py-3 h-[33px] transition-colors whitespace-nowrap flex items-center gap-1
-                  ${idx === 0 ? "bg-[#E9DDFB] font-bold" : "bg-[#F9F7FE]"}
-                  
-                  ${isOpen ? "ring-2 ring-[#D4BAFC] bg-[#F3D57F]" : ""}
-                `}
+                  type="button"
                   onClick={() => {
                     if (isDropdown) {
                       setOpenDropdownId(isOpen ? null : cat._id);
                     }
                   }}
-                  type="button"
+                  className={`
+            text-[#3D334A] text-[13px] md:text-lg tracking-wide font-medium
+            rounded-[8px] px-2 py-2 md:px-4 md:py-3 transition-colors
+            flex items-center gap-1 whitespace-nowrap
+            max-w-[140px] sm:max-w-[180px] md:max-w-none
+            ${idx === 0 ? "bg-[#E9DDFB] font-bold" : "bg-[#F9F7FE]"}
+            ${isOpen ? "ring-2 ring-[#D4BAFC] bg-[#F3D57F]" : ""}
+          `}
+                  title={getLocalizedText(cat.name)}
                 >
-                  {getLocalizedText(cat.name)}
+                  {/* ჭრადი ტექსტი */}
+                  <span className="truncate overflow-hidden flex-1 text-left">
+                    {getLocalizedText(cat.name)}
+                  </span>
+
+                  {/* აიკონი — ყოველთვის ჩანს */}
                   {isDropdown && (
                     <span
-                      className={`ml-1 text-sm  transition-transform p-1 bg-[#E9D9FF] rounded-sm ${
-                        isOpen ? "rotate-180" : ""
-                      }`}
+                      className={`
+                text-sm transition-transform p-1 bg-[#E9D9FF] rounded-sm
+                flex-shrink-0 ${isOpen ? "rotate-180" : ""}
+              `}
                     >
                       <IoIosArrowDown />
                     </span>
                   )}
                 </button>
 
+                {/* Dropdown მენიუ */}
                 {isDropdown && isOpen && (
-                  <div className="absolute left-0 top-full mt-1 z-20 bg-white rounded-[10px] shadow-lg min-w-[160px] py-2 animate-fade-in">
+                  <div className="absolute left-0 top-full mt-1 z-20 bg-white rounded-[10px] shadow-lg min-w-[160px] max-w-[90vw] overflow-x-auto py-2 animate-fade-in">
                     {cat.subcategories.map(
                       (subcategoryId: string, i: number) => {
-                        // ვპოულობთ subcategory-ს ID-ის მიხედვით
                         const subcategory = subcategories.find(
                           (sub: Subcategory) => sub._id === subcategoryId
                         );
@@ -211,7 +222,8 @@ const AllComplex = () => {
                         return (
                           <div
                             key={i}
-                            className="px-4 py-2 hover:bg-[#F3D57F] cursor-pointer text-[#3D334A] text-[13px]"
+                            className="px-4 py-2 hover:bg-[#F3D57F] cursor-pointer text-[#3D334A] text-[13px] whitespace-nowrap truncate max-w-[200px]"
+                            title={subcategoryName}
                           >
                             {subcategoryName}
                           </div>
