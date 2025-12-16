@@ -28,8 +28,8 @@ import { TestModule } from './test/test.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-    MongooseModule.forRoot(process.env.MONGODB_URI),
-    EmailModule, // ← დამატებული
+    MongooseModule.forRoot("mongodb+srv://beruashvilig60:Berobero1234!@cluster0.dtwfws3.mongodb.net/grs-db"),
+    EmailModule, 
     AuthModule,
     UserModule,
     CategoryModule,
