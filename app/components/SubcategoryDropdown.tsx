@@ -44,7 +44,7 @@ const SubcategoryDropdown = ({
         
         const endpoint = isProduction 
           ? `/categories/${categoryId}/subcategories`
-          : `/api/categories/${categoryId}/subcategories`;
+          : `/categories/${categoryId}/subcategories`;
         
         const response = await fetch(`${API_CONFIG.BASE_URL}${endpoint}`);
         const data = await response.json();

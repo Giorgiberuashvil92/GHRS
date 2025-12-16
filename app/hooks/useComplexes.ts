@@ -120,7 +120,7 @@ export function useComplexes(categoryId?: string | number): UseComplexesReturn {
       if (catId || categoryId) {
         const id = catId || categoryId;
         const { apiRequest, API_CONFIG } = await import("../config/api");
-        const endpoint = `/api/categories/${id}/exercises-and-complexes`;
+        const endpoint = `/categories/${id}/exercises-and-complexes`;
         console.log(
           "🔗 Fetching category complexes/exercises from:",
           `${API_CONFIG.BASE_URL}${endpoint}`

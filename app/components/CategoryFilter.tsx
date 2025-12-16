@@ -54,7 +54,7 @@ export default function CategoryFilter({ onCategoryChange, onSubcategoryChange, 
           window.location.hostname !== 'localhost' &&
           API_CONFIG.BASE_URL.includes('render.com');
         
-        const endpoint = isProduction ? '/categories' : '/api/categories';
+        const endpoint = isProduction ? '/categories' : '/categories';
         const response = await fetch(`${API_CONFIG.BASE_URL}${endpoint}`);
         
         if (!response.ok) {
