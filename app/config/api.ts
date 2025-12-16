@@ -93,7 +93,7 @@ export const API_CONFIG = {
       ? 'https://ghrs-backend.onrender.com'
       : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
           ? 'https://ghrs-backend.onrender.com'
-          : 'https://ghrs-backend.onrender.com/')),
+          : 'https://ghrs-backend.onrender.com')),
   
   ENDPOINTS: {
     UPLOAD: {
