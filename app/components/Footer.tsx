@@ -162,7 +162,7 @@ export const Footer: FC = () => {
               value={formData.name}
               onChange={handleInputChange}
               placeholder={t("form.name")}
-              className="flex-1 rounded-lg px-4 py-3 bg-white text-[#3D334A] placeholder:text-[#8B7BAA] outline-none focus:ring-2 focus:ring-[#B6A3D9] transition font-pt"
+              className="flex-1 rounded-lg px-4 py-3 bg-white text-[#3D334A] text-lg placeholder:text-[#846FA0] placeholder:font-medium outline-none focus:ring-2 focus:ring-[#B6A3D9] transition font-pt"
               required
               disabled={isSubmitting}
             />
@@ -172,7 +172,7 @@ export const Footer: FC = () => {
               value={formData.phone}
               onChange={handleInputChange}
               placeholder={t("form.phone")}
-              className="flex-1 rounded-lg px-4 py-3 bg-white text-[#3D334A] placeholder:text-[#8B7BAA] outline-none focus:ring-2 focus:ring-[#B6A3D9] transition font-pt"
+              className="flex-1 rounded-lg px-4 py-3 bg-white text-[#3D334A] text-lg placeholder:text-[#846FA0] placeholder:font-medium outline-none focus:ring-2 focus:ring-[#B6A3D9] transition font-pt"
               required
               disabled={isSubmitting}
               pattern="[0-9+\-()\s]+"
@@ -184,7 +184,7 @@ export const Footer: FC = () => {
               value={formData.email}
               onChange={handleInputChange}
               placeholder={t("form.email")}
-              className="flex-1 rounded-lg px-4 py-3 bg-white text-[#3D334A] placeholder:text-[#8B7BAA] outline-none focus:ring-2 focus:ring-[#B6A3D9] transition font-pt"
+              className="flex-1 rounded-lg px-4 py-3 bg-white text-[#3D334A] text-lg placeholder:text-[#846FA0] placeholder:font-medium outline-none focus:ring-2 focus:ring-[#B6A3D9] transition font-pt"
               required
               disabled={isSubmitting}
             />
@@ -206,7 +206,7 @@ export const Footer: FC = () => {
                 </>
               )}
             </button>
-            <span className="text-[#8B7BAA] mt-2 md:mt-0 max-w-[450px] text-sm font-pt">
+            <span className="text-[#846FA0] font-medium mt-2 md:mt-0 max-w-[450px] text-lg font-pt">
               {t("consultation.consent")}
             </span>
           </div>
@@ -243,25 +243,25 @@ export const Footer: FC = () => {
             className="mb-2"
           />
           <div className="flex flex-col ml-6 gap-5">
-            <span className="text-sm text-[#8B7BAA] font-pt">{t("workHours")}</span>
+            <span className="text-lg text-[#846FA0] font-medium font-pt">{t("workHours")}</span>
             {locale === "ru" ? (
               <a
                 href="tel:+79168561145"
-                className="text-2xl font-bold text-[#8B7BAA] hover:text-[#D4BAFC] transition-colors font-pt"
+                className="text-2xl font-bold text-[#846FA0] hover:text-[#D4BAFC] transition-colors font-pt"
               >
                 +7 (916) 856—11—45
               </a>
             ) : (
               <a
                 href="tel:+972539617579"
-                className="text-2xl font-bold text-[#8B7BAA] hover:text-[#D4BAFC] transition-colors font-pt"
+                className="text-2xl font-bold text-[#846FA0] hover:text-[#D4BAFC] transition-colors font-pt"
               >
                 +972 53-9617579
               </a>
             )}
             <a
               href="mailto:office@ghrs-group.com"
-              className="text-[#8B7BAA] text-sm hover:text-[#D4BAFC] hover:underline font-pt"
+              className="text-[#846FA0] text-lg font-medium hover:text-[#D4BAFC] hover:underline font-pt"
             >
               office@ghrs-group.com
             </a>
@@ -441,43 +441,43 @@ export const Footer: FC = () => {
       <hr className="my-6 border-[#E0D6F9]" />
 
       {/* ლინკები */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8 px-16 text-[#8B7BAA] font-pt">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8 px-16 text-[#846FA0] font-medium font-pt text-lg">
         <div className="flex flex-col gap-3">
-          <a href="/" className="hover:text-[#846FA0] transition-colors font-pt">{t("links.home")}</a>
-          <a href="/rehabilitation" className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.rehabilitation")}</a>
-          <a href="/professional" className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.development")}</a>
-          <a href="/blog" className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.blog")}</a>
+          <a href="/" className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.home")}</a>
+          <a href="/rehabilitation" className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.rehabilitation")}</a>
+          <a href="/professional" className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.development")}</a>
+          <a href="/blog" className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.blog")}</a>
         </div>
         <div className="flex flex-col gap-3">
-          <a href="/about" className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.about")}</a>
-          <a href="/faq" className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.faq")}</a>
-          <a href="/user-guide" className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.userGuide")}</a>
+          <a href="/about" className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.about")}</a>
+          <a href="/faq" className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.faq")}</a>
+          <a href="/user-guide" className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.userGuide")}</a>
         </div>
         <div className="flex flex-col gap-3">
-          <a href="/allComplex" className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.allSets")}</a>
-          <a href={`/categories/${orthopedicsId}`} className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.orthopedics")}</a>
+          <a href="/allComplex" className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.allSets")}</a>
+          <a href={`/categories/${orthopedicsId}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.orthopedics")}</a>
           <ul className="flex flex-col gap-2 pl-4">
-            <li><a href={`/categories/${categoryLinks.cervicalSpine}`} className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.cervical")}</a></li>
-            <li><a href={`/categories/${categoryLinks.thoracicSpine}`} className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.thoracic")}</a></li>
-            <li><a href={`/categories/${categoryLinks.lumbarSpine}`} className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.lumbar")}</a></li>
-            <li><a href={`/categories/${categoryLinks.upperLimbs}`} className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.upperLimbs")}</a></li>
-            <li><a href={`/categories/${categoryLinks.lowerLimbs}`} className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.lowerLimbs")}</a></li>
-            <li><a href={`/categories/${categoryLinks.posture}`} className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.posture")}</a></li>
+            <li><a href={`/categories/${categoryLinks.cervicalSpine}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.cervical")}</a></li>
+            <li><a href={`/categories/${categoryLinks.thoracicSpine}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.thoracic")}</a></li>
+            <li><a href={`/categories/${categoryLinks.lumbarSpine}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.lumbar")}</a></li>
+            <li><a href={`/categories/${categoryLinks.upperLimbs}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.upperLimbs")}</a></li>
+            <li><a href={`/categories/${categoryLinks.lowerLimbs}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.lowerLimbs")}</a></li>
+            <li><a href={`/categories/${categoryLinks.posture}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.posture")}</a></li>
           </ul>
-          <a href={`/categories/${categoryLinks.neurology}`} className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.neurology")}</a>
+          <a href={`/categories/${categoryLinks.neurology}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.neurology")}</a>
           <ul className="flex flex-col gap-2 pl-4">
-            <li><a href={`/complex/${complexLinks.parkinsons}`} className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.parkinsons")}</a></li>
-            <li><a href={`/complex/${complexLinks.stroke}`} className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.stroke")}</a></li>
-            <li><a href={`/complex/${complexLinks.facialNerve}`} className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.facialNerve")}</a></li>
-            <li><a href={`/complex/${complexLinks.multipleSclerosis}`} className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.multipleSclerosis")}</a></li>
+            <li><a href={`/complex/${complexLinks.parkinsons}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.parkinsons")}</a></li>
+            <li><a href={`/complex/${complexLinks.stroke}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.stroke")}</a></li>
+            <li><a href={`/complex/${complexLinks.facialNerve}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.facialNerve")}</a></li>
+            <li><a href={`/complex/${complexLinks.multipleSclerosis}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.multipleSclerosis")}</a></li>
           </ul>
         </div>
         <div className="flex flex-col gap-3">
-          <a href={`/categories/${categoryLinks.aphasia}`} className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.aphasia")}</a>
-          <a href={`/categories/${categoryLinks.obesity}`} className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.obesity")}</a>
-          <a href={`/categories/${categoryLinks.gaitRehab}`} className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.gaitRehab")}</a>
-          <a href="/allComplex" className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.elderlyRehab")}</a>
-          <a href={`/categories/${categoryLinks.covidRehab}`} className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.covidRehab")}</a>
+          <a href={`/categories/${categoryLinks.aphasia}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.aphasia")}</a>
+          <a href={`/categories/${categoryLinks.obesity}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.obesity")}</a>
+          <a href={`/categories/${categoryLinks.gaitRehab}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.gaitRehab")}</a>
+          <a href="/allComplex" className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.elderlyRehab")}</a>
+          <a href={`/categories/${categoryLinks.covidRehab}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.covidRehab")}</a>
         </div>
       </div>
 
@@ -506,7 +506,7 @@ export const Footer: FC = () => {
       </div>
 
       {/* ქვედა ტექსტი */}
-      <div className="flex flex-col md:flex-row justify-between items-center text-sm text-[#8B7BAA] border-t border-[#E0D6F9] pt-2 text-center md:text-left px-16 gap-2 font-pt">
+      <div className="flex flex-col md:flex-row justify-between items-center text-lg text-[#846FA0] font-medium border-t border-[#E0D6F9] pt-2 text-center md:text-left px-16 gap-2 font-pt">
         <span>{t("copyright")}</span>
         <a 
           href={currentLinks.userAgreement} 

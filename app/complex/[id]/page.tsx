@@ -495,19 +495,11 @@ const Complex = ({ params }: ComplexPageProps) => {
             <div className="order-1 md:order-3 flex flex-col md:gap-4 gap-5">
               {/* Beginner Level */}
               <div
-                className={`relative ${
-                  shouldShowPlayButton("easy")
-                    ? "bg-[url('/assets/images/categorySliderBgs/bg1.jpg')] bg-cover bg-center bg-no-repeat"
-                    : "bg-[rgba(249,247,254,1)]"
-                } p-5 rounded-[10px] flex justify-between items-center`}
+                className="relative bg-[url('/assets/images/categorySliderBgs/bg1.jpg')] bg-cover bg-center bg-no-repeat p-5 rounded-[10px] flex justify-between items-center"
               >
                 <div className="flex md:flex-row md:gap-[40px] flex-col md:items-center">
                   <h3
-                    className={`md:text-2xl text-[18px] leading-[120%] tracking-[-3%] uppercase ${
-                      shouldShowPlayButton("easy")
-                        ? "text-[rgba(255,255,255,1)]"
-                        : "text-[rgba(132,111,160,1)]"
-                    }`}
+                    className="text-[rgba(255,255,255,1)] md:text-2xl text-[18px] leading-[120%] tracking-[-3%] uppercase"
                   >
                     {t("complex_beginner_level")}
                   </h3>

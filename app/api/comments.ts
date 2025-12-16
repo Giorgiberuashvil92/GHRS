@@ -1,4 +1,4 @@
-import { API_CONFIG, apiRequest } from '../config/api';
+import { apiRequest } from '../config/api';
 
 export interface Comment {
   _id: string;

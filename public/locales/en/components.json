@@ -78,7 +78,7 @@
     "recent_articles": "Recent Articles",
     "all_articles": "All Articles",
     "view_all": "View All",
-    "see_all": "See all {{count}}",
+    "see_all": "See all",
     "share_social": "Share on social media",
     "category": "Category",
     "default_title": "Courses and masterclasses for experienced therapists. Workshop on treating orthopedic problems",
@@ -103,7 +103,8 @@
     "ratings": "({{count}} ratings)",
     "write_comment": "Write a comment",
     "show_more_comments": "Show more",
-    "no_comments": "No comments yet"
+    "no_comments": "No comments yet",
+    "login_to_comment": "Please log in to leave a comment"
   },
   "common": {
     "similar_articles": "Similar articles",

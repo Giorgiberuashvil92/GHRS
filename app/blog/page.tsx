@@ -265,20 +265,17 @@ const BlogHeader = ({ BlogCategory, totalCount }: BlogHeaderProps) => {
   const { t } = useI18n();
 
   return (
-    <div className="bg-[#F9F7FE] md:mx-5 md:px-10 px-4 md:pb-5">
-      <div className="flex items-center justify-between">
-        <h1 className="font-bowler text-[32px] md:text-[64px] pt-10 text-[#3D334A] leading-[100%] tracking-[-1%] uppercase">
-          {BlogCategory}
-        </h1>
-        <div className="md:mt-16"></div>
-      </div>
+    <div className="bg-[#F9F7FE] md:mx-5 md:px-10 px-4 pb-6">
+      <h1 className="font-bowler text-[32px] md:text-[64px] pt-10 text-[#3D334A] leading-[100%] tracking-[-1%] uppercase">
+        {BlogCategory}
+      </h1>
 
       {totalCount && (
         <Link
           href="/categories"
-          className="font-pt text-[20px] md:text-[32px] uppercase text-[#D4BAFC] hover:text-[#734ea4] transition-colors duration-300 inline-block mt-4 font-medium leading-[110%]"
+          className="font-pt text-[20px] md:text-[32px] uppercase text-[#D4BAFC] hover:text-[#C4A6F1] transition-colors inline-block mt-4 font-medium leading-[110%]"
         >
-          {t("blog.see_all")} {totalCount} {t("blog.articles_count", { count: totalCount.toString() })} →
+          {t("blog.see_all")} →
         </Link>
       )}
     </div>
@@ -322,7 +319,7 @@ const BlogRoute = () => {
       </div>
 
       {/* Popular Articles Section */}
-      <BlogHeader BlogCategory={t("blog.popular_articles")} />
+      <BlogHeader BlogCategory={t("blog.popular_articles")} totalCount={1} />
       <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full mb-12 px-10">
         <BigBlogCard article={popularArticles[0]} />
         <BigBlogCard article={popularArticles[1]} />
@@ -336,7 +333,7 @@ const BlogRoute = () => {
       </div>
 
       {/* Recent Articles Section */}
-      <BlogHeader BlogCategory={t("blog.recent_articles")} />
+      <BlogHeader BlogCategory={t("blog.recent_articles")} totalCount={1} />
       <div className="grid grid-cols-2 md:grid-cols-4  gap-6 w-full mb-12 px-10">
         <div className="col-span-2">
           <BigBlogCard article={allArticles[4]} />
@@ -351,7 +348,7 @@ const BlogRoute = () => {
       </div>
 
       {/* All Articles Section */}
-      <BlogHeader BlogCategory={t("blog.all_articles")} />
+      <BlogHeader BlogCategory={t("blog.all_articles")} totalCount={1} />
       <div className="grid grid-cols-2 md:grid-cols-4  gap-6 w-full mb-12 px-10">
         <div className="col-span-2 gap-6 grid  grid-cols-1 md:grid-cols-2 h-[500px]">
           <div className="col-span-2">

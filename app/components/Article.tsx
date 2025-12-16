@@ -49,10 +49,21 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
   const [similarArticles, setSimilarArticles] = useState<ArticleType[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [commentText, setCommentText] = useState("");
+  const [userRating, setUserRating] = useState<number>(0);
+  const [hoveredStar, setHoveredStar] = useState<number>(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const { language } = useLanguage();
   const { t } = useI18n();
   const { categories } = useCategories();
   const { comments, isLoading: commentsLoading, addComment, toggleLike } = useComments(article._id);
+
+  // Check if user is logged in
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('token');
+      setIsLoggedIn(!!token);
+    }
+  }, []);
 
   // Calculate reading time based on content
   const calculateReadingTime = (content: string): number => {
@@ -202,39 +213,50 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
         const validCategoryIds = categoryIds.filter(id => id && id.trim() !== '');
         console.log("Valid Category IDs:", validCategoryIds);
 
-        if (validCategoryIds.length === 0) {
-          console.log("No valid category IDs found");
-          setSimilarArticles([]);
-          return;
+        let allArticles: ArticleType[] = [];
+
+        if (validCategoryIds.length > 0) {
+          try {
+            // Fetch articles for each category
+            console.log("Fetching articles for categories:", validCategoryIds);
+            const allArticlesPromises = validCategoryIds.map(id => getArticlesByCategory(id));
+            const allArticlesArrays = await Promise.all(allArticlesPromises);
+            console.log("Articles from all categories:", allArticlesArrays);
+
+            // Flatten and deduplicate articles
+            allArticles = Array.from(new Set(allArticlesArrays.flat()))
+              .filter(a => a._id !== article._id); // Remove current article
+          } catch (categoryError) {
+            console.warn("Failed to fetch by category, falling back to all articles:", categoryError);
+          }
         }
 
-        // Fetch articles for each category
-        console.log("Fetching articles for categories:", validCategoryIds);
-        const allArticlesPromises = validCategoryIds.map(id => getArticlesByCategory(id));
-        const allArticlesArrays = await Promise.all(allArticlesPromises);
-        console.log("Articles from all categories:", allArticlesArrays);
+        // Fallback: if no articles found by category, get latest published articles
+        if (allArticles.length === 0) {
+          console.log("No articles found by category, fetching latest articles");
+          const { getArticles } = await import('../api/articles');
+          const latestArticles = await getArticles({ isPublished: true, limit: 10 });
+          allArticles = latestArticles.filter(a => a._id !== article._id);
+        }
 
-        // Flatten and deduplicate articles
-        const allArticles = Array.from(new Set(allArticlesArrays.flat()))
-          .filter(a => a._id !== article._id) // Remove current article
-          .slice(0, 3); // Limit to 3 articles
-
-        console.log("Final similar articles:", allArticles);
-        setSimilarArticles(allArticles);
+        // Limit to 3 articles
+        const finalArticles = allArticles.slice(0, 3);
+        console.log("Final similar articles:", finalArticles);
+        setSimilarArticles(finalArticles);
       } catch (error) {
         console.error("Error fetching similar articles:", error);
         console.error("Error details:", {
           categoryId: article.categoryId,
           error: error instanceof Error ? error.message : error
         });
+        // Set empty array on error
+        setSimilarArticles([]);
       } finally {
         setIsLoading(false);
       }
     };
 
-    if (article.categoryId) {
-      fetchSimilarArticles();
-    }
+    fetchSimilarArticles();
   }, [article.categoryId, article._id]);
 
   // Helper function to get category names
@@ -698,9 +720,18 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
                 {[...Array(5)].map((_, i) => (
                   <div
                     key={i}
-                    className="max-w-[55.5px] max-h-[50.7px] rounded-[10px] overflow-hidden flex items-center justify-center bg-yellow-50"
+                    onClick={() => setUserRating(i + 1)}
+                    onMouseEnter={() => setHoveredStar(i + 1)}
+                    onMouseLeave={() => setHoveredStar(0)}
+                    className="max-w-[55.5px] max-h-[50.7px] rounded-[10px] overflow-hidden flex items-center justify-center bg-yellow-50 cursor-pointer hover:scale-110 transition-transform"
                   >
-                    <MdStar className="text-yellow-400 w-full h-full" />
+                    <MdStar 
+                      className={`w-full h-full transition-colors ${
+                        (hoveredStar > 0 ? i < hoveredStar : i < userRating)
+                          ? 'text-yellow-400'
+                          : 'text-gray-300'
+                      }`} 
+                    />
                   </div>
                 ))}
               </div>
@@ -720,41 +751,55 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
             <h2 className="md:text-2xl text-[18px] text-[rgba(61,51,74,1)] leading-[100%] tracking-[-1%] md:mb-[40px] mb-5 font-bowler">
               {t("article.comments")}
             </h2>
-            <form className="max-w-[650px] mx-auto relative" onSubmit={async (e) => {
-              e.preventDefault();
-              if (!commentText.trim()) return;
-              const success = await addComment(commentText);
-              if (success) setCommentText("");
-            }}>
-              <input
-                type="text"
-                value={commentText}
-                onChange={(e) => setCommentText(e.target.value)}
-                placeholder={t("article.write_comment")}
-                className="w-full p-4 text-lg font-medium border-2 rounded-lg outline-none border-[rgba(249,247,254,1)] transition-colors bg-transparent leading-none tracking-normal placeholder:text-[rgba(226,204,255,1)] font-pt"
-              />
-              <button
-                type="submit"
-                disabled={!commentText.trim()}
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-purple-400 hover:text-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
+            {isLoggedIn ? (
+              <form className="max-w-[650px] mx-auto relative" onSubmit={async (e) => {
+                e.preventDefault();
+                if (!commentText.trim()) return;
+                const success = await addComment(commentText);
+                if (success) setCommentText("");
+              }}>
+                <input
+                  type="text"
+                  value={commentText}
+                  onChange={(e) => setCommentText(e.target.value)}
+                  placeholder={t("article.write_comment")}
+                  className="w-full p-4 text-lg font-medium border-2 rounded-lg outline-none border-[rgba(249,247,254,1)] focus:border-[rgba(212,186,252,1)] transition-colors bg-white text-[rgba(61,51,74,1)] leading-none tracking-normal placeholder:text-[rgba(226,204,255,1)] font-pt"
+                />
+                <button
+                  type="submit"
+                  disabled={!commentText.trim()}
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 text-purple-400 hover:text-purple-600 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                  <path
-                    d="M5 12H19M19 12L12 5M19 12L12 19"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-            </form>
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M5 12H19M19 12L12 5M19 12L12 19"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </button>
+              </form>
+            ) : (
+              <div className="max-w-[650px] mx-auto p-6 bg-[rgba(249,247,254,1)] rounded-lg text-center">
+                <p className="text-[rgba(132,111,160,1)] text-lg mb-4 font-pt">
+                  {t("article.login_to_comment") || "Please log in to leave a comment"}
+                </p>
+                <Link
+                  href="/login"
+                  className="inline-block px-6 py-3 bg-[rgba(212,186,252,1)] text-white rounded-lg hover:bg-[rgba(132,111,160,1)] transition-colors font-pt font-medium"
+                >
+                  {t("auth.login") || "Log In"}
+                </Link>
+              </div>
+            )}
             <hr className="h-[2px] w-full bg-[rgba(249,247,254,1)] mt-[40px] border-none md:mb-5 mb-0" />
             <div className="flex flex-col gap-5">
               {commentsLoading ? (
@@ -807,30 +852,55 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
             </div>
           </section>
           <div className="w-full pr-40 flex flex-col items-center mt-10 md:mb-20 gap-8">
-            <h1 className="text-[18px] leading-[100%] tracking-[-1%] text-[#3D334A] font-bowler">{t("blog.share_social")}</h1>
+            <h1 className="text-[18px] leading-[100%] tracking-[-1%] text-[#3D334A] font-bowler uppercase">{t("blog.share_social")}</h1>
             <div className="flex gap-10">
-              <div className="w-14 h-14 bg-white rounded-[5px] items-center justify-center flex cursor-pointer hover:scale-105 duration-300">
+              <a 
+                href="https://www.facebook.com/ghrs.gr/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-14 h-14 bg-white rounded-[5px] items-center justify-center flex cursor-pointer hover:scale-105 duration-300"
+              >
                 <FaFacebookF color="black" size={30} />
-              </div>
-              <div className="w-14 h-14 bg-white rounded-[5px] items-center justify-center flex cursor-pointer hover:scale-105 duration-300">
+              </a>
+              <a 
+                href="https://twitter.com/ghrs_group"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-14 h-14 bg-white rounded-[5px] items-center justify-center flex cursor-pointer hover:scale-105 duration-300"
+              >
                 <RiTwitterXFill color="black" size={30} />
-              </div>
-              <div className="w-14 h-14 bg-white rounded-[5px] items-center justify-center flex cursor-pointer hover:scale-105 duration-300">
+              </a>
+              <a 
+                href="https://instagram.com/ghrs_group"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-14 h-14 bg-white rounded-[5px] items-center justify-center flex cursor-pointer hover:scale-105 duration-300"
+              >
                 <BsInstagram color="black" size={30} />
-              </div>
-              <div className="w-14 h-14 bg-white rounded-[5px] items-center justify-center flex cursor-pointer hover:scale-105 duration-300">
+              </a>
+              <a 
+                href="https://www.youtube.com/@ghrsgroup"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-14 h-14 bg-white rounded-[5px] items-center justify-center flex cursor-pointer hover:scale-105 duration-300"
+              >
                 <BsYoutube color="black" size={30} />
-              </div>
-              <div className="w-14 h-14 bg-white rounded-[5px] items-center justify-center flex cursor-pointer hover:scale-105 duration-300 ">
-                <FaLinkedin color="black" size={30} className="hover:text-white" />
-              </div>
+              </a>
+              <a 
+                href="https://www.linkedin.com/in/ghrs-group"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-14 h-14 bg-white rounded-[5px] items-center justify-center flex cursor-pointer hover:scale-105 duration-300"
+              >
+                <FaLinkedin color="black" size={30} />
+              </a>
             </div>
           </div>
         </div>
 
         {/* Right Sidebar */}
         <div className="p-5 bg-[rgba(255,255,255,1)] min-h-[700px] h-[700px] rounded-[20px] max-w-[335px] hidden md:block">
-          <h2 className="text-lg font-semibold mb-4 text-[rgba(61,51,74,1)] font-bowler">
+          <h2 className="text-[18px] md:text-[20px] font-bold mb-6 text-[rgba(61,51,74,1)] font-bowler uppercase leading-[100%] tracking-[-1%]">
             {t("common.similar_articles")}
           </h2>
           <div className="space-y-4">
