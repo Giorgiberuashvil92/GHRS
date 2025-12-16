@@ -25,6 +25,7 @@ const VideoNotification = ({ variant }: VideoNotificationProps) => {
           className="md:p-[30px] p-4 md:flex-1 md:h-[505px] md:rounded-[40px] w-full h-[397px] rounded-3xl"
           style={{
             backgroundImage: "url('/assets/images/background-reh.png')",
+            backgroundSize: "cover",
           }}
         >
           <h3 className="font-bowler md:pb-[34px] pb-8 md:text-[40px] text-4xl text-[rgba(255,255,255,1)] tracking-[-3%] leading-[120%]">

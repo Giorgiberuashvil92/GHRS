@@ -443,7 +443,7 @@ export const Footer: FC = () => {
       {/* ლინკები */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8 px-16 text-[#8B7BAA] font-pt">
         <div className="flex flex-col gap-3">
-          <a href="/" className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.home")}</a>
+          <a href="/" className="hover:text-[#846FA0] transition-colors font-pt">{t("links.home")}</a>
           <a href="/rehabilitation" className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.rehabilitation")}</a>
           <a href="/professional" className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.development")}</a>
           <a href="/blog" className="hover:text-[#D4BAFC] transition-colors font-pt">{t("links.blog")}</a>

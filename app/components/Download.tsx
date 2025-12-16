@@ -4,7 +4,13 @@ import React from "react";
 import { useI18n } from "../context/I18nContext";
 
 const Download = () => {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+
+  const imageSources: Record<string, string> = {
+    en: "/assets/images/mobile-en.jpeg",
+    ru: "/assets/images/mobile.png",
+  };
+  const imageSrc = imageSources[locale] ?? imageSources["ru"];
 
   return (
     <div className="my-6 px-2 md:px-5">
@@ -47,7 +53,7 @@ const Download = () => {
             width={172}
             height={170}
             className="w-full h-full"
-            src="/assets/images/mobile.png"
+            src={imageSrc}
             alt="iphone 14 pro mockup"
           />
         </div>
