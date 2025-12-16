@@ -90,10 +90,10 @@ function requiresAuth(endpoint: string): boolean {
 export const API_CONFIG = {
   BASE_URL: process.env.NEXT_PUBLIC_API_URL || 
     (process.env.NODE_ENV === 'development'
-      ? 'https://ghrs-backend.onrender.com'
+      ? 'https://ghrs-backend.onrender.com/api'
       : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-          ? 'https://ghrs-backend.onrender.com'
-          : 'https://ghrs-backend.onrender.com')),
+          ? 'https://ghrs-backend.onrender.com/api'
+          : 'https://ghrs-backend.onrender.com/api')),
   
   ENDPOINTS: {
     UPLOAD: {

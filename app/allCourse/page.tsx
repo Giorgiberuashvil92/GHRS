@@ -60,7 +60,7 @@ const AllCourse = () => {
         API_CONFIG.BASE_URL.includes('render.com');
       
       const endpoint = isProduction 
-        ? '/courses?limit=1000&isPublished=true'
+        ? '/api/courses?limit=1000&isPublished=true'
         : '/api/courses?limit=1000&isPublished=true';
       
       const response = await fetch(
