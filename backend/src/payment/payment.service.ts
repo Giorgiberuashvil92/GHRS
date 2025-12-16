@@ -13,9 +13,9 @@ export class PaymentService {
     private configService: ConfigService,
     private purchaseService: PurchaseService,
   ) {
-    this.clientId = this.configService.get<string>('PAYPAL_CLIENT_ID');
-    this.clientSecret = this.configService.get<string>('PAYPAL_CLIENT_SECRET');
-    this.baseUrl = this.configService.get<string>('PAYPAL_BASE_URL') || 'https://api-m.sandbox.paypal.com';
+    this.clientId =  'AQtqwl189MSBEbnUWNGIfPsAl3ynUUUKr506gJa5SDXhnXzje33FVtEJaTjcqRXE9FCnUPWu3kaVlfEO0';
+    this.clientSecret = 'EEXA7Fu-fqLpaUFcVH2vIbkZijgccjRLiRHD9S0U-gNJ_jwP-zQPODmUyw9RiWCcE4p0tVRxo0A-guLR';
+    this.baseUrl = 'https://api-m.sandbox.paypal.com';
     
     if (!this.clientId || !this.clientSecret) {
       throw new Error('PayPal credentials are not configured. Please set PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET in .env file');
