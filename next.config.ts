@@ -1,11 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  i18n: {
-    defaultLocale: 'ka',
-    locales: ['ka', 'ru', 'en'],
-    localeDetection: false,
-  },
   images: {
     remotePatterns: [
       {
@@ -24,9 +19,6 @@ const nextConfig: NextConfig = {
   },
   typescript: {
     ignoreBuildErrors: true,
-  },
-  eslint: {
-    ignoreDuringBuilds: true,
   },
   rewrites: async () => {
     // URL კონფიგურაცია გარემოს მიხედვით
