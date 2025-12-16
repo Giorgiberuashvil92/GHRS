@@ -379,7 +379,7 @@ export const fetchCourses = async (params?: {
   maxPrice?: number;
 }) => {
   try {
-    const response = await api.get('/api/courses', { params });
+    const response = await api.get('/courses', { params });
     return response.data;
   } catch (error) {
     console.error('Error fetching courses:', error);
@@ -390,8 +390,8 @@ export const fetchCourses = async (params?: {
 // Single Course
 export const fetchCourse = async (id: string) => {
   try {
-    console.log('Fetching course from API:', `${API_CONFIG.BASE_URL}/api/courses/${id}`);
-    const response = await api.get(`/api/courses/${id}`);
+    console.log('Fetching course from API:', `${API_CONFIG.BASE_URL}/courses/${id}`);
+    const response = await api.get(`/courses/${id}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching single course:', error);
@@ -466,7 +466,7 @@ export const updateCourse = async (id: string, courseData: CourseData) => {
     const token = localStorage.getItem('token');
     const preparedData = prepareCourseData(courseData);
     
-    const response = await api.patch(`/api/courses/${id}`, preparedData, {
+    const response = await api.patch(`/courses/${id}`, preparedData, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -485,7 +485,7 @@ export const createCourse = async (courseData: CourseData) => {
     const token = localStorage.getItem('token');
     const preparedData = prepareCourseData(courseData);
     
-    const response = await api.post('/api/courses', preparedData, {
+    const response = await api.post('/courses', preparedData, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -502,7 +502,7 @@ export const createCourse = async (courseData: CourseData) => {
 export const deleteCourse = async (id: string) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await api.delete(`/api/courses/${id}`, {
+    const response = await api.delete(`/courses/${id}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
@@ -525,7 +525,7 @@ export const fetchCoursesByCategory = async (categoryId: string, params?: {
   excludeId?: string;
 }) => {
   try {
-    const response = await api.get(`/api/courses/by-category/${categoryId}`, { params });
+    const response = await api.get(`/courses/by-category/${categoryId}`, { params });
     return response.data;
   } catch (error) {
     console.error('Error fetching courses by category:', error);
@@ -536,7 +536,7 @@ export const fetchCoursesByCategory = async (categoryId: string, params?: {
 // Fetch Related Courses (same category, excluding current course)
 export const fetchRelatedCourses = async (courseId: string, categoryId: string, limit: number = 4) => {
   try {
-    const response = await api.get(`/api/courses/by-category/${categoryId}`, { 
+    const response = await api.get(`/courses/by-category/${categoryId}`, { 
       params: { 
         limit,
         excludeId: courseId // ახალი პარამეტრი - მიმდინარე კურსის გამორიცხვისთვის
