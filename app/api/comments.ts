@@ -19,12 +19,12 @@ export interface CreateCommentData {
 
 // Fetch comments for an article
 export async function getArticleComments(articleId: string): Promise<Comment[]> {
-  return apiRequest<Comment[]>(`/api/articles/${articleId}/comments`);
+  return apiRequest<Comment[]>(`/articles/${articleId}/comments`);
 }
 
 // Create a new comment (requires authentication)
 export async function createComment(data: CreateCommentData): Promise<Comment> {
-  return apiRequest<Comment>(`/api/articles/${data.articleId}/comments`, {
+  return apiRequest<Comment>(`/articles/${data.articleId}/comments`, {
     method: 'POST',
     body: JSON.stringify({ content: data.content }),
   });
@@ -32,14 +32,14 @@ export async function createComment(data: CreateCommentData): Promise<Comment> {
 
 // Delete a comment (requires authentication)
 export async function deleteComment(commentId: string): Promise<void> {
-  return apiRequest<void>(`/api/comments/${commentId}`, {
+  return apiRequest<void>(`/comments/${commentId}`, {
     method: 'DELETE',
   });
 }
 
 // Like a comment
 export async function likeComment(commentId: string): Promise<Comment> {
-  return apiRequest<Comment>(`/api/comments/${commentId}/like`, {
+  return apiRequest<Comment>(`/comments/${commentId}/like`, {
     method: 'POST',
   });
 }

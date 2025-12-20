@@ -8,7 +8,7 @@ import { ModalProvider } from "./context/ModalContext";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 const paypalOptions = {
-  clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "AQtqwl189MSBEbnUWNGIfPsAl3ynUUUKr506gJa5SDXhnXzje33FVtEJaTjcqRXE9FCnUPWu3kaVlfEO",
+  clientId: 'AQtqwl189MSBEbnUWNGIfPsAl3ynUUUKr506gJa5SDXhnXzje33FVtEJaTjcqRXE9FCnUPWu3kaVlfEO0',
   currency: "USD",
   intent: "capture",
   components: "buttons",

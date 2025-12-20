@@ -8,9 +8,16 @@ async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   
   // CORS კონფიგურაცია
-  const allowedOrigins = process.env.ALLOWED_ORIGINS 
-    ? process.env.ALLOWED_ORIGINS.split(',')
-    : ['http://localhost:3000', 'http://localhost:3001'];
+  const allowedOrigins = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
+  : [
+    'http://localhost:3000',
+    'http://localhost:3001',
+    'https://ghrs-mu.vercel.app',
+    'https://ghrs-backend.onrender.com',
+    'https://ghrsnew1.vercel.app',
+    'https://ghrrrs.vercel.app',
+  ];
   
   app.enableCors({
     origin: process.env.NODE_ENV === 'production' 

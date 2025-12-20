@@ -148,7 +148,7 @@ export function useSet(setId: string): UseSetReturn {
 
       const { apiRequest, API_CONFIG } = await import("../config/api");
       // Ensure lowercase endpoint
-      const endpoint = `/api/sets/${setId}`.toLowerCase();
+      const endpoint = `/sets/${setId}`.toLowerCase();
 
       console.log("📡 Set API Request Details:", {
         endpoint,

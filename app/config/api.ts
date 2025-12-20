@@ -73,11 +73,11 @@ interface CourseData {
 
 // Protected endpoints that require JWT token
 const PROTECTED_ENDPOINTS = [
-  '/api/users/me',
+  '/users/me',
   '/api/purchases/my-courses',
-  '/api/purchases/check-access',
-  '/api/purchases/check-course-access',
-  '/api/payment/',
+  '/purchases/check-access',
+  '/purchases/check-course-access',
+  '/payment/',
 ];
 
 function requiresAuth(endpoint: string): boolean {
@@ -90,75 +90,75 @@ function requiresAuth(endpoint: string): boolean {
 export const API_CONFIG = {
   BASE_URL: process.env.NEXT_PUBLIC_API_URL || 
     (process.env.NODE_ENV === 'development'
-      ? 'http://localhost:4000'
+      ? 'https://ghrs-backend.onrender.com/api'
       : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-          ? 'http://localhost:4000'
-          : 'https://ghrs-backend.onrender.com')),
+          ? 'https://ghrs-backend.onrender.com/api'
+          : 'https://ghrs-backend.onrender.com/api')),
   
   ENDPOINTS: {
     UPLOAD: {
-      IMAGE: "/api/upload/image"
+      IMAGE: "/upload/image"
     },
-    CATEGORIES: "/api/categories",
-    MAIN_CATEGORIES: "/api/categories",
-    COMPLEXES: "/api/complexes",
-    EXERCISES: "/api/exercises",
-    COURSES: "/api/courses",
+    CATEGORIES: "/categories",
+    MAIN_CATEGORIES: "/categories",
+    COMPLEXES: "/complexes",
+    EXERCISES: "/exercises",
+    COURSES: "/courses",
     AUTH: {
-      LOGIN: "/api/auth/login",
-      REGISTER: "/api/auth/register",
-      LOGOUT: "/api/auth/logout",
-      REFRESH_TOKEN: "/api/auth/refresh-token",
-      SEND_VERIFICATION: "/api/auth/send-verification",
-      VERIFY_CODE: "/api/auth/verify-code",
-      RESEND_CODE: "/api/auth/resend-code",
+      LOGIN: "/auth/login",
+      REGISTER: "/auth/register",
+      LOGOUT: "/auth/logout",
+      REFRESH_TOKEN: "/auth/refresh-token",
+      SEND_VERIFICATION: "/auth/send-verification",
+      VERIFY_CODE: "/auth/verify-code",
+      RESEND_CODE: "/auth/resend-code",
     },
     ARTICLES: {
-      ALL: "/api/articles",
-      JSON: "/api/articles/json",
-      FEATURED: "/api/articles/featured",
-      POPULAR: "/api/articles/popular",
-      SEARCH: "/api/articles/search",
-      BY_CATEGORY: "/api/articles/category",
-      LIKE: "/api/articles/{id}/like",
-      SIMILAR: (id: string) => `/api/articles/${id}/similar`
+      ALL: "/articles",
+      JSON: "/articles/json",
+      FEATURED: "/articles/featured",
+      POPULAR: "/articles/popular",
+      SEARCH: "/articles/search",
+      BY_CATEGORY: "/articles/category",
+      LIKE: "/articles/{id}/like",
+      SIMILAR: (id: string) => `/articles/${id}/similar`
     },
     BLOGS: {
-      ALL: "/api/blogs",
-      JSON: "/api/blogs/json",
-      FEATURED: "/api/blogs/featured",
-      POPULAR: "/api/blogs/popular",
-      SEARCH: "/api/blogs/search",
-      BY_CATEGORY: "/api/blogs/category",
-      LIKE: "/api/blogs/{id}/like",
-      WITH_ARTICLES: "/api/blogs/with-articles"
+      ALL: "/blogs",
+      JSON: "/blogs/json",
+      FEATURED: "/blogs/featured",
+      POPULAR: "/blogs/popular",
+      SEARCH: "/blogs/search",
+      BY_CATEGORY: "/blogs/category",
+      LIKE: "/blogs/{id}/like",
+      WITH_ARTICLES: "/blogs/with-articles"
     },
     SETS: {
-      ALL: "/api/sets",
-      BY_CATEGORY: (categoryId: string) => `/api/sets/category/${categoryId}`,
-      BY_SUBCATEGORY: (subcategoryId: string) => `/api/sets/subcategory/${subcategoryId}`,
-      BY_ID: (id: string) => `/api/sets/${id}`,
+      ALL: "/sets",
+      BY_CATEGORY: (categoryId: string) => `/sets/category/${categoryId}`,
+      BY_SUBCATEGORY: (subcategoryId: string) => `/sets/subcategory/${subcategoryId}`,
+      BY_ID: (id: string) => `/sets/${id}`,
     },
     PURCHASES: {
-      GET_MY_COURSES: '/api/purchases/my-courses',
-      CHECK_ACCESS: (setId: string) => `/api/purchases/check-access/${setId}`,
-      CHECK_COURSE_ACCESS: (courseId: string) => `/api/purchases/check-course-access/${courseId}`,
+      GET_MY_COURSES: '/purchases/my-courses',
+      CHECK_ACCESS: (setId: string) => `/purchases/check-access/${setId}`,
+      CHECK_COURSE_ACCESS: (courseId: string) => `/purchases/check-course-access/${courseId}`,
     },
     PAYMENTS: {
-      CREATE_ORDER: '/api/payment/create-order',
-      CAPTURE_PAYMENT: '/api/payment/capture-payment',
+      CREATE_ORDER: '/payment/create-order',
+      CAPTURE_PAYMENT: '/payment/capture-payment',
     },
     INSTRUCTORS: {
-      ALL: "/api/instructors",
-      BY_ID: (id: string) => `/api/instructors/${id}`,
-      TOP: "/api/instructors/top",
-      COURSES: (id: string) => `/api/instructors/${id}/courses`,
-      STATS: (id: string) => `/api/instructors/${id}/stats`,
+      ALL: "/instructors",
+      BY_ID: (id: string) => `/instructors/${id}`,
+      TOP: "/instructors/top",
+      COURSES: (id: string) => `/instructors/${id}/courses`,
+      STATS: (id: string) => `/instructors/${id}/stats`,
     },
     STATISTICS: {
-      GLOBAL: "/api/statistics/global",
-      USER: "/api/users/me/statistics",
-      ACTIVITY: "/api/users/me/activity",
+      GLOBAL: "/statistics/global",
+      USER: "/users/me/statistics",
+      ACTIVITY: "/users/me/activity",
     },
   },
 
@@ -379,7 +379,7 @@ export const fetchCourses = async (params?: {
   maxPrice?: number;
 }) => {
   try {
-    const response = await api.get('/api/courses', { params });
+    const response = await api.get('/courses', { params });
     return response.data;
   } catch (error) {
     console.error('Error fetching courses:', error);
@@ -390,8 +390,8 @@ export const fetchCourses = async (params?: {
 // Single Course
 export const fetchCourse = async (id: string) => {
   try {
-    console.log('Fetching course from API:', `${API_CONFIG.BASE_URL}/api/courses/${id}`);
-    const response = await api.get(`/api/courses/${id}`);
+    console.log('Fetching course from API:', `${API_CONFIG.BASE_URL}/courses/${id}`);
+    const response = await api.get(`/courses/${id}`);
     return response.data;
   } catch (error) {
     console.error('Error fetching single course:', error);
@@ -466,7 +466,7 @@ export const updateCourse = async (id: string, courseData: CourseData) => {
     const token = localStorage.getItem('token');
     const preparedData = prepareCourseData(courseData);
     
-    const response = await api.patch(`/api/courses/${id}`, preparedData, {
+    const response = await api.patch(`/courses/${id}`, preparedData, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -485,7 +485,7 @@ export const createCourse = async (courseData: CourseData) => {
     const token = localStorage.getItem('token');
     const preparedData = prepareCourseData(courseData);
     
-    const response = await api.post('/api/courses', preparedData, {
+    const response = await api.post('/courses', preparedData, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -502,7 +502,7 @@ export const createCourse = async (courseData: CourseData) => {
 export const deleteCourse = async (id: string) => {
   try {
     const token = localStorage.getItem('token');
-    const response = await api.delete(`/api/courses/${id}`, {
+    const response = await api.delete(`/courses/${id}`, {
       headers: {
         'Authorization': `Bearer ${token}`,
       },
@@ -525,7 +525,7 @@ export const fetchCoursesByCategory = async (categoryId: string, params?: {
   excludeId?: string;
 }) => {
   try {
-    const response = await api.get(`/api/courses/by-category/${categoryId}`, { params });
+    const response = await api.get(`/courses/by-category/${categoryId}`, { params });
     return response.data;
   } catch (error) {
     console.error('Error fetching courses by category:', error);
@@ -536,7 +536,7 @@ export const fetchCoursesByCategory = async (categoryId: string, params?: {
 // Fetch Related Courses (same category, excluding current course)
 export const fetchRelatedCourses = async (courseId: string, categoryId: string, limit: number = 4) => {
   try {
-    const response = await api.get(`/api/courses/by-category/${categoryId}`, { 
+    const response = await api.get(`/courses/by-category/${categoryId}`, { 
       params: { 
         limit,
         excludeId: courseId // ახალი პარამეტრი - მიმდინარე კურსის გამორიცხვისთვის
