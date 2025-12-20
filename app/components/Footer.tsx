@@ -102,11 +102,11 @@ export const Footer: FC = () => {
     setSubmitStatus('idle');
     setErrorMessage('');
 
-    const requestUrl = `${API_CONFIG.BASE_URL}/consultation`;
+    const requestUrl = `${API_CONFIG.BASE_URL}/api/consultation`;
     console.log('🔍 Consultation Request Details:', {
       url: requestUrl,
       baseUrl: API_CONFIG.BASE_URL,
-      endpoint: '/consultation',
+      endpoint: '/api/consultation',
       formData,
       locale
     });

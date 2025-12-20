@@ -12,7 +12,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       window.location.hostname !== 'localhost' &&
       API_CONFIG.BASE_URL.includes('render.com');
     
-    const endpoint = isProduction ? '/statistics/global' : '/statistics/global';
+    const endpoint = isProduction ? '/statistics/global' : '/api/statistics/global';
     const response = await fetch(`${API_CONFIG.BASE_URL}${endpoint}`);
     
     if (!response.ok) {

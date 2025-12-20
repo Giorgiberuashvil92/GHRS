@@ -93,7 +93,7 @@ const AllComplex = () => {
         
         const endpoint = isProduction 
           ? '/categories/subcategories/all'
-          : '/categories/subcategories/all';
+          : '/api/categories/subcategories/all';
         
         const response = await fetch(
           `${API_CONFIG.BASE_URL}${endpoint}`

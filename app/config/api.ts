@@ -90,75 +90,75 @@ function requiresAuth(endpoint: string): boolean {
 export const API_CONFIG = {
   BASE_URL: process.env.NEXT_PUBLIC_API_URL || 
     (process.env.NODE_ENV === 'development'
-      ? 'https://ghrs-backend.onrender.com/api'
+      ? 'http://localhost:4000'
       : (typeof window !== 'undefined' && window.location.hostname === 'localhost'
-          ? 'https://ghrs-backend.onrender.com/api'
-          : 'https://ghrs-backend.onrender.com/api')),
+          ? 'http://localhost:4000'
+          : 'https://ghrs-backend.onrender.com')),
   
   ENDPOINTS: {
     UPLOAD: {
-      IMAGE: "/upload/image"
+      IMAGE: "/api/upload/image"
     },
-    CATEGORIES: "/categories",
-    MAIN_CATEGORIES: "/categories",
-    COMPLEXES: "/complexes",
-    EXERCISES: "/exercises",
-    COURSES: "/courses",
+    CATEGORIES: "/api/categories",
+    MAIN_CATEGORIES: "/api/categories",
+    COMPLEXES: "/api/complexes",
+    EXERCISES: "/api/exercises",
+    COURSES: "/api/courses",
     AUTH: {
-      LOGIN: "/auth/login",
-      REGISTER: "/auth/register",
-      LOGOUT: "/auth/logout",
-      REFRESH_TOKEN: "/auth/refresh-token",
-      SEND_VERIFICATION: "/auth/send-verification",
-      VERIFY_CODE: "/auth/verify-code",
-      RESEND_CODE: "/auth/resend-code",
+      LOGIN: "/api/auth/login",
+      REGISTER: "/api/auth/register",
+      LOGOUT: "/api/auth/logout",
+      REFRESH_TOKEN: "/api/auth/refresh-token",
+      SEND_VERIFICATION: "/api/auth/send-verification",
+      VERIFY_CODE: "/api/auth/verify-code",
+      RESEND_CODE: "/api/auth/resend-code",
     },
     ARTICLES: {
-      ALL: "/articles",
-      JSON: "/articles/json",
-      FEATURED: "/articles/featured",
-      POPULAR: "/articles/popular",
-      SEARCH: "/articles/search",
-      BY_CATEGORY: "/articles/category",
-      LIKE: "/articles/{id}/like",
-      SIMILAR: (id: string) => `/articles/${id}/similar`
+      ALL: "/api/articles",
+      JSON: "/api/articles/json",
+      FEATURED: "/api/articles/featured",
+      POPULAR: "/api/articles/popular",
+      SEARCH: "/api/articles/search",
+      BY_CATEGORY: "/api/articles/category",
+      LIKE: "/api/articles/{id}/like",
+      SIMILAR: (id: string) => `/api/articles/${id}/similar`
     },
     BLOGS: {
-      ALL: "/blogs",
-      JSON: "/blogs/json",
-      FEATURED: "/blogs/featured",
-      POPULAR: "/blogs/popular",
-      SEARCH: "/blogs/search",
-      BY_CATEGORY: "/blogs/category",
-      LIKE: "/blogs/{id}/like",
-      WITH_ARTICLES: "/blogs/with-articles"
+      ALL: "/api/blogs",
+      JSON: "/api/blogs/json",
+      FEATURED: "/api/blogs/featured",
+      POPULAR: "/api/blogs/popular",
+      SEARCH: "/api/blogs/search",
+      BY_CATEGORY: "/api/blogs/category",
+      LIKE: "/api/blogs/{id}/like",
+      WITH_ARTICLES: "/api/blogs/with-articles"
     },
     SETS: {
-      ALL: "/sets",
-      BY_CATEGORY: (categoryId: string) => `/sets/category/${categoryId}`,
-      BY_SUBCATEGORY: (subcategoryId: string) => `/sets/subcategory/${subcategoryId}`,
-      BY_ID: (id: string) => `/sets/${id}`,
+      ALL: "/api/sets",
+      BY_CATEGORY: (categoryId: string) => `/api/sets/category/${categoryId}`,
+      BY_SUBCATEGORY: (subcategoryId: string) => `/api/sets/subcategory/${subcategoryId}`,
+      BY_ID: (id: string) => `/api/sets/${id}`,
     },
     PURCHASES: {
-      GET_MY_COURSES: '/purchases/my-courses',
-      CHECK_ACCESS: (setId: string) => `/purchases/check-access/${setId}`,
-      CHECK_COURSE_ACCESS: (courseId: string) => `/purchases/check-course-access/${courseId}`,
+      GET_MY_COURSES: '/api/purchases/my-courses',
+      CHECK_ACCESS: (setId: string) => `/api/purchases/check-access/${setId}`,
+      CHECK_COURSE_ACCESS: (courseId: string) => `/api/purchases/check-course-access/${courseId}`,
     },
     PAYMENTS: {
-      CREATE_ORDER: '/payment/create-order',
-      CAPTURE_PAYMENT: '/payment/capture-payment',
+      CREATE_ORDER: '/api/payment/create-order',
+      CAPTURE_PAYMENT: '/api/payment/capture-payment',
     },
     INSTRUCTORS: {
-      ALL: "/instructors",
-      BY_ID: (id: string) => `/instructors/${id}`,
-      TOP: "/instructors/top",
-      COURSES: (id: string) => `/instructors/${id}/courses`,
-      STATS: (id: string) => `/instructors/${id}/stats`,
+      ALL: "/api/instructors",
+      BY_ID: (id: string) => `/api/instructors/${id}`,
+      TOP: "/api/instructors/top",
+      COURSES: (id: string) => `/api/instructors/${id}/courses`,
+      STATS: (id: string) => `/api/instructors/${id}/stats`,
     },
     STATISTICS: {
-      GLOBAL: "/statistics/global",
-      USER: "/users/me/statistics",
-      ACTIVITY: "/users/me/activity",
+      GLOBAL: "/api/statistics/global",
+      USER: "/api/users/me/statistics",
+      ACTIVITY: "/api/users/me/activity",
     },
   },
 

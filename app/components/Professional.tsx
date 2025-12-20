@@ -67,7 +67,7 @@ const Professional = ({
         
         const endpoint = isProduction 
           ? '/courses?isPublished=true'
-          : '/courses?isPublished=true';
+          : '/api/courses?isPublished=true';
         
         const response = await fetch(
           `${API_CONFIG.BASE_URL}${endpoint}`

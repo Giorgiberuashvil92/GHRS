@@ -84,7 +84,7 @@ export function useCategoryComplete(categoryId: string): UseCategoryCompleteRetu
 
       console.log("🔗 Fetching complete category data for ID:", categoryId);
       
-      const endpoint = `/categories/${categoryId}/complete`;
+      const endpoint = `/api/categories/${categoryId}/complete`;
       console.log("🔗 API endpoint:", endpoint);
       console.log("🔗 Full URL will be:", `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000'}${endpoint}`);
 
