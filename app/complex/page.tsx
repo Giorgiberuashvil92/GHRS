@@ -22,7 +22,6 @@ function ComplexContent() {
   const setId = searchParams.get("id") || "";
   const { t } = useI18n();
 
-  // ვიყენებთ set-ის hook-ს
   const { set: setData, loading: setLoading, error: setError } = useSet(setId);
 
   console.log(setData, 'ბევრი დატა');

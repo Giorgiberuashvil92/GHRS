@@ -1,6 +1,7 @@
 "use client";
 import React, { useRef, useState, useEffect } from "react";
 import { useI18n } from "../context/I18nContext";
+import { useReviews } from "../hooks/useReviews";
 
 // SliderArrows component with working functionality
 type SliderArrowsProps = {
@@ -70,53 +71,30 @@ const SliderArrows: React.FC<SliderArrowsProps> = ({
   );
 };
 
-// TODO: Replace these placeholder paths with your actual video URLs
-// Videos can be hosted on:
-// - Cloudinary: https://res.cloudinary.com/your-cloud/video/upload/...
-// - AWS S3: https://your-bucket.s3.amazonaws.com/...
-// - YouTube: Use YouTube video IDs (requires component modification)
-// - Local: /assets/videos/reviews/review1.mp4 (after uploading to public folder)
-
-const reviewSliderItems = [
-  {
-    id: 1,
-    image: "/assets/images/reviewSliderImages/image2.png",
-    video: "", // Add your video URL here
-    name: "Алексей",
-  },
-  {
-    id: 2,
-    image: "/assets/images/reviewSliderImages/image3.png",
-    video: "", // Add your video URL here
-    name: "Владислава",
-  },
-  {
-    id: 3,
-    image: "/assets/images/reviewSliderImages/image4.png",
-    video: "", // Add your video URL here
-    name: "Александра",
-  },
-  {
-    id: 4,
-    image: "/assets/images/reviewSliderImages/image5.png",
-    video: "", // Add your video URL here
-    name: "Владислава",
-  },
-  {
-    id: 5,
-    image: "/assets/images/reviewSliderImages/image6.png",
-    video: "", // Add your video URL here
-    name: "Елена",
-  },
-];
+// Reviews are now fetched from API via useReviews hook
 
 const ReviewSlider = ({title}: {title: string}) => {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+  const { reviews, loading } = useReviews();
   const scrollContainerRef = useRef(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [playingVideo, setPlayingVideo] = useState<number | null>(null);
   const videoRefs = useRef<(HTMLVideoElement | null)[]>([]);
+
+  // Helper to get localized text
+  const getLocalizedText = (
+    field: { ka: string; en: string; ru: string } | undefined
+  ): string => {
+    if (!field) return "";
+    return (
+      field[locale as keyof typeof field] ||
+      field.ru ||
+      field.en ||
+      field.ka ||
+      ""
+    );
+  };
 
   const checkScrollButtons = () => {
     if (scrollContainerRef.current) {
@@ -184,25 +162,25 @@ const ReviewSlider = ({title}: {title: string}) => {
             msOverflowStyle: 'none',
           }}
         >
-          {reviewSliderItems.map((item, index) => (
+          {reviews.map((item, index) => (
             <div
-              key={index}
+              key={item._id}
               className="relative flex items-center flex-col min-w-[220px] md:min-w-[300px] flex-shrink-0"
             >
               {/* Thumbnail image - hidden when video is playing */}
               {playingVideo !== index && (
                 <img
-                  src={item.image}
-                  alt={item.name}
+                  src={item.image || "/assets/images/reviewSliderImages/image2.png"}
+                  alt={getLocalizedText(item.name)}
                   className="rounded-[15px] object-cover w-[220px] h-[380px] md:w-[300px] md:h-[500px] lg:w-[349px] lg:h-[580px]"
                 />
               )}
               
               {/* Video element - shown when playing (only if video URL exists) */}
-              {item.video && (
+              {item.videoUrl && (
                 <video
                   ref={(el) => { videoRefs.current[index] = el; }}
-                  src={item.video}
+                  src={item.videoUrl}
                   className={`rounded-[15px] object-cover w-[220px] h-[380px] md:w-[300px] md:h-[500px] lg:w-[349px] lg:h-[580px] ${
                     playingVideo === index ? 'block' : 'hidden'
                   }`}
@@ -215,22 +193,22 @@ const ReviewSlider = ({title}: {title: string}) => {
                     }
                   }}
                   onError={(e) => {
-                    console.error('Video failed to load:', item.video);
+                    console.error('Video failed to load:', item.videoUrl);
                     setPlayingVideo(null);
                   }}
                 />
               )}
               
               <h4 className="absolute bottom-[20px] text-center backdrop-blur-[16px] bg-black/20 text-white py-2 px-3 w-[180px] md:w-[240px] lg:w-[289px] rounded-[10px] font-medium text-[16px] md:text-[20px] lg:text-[24px] leading-[120%] z-10">
-                {item.name}
+                {getLocalizedText(item.name)}
               </h4>
               
               {/* Play button - only show when video is not playing AND video URL exists */}
-              {playingVideo !== index && item.video && (
+              {playingVideo !== index && item.videoUrl && (
                 <div 
                   onClick={() => {
-                    if (!item.video) {
-                      alert('Video not available yet. Please add video URL in ReviewSlider.tsx');
+                    if (!item.videoUrl) {
+                      alert('Video not available yet. Please add video URL in admin panel');
                       return;
                     }
                     setPlayingVideo(index);
@@ -245,8 +223,10 @@ const ReviewSlider = ({title}: {title: string}) => {
                     height="28" 
                     viewBox="0 0 24 28" 
                     fill="none" 
-                    className="ml-1"
                   >
+                    <p className="text-white text-base md:text-lg font-medium">
+                      {getLocalizedText(item.name)}
+                    </p>
                     <path 
                       d="M22 12.268c1.333.77 1.333 2.694 0 3.464L4 25.856c-1.333.77-3-.192-3-1.732V3.876c0-1.54 1.667-2.502 3-1.732L22 12.268z" 
                       fill="white"

@@ -89,7 +89,7 @@ export default function SubcategoryPage({
   // ამოვიღოთ რაოდენობები
   const setsCount = subcategorySets.length;
   const exercisesCount = subcategorySets.reduce(
-    (total, set) => total + (set.exercises?.length || 0),
+    (total, set) => total + (set.totalExercises || 0),
     0
   );
 
@@ -99,7 +99,7 @@ export default function SubcategoryPage({
     title: getLocalizedText(set?.name),
     description: getLocalizedText(set?.description),
     image: set.thumbnailImage || "/assets/images/workMan.png",
-    exerciseCount: set.exercises?.length || 0,
+    exerciseCount: set.totalExercises || 0,
     categoryName: getLocalizedText(selectedSubcategory?.name),
     price: `${set.price?.monthly || 920}₾/თვე`,
     monthlyPrice: set.price?.monthly || 920,
@@ -112,6 +112,7 @@ export default function SubcategoryPage({
       <Header
         variant="categories"
         title={getLocalizedText(selectedSubcategory?.name)}
+        description={getLocalizedText(selectedSubcategory?.description)}
         info={{
           setsCount,
           subcategoriesCount: 0, // subcategory-ს ქვეკატეგორიები არ აქვს

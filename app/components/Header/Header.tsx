@@ -419,6 +419,22 @@ const Header: React.FC<HeaderProps> = ({
               </h2>
             )}
 
+            {variant == "categories" && (
+              <div className="flex flex-col gap-0 px-5">
+                <h2 className="mx-5 text-white hidden md:flex text-[64px] md:mt-[40px] leading-[100%] tracking-[-3%] max-w-[994px] font-bowler uppercase">
+                  {title || t("header.category_title")}
+                </h2>
+                <motion.p
+                  initial={{ opacity: 0, x: -100 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className="leading-[120%] hidden md:flex md:px-5 text-[20px] font-medium md:mt-[20px] md:max-w-[592px] font-pt text-white"
+                >
+                  {description || t("header.category_description")}
+                </motion.p>
+              </div>
+            )}
+
             {variant == "rehabilitation" && (
               <div className="flex flex-col gap-0 px-5">
                 <h2 className="mx-5 text-[#3D334A]   hidden md:flex text-[64px] md:mt-[40px] leading-[100%] tracking-[-3%] max-w-[994px] font-bowler">
@@ -598,29 +614,31 @@ const Header: React.FC<HeaderProps> = ({
               </div>
             )}
             {variant == "categories" && (
-              <div className="mb-5 md:mb-0 mx-auto md:pt-[400px]">
+              <div className="mb-5 md:mb-0 mx-auto md:pt-[100px]">
                 <section className="mx-auto md:mx-5 flex flex-col md:flex-row md:items-center md:gap-2">
-                  {/* პირველი ბარათი */}
-                  <motion.div
-                    initial={{ opacity: 0, x: -100 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, ease: "easeOut" }}
-                    className="flex items-center gap-2.5 bg-[rgba(61,51,74,0.3)] px-2.5 rounded-[12px] h-[64px] w-full md:w-[246px]"
-                  >
-                    <div className="bg-[rgba(255,255,255,0.2)] w-[46px] h-[46px] justify-center items-center flex rounded-[8px]">
-                      <Image
-                        src={categoryDetailItems[0].image}
-                        alt={categoryDetailItems[0].text}
-                        width={30}
-                        height={30}
-                      />
-                    </div>
-                    <h3 className="text-white text-sm font-medium font-pt">
-                      {t("header.subcategories_count", {
-                        count: info?.subcategoriesCount || 0,
-                      })}
-                    </h3>
-                  </motion.div>
+                  {/* პირველი ბარათი - მხოლოდ თუ subcategoriesCount > 0 */}
+                  {info?.subcategoriesCount > 0 && (
+                    <motion.div
+                      initial={{ opacity: 0, x: -100 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.6, ease: "easeOut" }}
+                      className="flex items-center gap-2.5 bg-[rgba(61,51,74,0.3)] px-2.5 rounded-[12px] h-[64px] w-full md:w-[246px]"
+                    >
+                      <div className="bg-[rgba(255,255,255,0.2)] w-[46px] h-[46px] justify-center items-center flex rounded-[8px]">
+                        <Image
+                          src={categoryDetailItems[0].image}
+                          alt={categoryDetailItems[0].text}
+                          width={30}
+                          height={30}
+                        />
+                      </div>
+                      <h3 className="text-white text-sm font-medium font-pt">
+                        {t("header.subcategories_count", {
+                          count: info?.subcategoriesCount || 0,
+                        })}
+                      </h3>
+                    </motion.div>
+                  )}
 
                   {/* მეორე და მესამე ბარათები */}
                   <div className="flex flex-row gap-2 mt-2 md:mt-0 w-full font-pt">
@@ -668,11 +686,13 @@ const Header: React.FC<HeaderProps> = ({
                 </section>
 
                 <section className="mx-2 md:mt-5 md:mx-5 max-w-[729px]">
-                  <div className="bg-[rgba(61,51,74,0.3)]  rounded-[20px] gap-5 flex flex-col pl-[30px] pt-[30px] pb-[90px] mt-2">
-                    <h2 className="text-[20px] md:text-[40px] leading-[120%] tracking-[-3%] font-bowler">
-                      {title}
+                  <div className="bg-[rgba(61,51,74,0.3)] rounded-[20px] gap-5 flex flex-col pl-[30px] pt-[30px] pb-[90px] mt-2">
+                    <h2 className="text-[20px] md:text-[40px] leading-[120%] tracking-[-3%] font-bowler text-white">
+                      {title || t("header.category_title")}
                     </h2>
-                    <p className="font-pt">{t("header.category_description")}</p>
+                    <p className="font-pt text-white max-w-[600px]">
+                      {description || t("header.category_description")}
+                    </p>
                   </div>
                 </section>
               </div>

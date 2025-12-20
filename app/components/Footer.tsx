@@ -32,12 +32,12 @@ export const Footer: FC = () => {
     covidRehab: "689a0e1f9c575c1535e893f0",
   };
 
-  // Complex/Set IDs for specific conditions
-  const complexLinks = {
-    parkinsons: "68b0438313d16a75ad996170",
-    stroke: "68b58de24e1584dece73f309",
-    facialNerve: "68b20b0f3c10e18faa9d2d3f",
-    multipleSclerosis: "68b35835b024f89e8a0615af",
+  // Neurology subcategory IDs
+  const neurologySubcategories = {
+    parkinsons: "6896038c84545316330a347b",
+    stroke: "689603e784545316330a3484",
+    facialNerve: "6896065884545316330a349b",
+    multipleSclerosis: "689606cd84545316330a34a4",
   };
 
   const orthopedicsId = "6888a9028e3196ddea6b78d8";
@@ -466,10 +466,10 @@ export const Footer: FC = () => {
           </ul>
           <a href={`/categories/${categoryLinks.neurology}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.neurology")}</a>
           <ul className="flex flex-col gap-2 pl-4">
-            <li><a href={`/complex/${complexLinks.parkinsons}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.parkinsons")}</a></li>
-            <li><a href={`/complex/${complexLinks.stroke}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.stroke")}</a></li>
-            <li><a href={`/complex/${complexLinks.facialNerve}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.facialNerve")}</a></li>
-            <li><a href={`/complex/${complexLinks.multipleSclerosis}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.multipleSclerosis")}</a></li>
+            <li><a href={`/categories/${neurologySubcategories.parkinsons}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.parkinsons")}</a></li>
+            <li><a href={`/categories/${neurologySubcategories.stroke}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.stroke")}</a></li>
+            <li><a href={`/categories/${neurologySubcategories.facialNerve}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.facialNerve")}</a></li>
+            <li><a href={`/categories/${neurologySubcategories.multipleSclerosis}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.multipleSclerosis")}</a></li>
           </ul>
         </div>
         <div className="flex flex-col gap-3">

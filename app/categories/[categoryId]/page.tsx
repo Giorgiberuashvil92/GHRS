@@ -97,7 +97,7 @@ export default function CategoriesPage({
   const subcategoriesCount = categoryData?.subcategories?.length || 0;
   const exercisesCount =
     categoryData?.sets?.reduce(
-      (total, set) => total + (set.exercises?.length || 0),
+      (total, set) => total + (set.totalExercises || 0),
       0
     ) || 0;
 
@@ -107,7 +107,7 @@ export default function CategoriesPage({
     title: getLocalizedText(set?.name, locale),
     description: getLocalizedText(set?.description, locale),
     image: set.thumbnailImage || "/assets/images/workMan.png",
-    exerciseCount: set.exercises?.length || 0,
+    exerciseCount: set.totalExercises || 0,
     categoryName: getLocalizedText(selectedCategory?.name, locale),
     price: `${set.price?.monthly || 920}₾/თვე`,
     monthlyPrice: set.price?.monthly || 920,
@@ -155,33 +155,39 @@ export default function CategoriesPage({
         stats={[
           {
             icon: (
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M2 17L12 22L22 17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M2 12L12 17L22 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
+              <Image 
+                src="/assets/icons/Video.png" 
+                alt="Complexes" 
+                width={24} 
+                height={24}
+                className="w-6 h-6"
+              />
             ),
             value: setsCount,
             label: t("common.complexes")
           },
           {
             icon: (
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <rect x="3" y="3" width="7" height="7" rx="1" stroke="white" strokeWidth="2"/>
-                <rect x="14" y="3" width="7" height="7" rx="1" stroke="white" strokeWidth="2"/>
-                <rect x="3" y="14" width="7" height="7" rx="1" stroke="white" strokeWidth="2"/>
-                <rect x="14" y="14" width="7" height="7" rx="1" stroke="white" strokeWidth="2"/>
-              </svg>
+              <Image 
+                src="/assets/icons/Book.png" 
+                alt="Categories" 
+                width={24} 
+                height={24}
+                className="w-6 h-6"
+              />
             ),
             value: subcategoriesCount,
             label: t("common.subcategories")
           },
           {
             icon: (
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="10" stroke="white" strokeWidth="2"/>
-                <path d="M12 6V12L16 14" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-              </svg>
+              <Image 
+                src="/assets/icons/Pulse.png" 
+                alt="Exercises" 
+                width={24} 
+                height={24}
+                className="w-6 h-6"
+              />
             ),
             value: exercisesCount,
             label: t("common.exercises")
@@ -349,8 +355,8 @@ export default function CategoriesPage({
 
         <Subscribe
           backgroundImage="/assets/images/categorySliderBgs/bg1.jpg"
-          titleKey="subscription.test_title"
-          buttonTextKey="buttons.take_test"
+          titleKey="subscription.title"
+          buttonTextKey="buttons.subscribe"
           buttonTextColor="#3D334A"
           buttonBgColor="#FFFFFF"
           bgCenter={true}

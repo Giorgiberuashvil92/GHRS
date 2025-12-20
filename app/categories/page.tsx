@@ -11,6 +11,7 @@ import Section from "../components/Section";
 import { Footer } from "../components/Footer";
 import MainHeader from "../components/Header/MainHeader";
 import { useI18n } from "../context/I18nContext";
+import Image from "next/image";
 
 export default function CategoriesPage() {
   const { categories, loading: categoriesLoading, error: categoriesError } = useCategories();
@@ -184,12 +185,14 @@ export default function CategoriesPage() {
               <div className="absolute inset-0 bg-[#3D334A]/30 backdrop-blur-[20px] rounded-[15px]"></div>
               {/* Content */}
               <div className="relative w-full h-full px-5 py-2.5 flex items-center gap-2">
-                <div className="w-[46px] h-[44px] bg-[#3D334A]/30 backdrop-blur-[20px] rounded-[10px] flex items-center justify-center">
-                  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M2 17L12 22L22 17" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    <path d="M2 12L12 17L22 12" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
+                <div className="w-[46px] h-[44px] bg-white/20 rounded-[10px] flex items-center justify-center">
+                  <Image 
+                    src="/assets/icons/Video.png" 
+                    alt="Complexes" 
+                    width={30} 
+                    height={30}
+                    className="w-[30px] h-[30px]"
+                  />
                 </div>
                 <span className="font-pt text-white text-base font-medium">
                   {setsCount} {t("common.complexes") || "комплексов"}
@@ -203,10 +206,10 @@ export default function CategoriesPage() {
               <div className="absolute inset-0 bg-[#3D334A]/30 backdrop-blur-[20px] rounded-[15px]"></div>
               {/* Content */}
               <div className="relative w-full h-full px-5 py-2.5 flex items-center gap-2">
-                <div className="w-[46px] h-[44px] bg-[#3D334A]/30 backdrop-blur-[20px] rounded-[10px] flex items-center justify-center">
-                  <img 
-                    src="/assets/images/Video.png" 
-                    alt="video icon" 
+                <div className="w-[46px] h-[44px] bg-white/20 rounded-[10px] flex items-center justify-center">
+                  <Image 
+                    src="/assets/icons/Pulse.png" 
+                    alt="Exercises" 
                     width={30} 
                     height={30}
                     className="w-[30px] h-[30px]"

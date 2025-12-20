@@ -376,8 +376,8 @@ const Professional = () => {
 
       <Subscribe
         backgroundImage="/assets/images/bluebg.jpg"
-        titleKey="subscription.test_title"
-        buttonTextKey="buttons.take_test"
+        titleKey="subscription.title"
+        buttonTextKey="buttons.subscribe"
         buttonTextColor="#3D334A"
         buttonBgColor="#FFFFFF"
         href="/shoppingcard"

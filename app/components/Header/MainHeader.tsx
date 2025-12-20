@@ -201,14 +201,14 @@ function MainHeader({
               {stats.map((stat, index) => (
                 <div
                   key={index}
-                  className="bg-[#3d334a4d] w-full backdrop-blur-sm rounded-2xl p-3 flex items-center justify-center md:gap-2 transition-transform duration-300 hover:scale-105"
+                  className="bg-[#3d334a4d] w-full backdrop-blur-sm rounded-[20px] px-5 py-3 flex items-center gap-3 transition-transform duration-300 hover:scale-105"
                 >
-                  <span className="text-white/80">{stat.icon}</span>
-                  <div className="flex flex-col items-center justify-center">
-                    <span className="text-xl font-bold text-white font-pt">
+                  <span className="bg-white/20 rounded-xl p-3 flex items-center justify-center flex-shrink-0">{stat.icon}</span>
+                  <div className="flex items-baseline gap-1">
+                    <span className="text-2xl font-bold text-white font-pt">
                       {stat.value}
                     </span>
-                    <span className="text-sm text-white/80 font-pt">{stat.label}</span>
+                    <span className="text-base text-white/90 font-pt font-medium">{stat.label}</span>
                   </div>
                 </div>
               ))}

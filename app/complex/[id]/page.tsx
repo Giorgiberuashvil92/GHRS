@@ -17,11 +17,11 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useExercisesBySet } from "../../hooks/useExercises";
 import { useUserAccess } from "../../hooks/useUserAccess";
-import { FaBook, FaDumbbell, FaClock } from "react-icons/fa";
 import { Footer } from "@/app/components/Footer";
 import WorksSlider from "@/app/components/WorksSlider";
 import MainHeader from "@/app/components/Header/MainHeader";
 import { formatPriceByLocale } from "@/app/utils/currency";
+import Image from "next/image";
 
 interface Params {
   id: string;
@@ -301,17 +301,17 @@ const Complex = ({ params }: ComplexPageProps) => {
 
   const statsData = [
     {
-      icon: <FaBook size={24} />,
+      icon: <Image src="/assets/icons/Video.png" alt="Complexes" width={24} height={24} className="w-6 h-6" />,
       value: setData?.totalExercises || exercises?.length || 0,
       label: t("header.sets_count", { count: String(setData?.totalExercises || exercises?.length || 0) }).replace(/\d+\s*/, "") || "комплексов",
     },
     {
-      icon: <FaDumbbell size={24} />,
+      icon: <Image src="/assets/icons/Pulse.png" alt="Exercises" width={24} height={24} className="w-6 h-6" />,
       value: exercises?.length || setData?.totalExercises || 0,
       label: t("header.exercises_count", { count: String(exercises?.length || setData?.totalExercises || 0) }).replace(/\d+\s*/, "") || "упражнений",
     },
     {
-      icon: <FaClock size={24} />,
+      icon: <Image src="/assets/icons/Book.png" alt="Hours" width={24} height={24} className="w-6 h-6" />,
       value: totalHours || 0,
       label: t("header.hours_count", { count: String(totalHours || 0) }).replace(/\d+\s*/, "") || "часов",
     },
@@ -714,8 +714,8 @@ const Complex = ({ params }: ComplexPageProps) => {
         </div>
         <Subscribe
           backgroundImage="/assets/images/categorySliderBgs/bg1.jpg"
-          titleKey="subscription.test_title"
-          buttonTextKey="buttons.take_test"
+          titleKey="subscription.title"
+          buttonTextKey="buttons.subscribe"
           buttonTextColor="#3D334A"
           buttonBgColor="#FFFFFF"
           bgCenter={true}

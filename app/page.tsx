@@ -15,8 +15,8 @@ import { useAllSets } from "./hooks/useSets";
 import { Footer } from "./components/Footer";
 import { useI18n } from "./context/I18nContext";
 import MainHeader from "./components/Header/MainHeader";
-import { FaBook, FaDumbbell, FaClock } from "react-icons/fa";
 import useStatistics from "./hooks/useStatistics";
+import Image from "next/image";
 
 const Home = () => {
   const { sets } = useAllSets();
@@ -61,17 +61,17 @@ const Home = () => {
   // Add stats data using real calculated data
   const statsData = [
     {
-      icon: <FaBook size={24} />,
+      icon: <Image src="/assets/icons/Video.png" alt="Complexes" width={24} height={24} className="w-6 h-6" />,
       value: sets ? `${sets.length}` : "Loading...",
       label: t("header.sets_count", { count: String(sets?.length || 0) }).replace(/\d+\s*/, ""),
     },
     {
-      icon: <FaDumbbell size={24} />,
+      icon: <Image src="/assets/icons/Pulse.png" alt="Exercises" width={24} height={24} className="w-6 h-6" />,
       value: sets ? `${totalExercises}` : "Loading...",
       label: t("header.exercises_count", { count: String(totalExercises) }).replace(/\d+\s*/, ""),
     },
     {
-      icon: <FaClock size={24} />,
+      icon: <Image src="/assets/icons/Book.png" alt="Hours" width={24} height={24} className="w-6 h-6" />,
       value: sets ? `${calculateTotalHours}` : "Loading...",
       label: t("header.hours_count", { count: String(calculateTotalHours) }).replace(/\d+\s*/, ""),
     },

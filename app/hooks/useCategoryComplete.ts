@@ -14,6 +14,15 @@ export interface BackendSet {
   isActive: boolean;
   isPublished: boolean;
   sortOrder: number;
+  totalExercises?: number;
+  totalDuration?: string;
+  price?: {
+    monthly?: number;
+    quarterly?: number;
+    halfYearly?: number;
+    yearly?: number;
+  };
+  isPopular?: boolean;
 }
 
 export interface CategoryCompleteData {

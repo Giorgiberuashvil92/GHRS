@@ -107,7 +107,7 @@ function SectionContent() {
   // ამოვიღოთ რაოდენობები
   const setsCount = subcategorySets.length;
   const exercisesCount = subcategorySets.reduce(
-    (total, set) => total + (set.exercises?.length || 0),
+    (total, set) => total + (set.totalExercises || 0),
     0
   );
 
@@ -117,7 +117,7 @@ function SectionContent() {
     title: getLocalizedText(set?.name, locale),
     description: getLocalizedText(set?.description, locale),
     image: set.thumbnailImage || "/assets/images/workMan.png",
-    exerciseCount: set.exercises?.length || 0,
+    exerciseCount: set.totalExercises || 0,
     categoryName: getLocalizedText(
       selectedSubcategory?.name as { ka: string; en: string; ru: string },
       locale
@@ -203,8 +203,8 @@ function SectionContent() {
 
         <Subscribe
           backgroundImage="/assets/images/categorySliderBgs/bg1.jpg"
-          titleKey="subscription.test_title"
-          buttonTextKey="buttons.take_test"
+          titleKey="subscription.title"
+          buttonTextKey="buttons.subscribe"
           buttonTextColor="#3D334A"
           buttonBgColor="#FFFFFF"
           bgCenter={true}
