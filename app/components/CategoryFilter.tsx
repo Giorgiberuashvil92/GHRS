@@ -49,12 +49,8 @@ export default function CategoryFilter({ onCategoryChange, onSubcategoryChange, 
       try {
         setLoading(true);
         
-        // TEMPORARY FIX: Remove /api prefix for production Render backend
-        const isProduction = typeof window !== 'undefined' && 
-          window.location.hostname !== 'localhost' &&
-          API_CONFIG.BASE_URL.includes('render.com');
-        
-        const endpoint = isProduction ? '/categories' : '/categories';
+        // ✅ FIXED: Always use /api prefix - Next.js rewrites will handle routing
+        const endpoint = '/api/categories';
         const response = await fetch(`${API_CONFIG.BASE_URL}${endpoint}`);
         
         if (!response.ok) {

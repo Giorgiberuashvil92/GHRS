@@ -1,36 +1,38 @@
-"use client";
-
+import type { Metadata } from "next";
 import "./globals.css";
-import { I18nProvider } from "./context/I18nContext";
-import { AuthProvider } from "./context/AuthContext";
-import CategoryContext from "./context/CategoryContext";
-import { ModalProvider } from "./context/ModalContext";
-import { PayPalScriptProvider } from "@paypal/react-paypal-js";
+import Providers from "./providers";
 
-const paypalOptions = {
-  clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || 'AQtqwl189MSBEbnUWNGIfPsAl3ynUUUKr506gJa5SDXhnXzje33FVtEJaTjcqRXE9FCnUPWu3kaVlfEO0',
-  currency: "USD",
-  intent: "capture",
-  components: "buttons",
-  "disable-funding": "credit,card",
-  "data-sdk-integration-source": "button-factory",
+export const metadata: Metadata = {
+  title: {
+    default: "GHRS - Georgian Health & Rehabilitation System",
+    template: "%s | GHRS"
+  },
+  description: "Professional health and rehabilitation platform with comprehensive exercises, courses, and expert guidance.",
+  keywords: ["health", "rehabilitation", "exercises", "therapy", "Georgia", "medical"],
+  authors: [{ name: "GHRS Team" }],
+  openGraph: {
+    type: "website",
+    locale: "ka_GE",
+    alternateLocale: ["en_US", "ru_RU"],
+    siteName: "GHRS",
+    title: "GHRS - Georgian Health & Rehabilitation System",
+    description: "Professional health and rehabilitation platform",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
+  viewport: {
+    width: "device-width",
+    initialScale: 1,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body>
-        <PayPalScriptProvider options={paypalOptions}>
-          <I18nProvider>
-            <AuthProvider>
-              <ModalProvider>
-                <CategoryContext.Provider value={{ categories: [], loading: false, error: null, refetch: async () => {} }}>
-                  {children}
-                </CategoryContext.Provider>
-              </ModalProvider>
-            </AuthProvider>
-          </I18nProvider>
-        </PayPalScriptProvider>
+    <html lang="ka" suppressHydrationWarning>
+      <body suppressHydrationWarning>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );

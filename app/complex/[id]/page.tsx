@@ -113,7 +113,7 @@ const Complex = ({ params }: ComplexPageProps) => {
   
   // State for selected subscription
   const [selectedPeriod, setSelectedPeriod] = useState("12 months");
-  const [selectedPrice, setSelectedPrice] = useState(setData?.discountedPrice?.yearly || setData?.price?.yearly || 500);
+  const [selectedPrice, setSelectedPrice] = useState(500);
 
   // Close popover when clicking outside
   useEffect(() => {

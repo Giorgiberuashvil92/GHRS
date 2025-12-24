@@ -25,6 +25,7 @@ const defaultArticle: ArticleType = {
     en: "Short description",
     ru: "Краткое описание",
   },
+  blogId: "1",
   categoryId: "1",
   category: {
     _id: "1",
@@ -34,11 +35,24 @@ const defaultArticle: ArticleType = {
       ru: "Категория",
     },
   },
+  author: {
+    name: "Admin",
+    bio: "",
+    avatar: "",
+  },
   commentsCount: 0,
   readTime: "5",
   tableOfContents: [],
   comments: [],
   featuredImages: [],
+  tags: [],
+  isPublished: true,
+  isFeatured: false,
+  publishDate: new Date(),
+  viewsCount: 0,
+  likesCount: 0,
+  isActive: true,
+  sortOrder: 0,
 };
 
 const ArticlePage = () => {

@@ -185,7 +185,7 @@ export default function BlogDetailPage() {
         menuItems={defaultMenuItems}
         blogBg={true}
         allCourseBg={false}
-        data={blog}
+        data={{ featuredImages: blog.imageUrl ? [blog.imageUrl] : [] }}
       />
       <SubHeader />
       <MobileNavbar />

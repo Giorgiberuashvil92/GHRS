@@ -18,18 +18,22 @@ const nextConfig: NextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   typescript: {
+    // ⚠️ TEMPORARY: Set to true to allow deployment with existing type errors
+    // TODO: Fix TypeScript errors in complex/[id]/page.tsx and other files
+    // Issues: Missing properties in Set type (duration, recommendations, equipment, etc.)
     ignoreBuildErrors: true,
   },
   rewrites: async () => {
-    // URL კონფიგურაცია გარემოს მიხედვით
-    const apiUrl = process.env.NODE_ENV === 'development'
-      ? (process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000/api/:path*")
-      : (process.env.NEXT_PUBLIC_API_URL || "https://ghrs-backend.onrender.com/api/:path*");
+    // ✅ Fixed: Removed :path* from destination URL
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || 
+      (process.env.NODE_ENV === 'development'
+        ? "http://localhost:4000"
+        : "https://ghrs-backend.onrender.com");
 
     return [
       {
         source: "/api/:path*",
-        destination: apiUrl,
+        destination: `${apiUrl}/api/:path*`, // ✅ Correct syntax
       },
     ];
   },

@@ -90,16 +90,9 @@ export function useAllSets(): UseSetsReturn {
       setLoading(true);
       setError(null);
       
-      // TEMPORARY FIX: Remove /api prefix for production Render backend
-      const isProduction = typeof window !== 'undefined' && 
-        window.location.hostname !== 'localhost' &&
-        API_CONFIG.BASE_URL.includes('render.com');
-      
+      // ✅ FIXED: Always use /api prefix - Next.js rewrites will handle routing
       // Fetch ALL sets including inactive/unpublished for accurate count
-      // Add limit=1000 to ensure we get all sets (backend might have default limit)
-      const endpoint = isProduction 
-        ? '/sets?includeAll=true&limit=1000' 
-        : '/api/sets?includeAll=true&limit=1000';
+      const endpoint = '/api/sets?includeAll=true&limit=1000';
       const url = `${API_CONFIG.BASE_URL}${endpoint}`;
       
       if (isDev) {

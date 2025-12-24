@@ -86,14 +86,8 @@ const AllComplex = () => {
   useEffect(() => {
     const fetchSubcategories = async () => {
       try {
-        // TEMPORARY FIX: Remove /api prefix for production Render backend
-        const isProduction = typeof window !== 'undefined' && 
-          window.location.hostname !== 'localhost' &&
-          API_CONFIG.BASE_URL.includes('render.com');
-        
-        const endpoint = isProduction 
-          ? '/categories/subcategories/all'
-          : '/api/categories/subcategories/all';
+        // ✅ FIXED: Always use /api prefix - Next.js rewrites will handle routing
+        const endpoint = '/api/categories/subcategories/all';
         
         const response = await fetch(
           `${API_CONFIG.BASE_URL}${endpoint}`
