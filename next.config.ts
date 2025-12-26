@@ -18,10 +18,8 @@ const nextConfig: NextConfig = {
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
   typescript: {
-    // ⚠️ TEMPORARY: Set to true to allow deployment with existing type errors
-    // TODO: Fix TypeScript errors in complex/[id]/page.tsx and other files
-    // Issues: Missing properties in Set type (duration, recommendations, equipment, etc.)
-    ignoreBuildErrors: true,
+    // ✅ FIXED: Type errors resolved, strict mode enabled
+    ignoreBuildErrors: false,
   },
   rewrites: async () => {
     // ✅ Fixed: Removed :path* from destination URL

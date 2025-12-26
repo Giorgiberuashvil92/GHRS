@@ -195,10 +195,8 @@ export default function CategoriesPage({
         ]} 
         showArrows={false} 
         complexData={null}
-        useVideo={false}
-        backgroundImage={selectedCategory?.image || "/assets/images/continueWatchingBanner.jpg"}
+        useVideo={true}
         customBlockTitle={getLocalizedText(selectedCategory?.name, locale)?.toUpperCase()}
-        customBlockDescription={getLocalizedText(selectedCategory?.description, locale)}
       />
       <div className="md:pt-[100px] pt-[400px]">
         {/* SHOW: Subcategories section */}

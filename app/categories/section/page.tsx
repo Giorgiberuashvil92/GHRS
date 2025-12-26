@@ -142,7 +142,7 @@ function SectionContent() {
           exercisesCount,
         }}
       /> */}
-      <MainHeader ShowBlock={false} OptionalComponent={null} stats={[]} showArrows={false} complexData={null}/>
+      <MainHeader ShowBlock={false} OptionalComponent={null} stats={[]} showArrows={false} complexData={null} hideBlock={true} hideHeaderText={true} />
       <div className="md:pt-[100px] pt-[400px]">
         {Array.isArray(formattedSets) && formattedSets.length > 0 && (
           <div className="md:mb-10">

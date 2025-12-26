@@ -381,6 +381,7 @@ const Complex = ({ params }: ComplexPageProps) => {
         stats={statsData as any}
         showArrows={false}
         complexData={setData as any}
+        hideHeaderText={true}
       />
       <div className="">
         <section className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-20 md:mt-40 px-4">
@@ -405,7 +406,7 @@ const Complex = ({ params }: ComplexPageProps) => {
                     </span>
                     <p className="text-[rgba(132,111,160,1)] md:text-2xl text-[16px] leading-[120%] font-medium">
                       {t("complex_total_duration", {
-                        duration: setData.duration,
+                        duration: (setData as any)?.duration || setData?.totalDuration || "N/A",
                       })}
                     </p>
                   </div>
@@ -418,20 +419,20 @@ const Complex = ({ params }: ComplexPageProps) => {
                     </h4>
                     <div className="text-[rgba(132,111,160,1)] md:text-[18px] tex-[14px] leading-[150%] font-pt space-y-4">
                       {renderParagraphs(
-                        getLocalizedText(setData.recommendations, locale)
+                        getLocalizedText((setData as any)?.recommendations, locale) || t("no_recommendations")
                       )}
                     </div>
                     <h4 className="mb-[10px] text-[rgba(61,51,74,1)] tracking-[-1%] leading-[100%] text-[18px] mt-10">
                       {t("complex_equipment")}
                     </h4>
                     <p className="text-[rgba(132,111,160,1)] md:text-[18px] tex-[14px] leading-[150%] font-pt ">
-                      {getLocalizedText(setData.equipment, locale)}
+                      {getLocalizedText((setData as any)?.equipment, locale) || t("no_equipment")}
                     </p>
                     <h4 className="mb-[10px] text-[rgba(61,51,74,1)] tracking-[-1%] leading-[100%] text-[18px] mt-10">
                       {t("complex_warnings")}
                     </h4>
                     <p className="text-[rgba(132,111,160,1)] md:text-[18px] tex-[14px] leading-[150%] font-pt ">
-                      {getLocalizedText(setData.warnings, locale)}
+                      {getLocalizedText((setData as any)?.warnings, locale) || t("no_warnings")}
                     </p>
                   </div>
                 </>
@@ -445,7 +446,7 @@ const Complex = ({ params }: ComplexPageProps) => {
                     className="font-pt text-[18px] leading-[120%] text-[#846FA0] mt-10 [&_a]:text-purple-600 [&_a]:underline [&_a]:decoration-purple-400 [&_a]:underline-offset-2 [&_a]:hover:text-purple-800 [&_a]:hover:decoration-purple-600 [&_a]:transition-colors [&_a]:duration-200 [&_a]:font-bold"
                     dangerouslySetInnerHTML={{
                       __html:
-                        getLocalizedText(setData.additional, locale) || "",
+                        getLocalizedText((setData as any)?.additional, locale) || t("no_additional_info"),
                     }}
                   />
                 </div>
@@ -458,28 +459,29 @@ const Complex = ({ params }: ComplexPageProps) => {
                   <div className="rounded-[15px] overflow-hidden shadow-lg">
                     <ReactPlayer
                       src={(() => {
+                        const demoVideo = (setData as any)?.demoVideoUrl;
                         let videoUrl: string | undefined;
-                        if (typeof setData.demoVideoUrl === "object") {
-                          if (locale === "en" && setData.demoVideoUrl.en) {
-                            videoUrl = setData.demoVideoUrl.en;
+                        if (typeof demoVideo === "object" && demoVideo) {
+                          if (locale === "en" && demoVideo.en) {
+                            videoUrl = demoVideo.en;
                           } else if (
                             locale === "ru" &&
-                            setData.demoVideoUrl.ru
+                            demoVideo.ru
                           ) {
-                            videoUrl = setData.demoVideoUrl.ru;
+                            videoUrl = demoVideo.ru;
                           } else if (
                             locale === "ka" &&
-                            setData.demoVideoUrl.ru
+                            demoVideo.ru
                           ) {
-                            videoUrl = setData.demoVideoUrl.ru; // KA-სთვის იყენებთ RU-ს
+                            videoUrl = demoVideo.ru; // KA-სთვის იყენებთ RU-ს
                           }
                           if (!videoUrl) {
                             videoUrl =
-                              setData.demoVideoUrl.en ||
-                              setData.demoVideoUrl.ru;
+                              demoVideo.en ||
+                              demoVideo.ru;
                           }
                         } else {
-                          videoUrl = setData.demoVideoUrl as string;
+                          videoUrl = demoVideo as string;
                         }
                         // ვტოვებთ ზუსტად იმ URL-ს და ფორმატს, რაც მოდელშია მითითებული
                         return videoUrl || "/videos/hero.mp4";
@@ -560,7 +562,7 @@ const Complex = ({ params }: ComplexPageProps) => {
                       onClick={() =>
                         handleSubscriptionSelect(
                           "3 months",
-                          setData.price?.quarterly || setData.discountedPrice?.quarterly || 350
+                          (setData.price as any)?.quarterly || (setData as any).discountedPrice?.quarterly || 350
                         )
                       }
                     >
@@ -568,13 +570,13 @@ const Complex = ({ params }: ComplexPageProps) => {
                         3 МЕСЯЦА
                       </span>
                       <div className="flex flex-col items-end">
-                        {setData.discountedPrice?.quarterly && (
+                        {(setData as any).discountedPrice?.quarterly && (
                           <span className="text-[14px] text-gray-400 line-through">
-                            {setData.price?.quarterly} ₽/мес
+                            {(setData.price as any)?.quarterly} ₽/мес
                           </span>
                         )}
                         <span className="text-[20px] font-bold text-[rgba(132,111,160,1)] leading-[120%]">
-                          {setData.discountedPrice?.quarterly || setData.price?.quarterly || 350} ₽/мес
+                          {(setData as any).discountedPrice?.quarterly || (setData.price as any)?.quarterly || 350} ₽/мес
                         </span>
                       </div>
                     </div>
@@ -585,7 +587,7 @@ const Complex = ({ params }: ComplexPageProps) => {
                       onClick={() =>
                         handleSubscriptionSelect(
                           "6 months",
-                          setData.price?.halfYearly || setData.discountedPrice?.halfYearly || 500
+                          (setData.price as any)?.halfYearly || (setData as any).discountedPrice?.halfYearly || 500
                         )
                       }
                     >
@@ -593,7 +595,7 @@ const Complex = ({ params }: ComplexPageProps) => {
                         6 МЕСЯЦЕВ
                       </span>
                       <span className="text-[20px] font-bold text-[rgba(132,111,160,1)] leading-[120%]">
-                        {setData.discountedPrice?.halfYearly || setData.price?.halfYearly || 500} ₽/мес
+                        {(setData as any).discountedPrice?.halfYearly || (setData.price as any)?.halfYearly || 500} ₽/мес
                       </span>
                     </div>
 
@@ -603,7 +605,7 @@ const Complex = ({ params }: ComplexPageProps) => {
                       onClick={() =>
                         handleSubscriptionSelect(
                           "12 months",
-                          setData.discountedPrice?.yearly || setData.price?.yearly || 500
+                          (setData as any).discountedPrice?.yearly || setData.price?.yearly || 500
                         )
                       }
                     >
@@ -611,7 +613,7 @@ const Complex = ({ params }: ComplexPageProps) => {
                         12 МЕСЯЦЕВ
                       </span>
                       <span className="text-[20px] font-bold text-[rgba(132,111,160,1)] leading-[120%]">
-                        {setData.discountedPrice?.yearly || setData.price?.yearly || 500} ₽/мес
+                        {(setData as any).discountedPrice?.yearly || setData.price?.yearly || 500} ₽/мес
                       </span>
                     </div>
                   </div>

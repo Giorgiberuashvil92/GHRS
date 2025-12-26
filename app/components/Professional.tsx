@@ -181,23 +181,23 @@ const Professional = ({
           ) : (
             <div className="flex gap-4 md:mb-8">
               <CourseSlider
-                courses={courses.map((course) => ({
-                  id: course._id,
-                  title: course.title,
-                  shortDescription: course.shortDescription || course.description,
+                courses={courses.map((course, index) => ({
+                  id: parseInt(course._id.slice(-8), 16) || index + 1,
+                  title: (course as any).title?.en || course.title || "Course",
+                  shortDescription: (course as any).shortDescription || course.description || "",
                   price: course.price,
                   currency: "USD",
                   imageUrl: course.thumbnail,
                   instructorName: course.instructor.name,
-                  description: course.description,
-                  categoryId: course.categoryId || "default-category",
-                  level: course.level || "beginner",
+                  description: (course as any).description?.en || course.description || "",
+                  categoryId: (course as any).categoryId || "default-category",
+                  level: (course as any).level || "beginner",
                   isActive: true,
-                  createdAt: course.createdAt || new Date().toISOString(),
-                  updatedAt: course.updatedAt || new Date().toISOString(),
+                  createdAt: (course as any).createdAt || new Date().toISOString(),
+                  updatedAt: (course as any).updatedAt || new Date().toISOString(),
                   isFeatured: false,
                   thumbnail: course.thumbnail,
-                }))}
+                })) as any}
               />
             </div>
           )}

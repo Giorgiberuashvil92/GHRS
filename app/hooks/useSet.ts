@@ -147,8 +147,8 @@ export function useSet(setId: string): UseSetReturn {
       console.log("🏃‍♂️ Starting fetchSet...", { setId });
 
       const { apiRequest, API_CONFIG } = await import("../config/api");
-      // Ensure lowercase endpoint
-      const endpoint = `/sets/${setId}`.toLowerCase();
+      // ✅ FIXED: Always use /api prefix - Next.js rewrites will handle routing
+      const endpoint = `/api/sets/${setId}`.toLowerCase();
 
       console.log("📡 Set API Request Details:", {
         endpoint,

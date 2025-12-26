@@ -67,10 +67,14 @@ const fallbackReviews: Review[] = [
 ];
 
 export function useReviews(): UseReviewsReturn {
-  const [reviews, setReviews] = useState<Review[]>(fallbackReviews);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  // ✅ FIXED: Reviews endpoint doesn't exist in backend yet
+  // Using fallback data directly to avoid 404 errors
+  const [reviews] = useState<Review[]>(fallbackReviews);
+  const [loading] = useState(false);
+  const [error] = useState<string | null>(null);
 
+  // TODO: Uncomment when backend /api/reviews endpoint is implemented
+  /*
   useEffect(() => {
     const fetchReviews = async () => {
       try {
@@ -87,7 +91,6 @@ export function useReviews(): UseReviewsReturn {
         );
 
         if (!response.ok) {
-          // If API endpoint doesn't exist, use fallback data silently
           console.warn("Reviews API not available, using fallback data");
           setReviews(fallbackReviews);
           setLoading(false);
@@ -95,8 +98,6 @@ export function useReviews(): UseReviewsReturn {
         }
 
         const data = await response.json();
-        
-        // Sort by sortOrder
         const sortedReviews = (data.reviews || data || []).sort(
           (a: Review, b: Review) => a.sortOrder - b.sortOrder
         );
@@ -104,8 +105,8 @@ export function useReviews(): UseReviewsReturn {
         setReviews(sortedReviews);
       } catch (err) {
         console.warn("Error fetching reviews, using fallback data:", err);
-        setReviews(fallbackReviews); // Use fallback data instead of empty array
-        setError(null); // Don't show error to user
+        setReviews(fallbackReviews);
+        setError(null);
       } finally {
         setLoading(false);
       }
@@ -113,6 +114,7 @@ export function useReviews(): UseReviewsReturn {
 
     fetchReviews();
   }, []);
+  */
 
   return { reviews, loading, error };
 }

@@ -424,14 +424,16 @@ const Header: React.FC<HeaderProps> = ({
                 <h2 className="mx-5 text-white hidden md:flex text-[64px] md:mt-[40px] leading-[100%] tracking-[-3%] max-w-[994px] font-bowler uppercase">
                   {title || t("header.category_title")}
                 </h2>
-                <motion.p
-                  initial={{ opacity: 0, x: -100 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="leading-[120%] hidden md:flex md:px-5 text-[20px] font-medium md:mt-[20px] md:max-w-[592px] font-pt text-white"
-                >
-                  {description || t("header.category_description")}
-                </motion.p>
+                {description && (
+                  <motion.p
+                    initial={{ opacity: 0, x: -100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6, ease: "easeOut" }}
+                    className="leading-[120%] hidden md:flex md:px-5 text-[20px] font-medium md:mt-[20px] md:max-w-[592px] font-pt text-white"
+                  >
+                    {description}
+                  </motion.p>
+                )}
               </div>
             )}
 
@@ -690,9 +692,11 @@ const Header: React.FC<HeaderProps> = ({
                     <h2 className="text-[20px] md:text-[40px] leading-[120%] tracking-[-3%] font-bowler text-white">
                       {title || t("header.category_title")}
                     </h2>
-                    <p className="font-pt text-white max-w-[600px]">
-                      {description || t("header.category_description")}
-                    </p>
+                    {description && (
+                      <p className="font-pt text-white max-w-[600px]">
+                        {description}
+                      </p>
+                    )}
                   </div>
                 </section>
               </div>

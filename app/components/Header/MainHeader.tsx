@@ -27,6 +27,7 @@ interface MainHeaderProps {
   customBlockTitle?: string;
   customBlockDescription?: string;
   hideStats?: boolean;
+  hideBlock?: boolean; // Hide REHABILITATION block
 }
 
 function MainHeader({
@@ -43,6 +44,7 @@ function MainHeader({
   customBlockTitle,
   customBlockDescription,
   hideStats = false,
+  hideBlock = false,
 }: MainHeaderProps) {
   const { t, locale } = useI18n();
   const { statistics } = useStatistics();
@@ -214,23 +216,25 @@ function MainHeader({
               ))}
             </div>
           )}
-          <div className="bg-[#3d334a4d] rounded-3xl p-8 content-between grid max-w-212">
-            {complexData ? (
-              <>
-                <h1 className="text-xl md:text-2xl font-bold text-white mb-8 font-bowler">
-                  {complexData?.name?.[locale] || complexData?.name?.ru || complexData?.name?.en || complexData?.name?.ka}
-                </h1>
-                <p className="text-sm md:text-lg text-white font-pt">{complexData?.description?.[locale] || complexData?.description?.ru || complexData?.description?.en || complexData?.description?.ka}</p>
-              </>
-            ):(
-              <>
-                <h1 className="text-[28px] md:text-[48px] font-bold text-white mb-6 md:mb-8 uppercase font-bowler tracking-[-1%] leading-[100%]">
-                  {customBlockTitle || t("header.rehabilitation")}
-                </h1>
-                <p className="text-[18px] md:text-[24px] font-medium text-white font-pt leading-[120%] tracking-[-1%]">{customBlockDescription || t("header.rehabilitation_description")}</p>
-              </>
-            )}
-          </div>
+          {!hideBlock && (
+            <div className="bg-[#3d334a4d] rounded-3xl p-8 content-between grid max-w-212">
+              {complexData ? (
+                <>
+                  <h1 className="text-xl md:text-2xl font-bold text-white mb-8 font-bowler">
+                    {complexData?.name?.[locale] || complexData?.name?.ru || complexData?.name?.en || complexData?.name?.ka}
+                  </h1>
+                  <p className="text-sm md:text-lg text-white font-pt">{complexData?.description?.[locale] || complexData?.description?.ru || complexData?.description?.en || complexData?.description?.ka}</p>
+                </>
+              ):(
+                <>
+                  <h1 className="text-[28px] md:text-[48px] font-bold text-white mb-6 md:mb-8 uppercase font-bowler tracking-[-1%] leading-[100%]">
+                    {customBlockTitle || t("header.rehabilitation")}
+                  </h1>
+                  <p className="text-[18px] md:text-[24px] font-medium text-white font-pt leading-[120%] tracking-[-1%]">{customBlockDescription || t("header.rehabilitation_description")}</p>
+                </>
+              )}
+            </div>
+          )}
         </div>
 
         {OptionalComponent && <div>{OptionalComponent}</div>}

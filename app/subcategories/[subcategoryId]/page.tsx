@@ -112,7 +112,7 @@ export default function SubcategoryPage({
       <Header
         variant="categories"
         title={getLocalizedText(selectedSubcategory?.name)}
-        description={getLocalizedText(selectedSubcategory?.description)}
+
         info={{
           setsCount,
           subcategoriesCount: 0, // subcategory-ს ქვეკატეგორიები არ აქვს

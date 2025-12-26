@@ -138,7 +138,7 @@ const Section = ({
           return (
           <Link
             key={subcat._id}
-            href={categoryId ? `/categories/section?categoryId=${categoryId}&subcategoryId=${subcat._id}` : `/subcategories/${subcat._id}`}
+            href={`/categories/${subcat._id}`}
             className="min-w-[558px] h-[283px] relative bg-white p-2 rounded-5 hover:shadow-lg transition-all cursor-pointer my-2 block"
           >
             <div className="absolute top-4 left-4 z-10 bg-[#E9DFF6] px-3 py-1 rounded-md">

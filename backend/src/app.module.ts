@@ -27,8 +27,9 @@ import { TestModule } from './test/test.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: '.env',
     }),
-    MongooseModule.forRoot("mongodb+srv://beruashvilig60:Berobero1234!@cluster0.dtwfws3.mongodb.net/grs-db"),
+    MongooseModule.forRoot(process.env.MONGODB_URI || 'mongodb://localhost:27017/grs-db'),
     EmailModule, 
     AuthModule,
     UserModule,
