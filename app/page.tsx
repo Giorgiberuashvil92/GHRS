@@ -62,17 +62,17 @@ const Home = () => {
   const statsData = [
     {
       icon: <Image src="/assets/icons/Video.png" alt="Complexes" width={24} height={24} className="w-6 h-6" />,
-      value: sets ? `${sets.length}` : "Loading...",
+      value: sets ? sets.length : 0,
       label: t("header.sets_count", { count: String(sets?.length || 0) }).replace(/\d+\s*/, ""),
     },
     {
       icon: <Image src="/assets/icons/Pulse.png" alt="Exercises" width={24} height={24} className="w-6 h-6" />,
-      value: sets ? `${totalExercises}` : "Loading...",
+      value: sets ? totalExercises : 0,
       label: t("header.exercises_count", { count: String(totalExercises) }).replace(/\d+\s*/, ""),
     },
     {
       icon: <Image src="/assets/icons/Book.png" alt="Hours" width={24} height={24} className="w-6 h-6" />,
-      value: sets ? `${calculateTotalHours}` : "Loading...",
+      value: sets ? calculateTotalHours : 0,
       label: t("header.hours_count", { count: String(calculateTotalHours) }).replace(/\d+\s*/, ""),
     },
   ];

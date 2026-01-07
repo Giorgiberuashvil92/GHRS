@@ -25,7 +25,7 @@ const SetDetails = () => {
       try {
         setLoading(true);
         // Use API_CONFIG endpoint builder for consistency
-        const endpoint = `/sets/${params.id}`;
+        const endpoint = `/api/sets/${params.id}`;
         console.log('🔍 Fetching set from:', endpoint);
         const data = await apiRequest<Set>(endpoint);
         console.log('✅ Set data received:', data);

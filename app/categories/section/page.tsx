@@ -1,9 +1,8 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { useCategoryComplete } from "../../hooks/useCategoryComplete";
-import { usePopularExercises } from "../../hooks/useExercises";
 import Header from "../../components/Header/Header";
 import MainHeader from "@/app/components/Header/MainHeader";
 import WorksSlider from "../../components/WorksSlider";
@@ -13,6 +12,7 @@ import ReviewSlider from "../../components/ReviewSlider";
 import Professional from "../../components/Professional";
 import Blog from "@/app/components/Blog";
 import { useI18n } from "../../context/I18nContext";
+import Image from "next/image";
 // import { BackendExercise } from "@/types/exercise";
 import { Footer } from "@/app/components/Footer";
 
@@ -25,13 +25,6 @@ function SectionContent() {
   // ვიყენებთ categoryComplete hook-ს მთავარი კატეგორიისთვის
   const { categoryData, loading, error } = useCategoryComplete(categoryId);
 
-  // ვიყენებთ popular exercises-ების hook-ს
-  const {
-    exercises: popularExercises,
-    loading: popularLoading,
-    error: popularError,
-  } = usePopularExercises();
-
   // ვპოულობთ ამ კონკრეტულ subcategory-ს
   const selectedSubcategory = categoryData?.subcategories?.find(
     (sub) => sub._id === subcategoryId
@@ -41,6 +34,33 @@ function SectionContent() {
   const subcategorySets =
     categoryData?.sets?.filter((set) => set.subCategoryId === subcategoryId) ||
     [];
+
+  // Calculate total hours from subcategory sets (must be before early returns)
+  const calculateTotalHours = useMemo(() => {
+    if (!subcategorySets || subcategorySets.length === 0) return 0;
+    
+    const totalMinutes = subcategorySets.reduce((acc, set) => {
+      if (!set.totalDuration) return acc;
+      
+      // Parse duration format "HH:MM:SS" or "MM:SS"
+      const parts = set.totalDuration.split(':').map(Number);
+      let minutes = 0;
+      
+      if (parts.length === 3) {
+        // HH:MM:SS format
+        const [hours, mins, secs] = parts;
+        minutes = hours * 60 + mins + secs / 60;
+      } else if (parts.length === 2) {
+        // MM:SS format
+        const [mins, secs] = parts;
+        minutes = mins + secs / 60;
+      }
+      
+      return acc + minutes;
+    }, 0);
+    
+    return Math.round((totalMinutes / 60) * 10) / 10; // Round to 1 decimal
+  }, [subcategorySets]);
 
   if (loading) {
     return (
@@ -88,6 +108,16 @@ function SectionContent() {
     return "ru";
   };
 
+  const locale = getLocale();
+
+  // ამოვიღოთ რაოდენობები
+  const setsCount = subcategorySets.length;
+  const exercisesCount = subcategorySets.reduce(
+    (total, set) => total + (set.totalExercises || 0),
+    0
+  );
+
+  // Helper function to get localized text (moved before usage)
   const getLocalizedText = (
     field: { ka: string; en: string; ru: string } | undefined,
     locale: string = "ru"
@@ -102,14 +132,24 @@ function SectionContent() {
     );
   };
 
-  const locale = getLocale();
-
-  // ამოვიღოთ რაოდენობები
-  const setsCount = subcategorySets.length;
-  const exercisesCount = subcategorySets.reduce(
-    (total, set) => total + (set.totalExercises || 0),
-    0
-  );
+  // პოპულარული სეტები მთელი კატეგორიიდან
+  const popularSets = categoryData?.sets
+    ?.filter((set: any) => set.isPopular)
+    .map((set: any) => ({
+      id: set._id,
+      title: getLocalizedText(set?.name, locale),
+      description: getLocalizedText(set?.description, locale),
+      image: set.thumbnailImage || "/assets/images/workMan.png",
+      exerciseCount: set.totalExercises || 0,
+      categoryName: getLocalizedText(
+        categoryData?.category?.name as { ka: string; en: string; ru: string },
+        locale
+      ),
+      price: `${set.price?.monthly || 920}₾/თვე`,
+      monthlyPrice: set.price?.monthly || 920,
+      categoryId: categoryId,
+      subcategoryId: set.subCategoryId || "",
+    })) || [];
 
   // გარდავქმნით სეტებს WorksSlider-ის ფორმატში
   const formattedSets = subcategorySets.map((set) => ({
@@ -142,7 +182,64 @@ function SectionContent() {
           exercisesCount,
         }}
       /> */}
-      <MainHeader ShowBlock={false} OptionalComponent={null} stats={[]} showArrows={false} complexData={null} hideBlock={true} hideHeaderText={true} />
+      <MainHeader 
+        ShowBlock={false} 
+        OptionalComponent={null} 
+        stats={[
+          {
+            icon: (
+              <Image 
+                src="/assets/icons/Video.png" 
+                alt="Complexes" 
+                width={24} 
+                height={24}
+                className="w-6 h-6"
+              />
+            ),
+            value: setsCount,
+            label: t("common.complexes")
+          },
+          {
+            icon: (
+              <Image 
+                src="/assets/icons/Pulse.png" 
+                alt="Exercises" 
+                width={24} 
+                height={24}
+                className="w-6 h-6"
+              />
+            ),
+            value: exercisesCount,
+            label: t("common.exercises")
+          },
+          {
+            icon: (
+              <Image 
+                src="/assets/icons/Book.png" 
+                alt="Hours" 
+                width={24} 
+                height={24}
+                className="w-6 h-6"
+              />
+            ),
+            value: calculateTotalHours,
+            label: t("common.hours") || t("header.hours_count", { count: String(calculateTotalHours) }).replace(/\d+\s*/, "")
+          }
+        ]} 
+        showArrows={false} 
+        complexData={null}
+        useVideo={true}
+        customBlockTitle={getLocalizedText(
+          selectedSubcategory?.name as { ka: string; en: string; ru: string },
+          locale
+        )?.toUpperCase()}
+        customBlockDescription={getLocalizedText(
+          selectedSubcategory?.description as { ka: string; en: string; ru: string } | undefined,
+          locale
+        )}
+        hideBlock={false}
+        hideHeaderText={false}
+      />
       <div className="md:pt-[100px] pt-[400px]">
         {Array.isArray(formattedSets) && formattedSets.length > 0 && (
           <div className="md:mb-10">
@@ -175,29 +272,19 @@ function SectionContent() {
         )}
 
         {/* Popular Exercises Section */}
-        {!popularLoading && popularExercises.length > 0 && (
-          <div className="mt-10">
-            <Works
-              exercises={popularExercises as any[]}
-              title={t("common.popular_exercises") || "პოპულარული ვარჯიშები"} customMargin={""} customBorderRadius={""} seeAll={false} scrollable={false}            />
-          </div>
-        )}
-
-        {popularLoading && (
-          <div className="text-center py-10">
-            <div className="animate-spin rounded-full h-8 w-8 border-4 border-purple-600 border-t-transparent mb-4 mx-auto"></div>
-            <p className="text-gray-500">
-              {t("common.loading_exercises") || "ვარჯიშები იტვირთება..."}
-            </p>
-          </div>
-        )}
-
-        {!popularLoading && popularError && (
-          <div className="text-center py-10">
-            <div className="text-red-500 text-4xl mb-4">⚠️</div>
-            <p className="text-red-600">
-              {t("common.exercises_error") || "ვარჯიშების ჩატვირთვის შეცდომა"}
-            </p>
+        {popularSets.length > 0 && (
+          <div className="mt-10 mb-10">
+            <WorksSlider
+              works={popularSets}
+              linkType="complex"
+              title={t("common.popular_exercises") || "ПОПУЛЯРНЫЕ УПРАЖНЕНИЯ"}
+              seeAll={false}
+              categoryData={categoryId}
+              fromMain={false}
+              scrollable={true}
+              sliderId="popular-exercises-slider"
+              showTopLink={false}
+            />
           </div>
         )}
 
