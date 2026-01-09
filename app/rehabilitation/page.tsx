@@ -25,18 +25,18 @@ const Rehabilitation = () => {
   const statsData = [
     {
       icon: <FaBook size={24} />,
-      value: statistics ? `${statistics.total.sets}` : "Loading...",
-      label: t("header.sets_count", { count: String(statistics?.total.sets || 0) }).replace(/\d+\s*/, ""),
+      value: statistics?.total?.sets || 0,
+      label: t("header.sets_count", { count: String(statistics?.total?.sets || 0) }).replace(/\d+\s*/, ""),
     },
     {
       icon: <FaDumbbell size={24} />,
-      value: statistics ? `${statistics.total.exercises}` : "Loading...",
-      label: t("header.exercises_count", { count: String(statistics?.total.exercises || 0) }).replace(/\d+\s*/, ""),
+      value: statistics?.total?.exercises || 0,
+      label: t("header.exercises_count", { count: String(statistics?.total?.exercises || 0) }).replace(/\d+\s*/, ""),
     },
     {
       icon: <FaClock size={24} />,
-      value: statistics ? `${statistics.total.hours}` : "Loading...",
-      label: t("header.hours_count", { count: String(statistics?.total.hours || 0) }).replace(/\d+\s*/, ""),
+      value: statistics?.total?.hours || 0,
+      label: t("header.hours_count", { count: String(statistics?.total?.hours || 0) }).replace(/\d+\s*/, ""),
     },
   ];
 

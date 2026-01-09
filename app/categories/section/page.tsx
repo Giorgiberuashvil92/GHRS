@@ -30,36 +30,127 @@ function SectionContent() {
     (sub) => sub._id === subcategoryId
   );
 
-  // ვპოულობთ ამ subcategory-ს სეტებს
   const subcategorySets =
     categoryData?.sets?.filter((set) => set.subCategoryId === subcategoryId) ||
     [];
 
   // Calculate total hours from subcategory sets (must be before early returns)
   const calculateTotalHours = useMemo(() => {
-    if (!subcategorySets || subcategorySets.length === 0) return 0;
+    if (!subcategorySets || subcategorySets.length === 0) {
+      console.log("⏰ No subcategorySets for hours calculation");
+      return 0;
+    }
     
-    const totalMinutes = subcategorySets.reduce((acc, set) => {
-      if (!set.totalDuration) return acc;
+    console.log("⏰ Calculating hours from sets:", subcategorySets.map((set: any) => ({
+      setId: set._id?.substring(0, 8),
+      totalDuration: set.totalDuration,
+      hasDuration: !!set.totalDuration,
+      exercisesCount: set.exercises?.length || 0
+    })));
+    
+    const totalMinutes = subcategorySets.reduce((acc, set: any) => {
+      let setMinutes = 0;
       
-      // Parse duration format "HH:MM:SS" or "MM:SS"
-      const parts = set.totalDuration.split(':').map(Number);
-      let minutes = 0;
-      
-      if (parts.length === 3) {
-        // HH:MM:SS format
-        const [hours, mins, secs] = parts;
-        minutes = hours * 60 + mins + secs / 60;
-      } else if (parts.length === 2) {
-        // MM:SS format
-        const [mins, secs] = parts;
-        minutes = mins + secs / 60;
+      if (set.totalDuration && set.totalDuration !== "00:00") {
+        // Parse duration format "HH:MM:SS" or "MM:SS"
+        const parts = set.totalDuration.split(':').map(Number);
+        
+        if (parts.length === 3) {
+          // HH:MM:SS format
+          const [hours, mins, secs] = parts;
+          setMinutes = hours * 60 + mins + secs / 60;
+          console.log(`⏰ Set ${set._id?.substring(0, 8)}...: ${set.totalDuration} = ${hours}h ${mins}m ${secs}s = ${setMinutes.toFixed(2)} minutes`);
+        } else if (parts.length === 2) {
+          // MM:SS format
+          const [mins, secs] = parts;
+          setMinutes = mins + secs / 60;
+          console.log(`⏰ Set ${set._id?.substring(0, 8)}...: ${set.totalDuration} = ${mins}m ${secs}s = ${setMinutes.toFixed(2)} minutes`);
+        } else {
+          console.log(`⏰ Set ${set._id?.substring(0, 8)}...: Invalid duration format: ${set.totalDuration}`);
+        }
+      } 
+      // თუ არ აქვს totalDuration ან არის "00:00", ვითვლით exercises-ის videoDuration-ების ჯამს
+      else if (set.exercises && set.exercises.length > 0) {
+        console.log(`⏰ Set ${set._id?.substring(0, 8)}...: Processing ${set.exercises.length} exercises`);
+        
+        // დეტალური ლოგი თითოეული exercise-ისთვის
+        set.exercises.forEach((exercise: any, index: number) => {
+          console.log(`  Exercise ${index + 1}:`, {
+            id: exercise._id?.substring(0, 8),
+            videoDuration: exercise.videoDuration,
+            duration: exercise.duration,
+            videoUrl: exercise.videoUrl,
+            videoUrlEn: exercise.videoUrlEn,
+            videoDurationType: typeof exercise.videoDuration,
+            durationType: typeof exercise.duration
+          });
+        });
+        
+        setMinutes = set.exercises.reduce((exerciseAcc: number, exercise: any) => {
+          let exerciseMinutes = 0;
+          
+          // პირველ რიგში ვცდილობთ videoDuration-ს
+          if (exercise.videoDuration) {
+            const videoDur = String(exercise.videoDuration).trim();
+            if (videoDur && videoDur !== "0" && videoDur !== "00:00" && videoDur !== "0:00") {
+              const parts = videoDur.split(':').map(Number).filter(n => !isNaN(n));
+              if (parts.length === 3) {
+                // HH:MM:SS format
+                const [hours, mins, secs] = parts;
+                exerciseMinutes = hours * 60 + mins + secs / 60;
+                console.log(`  📹 Exercise ${exercise._id?.substring(0, 8)}...: videoDuration="${videoDur}" = ${hours}h ${mins}m ${secs}s = ${exerciseMinutes.toFixed(2)} minutes`);
+              } else if (parts.length === 2) {
+                // MM:SS format
+                const [mins, secs] = parts;
+                exerciseMinutes = mins + secs / 60;
+                console.log(`  📹 Exercise ${exercise._id?.substring(0, 8)}...: videoDuration="${videoDur}" = ${mins}m ${secs}s = ${exerciseMinutes.toFixed(2)} minutes`);
+              } else if (parts.length === 1) {
+                // წამებში (number)
+                exerciseMinutes = parts[0] / 60;
+                console.log(`  📹 Exercise ${exercise._id?.substring(0, 8)}...: videoDuration="${videoDur}" (seconds) = ${exerciseMinutes.toFixed(2)} minutes`);
+              } else {
+                console.log(`  ⚠️ Exercise ${exercise._id?.substring(0, 8)}...: Invalid videoDuration format: "${videoDur}"`);
+              }
+            } else {
+              console.log(`  ⚠️ Exercise ${exercise._id?.substring(0, 8)}...: videoDuration is empty or zero: "${videoDur}"`);
+            }
+          }
+          
+          // თუ videoDuration-ით არაფერი გამოვიდა, ვცდილობთ duration-ს
+          if (exerciseMinutes === 0 && exercise.duration) {
+            const dur = String(exercise.duration).trim();
+            if (dur && dur !== "0" && dur !== "00:00" && dur !== "0:00") {
+              const parts = dur.split(':').map(Number).filter(n => !isNaN(n));
+              if (parts.length === 2) {
+                const [mins, secs] = parts;
+                exerciseMinutes = mins + secs / 60;
+                console.log(`  ⏱️ Exercise ${exercise._id?.substring(0, 8)}...: duration="${dur}" = ${mins}m ${secs}s = ${exerciseMinutes.toFixed(2)} minutes`);
+              } else if (parts.length === 1) {
+                exerciseMinutes = parts[0] / 60;
+                console.log(`  ⏱️ Exercise ${exercise._id?.substring(0, 8)}...: duration="${dur}" (seconds) = ${exerciseMinutes.toFixed(2)} minutes`);
+              }
+            }
+          }
+          
+          if (exerciseMinutes === 0) {
+            console.log(`  ❌ Exercise ${exercise._id?.substring(0, 8)}...: No valid duration found`);
+          }
+          
+          return exerciseAcc + exerciseMinutes;
+        }, 0);
+        
+        console.log(`⏰ Set ${set._id?.substring(0, 8)}...: Total = ${setMinutes.toFixed(2)} minutes (${(setMinutes / 60).toFixed(2)} hours)`);
+      } else {
+        console.log(`⏰ Set ${set._id?.substring(0, 8)}...: No totalDuration and no exercises`);
       }
       
-      return acc + minutes;
+      return acc + setMinutes;
     }, 0);
     
-    return Math.round((totalMinutes / 60) * 10) / 10; // Round to 1 decimal
+    const totalHours = Math.round((totalMinutes / 60) * 10) / 10; // Round to 1 decimal
+    console.log(`⏰ Total: ${totalMinutes.toFixed(2)} minutes = ${totalHours} hours`);
+    
+    return totalHours;
   }, [subcategorySets]);
 
   if (loading) {
@@ -112,10 +203,40 @@ function SectionContent() {
 
   // ამოვიღოთ რაოდენობები
   const setsCount = subcategorySets.length;
-  const exercisesCount = subcategorySets.reduce(
-    (total, set) => total + (set.totalExercises || 0),
-    0
-  );
+  
+  // 🔍 DEBUG: დალოგვა subcategorySets-ის
+  console.log("📊 Section Page Debug:", {
+    subcategoryId,
+    categoryId,
+    setsCount,
+    subcategorySets: subcategorySets.map((set: any) => ({
+      setId: set._id,
+      setName: set.name,
+      exercisesArray: set.exercises,
+      exercisesArrayLength: set.exercises?.length,
+      totalExercises: set.totalExercises,
+      calculated: set.exercises?.length || set.totalExercises || 0
+    }))
+  });
+  
+  // სავარჯიშოების რაოდენობა - ვიყენებთ exercises მასივს, რომელიც აბრუნებს backend-ი
+  // ან თუ არ არის, ვითვლით სეტების exercises მასივების ჯამს
+  const exercisesCount = 
+    subcategorySets.reduce(
+      (total, set: any) => {
+        const setExercises = set.exercises?.length || set.totalExercises || 0;
+        console.log(`🔢 Set ${set._id?.substring(0, 8)}...: exercises.length=${set.exercises?.length}, totalExercises=${set.totalExercises}, calculated=${setExercises}, runningTotal=${total + setExercises}`);
+        return total + setExercises;
+      },
+      0
+    ) || 0;
+  
+  console.log("✅ Final exercisesCount:", exercisesCount);
+  console.log("📈 Summary:", {
+    setsCount,
+    exercisesCount,
+    expectedTotal: subcategorySets.reduce((sum: number, set: any) => sum + (set.exercises?.length || 0), 0)
+  });
 
   // Helper function to get localized text (moved before usage)
   const getLocalizedText = (
@@ -135,6 +256,35 @@ function SectionContent() {
   // პოპულარული სეტები მთელი კატეგორიიდან
   const popularSets = categoryData?.sets
     ?.filter((set: any) => set.isPopular)
+    .map((set: any) => ({
+      id: set._id,
+      title: getLocalizedText(set?.name, locale),
+      description: getLocalizedText(set?.description, locale),
+      image: set.thumbnailImage || "/assets/images/workMan.png",
+      exerciseCount: set.totalExercises || 0,
+      categoryName: getLocalizedText(
+        categoryData?.category?.name as { ka: string; en: string; ru: string },
+        locale
+      ),
+      price: `${set.price?.monthly || 920}₾/თვე`,
+      monthlyPrice: set.price?.monthly || 920,
+      categoryId: categoryId,
+      subcategoryId: set.subCategoryId || "",
+    })) || [];
+
+  // ყველაზე ახალი სეტები ამ კატეგორიიდან (createdAt ან updatedAt-ის მიხედვით)
+  const latestSets = categoryData?.sets
+    ?.filter((set: any) => {
+      // მხოლოდ ამ კატეგორიის სეტები, გამოვრიცხოთ პოპულარული და ამ subcategory-ის სეტები
+      return set.categoryId === categoryId && !set.isPopular && set.subCategoryId !== subcategoryId;
+    })
+    .sort((a: any, b: any) => {
+      // დავალაგოთ updatedAt-ის მიხედვით (ყველაზე ახალი პირველი)
+      const dateA = new Date(a.updatedAt || a.createdAt || 0).getTime();
+      const dateB = new Date(b.updatedAt || b.createdAt || 0).getTime();
+      return dateB - dateA;
+    })
+    .slice(0, 10) // მხოლოდ 10 ყველაზე ახალი
     .map((set: any) => ({
       id: set._id,
       title: getLocalizedText(set?.name, locale),
@@ -189,7 +339,7 @@ function SectionContent() {
           {
             icon: (
               <Image 
-                src="/assets/icons/Video.png" 
+                src="/assets/icons/Book.png" 
                 alt="Complexes" 
                 width={24} 
                 height={24}
@@ -202,7 +352,7 @@ function SectionContent() {
           {
             icon: (
               <Image 
-                src="/assets/icons/Pulse.png" 
+                src="/assets/icons/Video.png" 
                 alt="Exercises" 
                 width={24} 
                 height={24}
@@ -215,7 +365,7 @@ function SectionContent() {
           {
             icon: (
               <Image 
-                src="/assets/icons/Book.png" 
+                src="/assets/icons/Pulse.png" 
                 alt="Hours" 
                 width={24} 
                 height={24}
@@ -240,7 +390,22 @@ function SectionContent() {
         hideBlock={false}
         hideHeaderText={false}
       />
-      <div className="md:pt-[100px] pt-[400px]">
+      <div className="md:pt-[20px] pt-[400px]">
+      {latestSets.length > 0 && (
+          <div className="mt-10 mb-10">
+            <WorksSlider
+              works={latestSets}
+              linkType="complex"
+              title={t("common.popular_exercises") || t("common.new_content") || "НОВЫЙ КОНТЕНТ"}
+              seeAll={false}
+              categoryData={categoryData?.category?._id}
+              fromMain={false}
+              scrollable={true}
+              sliderId="popular-exercises-slider"
+              showTopLink={false}
+            />
+          </div>
+        )}
         {Array.isArray(formattedSets) && formattedSets.length > 0 && (
           <div className="md:mb-10">
             <WorksSlider
@@ -271,6 +436,7 @@ function SectionContent() {
           </div>
         )}
 
+
         {/* Popular Exercises Section */}
         {popularSets.length > 0 && (
           <div className="mt-10 mb-10">
@@ -287,6 +453,9 @@ function SectionContent() {
             />
           </div>
         )}
+
+        {/* Latest/New Content Section */}
+       
 
         <Subscribe
           backgroundImage="/assets/images/categorySliderBgs/bg1.jpg"

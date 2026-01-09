@@ -95,11 +95,36 @@ export default function CategoriesPage({
   // ამოვიღოთ რაოდენობები
   const setsCount = categoryData?.sets?.length || 0;
   const subcategoriesCount = categoryData?.subcategories?.length || 0;
-  const exercisesCount =
+  
+  // 🔍 DEBUG: დალოგვა categoryData-ს
+  console.log("📊 Category Page Debug:", {
+    categoryId,
+    setsCount,
+    subcategoriesCount,
+    exercisesFromArray: categoryData?.exercises?.length,
+    sets: categoryData?.sets?.map((set: any) => ({
+      setId: set._id,
+      setName: set.name,
+      exercisesArray: set.exercises,
+      exercisesArrayLength: set.exercises?.length,
+      totalExercises: set.totalExercises,
+      calculated: set.exercises?.length || set.totalExercises || 0
+    }))
+  });
+  
+  // სავარჯიშოების რაოდენობა - ვიყენებთ exercises მასივს, რომელიც აბრუნებს backend-ი
+  // ან თუ არ არის, ვითვლით სეტების exercises მასივების ჯამს
+  const exercisesCount = categoryData?.exercises?.length || 
     categoryData?.sets?.reduce(
-      (total, set) => total + (set.totalExercises || 0),
+      (total, set: any) => {
+        const setExercises = set.exercises?.length || set.totalExercises || 0;
+        console.log(`🔢 Set ${set._id}: exercises.length=${set.exercises?.length}, totalExercises=${set.totalExercises}, calculated=${setExercises}`);
+        return total + setExercises;
+      },
       0
     ) || 0;
+  
+  console.log("✅ Final exercisesCount:", exercisesCount);
 
   // ფორმატირების ფუნქცია
   const formatSet = (set: any) => ({
@@ -156,7 +181,7 @@ export default function CategoriesPage({
           {
             icon: (
               <Image 
-                src="/assets/icons/Video.png" 
+                src="/assets/icons/Book.png" 
                 alt="Complexes" 
                 width={24} 
                 height={24}
@@ -169,8 +194,8 @@ export default function CategoriesPage({
           {
             icon: (
               <Image 
-                src="/assets/icons/Book.png" 
-                alt="Categories" 
+                src="/assets/icons/Pulse.png" 
+                alt="Subcategories" 
                 width={24} 
                 height={24}
                 className="w-6 h-6"
@@ -182,7 +207,7 @@ export default function CategoriesPage({
           {
             icon: (
               <Image 
-                src="/assets/icons/Pulse.png" 
+                src="/assets/icons/Video.png" 
                 alt="Exercises" 
                 width={24} 
                 height={24}
@@ -281,10 +306,10 @@ export default function CategoriesPage({
         </div>
         )}
 
-        {/* ✅ КАТЕГОРИИ Section - All Sets/Complexes */}
+        {/* ✅ EXERCISES Section - All Sets/Complexes */}
         {categoryData?.sets && categoryData.sets.length > 0 && (
           <Works
-            title={t("navigation.categories") || "КАТЕГОРИИ"}
+            title={t("common.exercises")?.toUpperCase() || t("header.exercises_count", { count: String(exercisesCount) }).replace(/\d+\s*/, "").toUpperCase() || "EXERCISES"}
             sets={categoryData.sets as any}
             fromMain={false}
             customMargin=""

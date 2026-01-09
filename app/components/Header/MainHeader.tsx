@@ -50,6 +50,23 @@ function MainHeader({
   const { statistics } = useStatistics();
   const [showContent, setShowContent] = useState(false);
 
+  // Debug: Log stats data
+  console.log('📊 MainHeader Stats Debug:', {
+    stats,
+    statsLength: stats.length,
+    statsType: typeof stats,
+    statsIsArray: Array.isArray(stats),
+    statsDetails: stats.map((stat, index) => ({
+      index,
+      value: stat.value,
+      valueType: typeof stat.value,
+      label: stat.label,
+      hasIcon: !!stat.icon
+    })),
+    hideStats,
+    statisticsFromHook: statistics
+  });
+
   const localizedMenuItems = [
     { id: 1, name: t("navigation.all_complexes"), route: "/allComplex" },
     { id: 2, name: t("navigation.about"), route: "/about" },
@@ -200,20 +217,31 @@ function MainHeader({
         >
           {!hideStats && (
             <div className="flex gap-4 flex-col md:flex-row mb-4 w-full justify-between">
-              {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className="bg-[#3d334a4d] w-full backdrop-blur-sm rounded-[20px] px-5 py-3 flex items-center gap-3 transition-transform duration-300 hover:scale-105"
-                >
-                  <span className="bg-white/20 rounded-xl p-3 flex items-center justify-center flex-shrink-0">{stat.icon}</span>
-                  <div className="flex items-baseline gap-1">
-                    <span className="text-2xl font-bold text-white font-pt">
-                      {stat.value}
-                    </span>
-                    <span className="text-base text-white/90 font-pt font-medium">{stat.label}</span>
+              {stats.map((stat, index) => {
+                // Debug: Log each stat item
+                console.log(`📈 MainHeader Stat [${index}]:`, {
+                  value: stat.value,
+                  valueType: typeof stat.value,
+                  label: stat.label,
+                  hasIcon: !!stat.icon,
+                  isNaN: typeof stat.value === 'number' ? isNaN(stat.value) : 'N/A'
+                });
+
+                return (
+                  <div
+                    key={index}
+                    className="bg-[#3d334a4d] w-full backdrop-blur-sm rounded-[20px] px-5 py-3 flex items-center gap-3 transition-transform duration-300 hover:scale-105"
+                  >
+                    <span className="bg-white/20 rounded-xl p-3 flex items-center justify-center flex-shrink-0">{stat.icon}</span>
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-2xl font-bold text-white font-pt">
+                        {typeof stat.value === 'number' ? stat.value : String(stat.value)}
+                      </span>
+                      <span className="text-base text-white/90 font-pt font-medium">{stat.label}</span>
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
           {!hideBlock && (
