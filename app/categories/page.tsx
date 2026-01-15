@@ -275,10 +275,11 @@ export default function CategoriesPage() {
         >
           {" "}
           <Blog
-            withBanner={false}
+            withBanner={true}
             withSlider={true}
             layoutType="default"
-            title={t("common.grs_media") || "GRS МЕДИА"}
+            title={t("navigation.blog")}
+            showCategories={false}
           />
         </div>
         <Professional

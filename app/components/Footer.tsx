@@ -30,6 +30,7 @@ export const Footer: FC = () => {
     obesity: "6888ab6e8e3196ddea6b78ff",
     gaitRehab: "689a05f99c575c1535e8936b",
     covidRehab: "689a0e1f9c575c1535e893f0",
+    elderlyRehab: "689a091c9c575c1535e89399",
   };
 
   // Neurology subcategory IDs
@@ -476,7 +477,7 @@ export const Footer: FC = () => {
           <a href={`/categories/${categoryLinks.aphasia}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.aphasia")}</a>
           <a href={`/categories/${categoryLinks.obesity}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.obesity")}</a>
           <a href={`/categories/${categoryLinks.gaitRehab}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.gaitRehab")}</a>
-          <a href="/allComplex" className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.elderlyRehab")}</a>
+          <a href={`/categories/${categoryLinks.elderlyRehab}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.elderlyRehab")}</a>
           <a href={`/categories/${categoryLinks.covidRehab}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.covidRehab")}</a>
         </div>
       </div>

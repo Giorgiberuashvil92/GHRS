@@ -1,6 +1,6 @@
 "use client";
 
-import { use } from "react";
+import { use, useMemo } from "react";
 import { useCategoryComplete } from "../../hooks/useCategoryComplete";
 import Image from "next/image";
 import Link from "next/link";
@@ -30,6 +30,78 @@ export default function CategoriesPage({
 
 
   const selectedCategory = categoryData?.category;
+
+  // საათების გამოთვლა (როგორც subcategory-ს გვერდზე) - early return-ის წინ
+  const calculateTotalHours = useMemo(() => {
+    if (!categoryData?.sets || categoryData.sets.length === 0) {
+      return 0;
+    }
+    
+    const subcategoriesCount = categoryData?.subcategories?.length || 0;
+    const setsToCalculate = subcategoriesCount > 0
+      ? categoryData.sets.filter((set: any) => !set.subCategoryId) || []
+      : categoryData.sets || [];
+    
+    if (!setsToCalculate || setsToCalculate.length === 0) {
+      return 0;
+    }
+    
+    const totalMinutes = setsToCalculate.reduce((acc: number, set: any) => {
+      let setMinutes = 0;
+      
+      if (set.totalDuration && set.totalDuration !== "00:00") {
+        const parts = set.totalDuration.split(':').map(Number);
+        
+        if (parts.length === 3) {
+          const [hours, mins, secs] = parts;
+          setMinutes = hours * 60 + mins + secs / 60;
+        } else if (parts.length === 2) {
+          const [mins, secs] = parts;
+          setMinutes = mins + secs / 60;
+        }
+      } else if (set.exercises && set.exercises.length > 0) {
+        setMinutes = set.exercises.reduce((exerciseAcc: number, exercise: any) => {
+          let exerciseMinutes = 0;
+          
+          if (exercise.videoDuration) {
+            const videoDur = String(exercise.videoDuration).trim();
+            if (videoDur && videoDur !== "0" && videoDur !== "00:00" && videoDur !== "0:00") {
+              const parts = videoDur.split(':').map(Number).filter(n => !isNaN(n));
+              if (parts.length === 3) {
+                const [hours, mins, secs] = parts;
+                exerciseMinutes = hours * 60 + mins + secs / 60;
+              } else if (parts.length === 2) {
+                const [mins, secs] = parts;
+                exerciseMinutes = mins + secs / 60;
+              } else if (parts.length === 1) {
+                exerciseMinutes = parts[0] / 60;
+              }
+            }
+          }
+          
+          if (exerciseMinutes === 0 && exercise.duration) {
+            const dur = String(exercise.duration).trim();
+            if (dur && dur !== "0" && dur !== "00:00" && dur !== "0:00") {
+              const parts = dur.split(':').map(Number).filter(n => !isNaN(n));
+              if (parts.length === 2) {
+                const [mins, secs] = parts;
+                exerciseMinutes = mins + secs / 60;
+              } else if (parts.length === 1) {
+                exerciseMinutes = parts[0] / 60;
+              }
+            }
+          }
+          
+          return exerciseAcc + exerciseMinutes;
+        }, 0);
+      }
+      
+      return acc + setMinutes;
+    }, 0);
+    
+    const totalHours = Math.round((totalMinutes / 60) * 10) / 10;
+    return totalHours;
+  }, [categoryData?.sets, categoryData?.subcategories]);
 
   if (loading) {
     return (
@@ -92,28 +164,11 @@ export default function CategoriesPage({
 
   const locale = getLocale();
 
-  // ამოვიღოთ რაოდენობები
   const setsCount = categoryData?.sets?.length || 0;
   const subcategoriesCount = categoryData?.subcategories?.length || 0;
   
-  // 🔍 DEBUG: დალოგვა categoryData-ს
-  console.log("📊 Category Page Debug:", {
-    categoryId,
-    setsCount,
-    subcategoriesCount,
-    exercisesFromArray: categoryData?.exercises?.length,
-    sets: categoryData?.sets?.map((set: any) => ({
-      setId: set._id,
-      setName: set.name,
-      exercisesArray: set.exercises,
-      exercisesArrayLength: set.exercises?.length,
-      totalExercises: set.totalExercises,
-      calculated: set.exercises?.length || set.totalExercises || 0
-    }))
-  });
-  
-  // სავარჯიშოების რაოდენობა - ვიყენებთ exercises მასივს, რომელიც აბრუნებს backend-ი
-  // ან თუ არ არის, ვითვლით სეტების exercises მასივების ჯამს
+
+
   const exercisesCount = categoryData?.exercises?.length || 
     categoryData?.sets?.reduce(
       (total, set: any) => {
@@ -142,26 +197,61 @@ export default function CategoriesPage({
   });
 
   // პოპულარული სეტები
-  const popularSets = categoryData?.sets
-    ?.filter((set: any) => set.isPopular)
-    .map(formatSet) || [];
+  // - თუ subcategories აქვს: მხოლოდ პოპულარული სეტები (isPopular: true)
+  // - თუ subcategories არ აქვს: ყველა სეტი, რომელიც პირდაპირ კატეგორიას ეკუთვნის (როგორც subcategory-ს გვერდზე)
+  const popularSets = subcategoriesCount > 0
+    ? (categoryData?.sets
+        ?.filter((set: any) => set.isPopular)
+        .map(formatSet) || [])
+    : (categoryData?.sets
+        ?.filter((set: any) => !set.subCategoryId) // ყველა სეტი, რომელსაც არ აქვს subcategory
+        .map(formatSet) || []);
 
-  // დაჯგუფება ქვეკატეგორიების მიხედვით
-  const setsBySubcategory = categoryData?.subcategories?.map((subcategory: any) => {
-    const subcategorySets = categoryData?.sets
-      ?.filter((set: any) => set.subCategoryId === subcategory._id)
-      .map(formatSet) || [];
-    
-    return {
-      subcategory,
-      sets: subcategorySets,
-    };
-  }).filter((group: any) => group.sets.length > 0) || [];
+  // დაჯგუფება ქვეკატეგორიების მიხედვით (მხოლოდ თუ აქვს subcategories)
+  const setsBySubcategory = subcategoriesCount > 0 
+    ? (categoryData?.subcategories?.map((subcategory: any) => {
+        const subcategorySets = categoryData?.sets
+          ?.filter((set: any) => set.subCategoryId === subcategory._id)
+          .map(formatSet) || [];
+        
+        return {
+          subcategory,
+          sets: subcategorySets,
+        };
+      }).filter((group: any) => group.sets.length > 0) || [])
+    : [];
 
   // სეტები რომლებსაც არ აქვთ ქვეკატეგორია
   const directSets = categoryData?.sets
     ?.filter((set: any) => !set.subCategoryId && !set.isPopular)
     .map(formatSet) || [];
+
+  // სეტები Works კომპონენტისთვის:
+  // - თუ subcategories აქვს: მხოლოდ ის სეტები, რომლებსაც არ აქვთ subcategory (პირდაპირ კატეგორიას ეკუთვნის)
+  // - თუ subcategories არ აქვს: ყველა სეტი (რადგან ყველა პირდაპირ კატეგორიას ეკუთვნის)
+  // ⚠️ Works კომპონენტი იღებს raw sets-ს და თავად ფორმატირებს, ამიტომ უნდა დავამატოთ category ინფორმაცია
+  const setsForWorks = (subcategoriesCount > 0
+    ? categoryData?.sets?.filter((set: any) => !set.subCategoryId) || []
+    : categoryData?.sets || []
+  ).map((set: any) => ({
+    ...set,
+    category: set.category || selectedCategory, // დავამატოთ category თუ არ აქვს
+  }));
+
+  // ⚠️ დებაგინგი subcategory-ების გარეშე
+  if (subcategoriesCount === 0) {
+    console.log("⚠️ No subcategories found for this category.");
+    console.log("📦 Total sets:", setsCount);
+    console.log("📦 Popular sets:", popularSets.length);
+    console.log("📦 Sets for Works (all sets):", setsForWorks.length);
+    console.log("📦 Direct sets (without subcategory):", directSets.length);
+    console.log("📋 Sets for Works details:", setsForWorks.map((set: any) => ({
+      id: set._id,
+      title: getLocalizedText(set?.name, locale),
+      hasSubCategory: !!set.subCategoryId,
+      isPopular: set.isPopular || false
+    })));
+  }
 
   return (
     <div className="">
@@ -177,6 +267,7 @@ export default function CategoriesPage({
       /> */}
       <MainHeader 
         ShowBlock={false} 
+        OptionalComponent={null}
         stats={[
           {
             icon: (
@@ -194,19 +285,6 @@ export default function CategoriesPage({
           {
             icon: (
               <Image 
-                src="/assets/icons/Pulse.png" 
-                alt="Subcategories" 
-                width={24} 
-                height={24}
-                className="w-6 h-6"
-              />
-            ),
-            value: subcategoriesCount,
-            label: t("common.subcategories")
-          },
-          {
-            icon: (
-              <Image 
                 src="/assets/icons/Video.png" 
                 alt="Exercises" 
                 width={24} 
@@ -216,12 +294,28 @@ export default function CategoriesPage({
             ),
             value: exercisesCount,
             label: t("common.exercises")
+          },
+          {
+            icon: (
+              <Image 
+                src="/assets/icons/Pulse.png" 
+                alt="Hours" 
+                width={24} 
+                height={24}
+                className="w-6 h-6"
+              />
+            ),
+            value: calculateTotalHours,
+            label: t("common.hours") || t("header.hours_count", { count: String(calculateTotalHours) }).replace(/\d+\s*/, "")
           }
         ]} 
         showArrows={false} 
         complexData={null}
         useVideo={true}
         customBlockTitle={getLocalizedText(selectedCategory?.name, locale)?.toUpperCase()}
+        customBlockDescription={getLocalizedText(selectedCategory?.description, locale)}
+        hideBlock={false}
+        hideHeaderText={false}
       />
       <div className="md:pt-[100px] pt-[400px]">
         {/* SHOW: Subcategories section */}
@@ -305,25 +399,7 @@ export default function CategoriesPage({
           </div>
         </div>
         )}
-
-        {/* ✅ EXERCISES Section - All Sets/Complexes */}
-        {categoryData?.sets && categoryData.sets.length > 0 && (
-          <Works
-            title={t("common.exercises")?.toUpperCase() || t("header.exercises_count", { count: String(exercisesCount) }).replace(/\d+\s*/, "").toUpperCase() || "EXERCISES"}
-            sets={categoryData.sets as any}
-            fromMain={false}
-            customMargin=""
-            customBorderRadius=""
-            seeAll={true}
-            scrollable={true}
-            totalCount={categoryData.sets.length}
-            linkHref="/allComplex"
-            showTopLink={true}
-          />
-        )}
-
-        {/* პოპულარული ვარჯიშები */}
-        {popularSets.length > 0 && (
+                {popularSets.length > 0 && (
           <div className="mt-10 mb-10">
             <WorksSlider
               works={popularSets}
@@ -338,6 +414,25 @@ export default function CategoriesPage({
             />
           </div>
         )}
+
+        {/* ✅ EXERCISES Section - All Sets/Complexes */}
+        {setsForWorks && setsForWorks.length > 0 && (
+          <Works
+            title={getLocalizedText(selectedCategory?.name, locale)?.toUpperCase() || t("common.exercises")?.toUpperCase() || "EXERCISES"}
+            sets={setsForWorks as any}
+            fromMain={false}
+            customMargin=""
+            customBorderRadius=""
+            seeAll={true}
+            scrollable={true}
+            totalCount={setsForWorks.length}
+            linkHref="/allComplex"
+            showTopLink={true}
+          />
+        )}
+
+        {/* პოპულარული ვარჯიშები */}
+
 
         {/* ✅ HIDDEN: ქვეკატეგორიების მიხედვით დაჯგუფებული სეტები - დამალულია */}
         {/* {setsBySubcategory.map((group: any, index: number) => (
@@ -390,13 +485,15 @@ export default function CategoriesPage({
         <div className="my-10">
           <ReviewSlider title={""} />
         </div>
-        <Blog
-          withBanner={false}
-          withSlider={true}
-          layoutType="default"
-          title={"GRS МЕДИА"}
-          showCategories={false}
-        />
+        <div className="mb-10">
+          <Blog
+            withBanner={true}
+            withSlider={true}
+            layoutType="default"
+            title={t("navigation.blog")}
+            showCategories={false}
+          />
+        </div>
         <div className="mt-10">
           <Professional
             withBanner={false}

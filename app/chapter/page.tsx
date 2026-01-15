@@ -93,12 +93,15 @@ const Chapter = () => {
           </div>
           <Subscribe />
           <ReviewSlider title="" />
-          <Blog
-            withBanner={false}
-            withSlider={true}
-            layoutType="default"
-            title={""}
-          />
+          <div className="mb-10">
+            <Blog
+              withBanner={true}
+              withSlider={true}
+              layoutType="default"
+              title={t("navigation.blog")}
+              showCategories={false}
+            />
+          </div>
         </>
       )}
     </div>

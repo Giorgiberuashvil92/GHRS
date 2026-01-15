@@ -253,9 +253,34 @@ function SectionContent() {
     );
   };
 
-  // პოპულარული სეტები მთელი კატეგორიიდან
+  // დებაგინგი - ყველა სეტის subCategoryId
+  console.log('🔍 All sets subCategoryIds:', {
+    subcategoryId,
+    categoryId,
+    allSets: categoryData?.sets?.map((set: any) => ({
+      setId: set._id?.substring(0, 8),
+      setName: getLocalizedText(set?.name, locale),
+      subCategoryId: set.subCategoryId,
+      subCategoryIdString: String(set.subCategoryId || ''),
+      isPopular: set.isPopular,
+      categoryId: set.categoryId
+    })) || []
+  });
+
+  // ყველა სეტი ამ subcategory-იდან
   const popularSets = categoryData?.sets
-    ?.filter((set: any) => set.isPopular)
+    ?.filter((set: any) => {
+      const setSubCategoryId = set.subCategoryId 
+        ? (typeof set.subCategoryId === 'object' ? String(set.subCategoryId._id || set.subCategoryId) : String(set.subCategoryId))
+        : '';
+      const currentSubCategoryId = String(subcategoryId || '');
+      
+      const isSubCategoryMatch = setSubCategoryId === currentSubCategoryId || 
+                                 setSubCategoryId === subcategoryId ||
+                                 (set.subCategoryId && String(set.subCategoryId) === currentSubCategoryId);
+      
+      return isSubCategoryMatch;
+    })
     .map((set: any) => ({
       id: set._id,
       title: getLocalizedText(set?.name, locale),
@@ -263,6 +288,9 @@ function SectionContent() {
       image: set.thumbnailImage || "/assets/images/workMan.png",
       exerciseCount: set.totalExercises || 0,
       categoryName: getLocalizedText(
+        selectedSubcategory?.name as { ka: string; en: string; ru: string },
+        locale
+      ) || getLocalizedText(
         categoryData?.category?.name as { ka: string; en: string; ru: string },
         locale
       ),
@@ -271,6 +299,21 @@ function SectionContent() {
       categoryId: categoryId,
       subcategoryId: set.subCategoryId || "",
     })) || [];
+  
+  console.log('📊 Popular Sets Debug:', {
+    subcategoryId,
+    categoryId,
+    totalSets: categoryData?.sets?.length || 0,
+    popularSetsCount: popularSets.length,
+    popularSets: popularSets.map((s: any) => ({
+      id: s.id,
+      title: s.title,
+      subcategoryId: s.subcategoryId,
+      exerciseCount: s.exerciseCount,
+      price: s.price
+    })),
+    allPopularSetsDetails: popularSets
+  });
 
   // ყველაზე ახალი სეტები ამ კატეგორიიდან (createdAt ან updatedAt-ის მიხედვით)
   const latestSets = categoryData?.sets
@@ -285,21 +328,31 @@ function SectionContent() {
       return dateB - dateA;
     })
     .slice(0, 10) // მხოლოდ 10 ყველაზე ახალი
-    .map((set: any) => ({
-      id: set._id,
-      title: getLocalizedText(set?.name, locale),
-      description: getLocalizedText(set?.description, locale),
-      image: set.thumbnailImage || "/assets/images/workMan.png",
-      exerciseCount: set.totalExercises || 0,
-      categoryName: getLocalizedText(
-        categoryData?.category?.name as { ka: string; en: string; ru: string },
-        locale
-      ),
-      price: `${set.price?.monthly || 920}₾/თვე`,
-      monthlyPrice: set.price?.monthly || 920,
-      categoryId: categoryId,
-      subcategoryId: set.subCategoryId || "",
-    })) || [];
+    .map((set: any) => {
+      // ვპოულობთ ამ სეტის subcategory-ს
+      const setSubcategory = categoryData?.subcategories?.find(
+        (sub: any) => sub._id === set.subCategoryId
+      );
+      
+      return {
+        id: set._id,
+        title: getLocalizedText(set?.name, locale),
+        description: getLocalizedText(set?.description, locale),
+        image: set.thumbnailImage || "/assets/images/workMan.png",
+        exerciseCount: set.totalExercises || 0,
+        categoryName: getLocalizedText(
+          setSubcategory?.name as { ka: string; en: string; ru: string },
+          locale
+        ) || getLocalizedText(
+          categoryData?.category?.name as { ka: string; en: string; ru: string },
+          locale
+        ),
+        price: `${set.price?.monthly || 920}₾/თვე`,
+        monthlyPrice: set.price?.monthly || 920,
+        categoryId: categoryId,
+        subcategoryId: set.subCategoryId || "",
+      };
+    }) || [];
 
   // გარდავქმნით სეტებს WorksSlider-ის ფორმატში
   const formattedSets = subcategorySets.map((set) => ({
@@ -391,12 +444,12 @@ function SectionContent() {
         hideHeaderText={false}
       />
       <div className="md:pt-[20px] pt-[400px]">
-      {latestSets.length > 0 && (
+      {popularSets.length > 0 && (
           <div className="mt-10 mb-10">
             <WorksSlider
-              works={latestSets}
+              works={popularSets}
               linkType="complex"
-              title={t("common.popular_exercises") || t("common.new_content") || "НОВЫЙ КОНТЕНТ"}
+              title={t("common.popular_exercises") || "ПОПУЛЯРНЫЕ УПРАЖНЕНИЯ"}
               seeAll={false}
               categoryData={categoryData?.category?._id}
               fromMain={false}
@@ -406,6 +459,7 @@ function SectionContent() {
             />
           </div>
         )}
+
         {Array.isArray(formattedSets) && formattedSets.length > 0 && (
           <div className="md:mb-10">
             <WorksSlider
@@ -438,22 +492,7 @@ function SectionContent() {
 
 
         {/* Popular Exercises Section */}
-        {popularSets.length > 0 && (
-          <div className="mt-10 mb-10">
-            <WorksSlider
-              works={popularSets}
-              linkType="complex"
-              title={t("common.popular_exercises") || "ПОПУЛЯРНЫЕ УПРАЖНЕНИЯ"}
-              seeAll={false}
-              categoryData={categoryId}
-              fromMain={false}
-              scrollable={true}
-              sliderId="popular-exercises-slider"
-              showTopLink={false}
-            />
-          </div>
-        )}
-
+       
         {/* Latest/New Content Section */}
        
 
@@ -472,22 +511,13 @@ function SectionContent() {
         <div className="my-10">
           <ReviewSlider title={"ОТЗЫВЫ О НАС"} />
         </div>
-        <div
-          className="mb-10
-        "
-        >
+        <div className="mb-10">
           <Blog
-            withBanner={false}
+            withBanner={true}
             withSlider={true}
             layoutType="default"
-            title={getLocalizedText(
-              selectedSubcategory?.name as {
-                ka: string;
-                en: string;
-                ru: string;
-              },
-              locale
-            )}
+            title={t("navigation.blog")}
+            showCategories={false}
           />
         </div>
 

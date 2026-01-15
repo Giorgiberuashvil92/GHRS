@@ -8,6 +8,7 @@ import CourseSlider from "../components/CourseSlider";
 import Professional from "../components/Professional";
 import { Footer } from "../components/Footer";
 import MainHeader from "../components/Header/MainHeader";
+import { useI18n } from "../context/I18nContext";
 
 const homePageWorks = [
   {
@@ -57,6 +58,8 @@ const homePageWorks = [
 ];
 
 const Section = () => {
+  const { t } = useI18n();
+  
   return (
     <div>
       {/* <Header
@@ -100,12 +103,13 @@ const Section = () => {
       <div className="mb-8">
         <ReviewSlider title={""} />
       </div>
-      <div className="my-8">
+      <div className="mb-10">
         <Blog
-          title="GRS МЕДИА"
+          withBanner={true}
           withSlider={true}
           layoutType="default"
-          withBanner={false}
+          title={t("navigation.blog")}
+          showCategories={false}
         />
       </div>
       <Professional withBanner={false} title="" bgColor="" withProfText={false} />
