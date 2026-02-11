@@ -96,8 +96,16 @@ async function bootstrap() {
   });
 
   const port = process.env.PORT || 4000;
-  await app.listen(port);
-  console.log(`🚀 Backend server running on http://localhost:${port}`);
-  console.log(`📚 API documentation: http://localhost:${port}/api/test`);
+  
+  // Log environment info (without sensitive data)
+  console.log('📋 Environment Info:');
+  console.log(`   NODE_ENV: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`   PORT: ${port}`);
+  console.log(`   MONGODB_URI: ${process.env.MONGODB_URI ? '✅ Set' : '❌ Not set'}`);
+  
+  await app.listen(port, '0.0.0.0', () => {
+    console.log(`🚀 Backend server running on port ${port}`);
+    console.log(`📚 API documentation: http://0.0.0.0:${port}/api/test`);
+  });
 }
 bootstrap();
