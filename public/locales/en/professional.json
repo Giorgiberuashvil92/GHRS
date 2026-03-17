@@ -1,7 +1,18 @@
 {
   "professional": {
+    "header": {
+      "title": "PROFESSIONAL DEVELOPMENT",
+      "description": "Training and professional development in rehabilitation, physiotherapy and therapeutic massage — in collaboration with Israeli training centres."
+    },
+    "our_courses": "Our courses",
+    "cards": {
+      "qualified_teachers": "qualified instructors",
+      "exclusive_courses": "exclusive courses",
+      "students_learning": "students currently in training"
+    },
     "courses": {
       "title": "COURSES",
+      "popular_courses": "POPULAR COURSES",
       "all_courses": "ALL {{count}} COURSES →",
       "error": "Error loading courses"
     },

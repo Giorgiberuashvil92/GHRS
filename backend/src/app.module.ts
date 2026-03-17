@@ -14,6 +14,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PaymentModule } from './payment/payment.module';
 import { PurchaseModule } from './purchase/purchase.module';
 import { CourseModule } from './course/course.module';
+import { CourseCategoryModule } from './course-category/course-category.module';
 import { InstructorModule } from './instructor/instructor.module';
 import { CourseModuleModule } from './course-module/course-module.module';
 import { ReviewModule } from './review/review.module';
@@ -48,6 +49,7 @@ import { TestModule } from './test/test.module';
     PaymentModule,
     PurchaseModule,
     CourseModule,
+    CourseCategoryModule,
     InstructorModule,
     CourseModuleModule,
     ReviewModule,

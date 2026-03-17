@@ -38,6 +38,10 @@ interface Course {
 interface CourseSliderProps {
   courses?: ExtendedBackendCourse[];
   maxVisible?: number;
+  /** ref for the scroll container – when set, parent can control scroll and may hide internal arrows */
+  scrollContainerRef?: React.RefObject<HTMLDivElement | null>;
+  /** hide built-in arrows (use when parent provides its own) */
+  hideArrows?: boolean;
 }
 
 // SliderArrows Component
@@ -95,9 +99,12 @@ const SliderArrows = ({
 const CourseSlider: React.FC<CourseSliderProps> = ({
   courses = [],
   maxVisible = 4,
+  scrollContainerRef: externalScrollRef,
+  hideArrows = false,
 }) => {
   const { language } = useLanguage();
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const internalScrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef = externalScrollRef || internalScrollRef;
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
@@ -157,6 +164,9 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
   }));
 
   const allCourses = transformedCourses.length > 0 ? transformedCourses : fallbackCourses;
+
+  // When parent controls scroll, show all cards in the row so horizontal scroll works
+  const effectiveMaxVisible = externalScrollRef ? Math.max(allCourses.length, maxVisible) : maxVisible;
 
   // Check scroll position and update arrow states
   const checkScrollPosition = () => {
@@ -223,19 +233,21 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
     }
   }, [allCourses.length]);
 
-  const displayCourses = showAll ? allCourses : allCourses.slice(0, maxVisible);
+  const displayCourses = showAll ? allCourses : allCourses.slice(0, effectiveMaxVisible);
 
   return (
     <div className="w-full relative">
-      {/* Header with arrows */}
-      <div className="flex justify-between items-center mb-4 absolute -top-20 right-0">
-        <SliderArrows
-          onScrollLeft={scrollLeft}
-          onScrollRight={scrollRight}
-          canScrollLeft={canScrollLeft}
-          canScrollRight={canScrollRight}
-        />
-      </div>
+      {/* Header with arrows (hidden when parent provides its own) */}
+      {!hideArrows && (
+        <div className="flex justify-between items-center mb-4 absolute -top-20 right-0">
+          <SliderArrows
+            onScrollLeft={scrollLeft}
+            onScrollRight={scrollRight}
+            canScrollLeft={canScrollLeft}
+            canScrollRight={canScrollRight}
+          />
+        </div>
+      )}
 
       {/* Scrollable horizontal layout for all screen sizes */}
       <div
@@ -252,8 +264,7 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
         ))}
       </div>
 
-      {/* Show more button */}
-      {allCourses.length > maxVisible && (
+      {allCourses.length > effectiveMaxVisible && (
         <div className="flex justify-center mt-6">
           <button
             onClick={() => setShowAll((prev) => !prev)}

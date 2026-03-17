@@ -1,5 +1,16 @@
 {
   "course": {
+    "all_courses": {
+      "title": "Courses",
+      "search_placeholder": "Enter course name or instructor name",
+      "instructor": "Instructor",
+      "badge_english": "IN ENGLISH",
+      "no_courses": "No courses found",
+      "try_other_search": "Try different search parameters",
+      "show_more": "Show more",
+      "loading": "Loading...",
+      "error": "Error loading courses"
+    },
     "tabs": {
       "description": "Description",
       "syllabus": "Syllabus",

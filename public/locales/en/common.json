@@ -156,11 +156,13 @@
     }
   },
   "sort": {
+    "label": "Sort:",
     "popularity": "By Popularity",
     "newest": "By Newest",
     "priceAsc": "By Price (Low to High)",
     "priceDesc": "By Price (High to Low)"
   },
+  "all_categories": "ALL CATEGORIES",
   "reviews": {
     "title": "REVIEWS ABOUT GRS"
   },

@@ -1,5 +1,16 @@
 {
   "course": {
+    "all_courses": {
+      "title": "Курсы",
+      "search_placeholder": "Введите название курса или имя инструктора",
+      "instructor": "Инструктор",
+      "badge_english": "НА АНГЛИЙСКОМ",
+      "no_courses": "Курсы не найдены",
+      "try_other_search": "Попробуйте другие параметры поиска",
+      "show_more": "Показать еще",
+      "loading": "Загрузка...",
+      "error": "Ошибка загрузки курсов"
+    },
     "tabs": {
       "description": "Описание",
       "syllabus": "Учебный план",

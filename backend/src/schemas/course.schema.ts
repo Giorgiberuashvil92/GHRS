@@ -166,11 +166,16 @@ export class Course {
   @Prop({ type: [String], default: [] })
   tags: string[];
 
-  @Prop({ required: true })
-  categoryId: string;
+  /** ერთი კატეგორია (ძველი ველი, უკან თავსებადობისთვის) */
+  @Prop()
+  categoryId?: string;
 
   @Prop()
   subcategoryId?: string;
+
+  /** რამდენიმე კატეგორია — კურსის კატეგორიების ID-ების მასივი */
+  @Prop({ type: [String], default: [] })
+  categoryIds: string[];
 
   @Prop()
   startDate?: Date;

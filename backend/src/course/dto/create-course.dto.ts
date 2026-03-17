@@ -144,9 +144,14 @@ export class CreateCourseDto {
   @IsOptional()
   tags?: string[];
 
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  categoryIds?: string[];
+
   @IsString()
-  @IsNotEmpty()
-  categoryId: string;
+  @IsOptional()
+  categoryId?: string;
 
   @IsString()
   @IsOptional()

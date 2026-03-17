@@ -49,41 +49,44 @@ export class CategoryController {
     console.log('📄 Body received:', createCategoryDto);
 
     try {
+      const parseField = (val: any) =>
+        typeof val === 'string' ? JSON.parse(val) : val;
       const parsedData = {
         ...createCategoryDto,
-        name: JSON.parse(createCategoryDto.name),
-        description: createCategoryDto.description ? JSON.parse(createCategoryDto.description) : undefined,
+        name: parseField(createCategoryDto.name),
+        description: createCategoryDto.description ? parseField(createCategoryDto.description) : undefined,
       };
 
       console.log('📝 Parsed data:', parsedData);
 
-      if (!parsedData.name.ka) {
+      if (!parsedData.name?.ka) {
         throw new BadRequestException('ქართული ენის ველები სავალდებულოა');
       }
 
       let imageUrl = '';
-      
       if (file && file.buffer) {
-        console.log('⬆️ Uploading file to Cloudinary...');
-        imageUrl = await this.uploadToCloudinary(file, 'image');
-        console.log('✅ Cloudinary upload successful:', imageUrl);
-      } else if (createCategoryDto.image) {
+        try {
+          console.log('⬆️ Uploading file to Cloudinary...');
+          imageUrl = await this.uploadToCloudinary(file, 'image');
+          console.log('✅ Cloudinary upload successful:', imageUrl);
+        } catch (uploadError: any) {
+          console.warn('⚠️ Cloudinary upload failed (credentials may be missing):', uploadError?.message);
+        }
+      }
+      if (!imageUrl && createCategoryDto.image) {
         console.log('🔗 Using provided image URL:', createCategoryDto.image);
         imageUrl = createCategoryDto.image;
-      } else if (createCategoryDto.imageUrl) {
+      }
+      if (!imageUrl && createCategoryDto.imageUrl) {
         console.log('🔗 Using provided imageUrl URL:', createCategoryDto.imageUrl);
         imageUrl = createCategoryDto.imageUrl;
       }
 
-      if (!imageUrl) {
-        throw new BadRequestException('სურათის ატვირთვა ან URL მითითება სავალდებულოა');
-      }
-
-      console.log('💾 Creating category with image URL:', imageUrl);
+      console.log('💾 Creating category with image URL:', imageUrl || '(none)');
 
       const result = await this.categoryService.create({
         ...parsedData,
-        image: imageUrl,
+        ...(imageUrl ? { image: imageUrl } : {}),
       });
       
       console.log('✅ Category created successfully:', result.name?.ka || 'Category');
