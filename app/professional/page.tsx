@@ -138,8 +138,8 @@ const Professional = () => {
         API_CONFIG.BASE_URL.includes('render.com');
       
       const endpoint = isProduction 
-        ? '/courses?isPublished=true&limit=10'
-        : '/api/courses?isPublished=true&limit=10';
+        ? 'api/courses?isPublished=true&limit=10'
+        : 'api/courses?isPublished=true&limit=10';
       
       const url = `${API_CONFIG.BASE_URL}${endpoint}`;
       const response = await fetch(url);
