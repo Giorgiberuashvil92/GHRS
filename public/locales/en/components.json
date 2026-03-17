@@ -70,7 +70,7 @@
     "ჩვენი_კურსები": "ჩვენი კურსები",
     "courses": {
       "title": "Courses",
-      "popular_courses": "POPULAR COURSES",
+      "popular_courses": "FEATURED",
       "error": "Error loading courses",
       "all_courses": "All {{count}} courses →",
       "კურსები": "კურსები",
@@ -123,7 +123,7 @@
     "sections_title": "Sections"
   },
   "teachers": {
-    "our_teachers": "OUR TEACHERS",
+    "our_teachers": "Instructors",
     "loading": "Loading teachers...",
     "view_all": "VIEW ALL",
     "more_details": "MORE DETAILS"

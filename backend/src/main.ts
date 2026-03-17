@@ -9,7 +9,7 @@ async function bootstrap() {
   
   // CORS კონფიგურაცია
   const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim()).filter(Boolean)
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim().replace(/^['"]|['"]$/g, '')).filter(Boolean)
   : [
     'http://localhost:3000',
     'http://localhost:3001',

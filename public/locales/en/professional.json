@@ -12,7 +12,7 @@
     },
     "courses": {
       "title": "COURSES",
-      "popular_courses": "POPULAR COURSES",
+      "popular_courses": "FEATURED",
       "all_courses": "ALL {{count}} COURSES →",
       "error": "Error loading courses"
     },
