@@ -9,11 +9,12 @@ async function bootstrap() {
   
   // CORS კონფიგურაცია
   const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim()).filter(Boolean)
   : [
     'http://localhost:3000',
     'http://localhost:3001',
     'https://ghrs-mu.vercel.app',
+    'https://ghrs-admin.vercel.app',
     'https://ghrs-backend.onrender.com',
     'https://ghrsnew1.vercel.app',
     'https://ghrrrs.vercel.app',
