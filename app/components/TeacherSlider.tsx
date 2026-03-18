@@ -14,6 +14,7 @@ interface Teacher {
   credentials: string;
   education: string[];
   imageUrl: string;
+  professionLocalized?: { en?: string; ru?: string; ka?: string };
   bio: {
     en: string;
     ru: string;
@@ -36,7 +37,8 @@ const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
   const getLocalizedContent = (content: { en?: string; ru?: string; ka?: string } | undefined): string => {
     if (!content) return "";
     const key = locale as keyof typeof content;
-    return (content[key] || content.ru || content.en || "").trim() || "";
+    // პირველად მიმდინარე ენა, შემდეგ en, ბოლოს ru (არ ვაბრუნებთ ყოველთვის რუსულს)
+    return (content[key] || content.en || content.ru || "").trim() || "";
   };
   const [currentIndex, setCurrentIndex] = useState(0);
   const [allTeachers, setAllTeachers] = useState<Teacher[]>([]);
@@ -168,7 +170,7 @@ const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
 
             <div className="mb-4 md:mb-6 space-y-2">
               <div className="text-[16px] md:text-[20px] text-[#3D334A] font-pt font-medium">
-                {teacher.position}
+                {getLocalizedContent(teacher.professionLocalized) || teacher.position}
               </div>
               <div className="text-[14px] md:text-[18px] text-[#846FA0] font-pt">
                 {teacher.institution}
@@ -176,7 +178,7 @@ const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
             </div>
 
             <div className="text-[14px] md:text-[16px] text-[#846FA0] font-pt mb-4 md:mb-6 leading-[120%]">
-              {teacher.credentials}
+              {[teacher.name, getLocalizedContent(teacher.professionLocalized) || teacher.position].filter(Boolean).join(", ")}
             </div>
 
             <div

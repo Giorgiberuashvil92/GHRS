@@ -26,6 +26,15 @@ export class Instructor {
 
   @Prop({
     type: {
+      en: { type: String },
+      ru: { type: String },
+      ka: { type: String },
+    },
+  })
+  professionLocalized?: { en?: string; ru?: string; ka?: string };
+
+  @Prop({
+    type: {
       en: { type: String, required: true },
       ru: { type: String, required: true },
     },
@@ -84,6 +93,7 @@ export interface InstructorResponse {
   name: string;
   email: string;
   profession: string;
+  professionLocalized?: { en?: string; ru?: string; ka?: string };
   bio: {
     en: string;
     ru: string;

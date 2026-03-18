@@ -48,6 +48,7 @@ interface BackendInstructor {
   name: string;
   email: string;
   profession: string;
+  professionLocalized?: { en?: string; ru?: string; ka?: string };
   bio: InstructorBio;
   htmlContent: InstructorBio;
   profileImage: string;
@@ -179,13 +180,14 @@ const Professional = () => {
           id: instructor._id,
           name: instructor.name,
           position: instructor.profession || "Teacher",
-          institution: "«Колледжа медицинского массажа»",
+          professionLocalized: instructor.professionLocalized,
+          institution: "", 
           credentials: `${instructor.name}, ${
             instructor.profession || "Teacher"
           }`,
           education: [
-            instructor.bio?.en || "",
-            instructor.htmlContent?.en?.replace(/<[^>]*>/g, "") || "",
+            instructor.bio?.ka || instructor.bio?.en || instructor.bio?.ru || "",
+            (instructor.htmlContent?.ka || instructor.htmlContent?.en || instructor.htmlContent?.ru || "").replace(/<[^>]*>/g, ""),
           ].filter((text) => text.length > 0),
           imageUrl:
             instructor.profileImage || "/assets/images/teachers/default.jpg",

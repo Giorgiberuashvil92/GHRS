@@ -14,19 +14,12 @@ import { useI18n } from "../context/I18nContext";
 
 interface Course {
   _id: string;
-  title: {
-    en: string;
-    ru: string;
-  };
-  description: {
-    en: string;
-    ru: string;
-  };
+  title: { en: string; ru?: string; ka?: string };
+  description: { en: string; ru?: string; ka?: string };
   price: number;
+  priceLocalized?: { en?: number; ru?: number; ka?: number };
   thumbnail: string;
-  instructor: {
-    name: string;
-  };
+  instructor: { name: string };
   categoryId?: string;
   subcategoryId?: string;
   categoryIds?: string[];
@@ -54,6 +47,18 @@ const AllCourse = () => {
     if (typeof title === "string") return title;
     const key = locale as keyof typeof title;
     return (title[key] || title.ru || title.en || "").trim() || String(title.ru || title.en || "");
+  };
+
+  const getEffectivePrice = (course: Course): number => {
+    const loc = course.priceLocalized;
+    if (loc && typeof loc[locale as keyof typeof loc] === "number") return loc[locale as keyof typeof loc]!;
+    return course.price ?? 0;
+  };
+
+  const formatPrice = (course: Course): string => {
+    const p = getEffectivePrice(course);
+    const sym = locale === "ka" ? "₾" : locale === "ru" ? "₽" : "$";
+    return `${p} ${sym}`;
   };
 
   const ITEMS_PER_PAGE = 9;
@@ -119,17 +124,18 @@ const AllCourse = () => {
       );
     }
 
-    // სორტირება
+    // სორტირება (ფასი ენის მიხედვით)
+    const priceOf = (c: Course) => getEffectivePrice(c);
     if (sortKey === "popularity") {
-      filtered.sort((a, b) => b.price - a.price);
+      filtered.sort((a, b) => priceOf(b) - priceOf(a));
     } else if (sortKey === "newest") {
       filtered.sort(
         (a, b) => new Date(b._id).getTime() - new Date(a._id).getTime()
       );
     } else if (sortKey === "priceAsc") {
-      filtered.sort((a, b) => a.price - b.price);
+      filtered.sort((a, b) => priceOf(a) - priceOf(b));
     } else if (sortKey === "priceDesc") {
-      filtered.sort((a, b) => b.price - a.price);
+      filtered.sort((a, b) => priceOf(b) - priceOf(a));
     }
 
     return filtered;
@@ -139,6 +145,7 @@ const AllCourse = () => {
     selectedCategoryId,
     selectedSubcategoryId,
     sortKey,
+    locale,
   ]);
 
   // პაგინაცია
@@ -285,7 +292,7 @@ const AllCourse = () => {
                   <div className="flex justify-end">
                     <div className="bg-[#D4BAFC] py-[10px] px-10 rounded-[6px] inline-block">
                       <span className="text-2xl font-bold text-white leading-[100%]">
-                        ${course.price}
+                        {formatPrice(course)}
                       </span>
                     </div>
                   </div>

@@ -182,11 +182,21 @@ export class CourseService {
   }
 
   async findOne(id: string): Promise<Course> {
-    const course = await this.courseModel.findById(id).exec();
-    if (!course) {
+    // არასწორი ObjectId (მაგ. 3223776058) იწვევს CastError-ს და 500-ს — ვაბრუნებთ 404-ს
+    const is24Hex = /^[a-fA-F0-9]{24}$/.test(id);
+    if (!is24Hex) {
       throw new NotFoundException('Course not found');
     }
-    return course;
+    try {
+      const course = await this.courseModel.findById(id).exec();
+      if (!course) {
+        throw new NotFoundException('Course not found');
+      }
+      return course;
+    } catch (err: any) {
+      if (err.name === 'NotFoundException') throw err;
+      throw new NotFoundException('Course not found');
+    }
   }
 
   async findByCategory(categoryId: string, options: { page: number; limit: number }) {

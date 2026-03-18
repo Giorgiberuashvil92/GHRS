@@ -81,7 +81,6 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
       <div
         className={`w-[780px] flex p-3.5 items-center rounded-[24px] ${getBackgroundStyle()} border border-white/10 relative`}
       >
-        {/* Only show BackgroundImage if NOT on article page */}
         {!pathname.startsWith("/article/") && <BackgroundImage imageUrl={data?.featuredImages?.[0]} />}
         <Link href="/" className="hover:brightness-0 duration-700">
           <SimpleLogo />

@@ -181,8 +181,9 @@ const Professional = ({
           ) : (
             <div className="flex gap-4 md:mb-8">
               <CourseSlider
-                courses={courses.map((course, index) => ({
-                  id: parseInt(course._id.slice(-8), 16) || index + 1,
+                courses={courses.map((course) => ({
+                  _id: course._id,
+                  id: course._id,
                   title: (course as any).title?.en || course.title || "Course",
                   shortDescription: (course as any).shortDescription || course.description || "",
                   price: course.price,

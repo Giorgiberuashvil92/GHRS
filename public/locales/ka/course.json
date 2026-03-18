@@ -28,6 +28,9 @@
     "access_granted": "✓ თქვენ გაქვთ წვდომა",
     "purchase_course": "კურსის შეძენა",
     "login_to_purchase": "შესვლა შესაძენად",
-    "success_title": "წარმატება"
+    "success_title": "წარმატება",
+    "not_found_title": "კურსი ვერ მოიძებნა",
+    "not_found_message": "ამ მისამართის კურსი არ არსებობს ან წაშლილია.",
+    "view_all_courses": "ყველა კურსი"
   }
 }

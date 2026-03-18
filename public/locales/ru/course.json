@@ -28,6 +28,9 @@
     "access_granted": "✓ У ВАС ЕСТЬ ДОСТУП",
     "purchase_course": "КУПИТЬ КУРС",
     "login_to_purchase": "ВОЙТИ ДЛЯ ПОКУПКИ",
-    "success_title": "Успех"
+    "success_title": "Успех",
+    "not_found_title": "Курс не найден",
+    "not_found_message": "Курс по этому адресу не существует или был удалён.",
+    "view_all_courses": "Все курсы"
   }
 }

@@ -141,13 +141,21 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
     return "/assets/images/course.png"; // Fallback to default
   };
 
-  const transformedCourses: Course[] = courses.map((course) => ({
-    id: course._id || course.id.toString(),
+  const getEffectivePrice = (course: ExtendedBackendCourse): number => {
+    const loc = (course as { priceLocalized?: { en?: number; ru?: number; ka?: number } }).priceLocalized;
+    if (loc && typeof loc[language as keyof typeof loc] === "number") return loc[language as keyof typeof loc]!;
+    return typeof course.price === "number" ? course.price : 0;
+  };
+  const transformedCourses: Course[] = courses.map((course) => {
+    const effectivePrice = getEffectivePrice(course);
+    const courseId = typeof course._id === "string" ? course._id : String(course._id ?? (course as { id?: unknown }).id ?? "");
+    return {
+    id: courseId,
     title: getLocalizedContent(course.title),
     description: getLocalizedContent(course.description),
     shortDescription: getLocalizedContent(course.shortDescription),
-    price: course.price
-      ? `${course.price}${language === "ka" ? " ₾" : language === "ru" ? " ₽" : " $"}` // Format price
+    price: effectivePrice
+      ? `${effectivePrice}${language === "ka" ? " ₾" : language === "ru" ? " ₽" : " $"}` // ფასი ენის მიხედვით
       : "N/A",
     image: getValidImage(course.thumbnail),
     category: course.category
@@ -161,7 +169,8 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
       : undefined,
     duration: course.duration,
     level: course.level,
-  }));
+  };
+  });
 
   const allCourses = transformedCourses.length > 0 ? transformedCourses : fallbackCourses;
 
@@ -294,6 +303,8 @@ const CourseCard = ({ course }: { course: Course }) => {
     if (cleanText.length <= maxLength) return cleanText;
     return cleanText.substring(0, maxLength) + "...";
   };
+
+  console.log(course);
 
   return (
     <Link

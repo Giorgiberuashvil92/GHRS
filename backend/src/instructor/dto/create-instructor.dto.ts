@@ -11,7 +11,19 @@ class MultilingualContent {
   ru: string;
 }
 
+class OptionalMultilingualContent {
+  @IsString()
+  @IsOptional()
+  en?: string;
 
+  @IsString()
+  @IsOptional()
+  ru?: string;
+
+  @IsString()
+  @IsOptional()
+  ka?: string;
+}
 
 class CertificateInfo {
   @IsString()
@@ -46,6 +58,11 @@ export class CreateInstructorDto {
   @IsString()
   @IsNotEmpty()
   profession: string;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => OptionalMultilingualContent)
+  professionLocalized?: { en?: string; ru?: string; ka?: string };
 
   @ValidateNested()
   @Type(() => MultilingualContent)
@@ -87,6 +104,11 @@ export class UpdateInstructorDto {
   @IsString()
   @IsOptional()
   profession?: string;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => OptionalMultilingualContent)
+  professionLocalized?: { en?: string; ru?: string; ka?: string };
 
   @ValidateNested()
   @Type(() => MultilingualContent)

@@ -69,6 +69,16 @@ export class Course {
   @Prop({ required: true })
   price: number;
 
+  /** ფასი ენის მიხედვით (ენ → ციფრი). თუ არ არის, იყენება price */
+  @Prop({
+    type: {
+      en: { type: Number },
+      ru: { type: Number },
+      ka: { type: Number },
+    },
+  })
+  priceLocalized?: { en?: number; ru?: number; ka?: number };
+
   @Prop({ required: true })
   thumbnail: string;
 

@@ -77,6 +77,9 @@ export class CreateCourseDto {
   @IsNotEmpty()
   price: number;
 
+  @IsOptional()
+  priceLocalized?: { en?: number; ru?: number; ka?: number };
+
   @IsString()
   @IsNotEmpty()
   @IsUrl()
@@ -198,6 +201,9 @@ export class UpdateCourseDto {
   @Min(0)
   @IsOptional()
   price?: number;
+
+  @IsOptional()
+  priceLocalized?: { en?: number; ru?: number; ka?: number };
 
   @IsString()
   @IsUrl()

@@ -28,6 +28,9 @@
     "access_granted": "✓ YOU HAVE ACCESS",
     "purchase_course": "PURCHASE COURSE",
     "login_to_purchase": "LOGIN TO PURCHASE",
-    "success_title": "Success"
+    "success_title": "Success",
+    "not_found_title": "Course not found",
+    "not_found_message": "The course at this address does not exist or has been removed.",
+    "view_all_courses": "All courses"
   }
 }

@@ -59,22 +59,20 @@ export function useInstructor(instructorId: string): UseInstructorReturn {
         timestamp: new Date().toISOString()
       });
 
-      const backendInstructor: Instructor = await apiRequest<Instructor>(endpoint);
+      const raw = await apiRequest<Instructor & { _id?: string }>(endpoint);
       console.log("✅ Instructor API request completed successfully");
 
-      console.log("🏃‍♂️ Raw Instructor Response:", {
-        data: backendInstructor,
-        type: typeof backendInstructor,
-        instructorId: backendInstructor?.id,
-        name: backendInstructor?.name
-      });
-
-      if (!backendInstructor) {
+      if (!raw) {
         throw new Error("Instructor API response is empty");
       }
 
+      // ბექენდი აბრუნებს _id, ფრონტი იყენებს id
+      const backendInstructor: Instructor = {
+        ...raw,
+        id: raw.id || raw._id || instructorId,
+      };
+
       setInstructor(backendInstructor);
-      console.log("✅ setInstructor called with:", backendInstructor);
       
     } catch (err) {
       console.error("❌ Error fetching instructor:", err);

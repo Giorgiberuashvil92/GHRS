@@ -5,6 +5,7 @@ import { FaBullhorn, FaBookOpen } from "react-icons/fa";
 import DesktopNavbar from "../../components/Navbar/DesktopNavbar";
 import { defaultMenuItems } from "../../components/Header/Header";
 import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { fetchCourse, fetchRelatedCourses } from "../../config/api";
 import CourseSlider from "@/app/components/CourseSlider";
@@ -34,6 +35,7 @@ interface Course {
     ka?: string;
   };
   price: number;
+  priceLocalized?: { en?: number; ru?: number; ka?: number };
   thumbnail: string;
   additionalImages?: string[];
   advertisementImage?: string;
@@ -102,6 +104,7 @@ export default function SingleCourse() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [notFound, setNotFound] = useState(false);
   const [relatedCourses, setRelatedCourses] = useState<Course[]>([]);
   const [relatedLoading, setRelatedLoading] = useState(false);
 
@@ -109,7 +112,18 @@ export default function SingleCourse() {
   const { isAuthenticated } = useAuth();
 
   // I18n context
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+
+  const getEffectivePrice = (c: Course): number => {
+    const loc = c.priceLocalized;
+    if (loc && typeof loc[locale as keyof typeof loc] === "number") return loc[locale as keyof typeof loc]!;
+    return c.price ?? 0;
+  };
+  const formatPrice = (c: Course): string => {
+    const p = getEffectivePrice(c);
+    const sym = locale === "ka" ? "₾" : locale === "ru" ? "₽" : "$";
+    return `${p} ${sym}`;
+  };
 
   // Modal context
   const { showError, showSuccess } = useModal();
@@ -168,7 +182,7 @@ export default function SingleCourse() {
           course.description?.ru ||
           "No description", // ✅ desc ველი
         img: course.thumbnail, // ✅ img ველი
-        price: course.price,
+        price: getEffectivePrice(course),
         subscription: 1, // ✅ default subscription
         totalExercises: course.syllabus?.length || 0,
         totalDuration: course.duration ? `${course.duration} წუთი` : "0:00",
@@ -230,6 +244,8 @@ export default function SingleCourse() {
 
       try {
         setLoading(true);
+        setNotFound(false);
+        setError(null);
         console.log("Loading course with ID:", courseId);
         const data = await fetchCourse(courseId);
         console.log("Loaded course data:", data);
@@ -240,9 +256,21 @@ export default function SingleCourse() {
         if (data.categoryId) {
           await loadRelatedCourses(courseId, data.categoryId);
         }
-      } catch (err) {
+      } catch (err: unknown) {
         console.error("Error loading course:", err);
-        setError(err instanceof Error ? err.message : "Failed to load course");
+        const is404 =
+          typeof err === "object" &&
+          err !== null &&
+          "response" in err &&
+          typeof (err as { response?: { status?: number } }).response?.status === "number" &&
+          (err as { response: { status: number } }).response.status === 404;
+        if (is404) {
+          setNotFound(true);
+          setError(null);
+        } else {
+          setNotFound(false);
+          setError(err instanceof Error ? err.message : "Failed to load course");
+        }
       } finally {
         setLoading(false);
       }
@@ -283,14 +311,34 @@ export default function SingleCourse() {
     );
   }
 
-  if (error || !course) {
+  if (notFound || error || !course) {
     return (
-      <div className="bg-[#F9F7FE] min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-xl text-red-600 mb-4">
-            შეცდომა კურსის ჩატვირთვაში
-          </h2>
-          <p className="text-gray-600">{error || "Course not found"}</p>
+      <div className="bg-[#F9F7FE] min-h-screen flex items-center justify-center px-4">
+        <div className="text-center max-w-md">
+          {notFound ? (
+            <>
+              <h2 className="text-xl font-semibold text-[#302A3A] mb-2">
+                {t("course.not_found_title") || "კურსი ვერ მოიძებნა"}
+              </h2>
+              <p className="text-gray-600 mb-6">
+                {t("course.not_found_message") ||
+                  "ამ მისამართის კურსი არ არსებობს ან წაშლილია."}
+              </p>
+              <Link
+                href="/allCourse"
+                className="inline-block px-6 py-3 bg-[#6C5CE7] text-white rounded-xl hover:opacity-90 transition"
+              >
+                {t("course.view_all_courses") || "ყველა კურსი"}
+              </Link>
+            </>
+          ) : (
+            <>
+              <h2 className="text-xl text-red-600 mb-4">
+                შეცდომა კურსის ჩატვირთვაში
+              </h2>
+              <p className="text-gray-600">{error || "Course not found"}</p>
+            </>
+          )}
         </div>
       </div>
     );
@@ -393,10 +441,7 @@ export default function SingleCourse() {
           <aside className="w-full md:w-[270px] flex flex-col gap-4 order-2 md:order-3 mb-4 md:mb-0">
             <div className="bg-white rounded-2xl shadow-[0_7px_32px_0_rgba(141,126,243,0.13)] p-4 flex flex-col gap-2 mb-2 md:mb-0">
               <div className="flex items-center text-[rgba(212,186,252,1)] font-bold text-[32px] leading-none">
-                {course.price}
-                <span className="text-[rgba(212,186,252,1)] text-xl font-normal ml-1">
-                  $
-                </span>
+                {formatPrice(course)}
               </div>
               <div className="text-[#A9A6B4] text-sm">{t("course.price_label")}</div>
             </div>

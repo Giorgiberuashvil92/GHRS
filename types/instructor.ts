@@ -23,6 +23,7 @@ export interface Instructor {
   name: string;
   email: string;
   profession: string;
+  professionLocalized?: { en?: string; ru?: string; ka?: string };
   bio: MultilingualContent;
   htmlContent?: MultilingualContent;
   certificates?: Certificate[];
