@@ -98,9 +98,9 @@ const AllCourse = () => {
       const searchLower = searchTerm.toLowerCase();
       filtered = filtered.filter(
         (course) =>
-          course.title.ru.toLowerCase().includes(searchLower) ||
+          course.title?.ru?.toLowerCase().includes(searchLower) ||
           course.title.en.toLowerCase().includes(searchLower) ||
-          course.description.ru.toLowerCase().includes(searchLower) ||
+          course.description.ru?.toLowerCase().includes(searchLower) ||
           course.description.en.toLowerCase().includes(searchLower) ||
           course.instructor.name.toLowerCase().includes(searchLower)
       );

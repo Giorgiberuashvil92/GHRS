@@ -176,16 +176,16 @@ export default function SingleCourse() {
       // კურსის მონაცემები shopping cart-ისთვის
       const courseItem = {
         id: course._id,
-        title: course.title.ru || course.title.en, // ✅ title ველი
+        title: course?.title?.ru || course?.title?.en, // ✅ title ველი
         desc:
-          course.shortDescription?.ru ||
-          course.description?.ru ||
+          course?.shortDescription?.ru ||
+          course?.description?.ru ||
           "No description", // ✅ desc ველი
         img: course.thumbnail, // ✅ img ველი
         price: getEffectivePrice(course),
         subscription: 1, // ✅ default subscription
         totalExercises: course.syllabus?.length || 0,
-        totalDuration: course.duration ? `${course.duration} წუთი` : "0:00",
+        totalDuration: course?.duration ? `${course?.duration} წუთი` : "0:00",
         itemType: "course", // ✅ itemType ველი
         type: "course", // ✅ backward compatibility
       };
@@ -356,7 +356,7 @@ export default function SingleCourse() {
         <div className="w-full md:px-10">
           <img
             src={course.thumbnail}
-            alt={course.title.ru}
+            alt={course?.title?.ru}
             className="w-full h-[517px] object-cover mb-10 rounded-[40px]"
           />
         </div>
@@ -537,7 +537,7 @@ export default function SingleCourse() {
                 <div>
                   <article className="bg-white rounded-2xl shadow-[0_7px_32px_0_rgba(141,126,243,0.13)] px-4 md:px-8 py-6 md:py-10 flex flex-col gap-6">
                     <h1 className="text-2xl font-bold uppercase text-[#302A3A]">
-                      {course.title.ru}
+                      {course?.title?.ru}
                     </h1>
 
                     {/* Short Description */}
@@ -549,7 +549,7 @@ export default function SingleCourse() {
                         <div
                           className="text-[#8D7EF3]"
                           dangerouslySetInnerHTML={{
-                            __html: sanitizeHtml(course.shortDescription.ru),
+                            __html: sanitizeHtml(course?.shortDescription?.ru),
                           }}
                         />
                       </div>
