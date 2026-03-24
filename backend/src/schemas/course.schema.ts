@@ -151,8 +151,8 @@ export class Course {
         ru: { type: String },
       },
       description: {
-        en: { type: String, required: true },
-        ru: { type: String },
+        en: { type: String, default: '' },
+        ru: { type: String, default: '' },
       },
       duration: { type: Number },
     }],

@@ -89,11 +89,9 @@ const AllCourse = () => {
     }
   };
 
-  // ლოკალური ფილტრაცია და სორტირება
   const filteredCourses = useMemo(() => {
     let filtered = [...allCourses];
 
-    // ძებნა
     if (searchTerm.trim()) {
       const searchLower = searchTerm.toLowerCase();
       filtered = filtered.filter(
@@ -106,7 +104,6 @@ const AllCourse = () => {
       );
     }
 
-    // კატეგორიის ფილტრი (categoryIds ან categoryId)
     if (selectedCategoryId) {
       filtered = filtered.filter(
         (course) =>

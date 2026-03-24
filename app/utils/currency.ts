@@ -4,8 +4,9 @@
  */
 
 // Exchange rates (update these periodically or use an API)
+// 1 USD = 80.51 RUB — ადმინთან ghrs-admin/src/lib/coursePriceConvert.ts უნდა ემთხვეოდეს
 export const EXCHANGE_RATES = {
-  RUB_TO_USD: 0.011,  // 1 RUB ≈ 0.011 USD (as of Oct 2024)
+  RUB_TO_USD: 1 / 80.51, // 1 RUB → USD (1 USD = 80.51 ₽)
   RUB_TO_EUR: 0.010,  // 1 RUB ≈ 0.010 EUR
   RUB_TO_GBP: 0.009,  // 1 RUB ≈ 0.009 GBP
   RUB_TO_GEL: 0.029,  // 1 RUB ≈ 0.029 GEL

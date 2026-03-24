@@ -31,6 +31,17 @@
     "success_title": "Успех",
     "not_found_title": "Курс не найден",
     "not_found_message": "Курс по этому адресу не существует или был удалён.",
-    "view_all_courses": "Все курсы"
+    "view_all_courses": "Все курсы",
+    "related_courses": "Похожие курсы",
+    "total_duration": "Общая продолжительность",
+    "prerequisites_title": "Требования:",
+    "learning_outcomes_title": "Результаты обучения:",
+    "tags_label": "Теги:",
+    "lesson_label": "Урок {{number}}",
+    "minutes_short": "мин",
+    "reviews_section_title": "Отзывы учеников",
+    "no_reviews_yet": "Пока нет отзывов",
+    "error_loading": "Ошибка загрузки курса",
+    "no_description": "Нет описания"
   }
 }

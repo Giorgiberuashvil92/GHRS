@@ -31,6 +31,17 @@
     "success_title": "წარმატება",
     "not_found_title": "კურსი ვერ მოიძებნა",
     "not_found_message": "ამ მისამართის კურსი არ არსებობს ან წაშლილია.",
-    "view_all_courses": "ყველა კურსი"
+    "view_all_courses": "ყველა კურსი",
+    "related_courses": "მსგავსი კურსები",
+    "total_duration": "სრული ხანგრძლივობა",
+    "prerequisites_title": "საჭირო პირობები:",
+    "learning_outcomes_title": "სასწავლო შედეგები:",
+    "tags_label": "ტეგები:",
+    "lesson_label": "გაკვეთილი {{number}}",
+    "minutes_short": "წთ",
+    "reviews_section_title": "მოსწავლეების მიმოხილვები",
+    "no_reviews_yet": "ჯერ არ არის მიმოხილვები",
+    "error_loading": "შეცდომა კურსის ჩატვირთვაში",
+    "no_description": "აღწერა არ არის"
   }
 }

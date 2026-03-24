@@ -27,6 +27,17 @@ class Announcement {
   isActive: boolean;
 }
 
+/** სილაბუსის თემის აღწერა — შეიძლება ორივე ენაზე ცარიელი იყოს */
+class SyllabusItemDescription {
+  @IsString()
+  @IsOptional()
+  en?: string;
+
+  @IsString()
+  @IsOptional()
+  ru?: string;
+}
+
 class SyllabusItem {
   @ValidateNested()
   @Type(() => MultilingualContent)
@@ -34,9 +45,9 @@ class SyllabusItem {
   title: MultilingualContent;
 
   @ValidateNested()
-  @Type(() => MultilingualContent)
-  @IsNotEmpty()
-  description: MultilingualContent;
+  @Type(() => SyllabusItemDescription)
+  @IsOptional()
+  description?: SyllabusItemDescription;
 
   @IsNumber()
   @Min(0)

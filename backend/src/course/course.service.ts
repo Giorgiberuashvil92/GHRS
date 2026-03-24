@@ -54,9 +54,13 @@ export class CourseService {
         announcements: createCourseDto.announcements || [],
         additionalImages: createCourseDto.additionalImages || [],
         learningOutcomes: createCourseDto.learningOutcomes || [],
-        syllabus: (createCourseDto.syllabus || []).map(item => ({
-          ...item,
-          duration: item.duration || 0 // duration ყოველთვის იგზავნება
+        syllabus: (createCourseDto.syllabus || []).map((item) => ({
+          title: item.title,
+          description: {
+            en: item.description?.en ?? '',
+            ru: item.description?.ru ?? item.description?.en ?? '',
+          },
+          duration: item.duration ?? 0,
         })),
         tags: createCourseDto.tags || [],
         
@@ -389,11 +393,17 @@ export class CourseService {
         };
       }
 
-      // syllabus-ის დამუშავება duration-ით
+      // syllabus-ის დამუშავება duration-ით; აღწერა შეიძლება ცარიელი იყოს ორივე ენაზე
       if (updateCourseDto.syllabus) {
-        updateData.syllabus = updateCourseDto.syllabus.map(item => ({
-          ...item,
-          duration: item.duration || 0
+        updateData.syllabus = updateCourseDto.syllabus.map((item) => ({
+          title: item.title,
+          description: item.description
+            ? {
+                en: item.description.en ?? '',
+                ru: item.description.ru ?? item.description.en ?? '',
+              }
+            : { en: '', ru: '' },
+          duration: item.duration ?? 0,
         }));
       }
 

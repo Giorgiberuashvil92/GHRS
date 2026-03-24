@@ -31,6 +31,17 @@
     "success_title": "Success",
     "not_found_title": "Course not found",
     "not_found_message": "The course at this address does not exist or has been removed.",
-    "view_all_courses": "All courses"
+    "view_all_courses": "All courses",
+    "related_courses": "Related courses",
+    "total_duration": "Total duration",
+    "prerequisites_title": "Prerequisites:",
+    "learning_outcomes_title": "Learning outcomes:",
+    "tags_label": "Tags:",
+    "lesson_label": "Lesson {{number}}",
+    "minutes_short": "min",
+    "reviews_section_title": "Student reviews",
+    "no_reviews_yet": "No reviews yet",
+    "error_loading": "Error loading course",
+    "no_description": "No description"
   }
 }
