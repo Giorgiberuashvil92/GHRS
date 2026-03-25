@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useMemo } from "react";
 import DesktopNavbar from "../components/Navbar/DesktopNavbar";
-import { defaultMenuItems } from "../components/Header/Header";
+import { getDefaultMenuItems } from "../components/Header/Header";
 import MobileNavbar from "../components/Navbar/MobileNavbar";
 import { CiSearch } from "react-icons/ci";
 import CategoryFilter from "../components/CategoryFilter";
@@ -11,6 +11,7 @@ import { Footer } from "../components/Footer";
 import CustomBadge from "../components/CustomBadge";
 import { API_CONFIG } from "../config/api";
 import { useI18n } from "../context/I18nContext";
+import { pickLocalized } from "../utils/pickLocalized";
 
 interface Course {
   _id: string;
@@ -39,14 +40,14 @@ const AllCourse = () => {
     string | null
   >(null);
   const { t, locale } = useI18n();
+  const menuItems = useMemo(() => getDefaultMenuItems(t), [t, locale]);
   type SortKey = "popularity" | "newest" | "priceAsc" | "priceDesc";
   const [sortKey, setSortKey] = useState<SortKey>("popularity");
   const sortByLabel = t(`sort.${sortKey}`);
 
   const getLocalizedTitle = (title: Course["title"]) => {
     if (typeof title === "string") return title;
-    const key = locale as keyof typeof title;
-    return (title[key] || title.ru || title.en || "").trim() || String(title.ru || title.en || "");
+    return pickLocalized(title, locale);
   };
 
   const getEffectivePrice = (course: Course): number => {
@@ -96,8 +97,10 @@ const AllCourse = () => {
       const searchLower = searchTerm.toLowerCase();
       filtered = filtered.filter(
         (course) =>
+          course.title?.ka?.toLowerCase().includes(searchLower) ||
           course.title?.ru?.toLowerCase().includes(searchLower) ||
           course.title.en.toLowerCase().includes(searchLower) ||
+          course.description.ka?.toLowerCase().includes(searchLower) ||
           course.description.ru?.toLowerCase().includes(searchLower) ||
           course.description.en.toLowerCase().includes(searchLower) ||
           course.instructor.name.toLowerCase().includes(searchLower)
@@ -234,7 +237,7 @@ const AllCourse = () => {
     <div className="bg-[#F9F7FE] pb-40">
       <DesktopNavbar
         allCourseBg={true}
-        menuItems={defaultMenuItems}
+        menuItems={menuItems}
         blogBg={false}
       />
       <MobileNavbar />

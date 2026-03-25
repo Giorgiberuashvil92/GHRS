@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useMemo } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
 
@@ -7,9 +7,12 @@ import { SimpleLogo } from "../Logo";
 import NavbarIconButton from "./NavbarIconButton";
 import LanguageSelector from "./LanguageSelector";
 import Link from "next/link";
-import { MenuItem } from "../Header/Header";
+import { MenuItem, getDefaultMenuItems } from "../Header/Header";
 import BackgroundImage from "./BackgroundImage";
-import { useI18n, useLanguage } from "../../context/I18nContext"; // 👈 დაამატე ეს
+import { useI18n } from "../../context/I18nContext";
+
+/** ძველი defaultMenuItems (Header.tsx) — პირველი პუნქტი ყოველთვის ეს იყო რუსულად */
+const LEGACY_STATIC_MENU_FIRST = "Все комплексы";
 
 interface DesktopNavbarProps {
   menuItems: MenuItem[];
@@ -29,9 +32,16 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
   complexData,
 }) => {
   const { isAuthenticated } = useAuth();
-  const { language } = useLanguage(); // 👈 მოვიტანეთ ენა კონტექსტიდან
+  const { t, locale } = useI18n();
   const router = useRouter();
   const pathname = usePathname();
+
+  const localizedMenu = useMemo(() => getDefaultMenuItems(t), [t, locale]);
+  const effectiveMenuItems = useMemo(() => {
+    const legacy =
+      menuItems?.length === 4 && menuItems[0]?.name === LEGACY_STATIC_MENU_FIRST;
+    return legacy ? localizedMenu : menuItems;
+  }, [menuItems, localizedMenu]);
 
   const getBackgroundStyle = () => {
     if (pathname.startsWith("/singleCourse/")) {
@@ -74,8 +84,6 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
     }
   };
 
-  // console.log("Current Language:", language);
-
   return (
     <header className="fixed font-bowler top-0 left-0 right-0 z-50 my-4 w-full md:flex hidden justify-between px-10 py-5">
       <div
@@ -86,7 +94,7 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
           <SimpleLogo />
         </Link>
         <ul className="flex ml-[89px] mr-[73px] justify-between w-full">
-          {menuItems.map(({ id, name, route }) => (
+          {effectiveMenuItems.map(({ id, name, route }) => (
             <Link key={id} href={route}>
               <li className="text-white font-bold text-[18px] hover:text-gray-950 duration-700 leading-[100%] tracking-[-1%]">
                 {name}

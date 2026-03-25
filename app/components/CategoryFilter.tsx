@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { API_CONFIG } from "../config/api";
 import { useI18n } from "../context/I18nContext";
+import { pickLocalized } from "../utils/pickLocalized";
 
 interface Category {
   _id: string;
@@ -39,8 +40,8 @@ const getLocalizedCategoryName = (
   locale: string
 ): string => {
   if (typeof name === "string") return name;
-  const key = locale as keyof typeof name;
-  return (name[key] || name.ru || name.en || name.ka || "").trim() || name.ru || "";
+  const loc = locale === "en" || locale === "ru" || locale === "ka" ? locale : "ka";
+  return pickLocalized(name, loc);
 };
 
 export default function CategoryFilter({

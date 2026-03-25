@@ -16,6 +16,8 @@ import { useAuth } from "../../context/AuthContext";
 import { useModal } from "../../context/ModalContext";
 import { useI18n } from "../../context/I18nContext";
 import { sanitizeHtml } from "../../utils/sanitize";
+import { pickLocalized, type ContentLocale as CourseLocale } from "@/app/utils/pickLocalized";
+import { isEffectivelyEmptyRichText } from "@/app/utils/syllabusRichText";
 
 interface Course {
   _id: string;
@@ -74,6 +76,7 @@ interface Course {
     isActive: boolean;
   }>;
   syllabus?: Array<{
+    _id?: string;
     title: {
       en: string;
       ru: string;
@@ -91,27 +94,6 @@ interface Course {
   categoryId?: string;
   createdAt?: string;
   updatedAt?: string;
-}
-
-type CourseLocale = "ka" | "en" | "ru";
-
-/** არჩეული ენა → შემდეგ fallback-ები (en: ინგლისური პირველი და ა.შ.) */
-function pickLocalized(
-  obj: { en?: string; ru?: string; ka?: string } | undefined | null,
-  loc: CourseLocale
-): string {
-  if (!obj) return "";
-  const order: CourseLocale[] =
-    loc === "en"
-      ? ["en", "ru", "ka"]
-      : loc === "ru"
-        ? ["ru", "en", "ka"]
-        : ["ka", "en", "ru"];
-  for (const k of order) {
-    const v = obj[k];
-    if (v != null && String(v).trim() !== "") return String(v);
-  }
-  return "";
 }
 
 export default function SingleCourse() {
@@ -135,7 +117,7 @@ export default function SingleCourse() {
   // I18n context
   const { t, locale } = useI18n();
   const loc = locale as CourseLocale;
-  const menuItems = useMemo(() => getDefaultMenuItems(t), [t]);
+  const menuItems = useMemo(() => getDefaultMenuItems(t), [t, locale]);
 
   const getEffectivePrice = (c: Course): number => {
     const loc = c.priceLocalized;
@@ -710,42 +692,50 @@ export default function SingleCourse() {
               {activeTab === 1 && course.syllabus && (
                 <div>
                   <div className="flex flex-col gap-2">
-                    {course.syllabus.map((item, index) => (
-                      <div
-                        key={index}
-                        className="bg-white rounded-2xl px-6 py-4 font-bold text-[#302A3A] text-[15px] mb-2"
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-[#8D7EF3]">
-                            {t("course.lesson_label", {
-                              number: String(index + 1),
-                            })}
-                          </span>
-                          {item.duration > 0 && (
-                            <span className="text-[#A9A6B4] text-sm font-normal">
-                              {item.duration} {t("course.minutes_short")}
+                    {course.syllabus.map((item, index) => {
+                      const titleHtml = pickLocalized(item.title, loc);
+                      const descriptionHtml = pickLocalized(
+                        item.description,
+                        loc
+                      );
+                      const showTitle = !isEffectivelyEmptyRichText(titleHtml);
+                      const showDescription =
+                        !isEffectivelyEmptyRichText(descriptionHtml);
+                      return (
+                        <div
+                          key={item._id ?? `syllabus-${index}`}
+                          className="bg-white rounded-2xl px-6 py-4 font-bold text-[#302A3A] text-[15px] mb-2"
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-[#8D7EF3]">
+                              {t("course.lesson_label", {
+                                number: String(index + 1),
+                              })}
                             </span>
+                            {item.duration > 0 && (
+                              <span className="text-[#A9A6B4] text-sm font-normal">
+                                {item.duration} {t("course.minutes_short")}
+                              </span>
+                            )}
+                          </div>
+                          {showTitle && (
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: sanitizeHtml(titleHtml),
+                              }}
+                            />
+                          )}
+                          {showDescription && (
+                            <div
+                              className="font-normal mt-2 text-[#A9A6B4]"
+                              dangerouslySetInnerHTML={{
+                                __html: sanitizeHtml(descriptionHtml),
+                              }}
+                            />
                           )}
                         </div>
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: sanitizeHtml(
-                              pickLocalized(item.title, loc)
-                            ),
-                          }}
-                        />
-                        {pickLocalized(item.description, loc) && (
-                          <div
-                            className="font-normal mt-2 text-[#A9A6B4]"
-                            dangerouslySetInnerHTML={{
-                              __html: sanitizeHtml(
-                                pickLocalized(item.description, loc)
-                              ),
-                            }}
-                          />
-                        )}
-                      </div>
-                    ))}
+                      );
+                    })}
 
                     {/* Total Duration */}
                     <div className="bg-[#F1EEFF] rounded-2xl px-6 py-4 mt-4">
