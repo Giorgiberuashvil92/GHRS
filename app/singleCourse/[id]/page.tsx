@@ -18,6 +18,24 @@ import { useI18n } from "../../context/I18nContext";
 import { sanitizeHtml } from "../../utils/sanitize";
 import { useInstructorByName } from "../../hooks/useInstructorByName";
 
+type CourseLocale = "en" | "ru" | "ka";
+
+// Helper function to pick localized content
+const pickLocalized = (
+  field: { en?: string; ru?: string; ka?: string } | undefined,
+  locale: CourseLocale
+): string => {
+  if (!field) return "";
+  return field[locale] || field.en || field.ru || field.ka || "";
+};
+
+// Helper function to check if rich text is effectively empty
+const isEffectivelyEmptyRichText = (html: string | undefined): boolean => {
+  if (!html) return true;
+  const stripped = html.replace(/<[^>]*>/g, "").trim();
+  return stripped.length === 0;
+};
+
 interface Course {
   _id: string;
   title: {
