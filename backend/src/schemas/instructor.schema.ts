@@ -26,6 +26,7 @@ export class Instructor {
 
   @Prop({
     type: {
+      ka: { type: String },
       en: { type: String, required: true },
       ru: { type: String, required: true },
     },
@@ -35,6 +36,7 @@ export class Instructor {
 
   @Prop({
     type: {
+      ka: { type: String },
       en: { type: String },
       ru: { type: String },
     },
@@ -85,10 +87,12 @@ export interface InstructorResponse {
   email: string;
   profession: string;
   bio: {
+    ka?: string;
     en: string;
     ru: string;
   };
   htmlContent?: {
+    ka?: string;
     en: string;
     ru: string;
   };

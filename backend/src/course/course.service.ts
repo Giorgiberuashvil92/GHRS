@@ -391,6 +391,11 @@ export class CourseService {
         }));
       }
 
+      // announcements-ის დამუშავება
+      if (updateCourseDto.announcements !== undefined) {
+        updateData.announcements = updateCourseDto.announcements || [];
+      }
+
       const updatedCourse = await this.courseModel
         .findByIdAndUpdate(id, updateData, { new: true, runValidators: true })
         .exec();

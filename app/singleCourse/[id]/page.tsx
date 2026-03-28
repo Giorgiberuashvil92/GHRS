@@ -15,6 +15,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useModal } from "../../context/ModalContext";
 import { useI18n } from "../../context/I18nContext";
 import { sanitizeHtml } from "../../utils/sanitize";
+import { useInstructorByName } from "../../hooks/useInstructorByName";
 
 interface Course {
   _id: string;
@@ -104,6 +105,9 @@ export default function SingleCourse() {
   const [error, setError] = useState<string | null>(null);
   const [relatedCourses, setRelatedCourses] = useState<Course[]>([]);
   const [relatedLoading, setRelatedLoading] = useState(false);
+
+  // Fetch instructor data by name
+  const { instructor } = useInstructorByName(course?.instructor?.name || "");
 
   // Auth context
   const { isAuthenticated } = useAuth();
@@ -317,8 +321,8 @@ export default function SingleCourse() {
           <div className="w-full md:w-[335px] flex-shrink-0 flex flex-col h-auto md:h-[262px] bg-white p-4 rounded-[20px] order-1 md:order-1 mb-4 md:mb-0">
             <div className="flex items-center gap-4 pb-[18px]">
               <Image
-                src="/assets/images/someone.png"
-                alt="avatar"
+                src={instructor?.profileImage || "/assets/images/someone.png"}
+                alt={course.instructor.name}
                 width={50}
                 height={50}
                 className="w-[50px] h-[50px] rounded-[12px] object-cover mb-[10px]"
