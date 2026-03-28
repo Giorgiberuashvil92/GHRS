@@ -157,11 +157,13 @@
     "login_to_purchase": "შესვლა შეძენისთვის"
   },
   "sort": {
+    "label": "დალაგება:",
     "popularity": "პოპულარობით",
     "newest": "სიახლით",
     "priceAsc": "ფასით (ზრდადობით)",
     "priceDesc": "ფასით (კლებადობით)"
   },
+  "all_categories": "ყველა კატეგორია",
   "reviews": {
     "title": "მიმოხილვები GRS-ის შესახებ"
   },

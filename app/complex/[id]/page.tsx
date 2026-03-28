@@ -735,12 +735,13 @@ const Complex = ({ params }: ComplexPageProps) => {
             scrollable={true}
           />
         </div>
-        <div className="md:my-10">
+        <div className="mb-10">
           <Blog
-            withBanner={false}
+            withBanner={true}
             withSlider={true}
             layoutType="default"
-            title={"GRS МЕДИА"}
+            title={t("navigation.blog")}
+            showCategories={false}
           />
         </div>
 

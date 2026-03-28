@@ -69,6 +69,16 @@ export class Course {
   @Prop({ required: true })
   price: number;
 
+  /** ფასი ენის მიხედვით (ენ → ციფრი). თუ არ არის, იყენება price */
+  @Prop({
+    type: {
+      en: { type: Number },
+      ru: { type: Number },
+      ka: { type: Number },
+    },
+  })
+  priceLocalized?: { en?: number; ru?: number; ka?: number };
+
   @Prop({ required: true })
   thumbnail: string;
 
@@ -141,8 +151,8 @@ export class Course {
         ru: { type: String },
       },
       description: {
-        en: { type: String, required: true },
-        ru: { type: String },
+        en: { type: String, default: '' },
+        ru: { type: String, default: '' },
       },
       duration: { type: Number },
     }],
@@ -166,11 +176,16 @@ export class Course {
   @Prop({ type: [String], default: [] })
   tags: string[];
 
-  @Prop({ required: true })
-  categoryId: string;
+  /** ერთი კატეგორია (ძველი ველი, უკან თავსებადობისთვის) */
+  @Prop()
+  categoryId?: string;
 
   @Prop()
   subcategoryId?: string;
+
+  /** რამდენიმე კატეგორია — კურსის კატეგორიების ID-ების მასივი */
+  @Prop({ type: [String], default: [] })
+  categoryIds: string[];
 
   @Prop()
   startDate?: Date;

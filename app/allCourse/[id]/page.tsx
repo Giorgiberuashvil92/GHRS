@@ -1,8 +1,8 @@
 "use client";
-import React from "react";
+import React, { useMemo } from "react";
 import Image from "next/image";
 import DesktopNavbar from "@/app/components/Navbar/DesktopNavbar";
-import { defaultMenuItems } from "@/app/components/Header/Header";
+import { getDefaultMenuItems } from "@/app/components/Header/Header";
 import { useI18n } from "@/app/context/I18nContext";
 
 const staticCourse = {
@@ -49,11 +49,12 @@ const sidebarBanners = [
 
 const SingleCourse = () => {
   const course = staticCourse;
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+  const menuItems = useMemo(() => getDefaultMenuItems(t), [t, locale]);
 
   return (
     <>
-      <DesktopNavbar menuItems={defaultMenuItems} blogBg={false} allCourseBg={true} />
+      <DesktopNavbar menuItems={menuItems} blogBg={false} allCourseBg={true} />
       <main className="flex justify-between gap-[30px] text-[#3D334A]">
         {/* Sidebar - სექციები და ბანერები */}
         <div className="p-5 bg-[rgba(255,255,255,1)] min-h-[700px] rounded-[20px] max-w-[335px] hidden md:block flex-col">

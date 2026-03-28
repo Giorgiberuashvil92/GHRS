@@ -86,6 +86,7 @@ export interface InstructorResponse {
   name: string;
   email: string;
   profession: string;
+  professionLocalized?: { en?: string; ru?: string; ka?: string };
   bio: {
     ka?: string;
     en: string;

@@ -30,6 +30,7 @@ export const Footer: FC = () => {
     obesity: "6888ab6e8e3196ddea6b78ff",
     gaitRehab: "689a05f99c575c1535e8936b",
     covidRehab: "689a0e1f9c575c1535e893f0",
+    elderlyRehab: "689a091c9c575c1535e89399",
   };
 
   // Neurology subcategory IDs
@@ -457,26 +458,26 @@ export const Footer: FC = () => {
           <a href="/allComplex" className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.allSets")}</a>
           <a href={`/categories/${orthopedicsId}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.orthopedics")}</a>
           <ul className="flex flex-col gap-2 pl-4">
-            <li><a href={`/categories/${categoryLinks.cervicalSpine}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.cervical")}</a></li>
-            <li><a href={`/categories/${categoryLinks.thoracicSpine}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.thoracic")}</a></li>
-            <li><a href={`/categories/${categoryLinks.lumbarSpine}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.lumbar")}</a></li>
-            <li><a href={`/categories/${categoryLinks.upperLimbs}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.upperLimbs")}</a></li>
-            <li><a href={`/categories/${categoryLinks.lowerLimbs}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.lowerLimbs")}</a></li>
-            <li><a href={`/categories/${categoryLinks.posture}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.posture")}</a></li>
+            <li><a href={`/categories/section?subcategoryId=${categoryLinks.cervicalSpine}&categoryId=${orthopedicsId}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.cervical")}</a></li>
+            <li><a href={`/categories/section?subcategoryId=${categoryLinks.thoracicSpine}&categoryId=${orthopedicsId}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.thoracic")}</a></li>
+            <li><a href={`/categories/section?subcategoryId=${categoryLinks.lumbarSpine}&categoryId=${orthopedicsId}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.lumbar")}</a></li>
+            <li><a href={`/categories/section?subcategoryId=${categoryLinks.upperLimbs}&categoryId=${orthopedicsId}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.upperLimbs")}</a></li>
+            <li><a href={`/categories/section?subcategoryId=${categoryLinks.lowerLimbs}&categoryId=${orthopedicsId}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.lowerLimbs")}</a></li>
+            <li><a href={`/categories/section?subcategoryId=${categoryLinks.posture}&categoryId=${orthopedicsId}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.posture")}</a></li>
           </ul>
           <a href={`/categories/${categoryLinks.neurology}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.neurology")}</a>
           <ul className="flex flex-col gap-2 pl-4">
-            <li><a href={`/categories/${neurologySubcategories.parkinsons}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.parkinsons")}</a></li>
-            <li><a href={`/categories/${neurologySubcategories.stroke}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.stroke")}</a></li>
-            <li><a href={`/categories/${neurologySubcategories.facialNerve}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.facialNerve")}</a></li>
-            <li><a href={`/categories/${neurologySubcategories.multipleSclerosis}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.multipleSclerosis")}</a></li>
+            <li><a href={`/categories/section?subcategoryId=${neurologySubcategories.parkinsons}&categoryId=${categoryLinks.neurology}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.parkinsons")}</a></li>
+            <li><a href={`/categories/section?subcategoryId=${neurologySubcategories.stroke}&categoryId=${categoryLinks.neurology}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.stroke")}</a></li>
+            <li><a href={`/categories/section?subcategoryId=${neurologySubcategories.facialNerve}&categoryId=${categoryLinks.neurology}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.facialNerve")}</a></li>
+            <li><a href={`/categories/section?subcategoryId=${neurologySubcategories.multipleSclerosis}&categoryId=${categoryLinks.neurology}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.multipleSclerosis")}</a></li>
           </ul>
         </div>
         <div className="flex flex-col gap-3">
           <a href={`/categories/${categoryLinks.aphasia}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.aphasia")}</a>
           <a href={`/categories/${categoryLinks.obesity}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.obesity")}</a>
           <a href={`/categories/${categoryLinks.gaitRehab}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.gaitRehab")}</a>
-          <a href="/allComplex" className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.elderlyRehab")}</a>
+          <a href={`/categories/${categoryLinks.elderlyRehab}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.elderlyRehab")}</a>
           <a href={`/categories/${categoryLinks.covidRehab}`} className="hover:text-[#D4BAFC] transition-colors font-medium font-pt">{t("links.covidRehab")}</a>
         </div>
       </div>

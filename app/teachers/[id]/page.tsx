@@ -1,14 +1,14 @@
-import Certificate from "@/app/components/Certificate";
 import TeacherInfo from "../../components/TeacherInfo";
 
 interface PageProps {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
 
-export default function TeacherPage({ params }: PageProps) {
-  return <div>
-    <TeacherInfo instructorId={params.id} />
-  </div>
+export default async function TeacherPage({ params }: PageProps) {
+  const { id } = await params;
+  return (
+    <div>
+      <TeacherInfo instructorId={id} />
+    </div>
+  );
 } 

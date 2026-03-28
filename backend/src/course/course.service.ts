@@ -25,34 +25,42 @@ export class CourseService {
 
   async create(createCourseDto: CreateCourseDto): Promise<Course> {
     try {
-      // Check if category exists
-      const categoryExists = await this.courseModel.db.model('Category').findById(createCourseDto.categoryId);
-      if (!categoryExists) {
-        throw new NotFoundException('Category not found');
+      const categoryIds = createCourseDto.categoryIds?.length
+        ? createCourseDto.categoryIds
+        : createCourseDto.categoryId
+          ? [createCourseDto.categoryId, createCourseDto.subcategoryId].filter(Boolean) as string[]
+          : [];
+
+      if (categoryIds.length === 0) {
+        throw new BadRequestException('At least one category is required');
       }
 
-      // Check subcategory if provided
-      if (createCourseDto.subcategoryId) {
-        const subcategoryExists = await this.courseModel.db.model('Category').findOne({
-          _id: createCourseDto.subcategoryId,
-          parentId: createCourseDto.categoryId
-        });
-        if (!subcategoryExists) {
-          throw new NotFoundException('Subcategory not found or does not belong to the specified category');
+      const CourseCategoryModel = this.courseModel.db.model('CourseCategory');
+      for (const id of categoryIds) {
+        const exists = await CourseCategoryModel.findById(id);
+        if (!exists) {
+          throw new NotFoundException(`Category not found: ${id}`);
         }
       }
 
       // Create course with default values - ყველა ველი ყოველთვის იგზავნება
       const courseData = {
         ...createCourseDto,
+        categoryIds,
+        categoryId: categoryIds[0],
+        subcategoryId: categoryIds.length > 1 ? categoryIds[1] : undefined,
         // მასივები - ყოველთვის იგზავნება (ცარიელი მასივიც კი)
         certificateImages: createCourseDto.certificateImages || [],
         announcements: createCourseDto.announcements || [],
         additionalImages: createCourseDto.additionalImages || [],
         learningOutcomes: createCourseDto.learningOutcomes || [],
-        syllabus: (createCourseDto.syllabus || []).map(item => ({
-          ...item,
-          duration: item.duration || 0 // duration ყოველთვის იგზავნება
+        syllabus: (createCourseDto.syllabus || []).map((item) => ({
+          title: item.title,
+          description: {
+            en: item.description?.en ?? '',
+            ru: item.description?.ru ?? item.description?.en ?? '',
+          },
+          duration: item.duration ?? 0,
         })),
         tags: createCourseDto.tags || [],
         
@@ -121,11 +129,10 @@ export class CourseService {
     }
 
     if (categoryId) {
-      query.categoryId = categoryId;
+      query.$or = [{ categoryIds: categoryId }, { categoryId }];
     }
-
     if (subcategoryId) {
-      query.subcategoryId = subcategoryId;
+      query.$or = [{ categoryIds: subcategoryId }, { subcategoryId }];
     }
 
     if (instructorId) {
@@ -179,25 +186,31 @@ export class CourseService {
   }
 
   async findOne(id: string): Promise<Course> {
-    const course = await this.courseModel.findById(id).exec();
-    if (!course) {
+    // არასწორი ObjectId (მაგ. 3223776058) იწვევს CastError-ს და 500-ს — ვაბრუნებთ 404-ს
+    const is24Hex = /^[a-fA-F0-9]{24}$/.test(id);
+    if (!is24Hex) {
       throw new NotFoundException('Course not found');
     }
-    return course;
+    try {
+      const course = await this.courseModel.findById(id).exec();
+      if (!course) {
+        throw new NotFoundException('Course not found');
+      }
+      return course;
+    } catch (err: any) {
+      if (err.name === 'NotFoundException') throw err;
+      throw new NotFoundException('Course not found');
+    }
   }
 
   async findByCategory(categoryId: string, options: { page: number; limit: number }) {
     const { page = 1, limit = 10 } = options;
     const skip = (page - 1) * limit;
+    const catQuery = { $or: [{ categoryIds: categoryId }, { categoryId }], isPublished: true };
 
     const [courses, total] = await Promise.all([
-      this.courseModel
-        .find({ categoryId, isPublished: true })
-        .skip(skip)
-        .limit(limit)
-        .sort({ createdAt: -1 })
-        .exec(),
-      this.courseModel.countDocuments({ categoryId, isPublished: true }),
+      this.courseModel.find(catQuery).skip(skip).limit(limit).sort({ createdAt: -1 }).exec(),
+      this.courseModel.countDocuments(catQuery),
     ]);
 
     return {
@@ -228,7 +241,7 @@ export class CourseService {
       excludeId,
     } = options;
 
-    const query: any = { categoryId };
+    const query: any = { $or: [{ categoryIds: categoryId }, { categoryId }] };
 
     // Exclude specific course (useful for "related courses")
     if (excludeId) {
@@ -317,26 +330,23 @@ export class CourseService {
 
   async update(id: string, updateCourseDto: Partial<CreateCourseDto>): Promise<Course> {
     try {
-      // Check if category exists when updating categoryId
-      if (updateCourseDto.categoryId) {
-        const categoryExists = await this.courseModel.db.model('Category').findById(updateCourseDto.categoryId);
-        if (!categoryExists) {
-          throw new NotFoundException('Category not found');
+      const CourseCategoryModel = this.courseModel.db.model('CourseCategory');
+      const categoryIds = updateCourseDto.categoryIds?.length
+        ? updateCourseDto.categoryIds
+        : updateCourseDto.categoryId
+          ? [updateCourseDto.categoryId, updateCourseDto.subcategoryId].filter(Boolean) as string[]
+          : undefined;
+
+      if (categoryIds?.length) {
+        for (const id of categoryIds) {
+          const exists = await CourseCategoryModel.findById(id);
+          if (!exists) throw new NotFoundException(`Category not found: ${id}`);
         }
+        updateCourseDto.categoryIds = categoryIds;
+        updateCourseDto.categoryId = categoryIds[0];
+        updateCourseDto.subcategoryId = categoryIds.length > 1 ? categoryIds[1] : undefined;
       }
 
-      // Check subcategory if provided
-      if (updateCourseDto.subcategoryId) {
-        const subcategoryExists = await this.courseModel.db.model('Category').findOne({
-          _id: updateCourseDto.subcategoryId,
-          parentId: updateCourseDto.categoryId || undefined
-        });
-        if (!subcategoryExists) {
-          throw new NotFoundException('Subcategory not found or does not belong to the specified category');
-        }
-      }
-
-      // Handle data processing for update - ყველა ველი სწორად უნდა დამუშავდეს
       const updateData: any = { ...updateCourseDto };
       
       // თარიღების კონვერტაცია
@@ -383,11 +393,17 @@ export class CourseService {
         };
       }
 
-      // syllabus-ის დამუშავება duration-ით
+      // syllabus-ის დამუშავება duration-ით; აღწერა შეიძლება ცარიელი იყოს ორივე ენაზე
       if (updateCourseDto.syllabus) {
-        updateData.syllabus = updateCourseDto.syllabus.map(item => ({
-          ...item,
-          duration: item.duration || 0
+        updateData.syllabus = updateCourseDto.syllabus.map((item) => ({
+          title: item.title,
+          description: item.description
+            ? {
+                en: item.description.en ?? '',
+                ru: item.description.ru ?? item.description.en ?? '',
+              }
+            : { en: '', ru: '' },
+          duration: item.duration ?? 0,
         }));
       }
 

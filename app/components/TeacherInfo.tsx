@@ -80,7 +80,7 @@ const ContentsSidebar = ({ htmlContent }: { htmlContent?: string }) => {
       </h3>
       {headings.length === 0 ? (
         <p className="text-sm text-gray-500">
-          Debug: No headings found. HTML length: {htmlContent?.length || 0}
+         
         </p>
       ) : (
         <ol className="flex flex-col gap-2 text-[14px]">
@@ -122,19 +122,22 @@ const TeacherInfo = ({ instructorId }: TeacherInfoProps) => {
       </div>
     );
 
-  // Function to get multilingual content (for bio and htmlContent)
+  // Function to get multilingual content (for bio, htmlContent, professionLocalized)
   const getMultilingualContent = (
-    content: { ka: string; en: string; ru: string } | undefined
+    content: { ka?: string; en?: string; ru?: string } | undefined
   ): string => {
     if (!content) return "";
     return (
-      content[locale as keyof typeof content] ||
+      (content[locale as keyof typeof content] as string) ||
       content.en ||
       content.ru ||
       content.ka ||
       ""
-    );
+    ).trim() || "";
   };
+
+  const displayProfession =
+    getMultilingualContent(instructor?.professionLocalized) || instructor?.profession || "";
 
   // Function to clean and format HTML content
   const cleanHtmlContent = (htmlContent: string) => {
@@ -215,7 +218,7 @@ const TeacherInfo = ({ instructorId }: TeacherInfoProps) => {
                 {instructor?.name?.toUpperCase() || t("teacher.instructorName")}
               </h1>
               <p className="font-medium leading-[120%] text-[15px] md:text-base">
-                {instructor?.profession || t("teacher.professionalTitle")}
+                {displayProfession || t("teacher.professionalTitle")}
                 <br />
                 {instructor?.email}
               </p>

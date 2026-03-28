@@ -51,7 +51,7 @@ const OrthopedicsGrid: React.FC<OrthopedicsGridProps> = ({ sets, title }) => {
           return (
             <Link
               key={set._id}
-              href={`/sets/${set._id}`}
+              href={`/complex/${set._id}`}
               className="bg-white rounded-[20px] overflow-hidden hover:shadow-lg transition-all cursor-pointer flex flex-col border border-gray-100"
             >
               {/* Image */}

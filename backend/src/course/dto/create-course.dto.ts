@@ -27,6 +27,17 @@ class Announcement {
   isActive: boolean;
 }
 
+/** სილაბუსის თემის აღწერა — შეიძლება ორივე ენაზე ცარიელი იყოს */
+class SyllabusItemDescription {
+  @IsString()
+  @IsOptional()
+  en?: string;
+
+  @IsString()
+  @IsOptional()
+  ru?: string;
+}
+
 class SyllabusItem {
   @ValidateNested()
   @Type(() => MultilingualContent)
@@ -34,9 +45,9 @@ class SyllabusItem {
   title: MultilingualContent;
 
   @ValidateNested()
-  @Type(() => MultilingualContent)
-  @IsNotEmpty()
-  description: MultilingualContent;
+  @Type(() => SyllabusItemDescription)
+  @IsOptional()
+  description?: SyllabusItemDescription;
 
   @IsNumber()
   @Min(0)
@@ -76,6 +87,9 @@ export class CreateCourseDto {
   @Min(0)
   @IsNotEmpty()
   price: number;
+
+  @IsOptional()
+  priceLocalized?: { en?: number; ru?: number; ka?: number };
 
   @IsString()
   @IsNotEmpty()
@@ -144,9 +158,14 @@ export class CreateCourseDto {
   @IsOptional()
   tags?: string[];
 
+  @IsArray()
+  @IsString({ each: true })
+  @IsOptional()
+  categoryIds?: string[];
+
   @IsString()
-  @IsNotEmpty()
-  categoryId: string;
+  @IsOptional()
+  categoryId?: string;
 
   @IsString()
   @IsOptional()
@@ -193,6 +212,9 @@ export class UpdateCourseDto {
   @Min(0)
   @IsOptional()
   price?: number;
+
+  @IsOptional()
+  priceLocalized?: { en?: number; ru?: number; ka?: number };
 
   @IsString()
   @IsUrl()

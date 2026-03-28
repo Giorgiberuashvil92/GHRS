@@ -38,6 +38,10 @@ interface Course {
 interface CourseSliderProps {
   courses?: ExtendedBackendCourse[];
   maxVisible?: number;
+  /** ref for the scroll container – when set, parent can control scroll and may hide internal arrows */
+  scrollContainerRef?: React.RefObject<HTMLDivElement | null>;
+  /** hide built-in arrows (use when parent provides its own) */
+  hideArrows?: boolean;
 }
 
 // SliderArrows Component
@@ -95,9 +99,12 @@ const SliderArrows = ({
 const CourseSlider: React.FC<CourseSliderProps> = ({
   courses = [],
   maxVisible = 4,
+  scrollContainerRef: externalScrollRef,
+  hideArrows = false,
 }) => {
   const { language } = useLanguage();
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const internalScrollRef = useRef<HTMLDivElement>(null);
+  const scrollRef = externalScrollRef || internalScrollRef;
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
 
@@ -134,13 +141,21 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
     return "/assets/images/course.png"; // Fallback to default
   };
 
-  const transformedCourses: Course[] = courses.map((course) => ({
-    id: course._id || course.id.toString(),
+  const getEffectivePrice = (course: ExtendedBackendCourse): number => {
+    const loc = (course as { priceLocalized?: { en?: number; ru?: number; ka?: number } }).priceLocalized;
+    if (loc && typeof loc[language as keyof typeof loc] === "number") return loc[language as keyof typeof loc]!;
+    return typeof course.price === "number" ? course.price : 0;
+  };
+  const transformedCourses: Course[] = courses.map((course) => {
+    const effectivePrice = getEffectivePrice(course);
+    const courseId = typeof course._id === "string" ? course._id : String(course._id ?? (course as { id?: unknown }).id ?? "");
+    return {
+    id: courseId,
     title: getLocalizedContent(course.title),
     description: getLocalizedContent(course.description),
     shortDescription: getLocalizedContent(course.shortDescription),
-    price: course.price
-      ? `${course.price}${language === "ka" ? " ₾" : language === "ru" ? " ₽" : " $"}` // Format price
+    price: effectivePrice
+      ? `${effectivePrice}${language === "ka" ? " ₾" : language === "ru" ? " ₽" : " $"}` // ფასი ენის მიხედვით
       : "N/A",
     image: getValidImage(course.thumbnail),
     category: course.category
@@ -154,9 +169,13 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
       : undefined,
     duration: course.duration,
     level: course.level,
-  }));
+  };
+  });
 
   const allCourses = transformedCourses.length > 0 ? transformedCourses : fallbackCourses;
+
+  // When parent controls scroll, show all cards in the row so horizontal scroll works
+  const effectiveMaxVisible = externalScrollRef ? Math.max(allCourses.length, maxVisible) : maxVisible;
 
   // Check scroll position and update arrow states
   const checkScrollPosition = () => {
@@ -223,19 +242,21 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
     }
   }, [allCourses.length]);
 
-  const displayCourses = showAll ? allCourses : allCourses.slice(0, maxVisible);
+  const displayCourses = showAll ? allCourses : allCourses.slice(0, effectiveMaxVisible);
 
   return (
     <div className="w-full relative">
-      {/* Header with arrows */}
-      <div className="flex justify-between items-center mb-4 absolute -top-20 right-0">
-        <SliderArrows
-          onScrollLeft={scrollLeft}
-          onScrollRight={scrollRight}
-          canScrollLeft={canScrollLeft}
-          canScrollRight={canScrollRight}
-        />
-      </div>
+      {/* Header with arrows (hidden when parent provides its own) */}
+      {!hideArrows && (
+        <div className="flex justify-between items-center mb-4 absolute -top-20 right-0">
+          <SliderArrows
+            onScrollLeft={scrollLeft}
+            onScrollRight={scrollRight}
+            canScrollLeft={canScrollLeft}
+            canScrollRight={canScrollRight}
+          />
+        </div>
+      )}
 
       {/* Scrollable horizontal layout for all screen sizes */}
       <div
@@ -252,8 +273,7 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
         ))}
       </div>
 
-      {/* Show more button */}
-      {allCourses.length > maxVisible && (
+      {allCourses.length > effectiveMaxVisible && (
         <div className="flex justify-center mt-6">
           <button
             onClick={() => setShowAll((prev) => !prev)}
@@ -283,6 +303,8 @@ const CourseCard = ({ course }: { course: Course }) => {
     if (cleanText.length <= maxLength) return cleanText;
     return cleanText.substring(0, maxLength) + "...";
   };
+
+  console.log(course);
 
   return (
     <Link

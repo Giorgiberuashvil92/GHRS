@@ -3,8 +3,9 @@
 import Image from "next/image";
 import { FaBullhorn, FaBookOpen } from "react-icons/fa";
 import DesktopNavbar from "../../components/Navbar/DesktopNavbar";
-import { defaultMenuItems } from "../../components/Header/Header";
-import React, { useState, useEffect, useRef } from "react";
+import { getDefaultMenuItems } from "../../components/Header/Header";
+import React, { useState, useEffect, useRef, useMemo } from "react";
+import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { fetchCourse, fetchRelatedCourses } from "../../config/api";
 import CourseSlider from "@/app/components/CourseSlider";
@@ -35,6 +36,7 @@ interface Course {
     ka?: string;
   };
   price: number;
+  priceLocalized?: { en?: number; ru?: number; ka?: number };
   thumbnail: string;
   additionalImages?: string[];
   advertisementImage?: string;
@@ -73,6 +75,7 @@ interface Course {
     isActive: boolean;
   }>;
   syllabus?: Array<{
+    _id?: string;
     title: {
       en: string;
       ru: string;
@@ -103,6 +106,7 @@ export default function SingleCourse() {
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [notFound, setNotFound] = useState(false);
   const [relatedCourses, setRelatedCourses] = useState<Course[]>([]);
   const [relatedLoading, setRelatedLoading] = useState(false);
 
@@ -113,7 +117,20 @@ export default function SingleCourse() {
   const { isAuthenticated } = useAuth();
 
   // I18n context
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+  const loc = locale as CourseLocale;
+  const menuItems = useMemo(() => getDefaultMenuItems(t), [t, locale]);
+
+  const getEffectivePrice = (c: Course): number => {
+    const loc = c.priceLocalized;
+    if (loc && typeof loc[locale as keyof typeof loc] === "number") return loc[locale as keyof typeof loc]!;
+    return c.price ?? 0;
+  };
+  const formatPrice = (c: Course): string => {
+    const p = getEffectivePrice(c);
+    const sym = locale === "ka" ? "₾" : locale === "ru" ? "₽" : "$";
+    return `${p} ${sym}`;
+  };
 
   // Modal context
   const { showError, showSuccess } = useModal();
@@ -166,16 +183,18 @@ export default function SingleCourse() {
       // კურსის მონაცემები shopping cart-ისთვის
       const courseItem = {
         id: course._id,
-        title: course.title.ru || course.title.en, // ✅ title ველი
+        title: pickLocalized(course.title, loc),
         desc:
-          course.shortDescription?.ru ||
-          course.description?.ru ||
-          "No description", // ✅ desc ველი
+          pickLocalized(course.shortDescription, loc) ||
+          pickLocalized(course.description, loc) ||
+          t("course.no_description"),
         img: course.thumbnail, // ✅ img ველი
-        price: course.price,
+        price: getEffectivePrice(course),
         subscription: 1, // ✅ default subscription
         totalExercises: course.syllabus?.length || 0,
-        totalDuration: course.duration ? `${course.duration} წუთი` : "0:00",
+        totalDuration: course?.duration
+          ? t("course.duration_minutes", { duration: String(course.duration) })
+          : "0:00",
         itemType: "course", // ✅ itemType ველი
         type: "course", // ✅ backward compatibility
       };
@@ -234,6 +253,8 @@ export default function SingleCourse() {
 
       try {
         setLoading(true);
+        setNotFound(false);
+        setError(null);
         console.log("Loading course with ID:", courseId);
         const data = await fetchCourse(courseId);
         console.log("Loaded course data:", data);
@@ -244,9 +265,21 @@ export default function SingleCourse() {
         if (data.categoryId) {
           await loadRelatedCourses(courseId, data.categoryId);
         }
-      } catch (err) {
+      } catch (err: unknown) {
         console.error("Error loading course:", err);
-        setError(err instanceof Error ? err.message : "Failed to load course");
+        const is404 =
+          typeof err === "object" &&
+          err !== null &&
+          "response" in err &&
+          typeof (err as { response?: { status?: number } }).response?.status === "number" &&
+          (err as { response: { status: number } }).response.status === 404;
+        if (is404) {
+          setNotFound(true);
+          setError(null);
+        } else {
+          setNotFound(false);
+          setError(err instanceof Error ? err.message : "Failed to load course");
+        }
       } finally {
         setLoading(false);
       }
@@ -287,14 +320,34 @@ export default function SingleCourse() {
     );
   }
 
-  if (error || !course) {
+  if (notFound || error || !course) {
     return (
-      <div className="bg-[#F9F7FE] min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <h2 className="text-xl text-red-600 mb-4">
-            შეცდომა კურსის ჩატვირთვაში
-          </h2>
-          <p className="text-gray-600">{error || "Course not found"}</p>
+      <div className="bg-[#F9F7FE] min-h-screen flex items-center justify-center px-4">
+        <div className="text-center max-w-md">
+          {notFound ? (
+            <>
+              <h2 className="text-xl font-semibold text-[#302A3A] mb-2">
+                {t("course.not_found_title") || "კურსი ვერ მოიძებნა"}
+              </h2>
+              <p className="text-gray-600 mb-6">
+                {t("course.not_found_message") ||
+                  "ამ მისამართის კურსი არ არსებობს ან წაშლილია."}
+              </p>
+              <Link
+                href="/allCourse"
+                className="inline-block px-6 py-3 bg-[#6C5CE7] text-white rounded-xl hover:opacity-90 transition"
+              >
+                {t("course.view_all_courses") || "ყველა კურსი"}
+              </Link>
+            </>
+          ) : (
+            <>
+              <h2 className="text-xl text-red-600 mb-4">
+                {t("course.error_loading")}
+              </h2>
+              <p className="text-gray-600">{error || "Course not found"}</p>
+            </>
+          )}
         </div>
       </div>
     );
@@ -303,7 +356,7 @@ export default function SingleCourse() {
   return (
     <>
       <DesktopNavbar
-        menuItems={defaultMenuItems}
+        menuItems={menuItems}
         blogBg={false}
         allCourseBg={false}
       />
@@ -312,7 +365,7 @@ export default function SingleCourse() {
         <div className="w-full md:px-10">
           <img
             src={course.thumbnail}
-            alt={course.title.ru}
+            alt={pickLocalized(course.title, loc)}
             className="w-full h-[517px] object-cover mb-10 rounded-[40px]"
           />
         </div>
@@ -397,10 +450,7 @@ export default function SingleCourse() {
           <aside className="w-full md:w-[270px] flex flex-col gap-4 order-2 md:order-3 mb-4 md:mb-0">
             <div className="bg-white rounded-2xl shadow-[0_7px_32px_0_rgba(141,126,243,0.13)] p-4 flex flex-col gap-2 mb-2 md:mb-0">
               <div className="flex items-center text-[rgba(212,186,252,1)] font-bold text-[32px] leading-none">
-                {course.price}
-                <span className="text-[rgba(212,186,252,1)] text-xl font-normal ml-1">
-                  $
-                </span>
+                {formatPrice(course)}
               </div>
               <div className="text-[#A9A6B4] text-sm">{t("course.price_label")}</div>
             </div>
@@ -496,11 +546,11 @@ export default function SingleCourse() {
                 <div>
                   <article className="bg-white rounded-2xl shadow-[0_7px_32px_0_rgba(141,126,243,0.13)] px-4 md:px-8 py-6 md:py-10 flex flex-col gap-6">
                     <h1 className="text-2xl font-bold uppercase text-[#302A3A]">
-                      {course.title.ru}
+                      {pickLocalized(course.title, loc)}
                     </h1>
 
                     {/* Short Description */}
-                    {course.shortDescription && (
+                    {pickLocalized(course.shortDescription, loc) && (
                       <div className="bg-[#F1EEFF] p-4 rounded-lg">
                         <h3 className="font-semibold text-[#8D7EF3] mb-2">
                           {t("course.short_description_title")}
@@ -508,30 +558,38 @@ export default function SingleCourse() {
                         <div
                           className="text-[#8D7EF3]"
                           dangerouslySetInnerHTML={{
-                            __html: sanitizeHtml(course.shortDescription.ru),
+                            __html: sanitizeHtml(
+                              pickLocalized(course.shortDescription, loc)
+                            ),
                           }}
                         />
                       </div>
                     )}
 
                     {/* Main Description */}
-                    <div
-                      className="text-[#A9A6B4]"
-                      dangerouslySetInnerHTML={{
-                        __html: sanitizeHtml(course.description.ru),
-                      }}
-                    />
+                    {pickLocalized(course.description, loc) && (
+                      <div
+                        className="text-[#A9A6B4]"
+                        dangerouslySetInnerHTML={{
+                          __html: sanitizeHtml(
+                            pickLocalized(course.description, loc)
+                          ),
+                        }}
+                      />
+                    )}
 
                     {/* Prerequisites */}
-                    {course.prerequisites && (
+                    {pickLocalized(course.prerequisites, loc) && (
                       <div className="bg-[#FFF9E6] p-4 rounded-lg">
                         <h3 className="font-semibold text-[#B8860B] mb-2">
-                          Требования:
+                          {t("course.prerequisites_title")}
                         </h3>
                         <div
                           className="text-[#8B7355]"
                           dangerouslySetInnerHTML={{
-                            __html: sanitizeHtml(course.prerequisites.ru),
+                            __html: sanitizeHtml(
+                              pickLocalized(course.prerequisites, loc)
+                            ),
                           }}
                         />
                       </div>
@@ -539,18 +597,26 @@ export default function SingleCourse() {
 
                     {/* Learning Outcomes */}
                     {course.learningOutcomes &&
-                      course.learningOutcomes.length > 0 && (
+                      course.learningOutcomes.some((o) =>
+                        pickLocalized(o, loc)
+                      ) && (
                         <div>
                           <h3 className="font-semibold text-[#302A3A] mb-3">
-                            Результаты обучения:
+                            {t("course.learning_outcomes_title")}
                           </h3>
                           <ul className="list-disc list-inside space-y-2 text-[#A9A6B4]">
-                            {course.learningOutcomes.map((outcome, index) => (
-                              <li
-                                key={index}
-                                dangerouslySetInnerHTML={{ __html: sanitizeHtml(outcome.ru) }}
-                              />
-                            ))}
+                            {course.learningOutcomes.map((outcome, index) => {
+                              const html = pickLocalized(outcome, loc);
+                              if (!html) return null;
+                              return (
+                                <li
+                                  key={index}
+                                  dangerouslySetInnerHTML={{
+                                    __html: sanitizeHtml(html),
+                                  }}
+                                />
+                              );
+                            })}
                           </ul>
                         </div>
                       )}
@@ -578,7 +644,7 @@ export default function SingleCourse() {
                     {course.tags && course.tags.length > 0 && (
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="font-semibold text-[#302A3A]">
-                          Теги:
+                          {t("course.tags_label")}
                         </span>
                         <div className="flex gap-2 flex-wrap">
                           {course.tags.map((tag, index) => (
@@ -628,34 +694,50 @@ export default function SingleCourse() {
               {activeTab === 1 && course.syllabus && (
                 <div>
                   <div className="flex flex-col gap-2">
-                    {course.syllabus.map((item, index) => (
-                      <div
-                        key={index}
-                        className="bg-white rounded-2xl px-6 py-4 font-bold text-[#302A3A] text-[15px] mb-2"
-                      >
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-[#8D7EF3]">
-                            Урок {index + 1}
-                          </span>
-                          {item.duration > 0 && (
-                            <span className="text-[#A9A6B4] text-sm font-normal">
-                              {item.duration} мин
+                    {course.syllabus.map((item, index) => {
+                      const titleHtml = pickLocalized(item.title, loc);
+                      const descriptionHtml = pickLocalized(
+                        item.description,
+                        loc
+                      );
+                      const showTitle = !isEffectivelyEmptyRichText(titleHtml);
+                      const showDescription =
+                        !isEffectivelyEmptyRichText(descriptionHtml);
+                      return (
+                        <div
+                          key={item._id ?? `syllabus-${index}`}
+                          className="bg-white rounded-2xl px-6 py-4 font-bold text-[#302A3A] text-[15px] mb-2"
+                        >
+                          <div className="flex items-center justify-between mb-2">
+                            <span className="text-[#8D7EF3]">
+                              {t("course.lesson_label", {
+                                number: String(index + 1),
+                              })}
                             </span>
+                            {item.duration > 0 && (
+                              <span className="text-[#A9A6B4] text-sm font-normal">
+                                {item.duration} {t("course.minutes_short")}
+                              </span>
+                            )}
+                          </div>
+                          {showTitle && (
+                            <div
+                              dangerouslySetInnerHTML={{
+                                __html: sanitizeHtml(titleHtml),
+                              }}
+                            />
+                          )}
+                          {showDescription && (
+                            <div
+                              className="font-normal mt-2 text-[#A9A6B4]"
+                              dangerouslySetInnerHTML={{
+                                __html: sanitizeHtml(descriptionHtml),
+                              }}
+                            />
                           )}
                         </div>
-                        <div
-                          dangerouslySetInnerHTML={{ __html: sanitizeHtml(item.title.ru) }}
-                        />
-                        {item.description && (
-                          <div
-                            className="font-normal mt-2 text-[#A9A6B4]"
-                            dangerouslySetInnerHTML={{
-                              __html: sanitizeHtml(item.description.ru),
-                            }}
-                          />
-                        )}
-                      </div>
-                    ))}
+                      );
+                    })}
 
                     {/* Total Duration */}
                     <div className="bg-[#F1EEFF] rounded-2xl px-6 py-4 mt-4">
@@ -722,12 +804,16 @@ export default function SingleCourse() {
                           <h3
                             className="font-bold mb-2"
                             dangerouslySetInnerHTML={{
-                              __html: sanitizeHtml(announcement.title.ru),
+                              __html: sanitizeHtml(
+                                pickLocalized(announcement.title, loc)
+                              ),
                             }}
                           />
                           <div
                             dangerouslySetInnerHTML={{
-                              __html: sanitizeHtml(announcement.content.ru),
+                              __html: sanitizeHtml(
+                                pickLocalized(announcement.content, loc)
+                              ),
                             }}
                           />
                         </div>
@@ -769,9 +855,11 @@ export default function SingleCourse() {
                 <div>
                   <div className="bg-white rounded-2xl px-6 py-4 flex flex-col gap-2">
                     <div className="font-bold text-[#302A3A] text-[15px] mb-4">
-                      ОТЗЫВЫ УЧЕНИКОВ
+                      {t("course.reviews_section_title")}
                     </div>
-                    <div className="text-[#A9A6B4]">Пока нет отзывов</div>
+                    <div className="text-[#A9A6B4]">
+                      {t("course.no_reviews_yet")}
+                    </div>
                   </div>
 
                   {/* Related Courses Section */}

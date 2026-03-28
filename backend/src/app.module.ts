@@ -14,6 +14,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PaymentModule } from './payment/payment.module';
 import { PurchaseModule } from './purchase/purchase.module';
 import { CourseModule } from './course/course.module';
+import { CourseCategoryModule } from './course-category/course-category.module';
 import { InstructorModule } from './instructor/instructor.module';
 import { CourseModuleModule } from './course-module/course-module.module';
 import { ReviewModule } from './review/review.module';
@@ -29,7 +30,13 @@ import { TestModule } from './test/test.module';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    MongooseModule.forRoot(process.env.MONGODB_URI || 'mongodb://localhost:27017/grs-db'),
+    MongooseModule.forRoot('mongodb+srv://beruashvilig60:Berobero1234!@cluster0.dtwfws3.mongodb.net/grs-db', {
+      retryWrites: true,
+      w: 'majority',
+      serverSelectionTimeoutMS: 5000,
+      socketTimeoutMS: 45000,
+      connectTimeoutMS: 10000,
+    }),
     EmailModule, 
     AuthModule,
     UserModule,
@@ -42,6 +49,7 @@ import { TestModule } from './test/test.module';
     PaymentModule,
     PurchaseModule,
     CourseModule,
+    CourseCategoryModule,
     InstructorModule,
     CourseModuleModule,
     ReviewModule,

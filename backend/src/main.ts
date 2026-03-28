@@ -9,11 +9,12 @@ async function bootstrap() {
   
   // CORS კონფიგურაცია
   const allowedOrigins = process.env.ALLOWED_ORIGINS
-  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
+  ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim().replace(/^['"]|['"]$/g, '')).filter(Boolean)
   : [
     'http://localhost:3000',
     'http://localhost:3001',
     'https://ghrs-mu.vercel.app',
+    'https://ghrs-admin.vercel.app',
     'https://ghrs-backend.onrender.com',
     'https://ghrsnew1.vercel.app',
     'https://ghrrrs.vercel.app',
@@ -96,8 +97,16 @@ async function bootstrap() {
   });
 
   const port = process.env.PORT || 4000;
-  await app.listen(port);
-  console.log(`🚀 Backend server running on http://localhost:${port}`);
-  console.log(`📚 API documentation: http://localhost:${port}/api/test`);
+  
+  // Log environment info (without sensitive data)
+  console.log('📋 Environment Info:');
+  console.log(`   NODE_ENV: ${process.env.NODE_ENV || 'development'}`);
+  console.log(`   PORT: ${port}`);
+  console.log(`   MONGODB_URI: ${process.env.MONGODB_URI ? '✅ Set' : '❌ Not set'}`);
+  
+  await app.listen(port, '0.0.0.0', () => {
+    console.log(`🚀 Backend server running on port ${port}`);
+    console.log(`📚 API documentation: http://0.0.0.0:${port}/api/test`);
+  });
 }
 bootstrap();

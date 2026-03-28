@@ -3,7 +3,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import MainHeader from "../components/Header/MainHeader";
 import Image from "next/image";
-import CategorySlider from "../components/CategorySlider";
 import SliderArrows from "../components/SliderArrows";
 import Subscribe from "../components/Subscribe";
 import ReviewSlider from "../components/ReviewSlider";
@@ -12,7 +11,6 @@ import TeacherSlider from "../components/TeacherSlider";
 import Link from "next/link";
 import { useI18n } from "../context/I18nContext";
 import { Footer } from "../components/Footer";
-import Category from "../components/Category";
 import { API_CONFIG } from "../config/api";
 import { FaBook, FaDumbbell, FaClock } from "react-icons/fa";
 
@@ -50,6 +48,7 @@ interface BackendInstructor {
   name: string;
   email: string;
   profession: string;
+  professionLocalized?: { en?: string; ru?: string; ka?: string };
   bio: InstructorBio;
   htmlContent: InstructorBio;
   profileImage: string;
@@ -105,6 +104,7 @@ interface Instructor {
 const Professional = () => {
   const { t } = useI18n();
   const sliderRef = useRef<HTMLDivElement>(null);
+  const sliderRefTop = useRef<HTMLDivElement>(null);
   const [courses, setCourses] = useState<Course[]>([]);
   const [instructors, setInstructors] = useState<Instructor[]>([]);
   const [loading, setLoading] = useState(true);
@@ -139,7 +139,7 @@ const Professional = () => {
         API_CONFIG.BASE_URL.includes('render.com');
       
       const endpoint = isProduction 
-        ? '/courses?isPublished=true&limit=10'
+        ? '/api/courses?isPublished=true&limit=10'
         : '/api/courses?isPublished=true&limit=10';
       
       const url = `${API_CONFIG.BASE_URL}${endpoint}`;
@@ -180,13 +180,14 @@ const Professional = () => {
           id: instructor._id,
           name: instructor.name,
           position: instructor.profession || "Teacher",
-          institution: "«Колледжа медицинского массажа»",
+          professionLocalized: instructor.professionLocalized,
+          institution: "", 
           credentials: `${instructor.name}, ${
             instructor.profession || "Teacher"
           }`,
           education: [
-            instructor.bio?.en || "",
-            instructor.htmlContent?.en?.replace(/<[^>]*>/g, "") || "",
+            instructor.bio?.ka || instructor.bio?.en || instructor.bio?.ru || "",
+            (instructor.htmlContent?.ka || instructor.htmlContent?.en || instructor.htmlContent?.ru || "").replace(/<[^>]*>/g, ""),
           ].filter((text) => text.length > 0),
           imageUrl:
             instructor.profileImage || "/assets/images/teachers/default.jpg",
@@ -219,15 +220,28 @@ const Professional = () => {
     fetchInstructors();
   }, []);
 
+  const scrollAmount = 340; // ~card width + gap for smooth scroll
   const scrollLeft = () => {
     if (sliderRef.current) {
-      sliderRef.current.scrollBy({ left: -300, behavior: "smooth" });
+      sliderRef.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
     }
   };
 
   const scrollRight = () => {
     if (sliderRef.current) {
-      sliderRef.current.scrollBy({ left: 300, behavior: "smooth" });
+      sliderRef.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
+    }
+  };
+
+  const scrollLeftTop = () => {
+    if (sliderRefTop.current) {
+      sliderRefTop.current.scrollBy({ left: -scrollAmount, behavior: "smooth" });
+    }
+  };
+
+  const scrollRightTop = () => {
+    if (sliderRefTop.current) {
+      sliderRefTop.current.scrollBy({ left: scrollAmount, behavior: "smooth" });
     }
   };
 
@@ -239,8 +253,8 @@ const Professional = () => {
           stats={statsData as never[]}
           hideHeaderText={true}
           hideStats={true}
-          customBlockTitle="ПРОФЕССИОНАЛЬНОЕ РАЗВИТИЕ"
-          customBlockDescription="Раздел обучение и проф-развитие в области реабилитации, физиотерапии и лечебно-восстановительного массажа - это коллаборация с Израильскими центрами обучения."
+          customBlockTitle={t("professional.header.title") || "ПРОФЕССИОНАЛЬНОЕ РАЗВИТИЕ"}
+          customBlockDescription={t("professional.header.description") || "Раздел обучение и проф-развитие в области реабилитации, физиотерапии и лечебно-восстановительного массажа — это коллаборация с Израильскими центрами обучения."}
           useVideo={false}
           backgroundImage="/assets/images/bluebg.jpg"
         />
@@ -268,7 +282,7 @@ const Professional = () => {
             <div className="absolute bottom-5 left-5">
               <h2 className="text-[40px] tracking-[1px] text-white">&gt;20</h2>
               <p className="text-[20px] font-medium text-white">
-                квалифицированных преподавателей
+                {t("professional.cards.qualified_teachers") || "квалифицированных преподавателей"}
               </p>
             </div>
           </div>
@@ -283,7 +297,7 @@ const Professional = () => {
             />
             <div className="absolute bottom-5 left-5">
               <h2 className="text-[40px] tracking-[1px] text-white">50+</h2>
-              <p className="text-[20px] font-medium text-white">эксклюзивных курсов</p>
+              <p className="text-[20px] font-medium text-white">{t("professional.cards.exclusive_courses") || "эксклюзивных курсов"}</p>
             </div>
           </div>
           
@@ -298,22 +312,66 @@ const Professional = () => {
             <div className="absolute bottom-5 left-5">
               <h2 className="text-[40px] tracking-[1px] text-white">&gt;20</h2>
               <p className="text-[20px] font-medium text-white">
-                студентов, проходят обучения сейчас
+                {t("professional.cards.students_learning") || "студентов, проходят обучения сейчас"}
               </p>
             </div>
           </div>
         </div>
       </div>
 
+      {/* სატესტოდ: იგივე პოპულარული კურსები ზემოთ */}
       <div className="mt-10">
-        <Category bgColor={""} customRounded={"30px"} customMx={""} />
         <div className="bg-[#F9F7FE] mt-4 md:mt-[50px] md:mx-5 md:mb-[45px] rounded-[30px]">
           <div className="p-5">
             <div className="flex items-center justify-between md:mb-[10px]">
               <h1 className="text-[24px] md:text-[64px] font-bowler uppercase tracking-[-1%] text-[#3D334A] leading-[100%] mb-2.5 md:mb-5">
-                {typeof t("professional.courses.title") === "string"
-                  ? t("professional.courses.title")
-                  : "КУРСЫ"}
+                {t("professional.courses.popular_courses") || "ПОПУЛЯРНЫЕ КУРСЫ"}
+              </h1>
+              <SliderArrows
+                onScrollLeft={scrollLeftTop}
+                onScrollRight={scrollRightTop}
+              />
+            </div>
+
+            {loading ? (
+              <div className="flex justify-center py-10">
+                <div className="animate-spin rounded-full h-8 w-8 border-4 border-purple-600 border-t-transparent"></div>
+              </div>
+            ) : error ? (
+              <div className="text-center py-10">
+                <p className="text-red-500 mb-2">
+                  {t("professional.courses.error") || "Error loading courses"}
+                </p>
+                <p className="text-gray-500 text-sm">{error}</p>
+              </div>
+            ) : (
+              <div className="mb-6">
+                <CourseSlider
+                  courses={courses as unknown as any[]}
+                  scrollContainerRef={sliderRefTop}
+                  hideArrows={true}
+                />
+              </div>
+            )}
+
+            <Link
+              href={"/allCourse"}
+              className="text-[14px] md:text-[24px] font-bowler uppercase leading-[90%] text-[#D4BAFC] hover:opacity-80 transition-opacity block"
+            >
+              {t("professional.courses.all_courses", {
+                count: courses?.length.toString() || "0",
+              }) || `All ${courses?.length || 0} courses`}
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      <div className="mt-10">
+        <div className="bg-[#F9F7FE] mt-4 md:mt-[50px] md:mx-5 md:mb-[45px] rounded-[30px]">
+          <div className="p-5">
+            <div className="flex items-center justify-between md:mb-[10px]">
+              <h1 className="text-[24px] md:text-[64px] font-bowler uppercase tracking-[-1%] text-[#3D334A] leading-[100%] mb-2.5 md:mb-5">
+                {t("professional.courses.title") || "КУРСЫ"}
               </h1>
               <SliderArrows
                 onScrollLeft={scrollLeft}
@@ -328,18 +386,17 @@ const Professional = () => {
             ) : error ? (
               <div className="text-center py-10">
                 <p className="text-red-500 mb-2">
-                  {typeof t("professional.courses.error") === "string"
-                    ? t("professional.courses.error")
-                    : "Error loading courses"}
+                  {t("professional.courses.error") || "Error loading courses"}
                 </p>
                 <p className="text-gray-500 text-sm">{error}</p>
               </div>
             ) : (
-              <div
-                ref={sliderRef}
-                className="overflow-x-auto scrollbar-hide flex gap-4 mb-6"
-              >
-                <CourseSlider courses={courses as unknown as any[]} />
+              <div className="mb-6">
+                <CourseSlider
+                  courses={courses as unknown as any[]}
+                  scrollContainerRef={sliderRef}
+                  hideArrows={true}
+                />
               </div>
             )}
 
@@ -347,13 +404,9 @@ const Professional = () => {
               href={"/allCourse"}
               className="text-[14px] md:text-[24px] font-bowler uppercase leading-[90%] text-[#D4BAFC] hover:opacity-80 transition-opacity block"
             >
-              {typeof t("professional.courses.all_courses", {
+              {t("professional.courses.all_courses", {
                 count: courses?.length.toString() || "0",
-              }) === "string"
-                ? t("professional.courses.all_courses", {
-                    count: courses?.length.toString() || "0",
-                  })
-                : `All ${courses?.length || 0} courses`}
+              }) || `All ${courses?.length || 0} courses`}
             </Link>
           </div>
         </div>

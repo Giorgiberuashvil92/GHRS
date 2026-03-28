@@ -39,6 +39,7 @@ export interface CategoryCompleteData {
   };
   sets: BackendSet[];
   subcategories: Subcategory[];
+  exercises?: any[]; // სავარჯიშოები კატეგორიისთვის
 }
 
 interface UseCategoryCompleteReturn {

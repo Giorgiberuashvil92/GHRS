@@ -56,11 +56,21 @@
     "title": "Professional Development",
     "description": "The department of education and professional development in rehabilitation, physiotherapy, and therapeutic massage - this is a collaboration with Israeli specialists and training centers, such as the Medical Massage College, founded and directed by Dr. Aaron Yakobi.",
     "learn_more": "Learn more →",
-    "our_courses": "Our Courses",
+    "header": {
+      "title": "PROFESSIONAL DEVELOPMENT",
+      "description": "Training and professional development in rehabilitation, physiotherapy and therapeutic massage — in collaboration with Israeli training centres."
+    },
+    "our_courses": "Our courses",
+    "cards": {
+      "qualified_teachers": "qualified instructors",
+      "exclusive_courses": "exclusive courses",
+      "students_learning": "students currently in training"
+    },
     "პროფესიონალური_განვითარება": "პროფესიონალური განვითარება",
     "ჩვენი_კურსები": "ჩვენი კურსები",
     "courses": {
       "title": "Courses",
+      "popular_courses": "FEATURED",
       "error": "Error loading courses",
       "all_courses": "All {{count}} courses →",
       "კურსები": "კურსები",
@@ -113,7 +123,10 @@
     "sections_title": "Sections"
   },
   "teachers": {
-    "our_teachers": "OUR TEACHERS"
+    "our_teachers": "Instructors",
+    "loading": "Loading teachers...",
+    "view_all": "VIEW ALL",
+    "more_details": "MORE DETAILS"
   },
   "course": {
     "duration": "Duration",

@@ -120,7 +120,7 @@ const WorksSlider: React.FC<WorksSliderProps> = ({
                   ? `/categories/section?categoryId=${
                       work.categoryId || ""
                     }&subcategoryId=${work.subcategoryId || ""}`
-                  : `/sets/${work.id}`
+                  : `/complex/${work.id}`
               }
               className="bg-white relative w-[400px] min-h-[493px] flex-shrink-0 rounded-[20px] hover:shadow-lg transition-shadow flex flex-col"
             >

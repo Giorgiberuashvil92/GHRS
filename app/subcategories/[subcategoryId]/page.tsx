@@ -185,12 +185,15 @@ export default function SubcategoryPage({
 
         <Subscribe />
         <ReviewSlider title={""} />
-        <Blog
-          withBanner={false}
-          withSlider={true}
-          layoutType="default"
-          title={t("common.grs_media")}
-        />
+        <div className="mb-10">
+          <Blog
+            withBanner={true}
+            withSlider={true}
+            layoutType="default"
+            title={t("navigation.blog")}
+            showCategories={false}
+          />
+        </div>
         <Professional withBanner={false} title={""} bgColor={"#F9F7FE"} withProfText={true} />
       </div>
     </div>

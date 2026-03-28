@@ -1,5 +1,16 @@
 {
   "course": {
+    "all_courses": {
+      "title": "კურსები",
+      "search_placeholder": "შეიყვანეთ კურსის სახელწოდება ან ინსტრუქტორის სახელი",
+      "instructor": "ინსტრუქტორი",
+      "badge_english": "ინგლისურად",
+      "no_courses": "კურსები არ მოიძებნა",
+      "try_other_search": "სცადეთ სხვა ძებნის პარამეტრები",
+      "show_more": "მეტის ჩვენება",
+      "loading": "მონაცემები იტვირთება...",
+      "error": "შეცდომა კურსების ჩატვირთვაში"
+    },
     "tabs": {
       "description": "აღწერა",
       "syllabus": "სასწავლო გეგმა",
@@ -17,6 +28,20 @@
     "access_granted": "✓ თქვენ გაქვთ წვდომა",
     "purchase_course": "კურსის შეძენა",
     "login_to_purchase": "შესვლა შესაძენად",
-    "success_title": "წარმატება"
+    "success_title": "წარმატება",
+    "not_found_title": "კურსი ვერ მოიძებნა",
+    "not_found_message": "ამ მისამართის კურსი არ არსებობს ან წაშლილია.",
+    "view_all_courses": "ყველა კურსი",
+    "related_courses": "მსგავსი კურსები",
+    "total_duration": "სრული ხანგრძლივობა",
+    "prerequisites_title": "საჭირო პირობები:",
+    "learning_outcomes_title": "სასწავლო შედეგები:",
+    "tags_label": "ტეგები:",
+    "lesson_label": "გაკვეთილი {{number}}",
+    "minutes_short": "წთ",
+    "reviews_section_title": "მოსწავლეების მიმოხილვები",
+    "no_reviews_yet": "ჯერ არ არის მიმოხილვები",
+    "error_loading": "შეცდომა კურსის ჩატვირთვაში",
+    "no_description": "აღწერა არ არის"
   }
 }

@@ -14,6 +14,7 @@ interface Teacher {
   credentials: string;
   education: string[];
   imageUrl: string;
+  professionLocalized?: { en?: string; ru?: string; ka?: string };
   bio: {
     en: string;
     ru: string;
@@ -31,7 +32,14 @@ interface TeacherSliderProps {
 }
 
 const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
+
+  const getLocalizedContent = (content: { en?: string; ru?: string; ka?: string } | undefined): string => {
+    if (!content) return "";
+    const key = locale as keyof typeof content;
+    // პირველად მიმდინარე ენა, შემდეგ en, ბოლოს ru (არ ვაბრუნებთ ყოველთვის რუსულს)
+    return (content[key] || content.en || content.ru || "").trim() || "";
+  };
   const [currentIndex, setCurrentIndex] = useState(0);
   const [allTeachers, setAllTeachers] = useState<Teacher[]>([]);
 
@@ -116,11 +124,11 @@ const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
       <div className="w-full px-4 md:px-6 md:mx-5 py-12 bg-[#F9F7FE] rounded-[30px] overflow-hidden">
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-[32px] md:text-[40px] text-[#3D334A] font-bold">
-            {t("teachers.our_teachers") || "НАШИ ПРЕПОДАВАТЕЛИ"}
+            {t("teachers.our_teachers")}
           </h2>
         </div>
         <div className="text-center py-10">
-          <p className="text-gray-500">Преподаватели загружаются...</p>
+          <p className="text-gray-500">{t("teachers.loading")}</p>
         </div>
       </div>
     );
@@ -130,7 +138,7 @@ const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
     <div className="w-full px-4 md:px-6 md:mx-5 py-12 bg-[#F9F7FE] rounded-[30px] overflow-hidden">
       <div className="flex justify-between items-center mb-8">
         <h2 className="text-[24px] md:text-[48px] text-[#3D334A] font-bowler uppercase tracking-[-1%] leading-[100%]">
-          {t("teachers.our_teachers") || "НАШИ ПРЕПОДАВАТЕЛИ"}
+          {t("teachers.our_teachers")}
         </h2>
         <div className="md:mx-5">
           <SliderArrows onScrollLeft={scrollLeft} onScrollRight={scrollRight} />
@@ -141,7 +149,7 @@ const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
         href="/teachers"
         className="text-[#D4BAFC] text-[14px] md:text-[24px] font-bowler uppercase leading-[90%] block mb-10 hover:opacity-80 transition-opacity"
       >
-        СМОТРЕТЬ ВСЕ
+        {t("teachers.view_all")}
       </Link>
 
       <div className="bg-white rounded-[20px] shadow-lg overflow-hidden">
@@ -162,7 +170,7 @@ const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
 
             <div className="mb-4 md:mb-6 space-y-2">
               <div className="text-[16px] md:text-[20px] text-[#3D334A] font-pt font-medium">
-                {teacher.position}
+                {getLocalizedContent(teacher.professionLocalized) || teacher.position}
               </div>
               <div className="text-[14px] md:text-[18px] text-[#846FA0] font-pt">
                 {teacher.institution}
@@ -170,14 +178,14 @@ const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
             </div>
 
             <div className="text-[14px] md:text-[16px] text-[#846FA0] font-pt mb-4 md:mb-6 leading-[120%]">
-              {teacher.credentials}
+              {[teacher.name, getLocalizedContent(teacher.professionLocalized) || teacher.position].filter(Boolean).join(", ")}
             </div>
 
             <div
               className="space-y-3 text-[14px] md:text-[16px] text-[#846FA0] font-pt leading-[140%] max-w-[750px] prose prose-sm max-w-none"
               dangerouslySetInnerHTML={{
                 __html: truncateHtmlContent(
-                  teacher.htmlContent.ru || teacher.htmlContent.en || ""
+                  getLocalizedContent(teacher.htmlContent) || getLocalizedContent(teacher.bio)
                 ),
               }}
             />
@@ -186,7 +194,7 @@ const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
               href={`/teachers/${teacher.id}`}
               className="text-[#D4BAFC] text-[14px] md:text-[24px] font-bowler uppercase leading-[90%] mt-6 text-end hover:opacity-80 transition-opacity"
             >
-              ПОДРОБНЕЕ
+              {t("teachers.more_details")}
             </Link>
           </div>
         </div>

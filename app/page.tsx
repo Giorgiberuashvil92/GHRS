@@ -1,7 +1,5 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import React from "react";
-import Header from "./components/Header/Header";
 import Rehabilitation from "./components/Rehabilitation";
 import Category from "./components/Category";
 import Works from "./components/Works";
@@ -24,9 +22,20 @@ const Home = () => {
   const { statistics } = useStatistics();
   console.log('📊 Total sets fetched:', sets?.length);
   console.log('📦 Sets data:', sets);
+  console.log('📊 Statistics from hook:', statistics);
 
-  // Calculate real total hours from sets
-  const calculateTotalHours = React.useMemo(() => {
+  // Use statistics from hook (more accurate) - fallback to sets calculation if not available
+  const setsCount = statistics?.total?.sets || sets?.length || 0;
+  const exercisesCount = statistics?.total?.exercises || (sets ? sets.reduce((acc, set) => acc + (set.totalExercises || 0), 0) : 0);
+  
+  // Hours: use statistics if available, otherwise calculate from sets
+  const hoursCount = React.useMemo(() => {
+    // First try to use statistics hook (most accurate)
+    if (statistics?.total?.hours && statistics.total.hours > 0) {
+      return statistics.total.hours;
+    }
+    
+    // Fallback: calculate from sets
     if (!sets || sets.length === 0) return 0;
     
     const totalMinutes = sets.reduce((acc, set) => {
@@ -50,30 +59,31 @@ const Home = () => {
     }, 0);
     
     return Math.round((totalMinutes / 60) * 10) / 10; // Round to 1 decimal
-  }, [sets]);
+  }, [sets, statistics]);
 
-  // Calculate total exercises from sets
-  const totalExercises = React.useMemo(() => {
-    if (!sets || sets.length === 0) return 0;
-    return sets.reduce((acc, set) => acc + (set.totalExercises || 0), 0);
-  }, [sets]);
+  console.log('📈 Final stats:', {
+    setsCount,
+    exercisesCount,
+    hoursCount,
+    fromStatistics: !!statistics?.total
+  });
 
-  // Add stats data using real calculated data
+  // Add stats data using statistics hook (accurate data)
   const statsData = [
     {
       icon: <Image src="/assets/icons/Video.png" alt="Complexes" width={24} height={24} className="w-6 h-6" />,
-      value: sets ? `${sets.length}` : "Loading...",
-      label: t("header.sets_count", { count: String(sets?.length || 0) }).replace(/\d+\s*/, ""),
+      value: setsCount,
+      label: t("header.sets_count", { count: String(setsCount) }).replace(/\d+\s*/, ""),
     },
     {
       icon: <Image src="/assets/icons/Pulse.png" alt="Exercises" width={24} height={24} className="w-6 h-6" />,
-      value: sets ? `${totalExercises}` : "Loading...",
-      label: t("header.exercises_count", { count: String(totalExercises) }).replace(/\d+\s*/, ""),
+      value: exercisesCount,
+      label: t("header.exercises_count", { count: String(exercisesCount) }).replace(/\d+\s*/, ""),
     },
     {
       icon: <Image src="/assets/icons/Book.png" alt="Hours" width={24} height={24} className="w-6 h-6" />,
-      value: sets ? `${calculateTotalHours}` : "Loading...",
-      label: t("header.hours_count", { count: String(calculateTotalHours) }).replace(/\d+\s*/, ""),
+      value: hoursCount,
+      label: t("header.hours_count", { count: String(hoursCount) }).replace(/\d+\s*/, ""),
     },
   ];
 
