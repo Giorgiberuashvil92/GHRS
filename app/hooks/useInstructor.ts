@@ -131,9 +131,15 @@ export function useInstructors() {
       const { apiRequest, API_CONFIG } = await import("../config/api");
       const endpoint = API_CONFIG.ENDPOINTS.INSTRUCTORS.ALL;
 
-      const response = await apiRequest<{instructors: Instructor[], total: number}>(endpoint);
-      // Extract instructors array from the response object
-      setInstructors(response.instructors || []);
+      const response = await apiRequest<{instructors: (Instructor & { _id?: string })[], total: number}>(endpoint);
+      
+      // Convert _id to id for all instructors (backend uses _id, frontend uses id)
+      const instructorsWithId = (response.instructors || []).map(instructor => ({
+        ...instructor,
+        id: instructor.id || instructor._id || '',
+      }));
+      
+      setInstructors(instructorsWithId);
     } catch (err) {
       console.error("❌ Error fetching instructors:", err);
       setError(err instanceof Error ? err.message : "API Error");
@@ -173,8 +179,15 @@ export function useTopInstructors(limit?: number) {
         endpoint += `?limit=${limit}`;
       }
 
-      const response = await apiRequest<Instructor[]>(endpoint);
-      setInstructors(response);
+      const response = await apiRequest<(Instructor & { _id?: string })[]>(endpoint);
+      
+      // Convert _id to id for all instructors (backend uses _id, frontend uses id)
+      const instructorsWithId = (response || []).map(instructor => ({
+        ...instructor,
+        id: instructor.id || instructor._id || '',
+      }));
+      
+      setInstructors(instructorsWithId);
     } catch (err) {
       console.error("❌ Error fetching top instructors:", err);
       setError(err instanceof Error ? err.message : "API Error");
