@@ -53,5 +53,12 @@
     "subscribe": "Purchase subscription",
     "take_test": "TAKE TEST",
     "take_survey": "take survey"
+  },
+  "fuel_promo": {
+    "region_label": "Partner promotion — fuel",
+    "title": "17 tetri off per litre on fuel at partner filling stations",
+    "subtitle": "Terms and station list — see the partner’s official website.",
+    "cta": "Learn more",
+    "dismiss_aria": "Dismiss banner"
   }
 } 

@@ -18,6 +18,25 @@ export class Instructor {
   @Prop({ required: true })
   name: string;
 
+  /** სახელი ენების მიხედვით (EN / RU) */
+  @Prop({
+    type: {
+      en: { type: String },
+      ru: { type: String },
+      ka: { type: String },
+    },
+  })
+  firstNameLocalized?: { en?: string; ru?: string; ka?: string };
+
+  @Prop({
+    type: {
+      en: { type: String },
+      ru: { type: String },
+      ka: { type: String },
+    },
+  })
+  lastNameLocalized?: { en?: string; ru?: string; ka?: string };
+
   @Prop({ required: true, unique: true })
   email: string;
 
@@ -91,6 +110,8 @@ export const InstructorSchema = SchemaFactory.createForClass(Instructor);
 export interface InstructorResponse {
   id: string;
   name: string;
+  firstNameLocalized?: { en?: string; ru?: string; ka?: string };
+  lastNameLocalized?: { en?: string; ru?: string; ka?: string };
   email: string;
   profession: string;
   professionLocalized?: { en?: string; ru?: string; ka?: string };

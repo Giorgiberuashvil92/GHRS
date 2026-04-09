@@ -51,6 +51,16 @@ export class CreateInstructorDto {
   @IsNotEmpty()
   name: string;
 
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => OptionalMultilingualContent)
+  firstNameLocalized?: OptionalMultilingualContent;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => OptionalMultilingualContent)
+  lastNameLocalized?: OptionalMultilingualContent;
+
   @IsEmail()
   @IsNotEmpty()
   email: string;
@@ -96,6 +106,16 @@ export class UpdateInstructorDto {
   @IsString()
   @IsOptional()
   name?: string;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => OptionalMultilingualContent)
+  firstNameLocalized?: OptionalMultilingualContent;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => OptionalMultilingualContent)
+  lastNameLocalized?: OptionalMultilingualContent;
 
   @IsEmail()
   @IsOptional()
