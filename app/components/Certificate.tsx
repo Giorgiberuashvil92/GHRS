@@ -1,9 +1,17 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import Image from "next/image";
 import SliderArrows from "./SliderArrows";
+import { useI18n } from "../context/I18nContext";
 
-const Certificate = () => {
+interface CertificateProps {
+  certificates?: string[];
+  title?: string;
+}
+
+const Certificate = ({ certificates = [], title }: CertificateProps) => {
+  const { t } = useI18n();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
@@ -28,42 +36,44 @@ const Certificate = () => {
 
   useEffect(() => {
     updateScrollButtons();
-    scrollRef.current?.addEventListener("scroll", updateScrollButtons);
-    return () => scrollRef.current?.removeEventListener("scroll", updateScrollButtons);
-  }, []);
+    const ref = scrollRef.current;
+    ref?.addEventListener("scroll", updateScrollButtons);
+    return () => ref?.removeEventListener("scroll", updateScrollButtons);
+  }, [certificates]);
 
-  const images = [
-    "https://picsum.photos/id/1015/471/648",
-    "https://picsum.photos/id/1025/471/648",
-    "https://picsum.photos/id/1035/471/648",
-    "https://picsum.photos/id/1045/471/648",
-    "https://picsum.photos/id/1055/471/648",
-    "https://picsum.photos/id/1065/471/648",
-  ];
+  if (!certificates || certificates.length === 0) {
+    return null;
+  }
 
   return (
     <div className="mx-5 rounded-[30px] bg-white px-10 py-[50px]">
       <div className="flex items-center justify-between">
-        <h1 className="text-[#3D334A] leading-[120%] tracking-[-3%] text-[40px]">Сертификаты</h1>
-        <SliderArrows
-          onScrollLeft={handleScrollLeft}
-          onScrollRight={handleScrollRight}
-          canScrollLeft={canScrollLeft}
-          canScrollRight={canScrollRight}
-        />
+        <h1 className="text-[#3D334A] leading-[120%] tracking-[-3%] text-[40px]">
+          {title || t("certificates.title") || "Сертификаты"}
+        </h1>
+        {certificates.length > 1 && (
+          <SliderArrows
+            onScrollLeft={handleScrollLeft}
+            onScrollRight={handleScrollRight}
+            canScrollLeft={canScrollLeft}
+            canScrollRight={canScrollRight}
+          />
+        )}
       </div>
 
       <div
         className="flex flex-row gap-10 mt-10 overflow-x-auto scroll-smooth scrollbar-hide"
         ref={scrollRef}
       >
-        {images.map((src, index) => (
-          <img
-            key={index}
-            src={`${src}?w=471&h=648&fit=crop`}
-            alt={`Certificate ${index + 1}`}
-            className="w-[471px] h-[648px] rounded-[20px] object-cover shrink-0"
-          />
+        {certificates.map((src, index) => (
+          <div key={index} className="relative w-[471px] h-[648px] shrink-0">
+            <Image
+              src={src}
+              fill
+              alt={`Certificate ${index + 1}`}
+              className="rounded-[20px] object-cover"
+            />
+          </div>
         ))}
       </div>
     </div>

@@ -3,6 +3,10 @@ import { Type } from 'class-transformer';
 
 class MultilingualContent {
   @IsString()
+  @IsOptional()
+  ka?: string;
+
+  @IsString()
   @IsNotEmpty()
   en: string;
 
