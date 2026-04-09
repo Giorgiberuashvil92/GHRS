@@ -13,6 +13,7 @@ import { useAllSets } from "./hooks/useSets";
 import { Footer } from "./components/Footer";
 import { useI18n } from "./context/I18nContext";
 import MainHeader from "./components/Header/MainHeader";
+import FuelPromoBanner from "./components/FuelPromoBanner";
 import useStatistics from "./hooks/useStatistics";
 import Image from "next/image";
 
