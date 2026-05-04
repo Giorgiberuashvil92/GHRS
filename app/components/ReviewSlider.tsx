@@ -73,10 +73,16 @@ const SliderArrows: React.FC<SliderArrowsProps> = ({
 
 // Reviews are now fetched from API via useReviews hook
 
-const ReviewSlider = ({title}: {title: string}) => {
+type ReviewSliderProps = {
+  title?: string;
+  /** იგივე ბარათში, კურსების ქვემოთ — ფონი/მარჟინები მშობელს უკვე აქვს */
+  embeddedInCard?: boolean;
+};
+
+const ReviewSlider = ({ title = "", embeddedInCard = false }: ReviewSliderProps) => {
   const { t, locale } = useI18n();
   const { reviews, loading } = useReviews();
-  const scrollContainerRef = useRef(null);
+  const scrollContainerRef = useRef<HTMLDivElement | null>(null);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
   const [playingVideo, setPlayingVideo] = useState<number | null>(null);
@@ -107,16 +113,12 @@ const ReviewSlider = ({title}: {title: string}) => {
   };
 
   useEffect(() => {
-    const container = scrollContainerRef.current as HTMLDivElement | null;
-    if (container) {
-      container.addEventListener('scroll', checkScrollButtons);
-      checkScrollButtons(); // Initial check
-
-      return () => {
-        container.removeEventListener('scroll', checkScrollButtons);
-      };
-    }
-  }, []);
+    const container = scrollContainerRef.current;
+    if (!container) return;
+    container.addEventListener("scroll", checkScrollButtons);
+    checkScrollButtons();
+    return () => container.removeEventListener("scroll", checkScrollButtons);
+  }, [reviews.length, loading]);
 
   const handleScrollLeft = () => {
     if (scrollContainerRef.current) {
@@ -140,10 +142,24 @@ const ReviewSlider = ({title}: {title: string}) => {
     }
   };
 
+  const outerClass = embeddedInCard
+    ? "w-full pb-2 md:pb-4"
+    : "bg-[#F9F7FE] md:mx-5 md:rounded-[30px] pb-5 md:pb-8";
+
+  const headerPad = embeddedInCard
+    ? "py-0 px-0 md:mb-[10px]"
+    : "py-5 px-6 md:py-[50px] md:px-8";
+
+  const titleClass = embeddedInCard
+    ? "text-[24px] md:text-[64px] font-bowler uppercase tracking-[-1%] text-[#3D334A] leading-[100%] mb-2.5 md:mb-0"
+    : "text-[20px] leading-[120%] text-[#3D334A] md:text-[40px] md:tracking-[-3%] font-bold";
+
+  const scrollPad = embeddedInCard ? "px-0 md:px-0" : "px-4 md:px-8";
+
   return (
-      <div className="bg-[#F9F7FE] md:mx-5 md:rounded-5 pb-5 md:pb-8">
-      <div className="flex items-center justify-between py-5 px-6 md:py-[50px] md:px-8">
-        <h1 className="text-[20px] leading-[120%] text-[#3D334A] md:text-[40px] md:tracking-[-3%] font-bold">
+    <div className={outerClass}>
+      <div className={`flex items-center justify-between ${headerPad}`}>
+        <h1 className={titleClass}>
           {title || t("reviews.title")}
         </h1>
         <SliderArrows
@@ -153,7 +169,7 @@ const ReviewSlider = ({title}: {title: string}) => {
           canScrollRight={canScrollRight}
         />
       </div>
-      <div className="px-4 md:px-8 rounded-8 w-full overflow-hidden">
+      <div className={`${scrollPad} rounded-8 w-full overflow-hidden`}>
         <div
           ref={scrollContainerRef}
           className="flex gap-3 md:gap-5 overflow-x-auto scroll-smooth scrollbar-hide"

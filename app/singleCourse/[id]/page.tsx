@@ -16,7 +16,13 @@ import { useAuth } from "../../context/AuthContext";
 import { useModal } from "../../context/ModalContext";
 import { useI18n } from "../../context/I18nContext";
 import { sanitizeHtml } from "../../utils/sanitize";
-import { useInstructorByName } from "../../hooks/useInstructorByName";
+import { useCourseInstructor } from "../../hooks/useInstructorByName";
+import {
+  displayLegacyCourseInstructorField,
+  instructorDisplayNameForLocale,
+  primaryKeyForLegacyCourseInstructorLookup,
+  resolveCourseLocale,
+} from "../../utils/instructorDisplay";
 
 type CourseLocale = "en" | "ru" | "ka";
 
@@ -28,6 +34,28 @@ const pickLocalized = (
   if (!field) return "";
   return field[locale] || field.en || field.ru || field.ka || "";
 };
+
+/** კურსში ჩაწერილი instructor.name — სტრიქონი ან მრავალენოვანი (API/legacy) */
+type CourseInstructorNameField = string | { en?: string; ru?: string; ka?: string };
+
+function normalizeCourseInstructorNameForLookup(
+  name: CourseInstructorNameField | undefined | null
+): string {
+  if (name == null) return "";
+  if (typeof name === "string")
+    return primaryKeyForLegacyCourseInstructorLookup(name);
+  return (name.en || name.ru || name.ka || "").trim();
+}
+
+function displayCourseInstructorNameForLocale(
+  name: CourseInstructorNameField | undefined | null,
+  locale: CourseLocale
+): string {
+  if (name == null) return "";
+  if (typeof name === "string")
+    return displayLegacyCourseInstructorField(name, locale);
+  return pickLocalized(name, locale).trim();
+}
 
 // Helper function to check if rich text is effectively empty
 const isEffectivelyEmptyRichText = (html: string | undefined): boolean => {
@@ -61,7 +89,8 @@ interface Course {
   duration?: number;
   isPublished?: boolean;
   instructor: {
-    name: string;
+    name: CourseInstructorNameField;
+    instructorId?: string;
   };
   prerequisites?: {
     en: string;
@@ -128,16 +157,45 @@ export default function SingleCourse() {
   const [relatedCourses, setRelatedCourses] = useState<Course[]>([]);
   const [relatedLoading, setRelatedLoading] = useState(false);
 
-  // Fetch instructor data by name
-  const { instructor } = useInstructorByName(course?.instructor?.name || "");
+  const courseInstructorLookupName = useMemo(
+    () => normalizeCourseInstructorNameForLookup(course?.instructor?.name),
+    [course?.instructor?.name]
+  );
+
+  const { instructor } = useCourseInstructor({
+    courseInstructorId: course?.instructor?.instructorId,
+    courseInstructorName: courseInstructorLookupName,
+  });
 
   // Auth context
   const { isAuthenticated } = useAuth();
 
   // I18n context
   const { t, locale } = useI18n();
-  const loc = locale as CourseLocale;
+  const loc = resolveCourseLocale(locale);
   const menuItems = useMemo(() => getDefaultMenuItems(t), [t, locale]);
+
+  /** ინსტრუქტორის სახელი მიმდინარე UI ენაზე (იგივე ლოგიკა, რაც კურსის სათაურზე) */
+  const instructorLabel = useMemo(() => {
+    if (instructor) {
+      const fromProfile = instructorDisplayNameForLocale(instructor, loc).trim();
+      if (fromProfile) return fromProfile;
+    }
+    const fromCourseEmbed = displayCourseInstructorNameForLocale(
+      course?.instructor?.name,
+      loc
+    );
+    if (fromCourseEmbed) return fromCourseEmbed;
+    if (instructor) {
+      const plain = (instructor.name || "").trim();
+      if (plain) {
+        return plain.includes("|")
+          ? displayLegacyCourseInstructorField(plain, loc)
+          : plain;
+      }
+    }
+    return "";
+  }, [instructor, course?.instructor?.name, loc, locale]);
 
   const getEffectivePrice = (c: Course): number => {
     const loc = c.priceLocalized;
@@ -274,9 +332,20 @@ export default function SingleCourse() {
         setNotFound(false);
         setError(null);
         console.log("Loading course with ID:", courseId);
-        const data = await fetchCourse(courseId);
+        const raw = await fetchCourse(courseId);
+        const data =
+          raw &&
+          typeof raw === "object" &&
+          typeof (raw as { instructor?: unknown }).instructor === "string"
+            ? {
+                ...(raw as Record<string, unknown>),
+                instructor: {
+                  name: (raw as { instructor: string }).instructor,
+                },
+              }
+            : raw;
         console.log("Loaded course data:", data);
-        setCourse(data);
+        setCourse(data as Course);
         setError(null);
 
         // Load related courses if categoryId exists
@@ -393,13 +462,16 @@ export default function SingleCourse() {
             <div className="flex items-center gap-4 pb-[18px]">
               <Image
                 src={instructor?.profileImage || "/assets/images/someone.png"}
-                alt={course.instructor.name}
+                alt={instructorLabel}
                 width={50}
                 height={50}
                 className="w-[50px] h-[50px] rounded-[12px] object-cover mb-[10px]"
               />
-              <span className="font-bold text-[18px] leading-7 tracking-[0.01em] text-[rgba(61,51,74,1)]">
-                {course.instructor.name}
+              <span
+                className="font-bold text-[18px] leading-7 tracking-[0.01em] text-[rgba(61,51,74,1)]"
+                lang={locale}
+              >
+                {instructorLabel}
               </span>
             </div>
             <div className="border-t border-[#EEEAFB]" />

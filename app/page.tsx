@@ -8,12 +8,10 @@ import Professional from "./components/Professional";
 import MarketPlace from "./components/MarketPlace";
 import Blog from "./components/Blog";
 import Download from "./components/Download";
-import Reviews from "./components/Reviews";
 import { useAllSets } from "./hooks/useSets";
 import { Footer } from "./components/Footer";
 import { useI18n } from "./context/I18nContext";
 import MainHeader from "./components/Header/MainHeader";
-import FuelPromoBanner from "./components/FuelPromoBanner";
 import useStatistics from "./hooks/useStatistics";
 import Image from "next/image";
 
@@ -155,7 +153,6 @@ const Home = () => {
           buttonStyles="hover:opacity-80"
         />
         <Download />
-        <Reviews />
         <Subscribe
           backgroundImage=""
           titleKey="subscription.feedback_title"

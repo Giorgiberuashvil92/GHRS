@@ -59,6 +59,10 @@ class InstructorInfo {
   @IsString()
   @IsNotEmpty()
   name: string;
+
+  @IsString()
+  @IsOptional()
+  instructorId?: string;
 }
 
 export class CreateCourseDto {

@@ -128,6 +128,11 @@
     "view_all": "VIEW ALL",
     "more_details": "MORE DETAILS"
   },
+  "teacher": {
+    "instructorCourses": "Instructor Courses",
+    "instructorCertificates": "Instructor Certificates",
+    "wikipedia": "Wikipedia"
+  },
   "course": {
     "duration": "Duration",
     "duration_minutes": "{{duration}} minutes",

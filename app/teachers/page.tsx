@@ -9,10 +9,15 @@ import { defaultMenuItems } from "../components/Header/Header";
 import { useInstructors } from "../hooks/useInstructor";
 import { useI18n } from "../context/I18nContext";
 import { Footer } from "../components/Footer";
+import {
+  instructorDisplayNameForLocale,
+  resolveCourseLocale,
+} from "../utils/instructorDisplay";
 
 const Teachers = () => {
   const { instructors, loading, error } = useInstructors();
   const { t, locale } = useI18n();
+  const loc = resolveCourseLocale(locale);
 
   return (
     <div>
@@ -44,7 +49,9 @@ const Teachers = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {instructors.map((instructor) => (
+              {instructors.map((instructor) => {
+                const cardName = instructorDisplayNameForLocale(instructor, loc);
+                return (
                 <Link
                   key={instructor.id}
                   href={`/teachers/${instructor.id}`}
@@ -54,13 +61,13 @@ const Teachers = () => {
                     <Image
                       src={instructor.profileImage || "/assets/images/default-instructor.png"}
                       fill
-                      alt={instructor.name}
+                      alt={cardName || instructor.name}
                       className="object-cover"
                     />
                   </div>
                   <div className="p-6">
                     <h3 className="text-[24px] font-bowler uppercase text-[#3D334A] mb-2">
-                      {instructor.name}
+                      {cardName || instructor.name}
                     </h3>
                     <p className="text-[16px] text-[#846FA0] font-medium mb-3">
                       {instructor.profession}
@@ -81,7 +88,8 @@ const Teachers = () => {
                     </div>
                   </div>
                 </Link>
-              ))}
+              );
+              })}
             </div>
           )}
         </div>

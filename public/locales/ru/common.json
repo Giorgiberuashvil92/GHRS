@@ -19,7 +19,7 @@
   "buttons": {
     "subscribe": "Подписаться",
     "continue_watching": "Продолжить просмотр",
-    "buy_subscription": "Приобрести подписку",
+    "buy_subscription": "Приобрести курс",
     "read_more": "Подробнее",
     "show_all": "Смотреть все",
     "send_request": "Отправить заявку",
@@ -116,12 +116,16 @@
     "instructorName": "Имя инструктора",
     "professionalTitle": "Профессиональное звание",
     "courses": "Курс",
+    "instructorCourses": "Курсы преподавателя",
     "certificates": "Сертификат",
+    "instructorCertificates": "Сертификаты преподавателя",
+    "wikipedia": "Википедия",
     "students": "Студент",
     "aboutInstructor": "Об инструкторе",
     "bioPlaceholder": "Биография инструктора будет добавлена в ближайшее время.",
     "rating": "Рейтинг",
     "certificatesTitle": "Сертификаты",
+    "diplomasTitle": "Сертификаты, выдаваемые студентам",
     "viewCertificate": "Посмотреть сертификат"
   },
   "modal": {
@@ -197,7 +201,7 @@
         },
         "discount": {
           "title": "Скидка 10% на 3 месяца и 25% на 6 месяцев подписки",
-          "button": "Приобрести подписку"
+          "button": "Приобрести курс"
         }
       },
       "no_plan": {

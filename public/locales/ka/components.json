@@ -122,6 +122,11 @@
     "view_all": "ყველას ნახვა",
     "more_details": "დეტალურად"
   },
+  "teacher": {
+    "instructorCourses": "მასწავლებლის კურსები",
+    "instructorCertificates": "მასწავლებლის სერტიფიკატები",
+    "wikipedia": "ვიკიპედია"
+  },
   "course": {
     "duration": "ხანგრძლივობა",
     "duration_minutes": "{{duration}} წუთი",

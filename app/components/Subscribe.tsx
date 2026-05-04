@@ -38,8 +38,8 @@ const Subscribe = ({
   bgCenter = false,
   href,
   // Fallback props
-  title = "Приобретите подписку для получения доступа к контенту платформы",
-  buttonText = "Приобрести подписку",
+  title = "Завершая курс НА НАШЕЙ ПЛАТФОРМЕ ВЫ ПОЛУЧАЕТЕ СЕРТИФИКАТ ПРИОБРЕТЕННОЙ ПРОФЕССИИ! ",
+  buttonText = "Приобрести курс",
   subTitle = "",
 }: SubscribeProps) => {
   const { t } = useI18n();
@@ -56,7 +56,7 @@ const Subscribe = ({
       >
         <div>
           <h1
-            className={`mb-5 text-[#3D334A] text-[20px] md:text-[64px] md:max-w-[1308px] md:pr-[52px] tracking-[-3%] md:pt-[48px] leading-[110%] md:leading-[100%] font-bowler ${titleStyles}`}
+            className={`mb-5 text-[#3D334A] text-[18px] md:text-[54px] md:max-w-[1308px] md:pr-[52px] tracking-[-3%] md:pt-[48px] leading-[110%] md:leading-[100%] font-bowler ${titleStyles}`}
             style={{ 
               wordSpacing: 'normal',
               whiteSpace: 'normal',

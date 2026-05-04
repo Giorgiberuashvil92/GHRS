@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString, IsArray, IsOptional, IsBoolean, ValidateNested, Min, IsEmail, IsUrl } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, IsArray, IsOptional, IsBoolean, ValidateNested, Min, IsEmail, IsUrl, ValidateIf } from 'class-validator';
 import { Type } from 'class-transformer';
 
 class MultilingualContent {
@@ -31,20 +31,27 @@ class OptionalMultilingualContent {
 
 class CertificateInfo {
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   name: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   issuer: string;
 
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   date: string;
 
-  @IsString()
-  @IsUrl()
   @IsOptional()
+  @ValidateIf((_, v) => v != null && String(v).trim() !== '')
+  @IsUrl()
+  url?: string;
+}
+
+class DiplomaInfo {
+  @IsOptional()
+  @ValidateIf((_, v) => v != null && String(v).trim() !== '')
+  @IsUrl()
   url?: string;
 }
 
@@ -73,6 +80,20 @@ export class CreateInstructorDto {
   @IsNotEmpty()
   profession: string;
 
+  @IsString()
+  @IsOptional()
+  qualification?: string;
+
+  @IsOptional()
+  @ValidateIf((_, v) => v != null && String(v).trim() !== '')
+  @IsUrl()
+  wikipedia?: string;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => OptionalMultilingualContent)
+  qualificationLocalized?: { en?: string; ru?: string; ka?: string };
+
   @IsOptional()
   @ValidateNested()
   @Type(() => OptionalMultilingualContent)
@@ -95,6 +116,12 @@ export class CreateInstructorDto {
   @Type(() => CertificateInfo)
   @IsOptional()
   certificates?: CertificateInfo[];
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => DiplomaInfo)
+  @IsOptional()
+  diplomas?: DiplomaInfo[];
 
   @IsString()
   @IsNotEmpty()
@@ -129,20 +156,34 @@ export class UpdateInstructorDto {
   @IsOptional()
   profession?: string;
 
+  @IsString()
+  @IsOptional()
+  qualification?: string;
+
+  @IsOptional()
+  @ValidateIf((_, v) => v != null && String(v).trim() !== '')
+  @IsUrl()
+  wikipedia?: string;
+
+  @IsOptional()
+  @ValidateNested()
+  @Type(() => OptionalMultilingualContent)
+  qualificationLocalized?: { en?: string; ru?: string; ka?: string };
+
   @IsOptional()
   @ValidateNested()
   @Type(() => OptionalMultilingualContent)
   professionLocalized?: { en?: string; ru?: string; ka?: string };
 
   @ValidateNested()
-  @Type(() => MultilingualContent)
+  @Type(() => OptionalMultilingualContent)
   @IsOptional()
-  bio?: MultilingualContent;
+  bio?: OptionalMultilingualContent;
 
   @ValidateNested()
-  @Type(() => MultilingualContent)
+  @Type(() => OptionalMultilingualContent)
   @IsOptional()
-  htmlContent?: MultilingualContent;
+  htmlContent?: OptionalMultilingualContent;
 
 
   @IsArray()
@@ -150,6 +191,12 @@ export class UpdateInstructorDto {
   @Type(() => CertificateInfo)
   @IsOptional()
   certificates?: CertificateInfo[];
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => DiplomaInfo)
+  @IsOptional()
+  diplomas?: DiplomaInfo[];
 
   @IsString()
   @IsUrl()

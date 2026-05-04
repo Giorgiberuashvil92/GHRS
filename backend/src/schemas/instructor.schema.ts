@@ -1,6 +1,16 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 
+/** ქვედოკუმენტზე Mongo ავტომატურ _id-ს არ ვამატებთ — API-ში სუფთა { en, ru, ka } */
+const LocalizedNamePartsSchema = new MongooseSchema(
+  {
+    en: { type: String },
+    ru: { type: String },
+    ka: { type: String },
+  },
+  { _id: false },
+);
+
 export type InstructorDocument = Instructor & Document;
 
 // მრავალენოვანი კონტენტი
@@ -18,23 +28,11 @@ export class Instructor {
   @Prop({ required: true })
   name: string;
 
-  /** სახელი ენების მიხედვით (EN / RU) */
-  @Prop({
-    type: {
-      en: { type: String },
-      ru: { type: String },
-      ka: { type: String },
-    },
-  })
+  /** სახელი ენების მიხედვით (EN / RU / KA) */
+  @Prop({ type: LocalizedNamePartsSchema })
   firstNameLocalized?: { en?: string; ru?: string; ka?: string };
 
-  @Prop({
-    type: {
-      en: { type: String },
-      ru: { type: String },
-      ka: { type: String },
-    },
-  })
+  @Prop({ type: LocalizedNamePartsSchema })
   lastNameLocalized?: { en?: string; ru?: string; ka?: string };
 
   @Prop({ required: true, unique: true })
@@ -42,6 +40,21 @@ export class Instructor {
 
   @Prop({ required: true })
   profession: string;
+
+  @Prop()
+  qualification?: string;
+
+  @Prop()
+  wikipedia?: string;
+
+  @Prop({
+    type: {
+      ka: { type: String },
+      en: { type: String },
+      ru: { type: String },
+    },
+  })
+  qualificationLocalized?: { en?: string; ru?: string; ka?: string };
 
   @Prop({
     type: {
@@ -66,9 +79,9 @@ export class Instructor {
 
   @Prop({
     type: [{
-      name: { type: String, required: true },
-      issuer: { type: String, required: true },
-      date: { type: String, required: true },
+      name: { type: String },
+      issuer: { type: String },
+      date: { type: String },
       url: { type: String },
     }],
   })
@@ -76,6 +89,15 @@ export class Instructor {
     name: string;
     issuer: string;
     date: string;
+    url?: string;
+  }[];
+
+  @Prop({
+    type: [{
+      url: { type: String },
+    }],
+  })
+  diplomas?: {
     url?: string;
   }[];
 
@@ -107,6 +129,9 @@ export interface InstructorResponse {
   lastNameLocalized?: { en?: string; ru?: string; ka?: string };
   email: string;
   profession: string;
+  qualification?: string;
+  wikipedia?: string;
+  qualificationLocalized?: { en?: string; ru?: string; ka?: string };
   professionLocalized?: { en?: string; ru?: string; ka?: string };
   bio: {
     ka?: string;
@@ -122,6 +147,9 @@ export interface InstructorResponse {
     name: string;
     issuer: string;
     date: string;
+    url?: string;
+  }[];
+  diplomas?: {
     url?: string;
   }[];
   profileImage: string;

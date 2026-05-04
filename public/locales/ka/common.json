@@ -126,12 +126,16 @@
     "instructorName": "ინსტრუქტორის სახელი",
     "professionalTitle": "პროფესიული წოდება",
     "courses": "კურსი",
+    "instructorCourses": "მასწავლებლის კურსები",
     "certificates": "სერტიფიკატი",
+    "instructorCertificates": "მასწავლებლის სერტიფიკატები",
+    "wikipedia": "ვიკიპედია",
     "students": "სტუდენტი",
     "aboutInstructor": "ინსტრუქტორის შესახებ",
     "bioPlaceholder": "ინსტრუქტორის ბიოგრაფია მალე დაემატება.",
     "rating": "რეიტინგი",
     "certificatesTitle": "სერტიფიკატები",
+    "diplomasTitle": "მიღებული პროფესიებისთვის სტუდენტებზე გაცემული სერტიფიკატები",
     "viewCertificate": "სერტიფიკატის ნახვა"
   },
   "modal": {

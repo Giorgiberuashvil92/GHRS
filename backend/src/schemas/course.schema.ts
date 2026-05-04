@@ -100,11 +100,13 @@ export class Course {
   @Prop({
     type: {
       name: { type: String, required: true },
+      instructorId: { type: String, required: false },
     },
     required: true,
   })
   instructor: {
     name: string;
+    instructorId?: string;
   };
 
   @Prop({

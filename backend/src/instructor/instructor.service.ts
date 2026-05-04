@@ -109,7 +109,7 @@ export class InstructorService {
 
     // შევამოწმოთ აქვს-თუ კურსები ამ ინსტრუქტორს
     const coursesCount = await this.courseModel.countDocuments({
-      'teacher.name': instructor.name
+      'instructor.name': instructor.name
     });
 
     if (coursesCount > 0) {
@@ -157,7 +157,7 @@ export class InstructorService {
     }
 
     const query: any = {
-      'teacher.name': instructor.name
+      'instructor.name': instructor.name
     };
     
     if (isPublished !== undefined) {
@@ -198,7 +198,7 @@ export class InstructorService {
 
     // ვიპოვოთ ინსტრუქტორის ყველა კურსი
     const courses = await this.courseModel.find({
-      'teacher.name': instructor.name
+      'instructor.name': instructor.name
     }).exec();
 
     const publishedCourses = courses.filter(course => course.isPublished);

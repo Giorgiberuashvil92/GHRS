@@ -1,14 +1,20 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import SliderArrows from "./SliderArrows";
 import { useI18n } from "../context/I18nContext";
+import {
+  instructorDisplayNameForLocale,
+  resolveCourseLocale,
+} from "../utils/instructorDisplay";
 
 interface Teacher {
   id: string;
   name: string;
+  firstNameLocalized?: { en?: string; ru?: string; ka?: string };
+  lastNameLocalized?: { en?: string; ru?: string; ka?: string };
   position: string;
   institution: string;
   credentials: string;
@@ -117,6 +123,12 @@ const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
   };
 
   const teacher = allTeachers[currentIndex];
+  const loc = resolveCourseLocale(locale);
+
+  const teacherDisplayName = useMemo(() => {
+    if (!teacher) return "";
+    return instructorDisplayNameForLocale(teacher, loc);
+  }, [teacher, loc, locale]);
 
   // Return early if no teachers available
   if (!teacher) {
@@ -159,13 +171,13 @@ const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
               src={teacher.imageUrl}
               width={511}
               height={496}
-              alt={teacher.name}
+              alt={teacherDisplayName || teacher.name}
               className="object-cover"
             />
           </div>
           <div className="flex-1 flex flex-col pt-2 md:pt-4">
             <h3 className="text-[24px] md:text-[40px] text-[#3D334A] font-bowler uppercase tracking-[-1%] leading-[100%] mb-4">
-              {teacher.name}
+              {teacherDisplayName || teacher.name}
             </h3>
 
             <div className="mb-4 md:mb-6 space-y-2">
@@ -178,7 +190,12 @@ const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
             </div>
 
             <div className="text-[14px] md:text-[16px] text-[#846FA0] font-pt mb-4 md:mb-6 leading-[120%]">
-              {[teacher.name, getLocalizedContent(teacher.professionLocalized) || teacher.position].filter(Boolean).join(", ")}
+              {[
+                teacherDisplayName || teacher.name,
+                getLocalizedContent(teacher.professionLocalized) || teacher.position,
+              ]
+                .filter(Boolean)
+                .join(", ")}
             </div>
 
             <div

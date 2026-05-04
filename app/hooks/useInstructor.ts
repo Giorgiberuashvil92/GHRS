@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Instructor } from "../../types/instructor";
+import { withSanitizedInstructorNames } from "../utils/instructorDisplay";
 
 interface UseInstructorReturn {
   instructor: Instructor | null;
@@ -66,11 +67,10 @@ export function useInstructor(instructorId: string): UseInstructorReturn {
         throw new Error("Instructor API response is empty");
       }
 
-      // ბექენდი აბრუნებს _id, ფრონტი იყენებს id
-      const backendInstructor: Instructor = {
+      const backendInstructor: Instructor = withSanitizedInstructorNames({
         ...raw,
         id: raw.id || raw._id || instructorId,
-      };
+      }) as Instructor;
 
       setInstructor(backendInstructor);
       
@@ -129,15 +129,15 @@ export function useInstructors() {
       setError(null);
 
       const { apiRequest, API_CONFIG } = await import("../config/api");
-      const endpoint = API_CONFIG.ENDPOINTS.INSTRUCTORS.ALL;
+      const endpoint = `${API_CONFIG.ENDPOINTS.INSTRUCTORS.ALL}?limit=500&page=1`;
 
       const response = await apiRequest<{instructors: (Instructor & { _id?: string })[], total: number}>(endpoint);
-      
-      // Convert _id to id for all instructors (backend uses _id, frontend uses id)
-      const instructorsWithId = (response.instructors || []).map(instructor => ({
-        ...instructor,
-        id: instructor.id || instructor._id || '',
-      }));
+      const instructorsWithId = (response.instructors || []).map((instructor) =>
+        withSanitizedInstructorNames({
+          ...instructor,
+          id: instructor.id || instructor._id || "",
+        })
+      ) as Instructor[];
       
       setInstructors(instructorsWithId);
     } catch (err) {
@@ -180,12 +180,12 @@ export function useTopInstructors(limit?: number) {
       }
 
       const response = await apiRequest<(Instructor & { _id?: string })[]>(endpoint);
-      
-      // Convert _id to id for all instructors (backend uses _id, frontend uses id)
-      const instructorsWithId = (response || []).map(instructor => ({
-        ...instructor,
-        id: instructor.id || instructor._id || '',
-      }));
+      const instructorsWithId = (response || []).map((instructor) =>
+        withSanitizedInstructorNames({
+          ...instructor,
+          id: instructor.id || instructor._id || "",
+        })
+      ) as Instructor[];
       
       setInstructors(instructorsWithId);
     } catch (err) {

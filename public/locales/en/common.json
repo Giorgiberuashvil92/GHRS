@@ -116,12 +116,16 @@
     "instructorName": "Instructor Name",
     "professionalTitle": "Professional Title",
     "courses": "Course",
+    "instructorCourses": "Instructor Courses",
     "certificates": "Certificate",
+    "instructorCertificates": "Instructor Certificates",
+    "wikipedia": "Wikipedia",
     "students": "Student",
     "aboutInstructor": "About Instructor",
     "bioPlaceholder": "Instructor biography will be added soon.",
     "rating": "Rating",
     "certificatesTitle": "Certificates",
+    "diplomasTitle": "Certificates issued to students for acquired professions",
     "viewCertificate": "View Certificate"
   },
   "modal": {

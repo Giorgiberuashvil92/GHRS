@@ -4,6 +4,7 @@ import React, { useRef, useState, useEffect } from "react";
 import Link from "next/link";
 import SliderArrows from "./SliderArrows";
 import CourseSlider from "./CourseSlider";
+import ReviewSlider from "./ReviewSlider";
 import Banner from "./Banner";
 import { useI18n } from "../context/I18nContext";
 import { API_CONFIG } from "../config/api";
@@ -30,11 +31,13 @@ const Professional = ({
   title,
   bgColor,
   withProfText,
+  showReviews = true,
 }: {
   withBanner: boolean;
   title: string;
   bgColor: string;
   withProfText: boolean;
+  showReviews?: boolean;
 }) => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -215,6 +218,12 @@ const Professional = ({
                 })
               : `All ${courses.length} courses`}
           </Link>
+
+          {showReviews && (
+            <div className="mt-10 md:mt-14 pt-8 md:pt-10 border-t border-[#846FA0]/20">
+              <ReviewSlider embeddedInCard />
+            </div>
+          )}
         </div>
       </div>
 

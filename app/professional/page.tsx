@@ -46,6 +46,8 @@ interface InstructorBio {
 interface BackendInstructor {
   _id: string;
   name: string;
+  firstNameLocalized?: { en?: string; ru?: string; ka?: string };
+  lastNameLocalized?: { en?: string; ru?: string; ka?: string };
   email: string;
   profession: string;
   professionLocalized?: { en?: string; ru?: string; ka?: string };
@@ -64,6 +66,8 @@ interface BackendInstructor {
 interface Teacher {
   id: string;
   name: string;
+  firstNameLocalized?: { en?: string; ru?: string; ka?: string };
+  lastNameLocalized?: { en?: string; ru?: string; ka?: string };
   position: string;
   institution: string;
   credentials: string;
@@ -84,6 +88,8 @@ interface Teacher {
 interface Instructor {
   id: string;
   name: string;
+  firstNameLocalized?: { en?: string; ru?: string; ka?: string };
+  lastNameLocalized?: { en?: string; ru?: string; ka?: string };
   position: string;
   institution: string;
   credentials: string;
@@ -179,6 +185,8 @@ const Professional = () => {
         .map((instructor) => ({
           id: instructor._id,
           name: instructor.name,
+          firstNameLocalized: instructor.firstNameLocalized,
+          lastNameLocalized: instructor.lastNameLocalized,
           position: instructor.profession || "Teacher",
           professionLocalized: instructor.professionLocalized,
           institution: "", 
@@ -408,6 +416,10 @@ const Professional = () => {
                 count: courses?.length.toString() || "0",
               }) || `All ${courses?.length || 0} courses`}
             </Link>
+
+            <div className="mt-10 md:mt-14 pt-8 md:pt-10 border-t border-[#846FA0]/20">
+              <ReviewSlider embeddedInCard />
+            </div>
           </div>
         </div>
       </div>
@@ -439,9 +451,6 @@ const Professional = () => {
         titleStyles="text-white"
         buttonStyles="hover:opacity-80"
       />
-      <div className="md:mb-10">
-        <ReviewSlider title={""} />
-      </div>
       <Footer />
     </div>
   );
