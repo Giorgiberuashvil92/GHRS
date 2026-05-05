@@ -32,10 +32,6 @@ interface Teacher {
   };
 }
 
-interface Certificate {
-  name: string;
-}
-
 const About = () => {
   const { t } = useI18n();
   const { instructors, loading } = useInstructors();
@@ -50,7 +46,8 @@ const About = () => {
     institution: "", // ეს ველი არ არის instructor API-ში
     credentials:
       instructor.certificates
-        ?.map((cert: Certificate, index: number) => cert.name)
+        ?.map((cert) => cert.name?.trim() || "")
+        .filter(Boolean)
         .join(", ") || "",
     education: [], // ეს ველი არ არის instructor API-ში
     imageUrl: instructor.profileImage,
