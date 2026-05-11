@@ -117,16 +117,18 @@
     "professionalTitle": "Профессиональное звание",
     "courses": "Курс",
     "instructorCourses": "Курсы преподавателя",
-    "certificates": "Сертификат",
+    "certificates": "Сертификаты",
     "instructorCertificates": "Сертификаты преподавателя",
     "wikipedia": "Википедия",
     "students": "Студент",
     "aboutInstructor": "Об инструкторе",
     "bioPlaceholder": "Биография инструктора будет добавлена в ближайшее время.",
     "rating": "Рейтинг",
-    "certificatesTitle": "Сертификаты",
+    "certificatesTitle": "Сертификаты инструктора",
     "diplomasTitle": "Сертификаты, выдаваемые студентам",
-    "viewCertificate": "Посмотреть сертификат"
+    "viewCertificate": "Посмотреть сертификат",
+    "subscribeBannerTitle": "Завершив курс на нашей платформе, вы получаете диплом или сертификат по освоенной профессии.",
+    "subscribeBannerButton": "Приобрести курс"
   },
   "modal": {
     "success": "Успех!",

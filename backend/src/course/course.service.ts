@@ -17,6 +17,49 @@ interface FindAllOptions {
   maxPrice?: number;
 }
 
+function escapeMongoRegex(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * კურსში embedded instructor ↔ პროფილის id/სახელი (ლეგაცია: სახელი ციფრებით/უციფროდ, "|" გამყოფით).
+ */
+function buildInstructorCourseMatch(
+  instructorId: string,
+  instructorDisplayName?: string,
+): Record<string, unknown>[] {
+  const or: Record<string, unknown>[] = [
+    { 'instructor.instructorId': instructorId },
+  ];
+  const nameTrim = instructorDisplayName?.trim();
+  if (!nameTrim) return or;
+
+  or.push({ 'instructor.name': nameTrim });
+
+  const baseNoTrailingDigits = nameTrim.replace(/\d+$/u, '').trim();
+  if (baseNoTrailingDigits.length >= 2 && baseNoTrailingDigits !== nameTrim) {
+    or.push({ 'instructor.name': baseNoTrailingDigits });
+    or.push({
+      'instructor.name': {
+        $regex: new RegExp(`^${escapeMongoRegex(baseNoTrailingDigits)}`, 'i'),
+      },
+    });
+  }
+
+  for (const part of nameTrim
+    .split('|')
+    .map((p) => p.trim())
+    .filter((p) => p.length > 0)) {
+    if (part === nameTrim) continue;
+    or.push({ 'instructor.name': part });
+    or.push({
+      'instructor.name': { $regex: new RegExp(`^${escapeMongoRegex(part)}`, 'i') },
+    });
+  }
+
+  return or;
+}
+
 @Injectable()
 export class CourseService {
   constructor(
@@ -136,7 +179,11 @@ export class CourseService {
     }
 
     if (instructorId) {
-      query['instructor.name'] = instructorId;
+      const instOr = buildInstructorCourseMatch(instructorId, undefined);
+      if (!query.$and) {
+        query.$and = [];
+      }
+      query.$and.push({ $or: instOr });
     }
 
     if (language) {
@@ -305,18 +352,31 @@ export class CourseService {
     };
   }
 
-  async findByInstructor(instructorId: string, options: { page: number; limit: number }) {
-    const { page = 1, limit = 10 } = options;
+  async findByInstructor(
+    instructorId: string,
+    options: { page: number; limit: number; instructorName?: string },
+  ) {
+    const { page = 1, limit = 10, instructorName } = options;
     const skip = (page - 1) * limit;
+
+    const or = buildInstructorCourseMatch(
+      instructorId,
+      instructorName ?? undefined,
+    );
+
+    const filter = {
+      isPublished: true,
+      $or: or,
+    };
 
     const [courses, total] = await Promise.all([
       this.courseModel
-        .find({ 'instructor.name': instructorId })
+        .find(filter)
         .skip(skip)
         .limit(limit)
         .sort({ createdAt: -1 })
         .exec(),
-      this.courseModel.countDocuments({ 'instructor.name': instructorId }),
+      this.courseModel.countDocuments(filter),
     ]);
 
     return {

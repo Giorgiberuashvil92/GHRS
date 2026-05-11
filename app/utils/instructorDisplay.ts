@@ -20,6 +20,25 @@ export function resolveCourseLocale(locale: string | undefined | null): CourseLo
   return "ka";
 }
 
+/**
+ * ინსტრუქტორის მრავალენოვანი ველი UI ენით:
+ * - **en** → en, შემდეგ ka, ru (არ ვაჩვენებთ ru-ს en-ის ცარიელობისას პირველ რიგში)
+ * - **ru** → ru, შემდეგ en, ka
+ * - **ka** → ka, შემდეგ en, ru
+ */
+export function pickInstructorLocalizedText(
+  content: { ka?: string; en?: string; ru?: string } | undefined,
+  locale: CourseLocale
+): string {
+  if (!content) return "";
+  const en = String(content.en ?? "").trim();
+  const ru = String(content.ru ?? "").trim();
+  const ka = String(content.ka ?? "").trim();
+  if (locale === "en") return en || ka || ru;
+  if (locale === "ru") return ru || en || ka;
+  return ka || en || ru;
+}
+
 /** API/Mongo-დან: მხოლოდ en, ru, ka */
 export function sanitizeLocalizedNameParts(raw: unknown): LocalizedNameParts | undefined {
   if (!raw || typeof raw !== "object") return undefined;

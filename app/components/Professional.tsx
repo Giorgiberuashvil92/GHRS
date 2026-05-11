@@ -32,12 +32,15 @@ const Professional = ({
   bgColor,
   withProfText,
   showReviews = true,
+  instructorCoursesFilter,
 }: {
   withBanner: boolean;
   title: string;
   bgColor: string;
   withProfText: boolean;
   showReviews?: boolean;
+  /** მხოლოდ ამ ინსტრუქტორის კურსები (მაგ. TeacherInfo) */
+  instructorCoursesFilter?: { id: string; name?: string };
 }) => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -47,6 +50,8 @@ const Professional = ({
   const { t } = useI18n();
 
   const sliderRef = useRef<HTMLDivElement>(null);
+  const instructorFilterRef = useRef(instructorCoursesFilter);
+  instructorFilterRef.current = instructorCoursesFilter;
 
   const checkScrollButtons = (): void => {
     if (sliderRef.current) {
@@ -62,18 +67,31 @@ const Professional = ({
     const fetchCourses = async (): Promise<void> => {
       try {
         setLoading(true);
-        
-        // ✅ FIXED: Always use /api prefix - Next.js rewrites will handle routing
-        const endpoint = '/api/courses?isPublished=true';
-        
-        const response = await fetch(
-          `${API_CONFIG.BASE_URL}${endpoint}`
-        );
+
+        const base = `${API_CONFIG.BASE_URL}/api/courses`;
+        let url = `${base}?isPublished=true&limit=80&page=1`;
+        const instFilter = instructorFilterRef.current;
+        if (instFilter?.id) {
+          const q = new URLSearchParams({
+            page: "1",
+            limit: "80",
+          });
+          const n = instFilter.name?.trim();
+          if (n) q.set("name", n);
+          url = `${base}/instructor/${encodeURIComponent(instFilter.id)}?${q.toString()}`;
+        }
+
+        const response = await fetch(url, {
+          headers: {
+            Accept: "application/json",
+            "Accept-Language": "en",
+          },
+        });
         if (!response.ok) {
           throw new Error("Failed to fetch courses");
         }
         const data = await response.json();
-        setCourses(data.courses);
+        setCourses(data.courses ?? []);
       } catch (err) {
         setError(err instanceof Error ? err.message : "An error occurred");
       } finally {
@@ -82,7 +100,7 @@ const Professional = ({
     };
 
     fetchCourses();
-  }, []);
+  }, [instructorCoursesFilter?.id]);
 
   useEffect(() => {
     const container = sliderRef.current;
@@ -162,9 +180,11 @@ const Professional = ({
         >
           <div className="flex items-center justify-between md:mb-[10px] ">
             <h1 className="text-[20px] md:text-[40px] md:tracking-[-3%] text-[#3D334A] leading-[120%] mb-2.5 md:mb-5 font-bowler">
-              {typeof t("professional.courses.title") === "string"
-                ? t("professional.courses.title")
-                : "Courses"}
+              {instructorCoursesFilter
+                ? t("teacher.instructorCourses")
+                : typeof t("professional.courses.title") === "string"
+                  ? t("professional.courses.title")
+                  : "Courses"}
             </h1>
           </div>
 
@@ -181,6 +201,12 @@ const Professional = ({
               </p>
               <p className="text-gray-500 text-[16px] leading-[120%] font-pt">{error}</p>
             </div>
+          ) : courses.length === 0 && instructorCoursesFilter ? (
+            <p className="text-center text-[#846FA0] font-pt py-10 text-[16px] md:text-[18px] leading-relaxed">
+              {typeof t("teachers.no_courses_instructor") === "string"
+                ? t("teachers.no_courses_instructor")
+                : "No published courses for this instructor yet."}
+            </p>
           ) : (
             <div className="flex gap-4 md:mb-8">
               <CourseSlider
@@ -192,7 +218,7 @@ const Professional = ({
                   price: course.price,
                   currency: "USD",
                   imageUrl: course.thumbnail,
-                  instructorName: course.instructor.name,
+                  instructorName: course.instructor?.name,
                   description: (course as any).description?.en || course.description || "",
                   categoryId: (course as any).categoryId || "default-category",
                   level: (course as any).level || "beginner",
@@ -206,18 +232,20 @@ const Professional = ({
             </div>
           )}
 
-          <Link
-            href={"/allCourse"}
-            className="md:text-[24px] md:mx-6 leading-[90%] uppercase text-[#D4BAFC] font-bowler"
-          >
-            {typeof t("professional.courses.all_courses", {
-              count: courses.length.toString(),
-            }) === "string"
-              ? t("professional.courses.all_courses", {
-                  count: courses.length.toString(),
-                })
-              : `All ${courses.length} courses`}
-          </Link>
+          {!instructorCoursesFilter && (
+            <Link
+              href={"/allCourse"}
+              className="md:text-[24px] md:mx-6 leading-[90%] uppercase text-[#D4BAFC] font-bowler"
+            >
+              {typeof t("professional.courses.all_courses", {
+                count: courses.length.toString(),
+              }) === "string"
+                ? t("professional.courses.all_courses", {
+                    count: courses.length.toString(),
+                  })
+                : `All ${courses.length} courses`}
+            </Link>
+          )}
 
           {showReviews && (
             <div className="mt-10 md:mt-14 pt-8 md:pt-10 border-t border-[#846FA0]/20">

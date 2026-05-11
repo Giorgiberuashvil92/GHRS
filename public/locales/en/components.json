@@ -124,13 +124,19 @@
   },
   "teachers": {
     "our_teachers": "Instructors",
+    "all_instructors": "All instructors",
+    "courses": "courses",
+    "students": "students",
+    "load_error": "Could not load instructors",
+    "not_found": "No instructors found",
+    "no_courses_instructor": "This instructor has no published courses yet.",
     "loading": "Loading teachers...",
     "view_all": "VIEW ALL",
     "more_details": "MORE DETAILS"
   },
   "teacher": {
-    "instructorCourses": "Instructor Courses",
-    "instructorCertificates": "Instructor Certificates",
+    "instructorCourses": "Instructor's courses",
+    "instructorCertificates": "Instructor's certificates",
     "wikipedia": "Wikipedia"
   },
   "course": {

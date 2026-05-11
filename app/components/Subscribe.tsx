@@ -44,6 +44,17 @@ const Subscribe = ({
 }: SubscribeProps) => {
   const { t } = useI18n();
   const router = useRouter();
+
+  const resolvedTitle =
+    titleKey && t(titleKey) !== titleKey ? t(titleKey) : title;
+  const resolvedSubtitle =
+    subTitleKey && t(subTitleKey) !== subTitleKey ? t(subTitleKey) : subTitle;
+  const resolvedButton = buttonTextKey
+    ? t(buttonTextKey) !== buttonTextKey
+      ? t(buttonTextKey)
+      : buttonText
+    : buttonText;
+
   return (
     <div className={`mb-6 md:mb-10 mt-10 md:mt-0 md:px-5 ${containerStyles}`}>
       <div
@@ -56,7 +67,7 @@ const Subscribe = ({
       >
         <div>
           <h1
-            className={`mb-5 text-[#3D334A] text-[18px] md:text-[54px] md:max-w-[1308px] md:pr-[52px] tracking-[-3%] md:pt-[48px] leading-[110%] md:leading-[100%] font-bowler ${titleStyles}`}
+            className={`mb-3 md:mb-5 text-[#3D334A] text-[16px] md:text-[28px] lg:text-[34px] md:max-w-[960px] lg:max-w-[1100px] md:pr-6 tracking-[-0.02em] md:pt-5 lg:pt-7 leading-[118%] md:leading-[112%] font-bowler ${titleStyles}`}
             style={{ 
               wordSpacing: 'normal',
               whiteSpace: 'normal',
@@ -64,16 +75,14 @@ const Subscribe = ({
               hyphens: 'none'
             }}
           >
-            {titleKey && typeof t(titleKey) === "string" ? t(titleKey) : title}
+            {resolvedTitle}
           </h1>
-          <p className="text-[#3D334A] font-pt text-[18px] md:text-[20px] leading-[120%] md:leading-[100%] font-medium">
-            {subTitleKey && typeof t(subTitleKey) === "string"
-              ? t(subTitleKey)
-              : subTitle}
+          <p className="text-[#3D334A] font-pt text-[14px] md:text-[17px] leading-[128%] md:leading-[122%] font-medium max-w-2xl min-h-0 empty:hidden">
+            {resolvedSubtitle}
           </p>
         </div>
         <div
-          className={`flex items-center cursor-pointer md:mt-[70px] mt-10 rounded-[10px] gap-5 px-[15px] w-[327px] md:w-[562px]`}
+          className={`flex items-center cursor-pointer md:mt-9 mt-7 rounded-[10px] gap-3 md:gap-4 px-3 md:px-[15px] w-[327px] md:max-w-[500px]`}
           style={{
             backgroundColor: buttonBgColor,
             color: buttonTextColor,
@@ -83,9 +92,9 @@ const Subscribe = ({
           }}
         >
           <button
-            className={`w-full py-[13px] text-[32px]  md:w-[562px] font-medium hover:opacity-80 font-bowler ${buttonStyles}`}
+            className={`w-full py-3 md:py-[13px] text-[18px] md:text-[22px] font-medium hover:opacity-80 font-bowler ${buttonStyles}`}
           >
-            {buttonTextKey ? t(buttonTextKey) : buttonText}
+            {resolvedButton}
           </button>
 
           <Image

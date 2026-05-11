@@ -116,17 +116,19 @@
     "instructorName": "Instructor Name",
     "professionalTitle": "Professional Title",
     "courses": "Course",
-    "instructorCourses": "Instructor Courses",
+    "instructorCourses": "Instructor's courses",
     "certificates": "Certificate",
-    "instructorCertificates": "Instructor Certificates",
+    "instructorCertificates": "Instructor's certificates",
     "wikipedia": "Wikipedia",
     "students": "Student",
     "aboutInstructor": "About Instructor",
     "bioPlaceholder": "Instructor biography will be added soon.",
     "rating": "Rating",
-    "certificatesTitle": "Certificates",
+    "certificatesTitle": "Instructor's certificates",
     "diplomasTitle": "Certificates issued to students for acquired professions",
-    "viewCertificate": "View Certificate"
+    "viewCertificate": "View Certificate",
+    "subscribeBannerTitle": "By completing a course on our platform, you receive a diploma or a certificate in the acquired profession.",
+    "subscribeBannerButton": "Purchase subscription"
   },
   "modal": {
     "success": "Success!",

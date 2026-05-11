@@ -94,10 +94,12 @@ export class CourseController {
     @Param('instructorId') instructorId: string,
     @Query('page') page?: number,
     @Query('limit') limit?: number,
+    @Query('name') instructorName?: string,
   ) {
     return this.courseService.findByInstructor(instructorId, {
       page: page ? Number(page) : 1,
       limit: limit ? Number(limit) : 10,
+      instructorName,
     });
   }
 

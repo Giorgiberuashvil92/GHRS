@@ -1,11 +1,12 @@
 "use client";
 import Image from "next/image";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import DesktopNavbar from "./Navbar/DesktopNavbar";
 import { getDefaultMenuItems } from "./Header/Header";
 import { useI18n } from "../context/I18nContext";
 import {
   instructorDisplayNameForLocale,
+  pickInstructorLocalizedText,
   resolveCourseLocale,
 } from "../utils/instructorDisplay";
 
@@ -135,19 +136,9 @@ const TeacherInfo = ({ instructorId }: TeacherInfoProps) => {
     return instructorDisplayNameForLocale(instructor, loc);
   }, [instructor, loc]);
 
-  // Function to get multilingual content (for bio, htmlContent, professionLocalized)
   const getMultilingualContent = (
     content: { ka?: string; en?: string; ru?: string } | undefined
-  ): string => {
-    if (!content) return "";
-    return (
-      (content[locale as keyof typeof content] as string) ||
-      content.en ||
-      content.ru ||
-      content.ka ||
-      ""
-    ).trim() || "";
-  };
+  ): string => pickInstructorLocalizedText(content, loc);
 
   const displayProfession =
     getMultilingualContent(instructor?.professionLocalized) ||
@@ -264,6 +255,16 @@ const TeacherInfo = ({ instructorId }: TeacherInfoProps) => {
       }));
   }, [instructor?.diplomas]);
 
+  const instructorCoursesFilter = useMemo(
+    () =>
+      instructor ? { id: instructor.id, name: instructor.name } : undefined,
+    [instructor]
+  );
+
+  const scrollToSection = useCallback((id: string) => {
+    document.getElementById(id)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, []);
+
   if (loading) return <div>{t("common.loading")}</div>;
   if (error)
     return (
@@ -300,22 +301,46 @@ const TeacherInfo = ({ instructorId }: TeacherInfoProps) => {
                   t("teacher.instructorName")}
               </h1>
               <p className="leading-[120%] text-[15px] md:text-base">
-                {instructor?.qualification || t("teacher.professionalTitle")}
+                {pickInstructorLocalizedText(
+                  instructor?.qualificationLocalized,
+                  loc
+                ) ||
+                  instructor?.qualification ||
+                  t("teacher.professionalTitle")}
               </p>
             </div>
             <div className="flex flex-col md:flex-row gap-4 md:gap-5 mt-2">
-              <div className="rounded-[20px] border border-[#E2CCFF] bg-white text-center w-full md:w-[220px] py-6 md:py-8 h-[110px] md:h-[120px] flex items-center justify-center flex-col shadow-sm">
+              <button
+                type="button"
+                className="rounded-[20px] border border-[#E2CCFF] bg-white text-center w-full md:w-[220px] py-6 md:py-8 h-[110px] md:h-[120px] flex items-center justify-center flex-col shadow-sm cursor-pointer hover:shadow-md hover:border-[#D4BAFC] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4BAFC] focus-visible:ring-offset-2"
+                onClick={() => scrollToSection("instructor-section-courses")}
+                aria-label={`${t("teacher.instructorCourses")}${displayProfession ? ` — ${displayProfession}` : ""}`}
+              >
                 <CoursesIcon />
-                <h5 className="text-[#D4BAFC] mt-2 text-[15px]">
+                <span className="text-[#D4BAFC] mt-2 text-[15px] font-bowler">
                   {t("teacher.instructorCourses")}
-                </h5>
-              </div>
-              <div className="rounded-[20px] border border-[#E2CCFF] bg-white text-center w-full md:w-[220px] py-6 md:py-8 h-[110px] md:h-[120px] flex items-center justify-center flex-col shadow-sm">
+                </span>
+              </button>
+              <button
+                type="button"
+                className="rounded-[20px] border border-[#E2CCFF] bg-white text-center w-full md:w-[220px] py-6 md:py-8 h-[110px] md:h-[120px] flex items-center justify-center flex-col shadow-sm cursor-pointer hover:shadow-md hover:border-[#D4BAFC] transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-[#D4BAFC] focus-visible:ring-offset-2"
+                onClick={() => {
+                  const hasCerts =
+                    (instructor?.certificates || []).some((c) => (c.url || "").trim());
+                  if (hasCerts) scrollToSection("instructor-section-certificates");
+                  else if (diplomaSlides.length > 0) {
+                    scrollToSection("instructor-section-diplomas");
+                  } else {
+                    scrollToSection("instructor-section-certificates");
+                  }
+                }}
+                aria-label={t("teacher.instructorCertificates")}
+              >
                 <CertificatesIcon />
-                <h5 className="text-[#D4BAFC] mt-2 text-[15px]">
+                <span className="text-[#D4BAFC] mt-2 text-[15px] font-bowler">
                   {t("teacher.instructorCertificates")}
-                </h5>
-              </div>
+                </span>
+              </button>
               <div className="rounded-[20px] border border-[#E2CCFF] bg-white w-full text-center md:w-[220px] py-6 md:py-8 h-[110px] md:h-[120px] flex items-center justify-center flex-col shadow-sm">
                 {instructor?.wikipedia ? (
                   <a
@@ -354,7 +379,7 @@ const TeacherInfo = ({ instructorId }: TeacherInfoProps) => {
             </div>
 
             {/* HTML Content Section */}
-            {(instructor?.htmlContent?.ru || instructor?.htmlContent?.en) && (
+            {Boolean(localizedHtml?.trim()) && (
               <div className="text-[#3D334A] text-[15px] md:text-base leading-relaxed">
                 <div
                   className="instructor-content prose prose-sm max-w-none"
@@ -412,36 +437,49 @@ const TeacherInfo = ({ instructorId }: TeacherInfoProps) => {
           />
         </div>
       </div>
-      <div className="md:mt-10">
-        <Professional
-          withBanner={false}
-          title={""}
-          bgColor="white"
-          withProfText={false}
-          showReviews={false}
-        />
-      </div>
-      {instructor?.certificates && instructor?.certificates?.length > 0 ? (
+      <div
+        id="instructor-section-courses"
+        className="scroll-mt-24 md:scroll-mt-28"
+      >
         <div className="md:mt-10">
-          <Certificate
-            slides={(instructor?.certificates || [])
-              .filter((certificate) => (certificate.url || '').trim())
-              .map((certificate) => ({
-                src: certificate.url!.trim(),
-                title: certificate.name,
-                subtitle: [certificate.issuer, certificate.date]
-                  .filter((x) => (x || '').trim())
-                  .join(' · '),
-              }))}
-            title={t("teacher.certificatesTitle")}
+          <Professional
+            withBanner={false}
+            title={""}
+            bgColor="white"
+            withProfText={false}
+            showReviews={false}
+            instructorCoursesFilter={instructorCoursesFilter}
           />
         </div>
-      ) : null}
+      </div>
+      <div
+        id="instructor-section-certificates"
+        className="scroll-mt-24 md:scroll-mt-28"
+      >
+        {instructor?.certificates && instructor?.certificates?.length > 0 ? (
+          <div className="md:mt-10">
+            <Certificate
+              slides={(instructor?.certificates || [])
+                .filter((certificate) => (certificate.url || "").trim())
+                .map((certificate) => ({
+                  src: certificate.url!.trim(),
+                  title: certificate.name,
+                  subtitle: [certificate.issuer, certificate.date]
+                    .filter((x) => (x || "").trim())
+                    .join(" · "),
+                }))}
+              titleKey="teacher.certificatesTitle"
+            />
+          </div>
+        ) : (
+          <div className="min-h-[1px]" aria-hidden />
+        )}
+      </div>
       {diplomaSlides.length > 0 ? (
-        <div className="md:mt-10">
+        <div id="instructor-section-diplomas" className="scroll-mt-24 md:scroll-mt-28 md:mt-10">
           <Certificate
             slides={diplomaSlides}
-            title={t("teacher.diplomasTitle")}
+            titleKey="teacher.diplomasTitle"
             orientation="horizontal"
           />
         </div>
@@ -449,8 +487,8 @@ const TeacherInfo = ({ instructorId }: TeacherInfoProps) => {
       <div className="my-10">
         <Subscribe
           backgroundImage="/assets/images/bluebg.jpg"
-          titleKey="subscription.title"
-          buttonTextKey="buttons.subscribe"
+          titleKey="teacher.subscribeBannerTitle"
+          buttonTextKey="teacher.subscribeBannerButton"
           buttonTextColor="#3D334A"
           buttonBgColor="#FFFFFF"
           href="/shoppingcard"

@@ -15,7 +15,10 @@ interface CertificateProps {
   /** ძველი API: მხოლოდ სურათის URL-ები */
   certificates?: string[];
   slides?: CertificateSlide[];
+  /** პირდაპირი სათაური (სტატიკური სტრიქონი) */
   title?: string;
+  /** i18n გასაღები — ყოველ რენდერზე მიმდინარე ენით (რეკომენდებულია TeacherInfo-სთვის) */
+  titleKey?: string;
   orientation?: "vertical" | "horizontal";
 }
 
@@ -23,6 +26,7 @@ const Certificate = ({
   certificates = [],
   slides,
   title,
+  titleKey,
   orientation = "vertical",
 }: CertificateProps) => {
   const { t } = useI18n();
@@ -65,11 +69,17 @@ const Certificate = ({
     return null;
   }
 
+  const sectionHeading =
+    (titleKey ? t(titleKey).trim() : "") ||
+    (title?.trim() ?? "") ||
+    t("teacher.certificatesTitle").trim() ||
+    "Сертификаты";
+
   return (
     <div className="mx-5 rounded-[30px] bg-white px-10 py-[50px]">
       <div className="flex items-center justify-between">
         <h1 className="text-[#3D334A] leading-[120%] tracking-[-3%] text-[40px]">
-          {title || t("certificates.title") || "Сертификаты"}
+          {sectionHeading}
         </h1>
         {resolvedSlides.length > 1 && (
           <SliderArrows
