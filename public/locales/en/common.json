@@ -14,7 +14,12 @@
     "register": "Register",
     "all_complexes": "All Complexes",
     "sets": "SETS",
-    "rightArrow": "→"
+    "rightArrow": "→",
+    "all_courses": "All courses",
+    "all_instructors": "All instructors",
+    "prof_dev_tab_landing": "Professional development",
+    "prof_dev_tab_courses": "All courses",
+    "prof_dev_tab_instructors": "All instructors"
   },
   "buttons": {
     "subscribe": "Subscribe",
@@ -128,7 +133,7 @@
     "diplomasTitle": "Certificates issued to students for acquired professions",
     "viewCertificate": "View Certificate",
     "subscribeBannerTitle": "By completing a course on our platform, you receive a diploma or a certificate in the acquired profession.",
-    "subscribeBannerButton": "Purchase subscription"
+    "subscribeBannerButton": "Purchase Course"
   },
   "modal": {
     "success": "Success!",

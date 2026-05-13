@@ -70,6 +70,7 @@
     "ჩვენი_კურსები": "ჩვენი კურსები",
     "courses": {
       "title": "Courses",
+      "instructor_courses": "Instructor Courses",
       "popular_courses": "FEATURED",
       "error": "Error loading courses",
       "all_courses": "All {{count}} courses →",

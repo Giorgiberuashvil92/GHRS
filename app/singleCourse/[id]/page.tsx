@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { FaBullhorn, FaBookOpen } from "react-icons/fa";
 import DesktopNavbar from "../../components/Navbar/DesktopNavbar";
+import MobileNavbar from "../../components/Navbar/MobileNavbar";
 import { getDefaultMenuItems } from "../../components/Header/Header";
 import React, { useState, useEffect, useRef, useMemo } from "react";
 import Link from "next/link";
@@ -447,6 +448,7 @@ export default function SingleCourse() {
         blogBg={false}
         allCourseBg={false}
       />
+      <MobileNavbar />
 
       <div className="bg-[#FAF7FF] flex flex-col items-center py-6 px-2 w-full text-[#302A3A]">
         <div className="w-full md:px-10">

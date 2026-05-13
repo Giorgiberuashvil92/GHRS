@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { useCallback, useMemo } from "react";
 import DesktopNavbar from "./Navbar/DesktopNavbar";
+import MobileNavbar from "./Navbar/MobileNavbar";
 import { getDefaultMenuItems } from "./Header/Header";
 import { useI18n } from "../context/I18nContext";
 import {
@@ -280,6 +281,7 @@ const TeacherInfo = ({ instructorId }: TeacherInfoProps) => {
         blogBg={false}
         allCourseBg={false}
       />
+      <MobileNavbar />
       <div className=" mx-auto flex flex-col md:flex-row gap-6">
         {/* Left Sidebar */}
         <div className="flex flex-col gap-6 w-full md:w-[335px] flex-shrink-0">

@@ -63,9 +63,6 @@ const BigTeacherCard = ({ instructor }: BigTeacherCardProps) => {
   if (instructor.coursesCount !== undefined) {
     metaParts.push(`${instructor.coursesCount} ${t("teachers.courses")}`);
   }
-  if (instructor.studentsCount !== undefined) {
-    metaParts.push(`${instructor.studentsCount} ${t("teachers.students")}`);
-  }
   const metaLine = metaParts.join(" · ");
 
   return (

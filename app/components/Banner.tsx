@@ -52,7 +52,6 @@ const Banner: React.FC<BannerProps> = ({
           className="items-end justify-end md:ml-48 ml-[150px] -mt-4"
         />
       </div>
-      {/* Display title and description if provided */}
       {(title || description) && (
         <div className="px-4 md:px-10 py-4 md:py-6">
           {title && (

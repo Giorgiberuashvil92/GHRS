@@ -9,6 +9,17 @@ import Banner from "./Banner";
 import { useI18n } from "../context/I18nContext";
 import { API_CONFIG } from "../config/api";
 
+/** Use when `t` returns the key string on miss — `typeof t(k)==="string"` is not a valid guard. */
+function tResolved(
+  translate: (key: string, options?: Record<string, string>) => string,
+  key: string,
+  fallback: string
+): string {
+  const value = translate(key);
+  if (value === key || value.startsWith("[[")) return fallback;
+  return value;
+}
+
 interface Course {
   _id: string;
   title: {
@@ -182,9 +193,7 @@ const Professional = ({
             <h1 className="text-[20px] md:text-[40px] md:tracking-[-3%] text-[#3D334A] leading-[120%] mb-2.5 md:mb-5 font-bowler">
               {instructorCoursesFilter
                 ? t("teacher.instructorCourses")
-                : typeof t("professional.courses.title") === "string"
-                  ? t("professional.courses.title")
-                  : "Courses"}
+                : tResolved(t, "professional.courses.instructor_courses", "Instructor Courses")}
             </h1>
           </div>
 

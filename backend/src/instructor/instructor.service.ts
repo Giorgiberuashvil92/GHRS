@@ -4,6 +4,7 @@ import { Model } from 'mongoose';
 import { Instructor, InstructorDocument } from '../schemas/instructor.schema';
 import { Course, CourseDocument } from '../schemas/course.schema';
 import { CreateInstructorDto, UpdateInstructorDto } from './dto/create-instructor.dto';
+import { buildInstructorCourseMatch } from '../course/instructor-course-match.util';
 
 @Injectable()
 export class InstructorService {
@@ -11,6 +12,17 @@ export class InstructorService {
     @InjectModel(Instructor.name) private instructorModel: Model<InstructorDocument>,
     @InjectModel(Course.name) private courseModel: Model<CourseDocument>,
   ) {}
+
+  /** გამოქვეყნებული კურსების რაოდენობა — იგივე მაჩვენებელი, რაც საჯარო სიაში (CourseService.findByInstructor). */
+  private async countPublishedCoursesForInstructor(
+    instructorId: string,
+    displayName: string,
+  ): Promise<number> {
+    return this.courseModel.countDocuments({
+      isPublished: true,
+      $or: buildInstructorCourseMatch(instructorId, displayName),
+    });
+  }
 
   async create(createInstructorDto: CreateInstructorDto): Promise<Instructor> {
     // Debug logs
@@ -52,28 +64,40 @@ export class InstructorService {
 
 
     const skip = (page - 1) * limit;
-    
-    const [instructors, total] = await Promise.all([
+
+    const [rows, total] = await Promise.all([
       this.instructorModel
         .find(query)
         .skip(skip)
         .limit(limit)
         .sort({ createdAt: -1 })
+        .lean()
         .exec(),
       this.instructorModel.countDocuments(query),
     ]);
+
+    const instructors = await Promise.all(
+      rows.map(async (doc) => {
+        const id = String(doc._id);
+        const coursesCount = await this.countPublishedCoursesForInstructor(id, doc.name);
+        return { ...doc, id, coursesCount } as Instructor;
+      }),
+    );
 
     return { instructors, total };
   }
 
   async findOne(id: string): Promise<Instructor> {
-    const instructor = await this.instructorModel.findById(id).exec();
-      
-    if (!instructor) {
+    const doc = await this.instructorModel.findById(id).lean().exec();
+
+    if (!doc) {
       throw new NotFoundException('Instructor not found');
     }
-    
-    return instructor;
+
+    const instId = String(doc._id);
+    const coursesCount = await this.countPublishedCoursesForInstructor(instId, doc.name);
+
+    return { ...doc, id: instId, coursesCount } as Instructor;
   }
 
   async update(id: string, updateInstructorDto: UpdateInstructorDto): Promise<Instructor> {
@@ -227,11 +251,20 @@ export class InstructorService {
 
   // ტოპ ინსტრუქტორები
   async getTopInstructors(limit = 10): Promise<Instructor[]> {
-    return this.instructorModel
+    const rows = await this.instructorModel
       .find({ isActive: true })
       .sort({ averageRating: -1, studentsCount: -1 })
       .limit(limit)
+      .lean()
       .exec();
+
+    return Promise.all(
+      rows.map(async (doc) => {
+        const id = String(doc._id);
+        const coursesCount = await this.countPublishedCoursesForInstructor(id, doc.name);
+        return { ...doc, id, coursesCount } as Instructor;
+      }),
+    );
   }
 
 

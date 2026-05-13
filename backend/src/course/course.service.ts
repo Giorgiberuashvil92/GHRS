@@ -3,6 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Course } from '../schemas/course.schema';
 import { CreateCourseDto } from './dto/create-course.dto';
+import { buildInstructorCourseMatch } from './instructor-course-match.util';
 
 interface FindAllOptions {
   page: number;
@@ -15,49 +16,6 @@ interface FindAllOptions {
   language?: string;
   minPrice?: number;
   maxPrice?: number;
-}
-
-function escapeMongoRegex(s: string): string {
-  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-/**
- * კურსში embedded instructor ↔ პროფილის id/სახელი (ლეგაცია: სახელი ციფრებით/უციფროდ, "|" გამყოფით).
- */
-function buildInstructorCourseMatch(
-  instructorId: string,
-  instructorDisplayName?: string,
-): Record<string, unknown>[] {
-  const or: Record<string, unknown>[] = [
-    { 'instructor.instructorId': instructorId },
-  ];
-  const nameTrim = instructorDisplayName?.trim();
-  if (!nameTrim) return or;
-
-  or.push({ 'instructor.name': nameTrim });
-
-  const baseNoTrailingDigits = nameTrim.replace(/\d+$/u, '').trim();
-  if (baseNoTrailingDigits.length >= 2 && baseNoTrailingDigits !== nameTrim) {
-    or.push({ 'instructor.name': baseNoTrailingDigits });
-    or.push({
-      'instructor.name': {
-        $regex: new RegExp(`^${escapeMongoRegex(baseNoTrailingDigits)}`, 'i'),
-      },
-    });
-  }
-
-  for (const part of nameTrim
-    .split('|')
-    .map((p) => p.trim())
-    .filter((p) => p.length > 0)) {
-    if (part === nameTrim) continue;
-    or.push({ 'instructor.name': part });
-    or.push({
-      'instructor.name': { $regex: new RegExp(`^${escapeMongoRegex(part)}`, 'i') },
-    });
-  }
-
-  return or;
 }
 
 @Injectable()
@@ -82,7 +40,9 @@ export class CourseService {
       for (const id of categoryIds) {
         const exists = await CourseCategoryModel.findById(id);
         if (!exists) {
-          throw new NotFoundException(`Category not found: ${id}`);
+          throw new BadRequestException(
+            `Category not found: ${id}. Use an id from GET /api/course-categories.`,
+          );
         }
       }
 
@@ -400,7 +360,10 @@ export class CourseService {
       if (categoryIds?.length) {
         for (const id of categoryIds) {
           const exists = await CourseCategoryModel.findById(id);
-          if (!exists) throw new NotFoundException(`Category not found: ${id}`);
+          if (!exists)
+            throw new BadRequestException(
+              `Category not found: ${id}. Use an id from GET /api/course-categories.`,
+            );
         }
         updateCourseDto.categoryIds = categoryIds;
         updateCourseDto.categoryId = categoryIds[0];

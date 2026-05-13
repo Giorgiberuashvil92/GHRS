@@ -14,7 +14,12 @@
     "register": "რეგისტრაცია",
     "all_complexes": "ყველა კომპლექსი",
     "sets": "კომპლექსები და სეტები",
-    "rightArrow": "→"
+    "rightArrow": "→",
+    "all_courses": "ყველა კურსი",
+    "all_instructors": "ყველა ინსტრუქტორი",
+    "prof_dev_tab_landing": "პროფესიული განვითარება",
+    "prof_dev_tab_courses": "ყველა კურსი",
+    "prof_dev_tab_instructors": "ჩვენი ინსტრუქტორები"
   },
   "exercise": {
     "title": "ვარჯიში",
@@ -138,7 +143,7 @@
     "diplomasTitle": "მიღებული პროფესიებისთვის სტუდენტებზე გაცემული სერტიფიკატები",
     "viewCertificate": "სერტიფიკატის ნახვა",
     "subscribeBannerTitle": "ჩვენს პლატფორმაზე კურსის დასრულებისას იღებთ დიპლომს ან სერტიფიკატს მიღებულ პროფესიაზე.",
-    "subscribeBannerButton": "გამოწერის შეძენა"
+    "subscribeBannerButton": "კურსის შეძენა" 
   },
   "modal": {
     "success": "წარმატება!",

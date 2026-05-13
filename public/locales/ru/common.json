@@ -14,7 +14,12 @@
     "register": "Регистрация",
     "all_complexes": "Все комплексы",
     "sets": "Комплексы",
-    "rightArrow": "→"
+    "rightArrow": "→",
+    "all_courses": "Все курсы",
+    "all_instructors": "Все преподаватели",
+    "prof_dev_tab_landing": "Профессиональное развитие",
+    "prof_dev_tab_courses": "Все курсы",
+    "prof_dev_tab_instructors": "Наши преподаватели"
   },
   "buttons": {
     "subscribe": "Подписаться",

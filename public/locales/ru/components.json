@@ -66,6 +66,7 @@
     },
     "courses": {
       "title": "КУРСЫ",
+      "instructor_courses": "Курсы инструктора",
       "popular_courses": "ПОПУЛЯРНЫЕ КУРСЫ",
       "error": "Ошибка загрузки курсов",
       "all_courses": "ВСЕ {{count}} КУРСОВ →"

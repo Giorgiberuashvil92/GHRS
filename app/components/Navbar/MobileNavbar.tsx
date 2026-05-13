@@ -6,15 +6,32 @@ import NavbarIconButton from "./NavbarIconButton";
 import { getDefaultMenuItems } from "../Header/Header";
 import Link from "next/link";
 import { useI18n } from "../../context/I18nContext";
+import { getProfDevNavContext } from "../../utils/professionalDevNav";
 
 const MobileNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
   const { t } = useI18n();
+  const profNav = getProfDevNavContext(pathname);
   const menuItems = getDefaultMenuItems(t);
+
+  const isProfLandingActive =
+    pathname === "/professional" || pathname.startsWith("/professional/");
+  const isAllCoursesActive =
+    pathname === "/allCourse" || pathname.startsWith("/allCourse/");
+  const isParentActive =
+    Boolean(profNav.parent?.href && pathname === profNav.parent.href);
 
   const getBackgroundStyle = () => {
     if (pathname.startsWith('/singleCourse/')) {
+      return "bg-[url('/assets/images/header44.png')] bg-cover bg-center";
+    }
+
+    if (pathname.startsWith('/teachers/')) {
+      return "bg-[url('/assets/images/header44.png')] bg-cover bg-center";
+    }
+
+    if (pathname.startsWith('/allCourse/')) {
       return "bg-[url('/assets/images/header44.png')] bg-cover bg-center";
     }
 
@@ -28,6 +45,9 @@ const MobileNavbar = () => {
 
     switch (pathname) {
       case '/allCourse':
+        return "bg-[url('/assets/images/header44.png')] bg-cover bg-center";
+      case '/professional':
+      case '/teachers':
         return "bg-[url('/assets/images/header44.png')] bg-cover bg-center";
       case '/blog':
         return "bg-[url('/assets/images/header22.png')] bg-cover bg-center";
@@ -70,6 +90,47 @@ const MobileNavbar = () => {
       {/* Dropdown Menu */}
       {isMenuOpen && (
         <div className="fixed top-30 left-2 w-[90%] mx-auto flex flex-col gap-2 px-4 py-4 bg-gradient-to-br from-[rgba(94,43,143,0.6)] to-[rgba(61,51,74,0.5)] rounded-2xl shadow-lg backdrop-blur-lg border border-white/10">
+          {profNav.show ? (
+            <div className="rounded-xl bg-black/20 border border-white/10 p-2 mb-1 backdrop-blur-sm shadow-[inset_0_1px_0_rgba(255,255,255,0.05)]">
+              <div className="flex flex-col gap-1">
+                <Link href={profNav.profLandingHref} onClick={() => setIsMenuOpen(false)}>
+                  <span
+                    className={`block w-full text-left px-3 py-2.5 rounded-lg text-[12px] font-bowler uppercase tracking-wide transition-colors ${
+                      isProfLandingActive
+                        ? "bg-white/20 text-white border border-white/25"
+                        : "text-white/90 hover:bg-white/10 border border-transparent"
+                    }`}
+                  >
+                    {t("navigation.prof_dev_tab_landing")}
+                  </span>
+                </Link>
+                <Link href={profNav.allCoursesHref} onClick={() => setIsMenuOpen(false)}>
+                  <span
+                    className={`block w-full text-left px-3 py-2.5 rounded-lg text-[12px] font-bowler uppercase tracking-wide transition-colors ${
+                      isAllCoursesActive
+                        ? "bg-white/20 text-white border border-white/25"
+                        : "text-white/90 hover:bg-white/10 border border-transparent"
+                    }`}
+                  >
+                    {t("navigation.prof_dev_tab_courses")}
+                  </span>
+                </Link>
+                {profNav.parent ? (
+                  <Link href={profNav.parent.href} onClick={() => setIsMenuOpen(false)}>
+                    <span
+                      className={`block w-full text-left px-3 py-2.5 rounded-lg text-[12px] font-bowler uppercase tracking-wide transition-colors ${
+                        isParentActive
+                          ? "bg-white/20 text-white border border-white/25"
+                          : "text-white/90 hover:bg-white/10 border border-transparent"
+                      }`}
+                    >
+                      {t(profNav.parent.labelKey)}
+                    </span>
+                  </Link>
+                ) : null}
+              </div>
+            </div>
+          ) : null}
           {menuItems.map((item, index) => (
             <Link href={item.route} key={index}>
               <button

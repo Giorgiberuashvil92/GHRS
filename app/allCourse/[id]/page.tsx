@@ -2,6 +2,7 @@
 import React, { useMemo } from "react";
 import Image from "next/image";
 import DesktopNavbar from "@/app/components/Navbar/DesktopNavbar";
+import MobileNavbar from "@/app/components/Navbar/MobileNavbar";
 import { getDefaultMenuItems } from "@/app/components/Header/Header";
 import { useI18n } from "@/app/context/I18nContext";
 
@@ -55,6 +56,7 @@ const SingleCourse = () => {
   return (
     <>
       <DesktopNavbar menuItems={menuItems} blogBg={false} allCourseBg={true} />
+      <MobileNavbar />
       <main className="flex justify-between gap-[30px] text-[#3D334A]">
         {/* Sidebar - სექციები და ბანერები */}
         <div className="p-5 bg-[rgba(255,255,255,1)] min-h-[700px] rounded-[20px] max-w-[335px] hidden md:block flex-col">
