@@ -12,7 +12,6 @@ import BackgroundImage from "./BackgroundImage";
 import { useI18n } from "../../context/I18nContext";
 import { getProfDevNavContext } from "../../utils/professionalDevNav";
 
-/** ძველი defaultMenuItems (Header.tsx) — პირველი პუნქტი ყოველთვის ეს იყო რუსულად */
 const LEGACY_STATIC_MENU_FIRST = "Все комплексы";
 
 interface DesktopNavbarProps {
@@ -107,17 +106,19 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
     pathname === "/professional" || pathname.startsWith("/professional/");
   const isAllCoursesActive =
     pathname === "/allCourse" || pathname.startsWith("/allCourse/");
+  const isAllInstructorsActive =
+    pathname === "/teachers" || pathname.startsWith("/teachers/");
   const isParentActive =
     Boolean(profNav.parent?.href && pathname === profNav.parent.href);
 
   return (
-    <header className="fixed font-bowler top-0 left-0 right-0 z-50 my-4 w-full md:flex hidden justify-between px-10 py-5">
+    <header className="sticky font-bowler top-0 left-0 right-0 z-50 w-full md:flex hidden justify-between px-10 py-5 transition-all duration-300">
       <div
         className={`w-[780px] flex flex-col rounded-[24px] border border-white/10 relative overflow-hidden ${getBackgroundStyle()}`}
       >
         <div className="flex p-3.5 items-center w-full min-h-0">
         {!pathname.startsWith("/article/") && <BackgroundImage imageUrl={data?.featuredImages?.[0]} />}
-        <Link href="/" className="hover:brightness-0 duration-700 shrink-0">
+        <Link href="/" className="hover:brightness-0 duration-700 shrink-0 relative z-10" aria-label="Navigate to homepage">
           <SimpleLogo />
         </Link>
         <ul className="flex ml-[89px] mr-[73px] justify-between w-full min-w-0">
@@ -150,6 +151,16 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
               className={`${profSubBase} ${isAllCoursesActive ? profSubActive : profSubIdle}`}
             >
               {t("navigation.prof_dev_tab_courses")}
+            </Link>
+            <span
+              className="hidden sm:block h-3 w-px shrink-0 bg-gradient-to-b from-transparent via-white/35 to-transparent"
+              aria-hidden
+            />
+            <Link
+              href={profNav.allInstructorsHref}
+              className={`${profSubBase} ${isAllInstructorsActive ? profSubActive : profSubIdle}`}
+            >
+              {t("navigation.prof_dev_tab_instructors")}
             </Link>
             {profNav.parent ? (
               <>

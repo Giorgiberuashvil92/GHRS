@@ -19,6 +19,8 @@ const MobileNavbar = () => {
     pathname === "/professional" || pathname.startsWith("/professional/");
   const isAllCoursesActive =
     pathname === "/allCourse" || pathname.startsWith("/allCourse/");
+  const isAllInstructorsActive =
+    pathname === "/teachers" || pathname.startsWith("/teachers/");
   const isParentActive =
     Boolean(profNav.parent?.href && pathname === profNav.parent.href);
 
@@ -113,6 +115,17 @@ const MobileNavbar = () => {
                     }`}
                   >
                     {t("navigation.prof_dev_tab_courses")}
+                  </span>
+                </Link>
+                <Link href={profNav.allInstructorsHref} onClick={() => setIsMenuOpen(false)}>
+                  <span
+                    className={`block w-full text-left px-3 py-2.5 rounded-lg text-[12px] font-bowler uppercase tracking-wide transition-colors ${
+                      isAllInstructorsActive
+                        ? "bg-white/20 text-white border border-white/25"
+                        : "text-white/90 hover:bg-white/10 border border-transparent"
+                    }`}
+                  >
+                    {t("navigation.prof_dev_tab_instructors")}
                   </span>
                 </Link>
                 {profNav.parent ? (

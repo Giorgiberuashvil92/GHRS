@@ -298,6 +298,8 @@ const CourseSlider: React.FC<CourseSliderProps> = ({
 };
 
 const CourseCard = ({ course }: { course: Course }) => {
+  const [isHovered, setIsHovered] = React.useState(false);
+  
   const truncateText = (text: string, maxLength: number = 100) => {
     const cleanText = text.trim().replace(/\s+/g, " ");
     if (cleanText.length <= maxLength) return cleanText;
@@ -309,26 +311,63 @@ const CourseCard = ({ course }: { course: Course }) => {
   return (
     <Link
       href={`/singleCourse/${course.id}`}
-      className="block w-full transition-transform duration-300 hover:scale-[1.02]"
+      className="block w-full group"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <div className="bg-white rounded-[20px] p-4 w-full h-[420px] md:h-[450px] flex flex-col">
-        <Image
-          src={course.image}
-          width={674}
-          height={200}
-          alt={`${course.title} course image`}
-          className="mb-3 w-full h-[180px] md:h-[200px] object-cover rounded-[16px] flex-shrink-0"
-        />
-        <h5 className="text-[#1A1A1A] font-pt font-extrabold text-[18px] md:text-[22px] mb-2 leading-tight line-clamp-2 min-h-[3.5rem]">
-          {course.title}
-        </h5>
-        <p className="text-[#1A1A1A]/70 font-pt font-semibold text-sm mb-3 leading-[140%] line-clamp-2 flex-grow">
-          {truncateText(course.shortDescription || course.description, 120)}
-        </p>
-        <div className="w-full flex justify-end items-end mt-auto">
-          <button className="bg-[#D4BAFC] py-2.5 px-6 rounded-[10px] text-[16px] md:text-[18px] font-bowler font-bold leading-[100%] text-white hover:bg-[#C4A6F1] transition-colors">
-            {course.price}
-          </button>
+      <div className="bg-white rounded-[20px] p-4 w-full h-[420px] md:h-[450px] flex flex-col relative overflow-hidden transition-all duration-300 group-hover:scale-[1.02] group-hover:shadow-2xl">
+        {/* Hover Preview Overlay */}
+        <div className={`absolute inset-0 bg-gradient-to-t from-[#3D334A]/95 via-[#3D334A]/85 to-transparent rounded-[20px] transition-all duration-300 flex flex-col justify-end p-6 ${isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'}`}>
+          <div className="text-white space-y-3">
+            <h5 className="font-bowler font-bold text-xl leading-tight">
+              {course.title}
+            </h5>
+            <p className="font-pt text-sm leading-relaxed line-clamp-4">
+              {course.shortDescription || course.description}
+            </p>
+            <div className="flex flex-wrap gap-2 mt-2">
+              {course.instructor && (
+                <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-pt">
+                  👨‍🏫 {course.instructor}
+                </span>
+              )}
+              {course.duration && (
+                <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-pt">
+                  ⏱️ {course.duration}
+                </span>
+              )}
+              {course.level && (
+                <span className="bg-white/20 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-pt capitalize">
+                  📊 {course.level}
+                </span>
+              )}
+            </div>
+            <button className="bg-white text-[#3D334A] py-2.5 px-6 rounded-[10px] text-[16px] font-bowler font-bold leading-[100%] hover:bg-[#D4BAFC] hover:text-white transition-colors w-full mt-2">
+              View Course • {course.price}
+            </button>
+          </div>
+        </div>
+
+        {/* Original Card Content */}
+        <div className={`transition-opacity duration-300 flex flex-col h-full ${isHovered ? 'opacity-30' : 'opacity-100'}`}>
+          <Image
+            src={course.image}
+            width={674}
+            height={200}
+            alt={`${course.title} course image`}
+            className="mb-3 w-full h-[180px] md:h-[200px] object-cover rounded-[16px] flex-shrink-0"
+          />
+          <h5 className="text-[#1A1A1A] font-pt font-extrabold text-[18px] md:text-[22px] mb-2 leading-tight line-clamp-2 min-h-[3.5rem]">
+            {course.title}
+          </h5>
+          <p className="text-[#1A1A1A]/70 font-pt font-semibold text-sm mb-3 leading-[140%] line-clamp-2 flex-grow">
+            {truncateText(course.shortDescription || course.description, 120)}
+          </p>
+          <div className="w-full flex justify-end items-end mt-auto">
+            <button className="bg-[#D4BAFC] py-2.5 px-6 rounded-[10px] text-[16px] md:text-[18px] font-bowler font-bold leading-[100%] text-white hover:bg-[#C4A6F1] transition-colors">
+              {course.price}
+            </button>
+          </div>
         </div>
       </div>
     </Link>

@@ -13,6 +13,7 @@
     "login": "Login",
     "register": "Register",
     "all_complexes": "All Complexes",
+    "courses": "Courses",
     "sets": "SETS",
     "rightArrow": "→",
     "all_courses": "All courses",
@@ -78,7 +79,8 @@
     "buy": "Buy"
   },
   "sections": {
-    "professional": "Professional"
+    "professional": "Professional",
+    "featured_courses": "Featured Courses"
   },
   "works": {
     "all_sets": "All Sets ({{count}})",
@@ -134,6 +136,18 @@
     "viewCertificate": "View Certificate",
     "subscribeBannerTitle": "By completing a course on our platform, you receive a diploma or a certificate in the acquired profession.",
     "subscribeBannerButton": "Purchase Course"
+  },
+  "teachers": {
+    "our_teachers": "All Instructors",
+    "all_instructors": "ALL INSTRUCTORS",
+    "load_error": "Failed to load instructors",
+    "not_found": "No instructors found",
+    "sort": {
+      "most_courses": "Most Courses",
+      "alphabetical_asc": "A-Z",
+      "alphabetical_desc": "Z-A",
+      "highest_rated": "Highest Rated"
+    }
   },
   "modal": {
     "success": "Success!",

@@ -13,7 +13,7 @@
     "courses": {
       "title": "კურსები",
       "instructor_courses": "ინსტრუქტორის კურსები",
-      "popular_courses": "პოპულარული კურსები",
+      "popular_courses": "რჩეული კურსები",
       "all_courses": "ყველა {{count}} კურსი →",
       "error": "კურსების ჩატვირთვის შეცდომა"
     },

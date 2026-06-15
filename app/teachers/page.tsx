@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import DesktopNavbar from "../components/Navbar/DesktopNavbar";
@@ -9,6 +9,7 @@ import { getDefaultMenuItems } from "../components/Header/Header";
 import { useInstructors } from "../hooks/useInstructor";
 import { useI18n } from "../context/I18nContext";
 import { Footer } from "../components/Footer";
+import InstructorFilter from "../components/InstructorFilter";
 import {
   instructorDisplayNameForLocale,
   resolveCourseLocale,
@@ -25,7 +26,6 @@ interface BigTeacherCardProps {
   instructor?: Instructor;
 }
 
-/** ბლოგის `BigBlogCard`-ის იგივე ლეიაუთი — ყველა ინსტრუქტორი ერთნაირი „დიდი“ ბარათით */
 const BigTeacherCard = ({ instructor }: BigTeacherCardProps) => {
   const { t, locale } = useI18n();
   const loc = resolveCourseLocale(locale);
@@ -146,6 +146,49 @@ const Teachers = () => {
   const { instructors, loading, error } = useInstructors();
   const { t } = useI18n();
   const menuItems = getDefaultMenuItems(t);
+  
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [sortBy, setSortBy] = useState<string>(t("teachers.sort.most_courses"));
+
+  // Filter and sort instructors
+  const filteredAndSortedInstructors = useMemo(() => {
+    if (!instructors || instructors.length === 0) {
+      return [];
+    }
+
+    let result = [...instructors];
+
+    // Filter by category (currently disabled - waiting for backend support)
+    // Backend needs to return categoryId field for instructors
+    // Once available, uncomment:
+    // if (selectedCategory) {
+    //   result = result.filter(instructor => instructor.categoryId === selectedCategory);
+    // }
+
+    // Sort instructors
+    const sortByMostCourses = t("teachers.sort.most_courses") || "Most Courses";
+    const sortByAlphaAsc = t("teachers.sort.alphabetical_asc") || "A-Z";
+    const sortByAlphaDesc = t("teachers.sort.alphabetical_desc") || "Z-A";
+    const sortByHighestRated = t("teachers.sort.highest_rated") || "Highest Rated";
+
+    console.log("📊 Sorting instructors by:", sortBy);
+
+    if (sortBy === sortByMostCourses) {
+      result.sort((a, b) => (b.coursesCount || 0) - (a.coursesCount || 0));
+      console.log("✅ Sorted by Most Courses");
+    } else if (sortBy === sortByAlphaAsc) {
+      result.sort((a, b) => a.name.localeCompare(b.name));
+      console.log("✅ Sorted A-Z");
+    } else if (sortBy === sortByAlphaDesc) {
+      result.sort((a, b) => b.name.localeCompare(a.name));
+      console.log("✅ Sorted Z-A");
+    } else if (sortBy === sortByHighestRated) {
+      result.sort((a, b) => (b.averageRating || 0) - (a.averageRating || 0));
+      console.log("✅ Sorted by Highest Rated");
+    }
+
+    return result;
+  }, [instructors, selectedCategory, sortBy, t]);
 
   return (
     <div className="bg-[#F9F7FE]">
@@ -162,6 +205,15 @@ const Teachers = () => {
         </h1>
       </div>
 
+      {/* Instructor Filter */}
+      <div className="md:mx-5 px-4 md:px-10">
+        <InstructorFilter
+          onCategoryChange={setSelectedCategory}
+          onSortChange={setSortBy}
+          sortValue={sortBy}
+        />
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full mb-12 px-4 md:px-10">
         {loading ? (
           <>
@@ -175,12 +227,12 @@ const Teachers = () => {
             <p className="text-red-500 mb-2">{t("teachers.load_error")}</p>
             <p className="text-gray-500 text-sm">{error}</p>
           </div>
-        ) : instructors.length === 0 ? (
+        ) : filteredAndSortedInstructors.length === 0 ? (
           <div className="col-span-full text-center py-20">
             <p className="text-gray-500">{t("teachers.not_found")}</p>
           </div>
         ) : (
-          instructors.map((instructor) => (
+          filteredAndSortedInstructors.map((instructor) => (
             <BigTeacherCard key={instructor.id} instructor={instructor} />
           ))
         )}

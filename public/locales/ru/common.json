@@ -13,6 +13,7 @@
     "login": "Войти",
     "register": "Регистрация",
     "all_complexes": "Все комплексы",
+    "courses": "Курсы",
     "sets": "Комплексы",
     "rightArrow": "→",
     "all_courses": "Все курсы",
@@ -78,7 +79,8 @@
     "buy": "Купить"
   },
   "sections": {
-    "professional": "Профессиональный"
+    "professional": "Профессиональный",
+    "featured_courses": "Избранные курсы"
   },
   "works": {
     "all_sets": "Все сеты ({{count}})",
@@ -134,6 +136,18 @@
     "viewCertificate": "Посмотреть сертификат",
     "subscribeBannerTitle": "Завершив курс на нашей платформе, вы получаете диплом или сертификат по освоенной профессии.",
     "subscribeBannerButton": "Приобрести курс"
+  },
+  "teachers": {
+    "our_teachers": "Все преподаватели",
+    "all_instructors": "ВСЕ ПРЕПОДАВАТЕЛИ",
+    "load_error": "Ошибка загрузки преподавателей",
+    "not_found": "Преподаватели не найдены",
+    "sort": {
+      "most_courses": "Больше курсов",
+      "alphabetical_asc": "А-Я",
+      "alphabetical_desc": "Я-А",
+      "highest_rated": "Высший рейтинг"
+    }
   },
   "modal": {
     "success": "Успех!",

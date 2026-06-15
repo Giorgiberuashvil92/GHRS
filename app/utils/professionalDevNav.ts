@@ -11,12 +11,14 @@ export type ProfDevNavContext = {
   show: boolean;
   profLandingHref: string;
   allCoursesHref: string;
+  allInstructorsHref: string;
   /** მაგ. ინსტრუქტორის გვერდიდან → /teachers */
   parent?: ProfDevParentLink;
 };
 
 const PROF_LANDING = "/professional";
 const ALL_COURSES = "/allCourse";
+const ALL_INSTRUCTORS = "/teachers";
 
 function isTeachersPath(pathname: string): boolean {
   return pathname === "/teachers" || pathname.startsWith("/teachers/");
@@ -50,29 +52,27 @@ export function getProfDevNavContext(pathname: string | null): ProfDevNavContext
     show: false,
     profLandingHref: PROF_LANDING,
     allCoursesHref: ALL_COURSES,
+    allInstructorsHref: ALL_INSTRUCTORS,
   };
   if (!pathname || !isProfessionalDevSection(pathname)) return empty;
 
   let parent: ProfDevParentLink | undefined;
 
-  if (isTeachersPath(pathname) && pathname !== "/teachers") {
-    parent = { href: "/teachers", labelKey: "navigation.prof_dev_tab_instructors" };
-  } else if (isAllCoursePath(pathname) && pathname !== "/allCourse") {
-    parent = { href: "/allCourse", labelKey: "navigation.prof_dev_tab_courses" };
-  } else if (isSingleCoursePath(pathname)) {
+  // Individual course pages need a parent link back to their section
+  // because they use different route patterns (/singleCourse/ vs /allCourse/)
+  if (isSingleCoursePath(pathname)) {
     parent = { href: ALL_COURSES, labelKey: "navigation.prof_dev_tab_courses" };
-  } else if (
-    pathname === "/teachers" ||
-    pathname === "/allCourse" ||
-    isProfessionalPath(pathname)
-  ) {
-    parent = { href: "/", labelKey: "navigation.home" };
   }
+  
+  // Note: Individual instructor/course detail pages don't need parent links
+  // because main tabs (Professional, All Courses, All Instructors) are always visible
+  // and serve as navigation back to listing pages
 
   return {
     show: true,
     profLandingHref: PROF_LANDING,
     allCoursesHref: ALL_COURSES,
+    allInstructorsHref: ALL_INSTRUCTORS,
     parent,
   };
 }

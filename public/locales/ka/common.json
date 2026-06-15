@@ -13,6 +13,7 @@
     "login": "შესვლა",
     "register": "რეგისტრაცია",
     "all_complexes": "ყველა კომპლექსი",
+    "courses": "კურსები",
     "sets": "კომპლექსები და სეტები",
     "rightArrow": "→",
     "all_courses": "ყველა კურსი",
@@ -88,7 +89,8 @@
     "buy": "ყიდვა"
   },
   "sections": {
-    "professional": "პროფესიონალური"
+    "professional": "პროფესიონალური",
+    "featured_courses": "რჩეული კურსები"
   },
   "works": {
     "all_sets": "ყველა სეტი ({{count}})",
@@ -144,6 +146,18 @@
     "viewCertificate": "სერტიფიკატის ნახვა",
     "subscribeBannerTitle": "ჩვენს პლატფორმაზე კურსის დასრულებისას იღებთ დიპლომს ან სერტიფიკატს მიღებულ პროფესიაზე.",
     "subscribeBannerButton": "კურსის შეძენა" 
+  },
+  "teachers": {
+    "our_teachers": "ყველა ინსტრუქტორი",
+    "all_instructors": "ყველა ინსტრუქტორი",
+    "load_error": "ინსტრუქტორების ჩატვირთვის შეცდომა",
+    "not_found": "ინსტრუქტორები ვერ მოიძებნა",
+    "sort": {
+      "most_courses": "ყველაზე მეტი კურსი",
+      "alphabetical_asc": "ა-ჰ",
+      "alphabetical_desc": "ჰ-ა",
+      "highest_rated": "უმაღლესი რეიტინგი"
+    }
   },
   "modal": {
     "success": "წარმატება!",
