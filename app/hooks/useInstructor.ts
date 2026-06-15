@@ -118,7 +118,7 @@ export function useInstructor(instructorId: string): UseInstructorReturn {
 }
 
 // Hook for fetching all instructors
-export function useInstructors() {
+export function useInstructors(categoryId?: string) {
   const [instructors, setInstructors] = useState<Instructor[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -129,7 +129,12 @@ export function useInstructors() {
       setError(null);
 
       const { apiRequest, API_CONFIG } = await import("../config/api");
-      const endpoint = `${API_CONFIG.ENDPOINTS.INSTRUCTORS.ALL}?limit=500&page=1`;
+      let endpoint = `${API_CONFIG.ENDPOINTS.INSTRUCTORS.ALL}?limit=500&page=1`;
+      
+      // დავამატოთ category filter თუ არის
+      if (categoryId) {
+        endpoint += `&categoryId=${categoryId}`;
+      }
 
       const response = await apiRequest<{instructors: (Instructor & { _id?: string })[], total: number}>(endpoint);
       const instructorsWithId = (response.instructors || []).map((instructor) =>
@@ -151,7 +156,7 @@ export function useInstructors() {
 
   useEffect(() => {
     fetchInstructors();
-  }, []);
+  }, [categoryId]);
 
   return {
     instructors,

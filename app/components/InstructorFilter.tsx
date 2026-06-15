@@ -65,16 +65,14 @@ export default function InstructorFilter({
     const fetchCategories = async () => {
       try {
         setLoading(true);
-        // TODO: Enable when backend supports instructor category filtering
-        // const response = await fetch(`${API_CONFIG.BASE_URL}/api/course-categories`);
-        // if (!response.ok) throw new Error("Failed to fetch categories");
-        // const data = await response.json();
-        // setAllCategories(data);
-        
-        // Temporarily disabled - backend doesn't return categoryId for instructors yet
-        setAllCategories([]);
+        // Fetch course categories for instructor filtering
+        const response = await fetch(`${API_CONFIG.BASE_URL}/api/course-categories`);
+        if (!response.ok) throw new Error("Failed to fetch categories");
+        const data = await response.json();
+        setAllCategories(data);
       } catch (error) {
         console.error("Error fetching categories:", error);
+        setAllCategories([]);
       } finally {
         setLoading(false);
       }
@@ -85,6 +83,7 @@ export default function InstructorFilter({
   const handleCategorySelect = (category: Category | null) => {
     setSelectedCategory(category);
     onCategoryChange(category?._id || null);
+    console.log("📁 Category selected:", category?._id || "All");
   };
 
   if (loading) {

@@ -30,8 +30,9 @@ export class InstructorController {
     @Query('page') page?: number,
     @Query('limit') limit?: number,
     @Query('isActive') isActive?: boolean,
+    @Query('categoryId') categoryId?: string,
   ) {
-    return this.instructorService.findAll(page, limit, isActive);
+    return this.instructorService.findAll(page, limit, isActive, categoryId);
   }
 
   @Get('top')

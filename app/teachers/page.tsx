@@ -143,12 +143,14 @@ const BigTeacherCard = ({ instructor }: BigTeacherCardProps) => {
 };
 
 const Teachers = () => {
-  const { instructors, loading, error } = useInstructors();
   const { t } = useI18n();
   const menuItems = getDefaultMenuItems(t);
   
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [sortBy, setSortBy] = useState<string>(t("teachers.sort.most_courses"));
+  
+  // Fetch instructors with optional category filter
+  const { instructors, loading, error } = useInstructors(selectedCategory || undefined);
 
   // Filter and sort instructors
   const filteredAndSortedInstructors = useMemo(() => {
@@ -158,12 +160,8 @@ const Teachers = () => {
 
     let result = [...instructors];
 
-    // Filter by category (currently disabled - waiting for backend support)
-    // Backend needs to return categoryId field for instructors
-    // Once available, uncomment:
-    // if (selectedCategory) {
-    //   result = result.filter(instructor => instructor.categoryId === selectedCategory);
-    // }
+    // Category filtering is now handled by the backend via useInstructors hook
+    // No need for client-side filtering
 
     // Sort instructors
     const sortByMostCourses = t("teachers.sort.most_courses") || "Most Courses";
