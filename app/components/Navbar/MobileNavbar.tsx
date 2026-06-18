@@ -1,18 +1,20 @@
 "use client";
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
-import { MobileLogo } from "../Logo";
+import { MobileLogo, ProfessionalTabLogo, RehabilitationTabLogo, BlogTabLogo } from "../Logo";
 import NavbarIconButton from "./NavbarIconButton";
 import { getDefaultMenuItems } from "../Header/Header";
 import Link from "next/link";
 import { useI18n } from "../../context/I18nContext";
 import { getProfDevNavContext } from "../../utils/professionalDevNav";
+import { getNavbarLogoVariant } from "../../utils/navLogo";
 
 const MobileNavbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
   const { t } = useI18n();
   const profNav = getProfDevNavContext(pathname);
+  const logoVariant = getNavbarLogoVariant(pathname);
   const menuItems = getDefaultMenuItems(t);
 
   const isProfLandingActive =
@@ -37,6 +39,10 @@ const MobileNavbar = () => {
       return "bg-[url('/assets/images/header44.png')] bg-cover bg-center";
     }
 
+    if (pathname.startsWith('/article/')) {
+      return "bg-[url('/assets/images/header22.png')] bg-cover bg-center";
+    }
+
     if (pathname === '/shoppingcard' ||
         pathname === '/contact' ||
         pathname.startsWith('/player') ||
@@ -53,8 +59,6 @@ const MobileNavbar = () => {
         return "bg-[url('/assets/images/header44.png')] bg-cover bg-center";
       case '/blog':
         return "bg-[url('/assets/images/header22.png')] bg-cover bg-center";
-      case '/allComplex':
-        return "bg-[url('/assets/images/header33.png')] bg-cover bg-center";
       default:
         return "bg-gradient-to-br from-[rgba(94,43,143,0.5)] to-[rgba(61,51,74,0.4)]";
     }
@@ -70,7 +74,15 @@ const MobileNavbar = () => {
             <NavbarIconButton src={"/assets/images/burger.svg"} alt="Burger" />
           </div>
           <Link href={"/"}>
-            <MobileLogo />
+            {logoVariant === "professional" ? (
+              <ProfessionalTabLogo mobile />
+            ) : logoVariant === "rehabilitation" ? (
+              <RehabilitationTabLogo mobile />
+            ) : logoVariant === "blog" ? (
+              <BlogTabLogo mobile />
+            ) : (
+              <MobileLogo />
+            )}
           </Link>
           <NavbarIconButton src="/assets/images/store.svg" alt="Store" />
         </div>

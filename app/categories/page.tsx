@@ -1,7 +1,6 @@
 "use client";
 import { useCategories } from "../hooks/useCategories";
 import { useAllSets } from "../hooks/useSets";
-import Header from "../components/Header/Header";
 import WorksSlider from "../components/WorksSlider";
 import Subscribe from "../components/Subscribe";
 import ReviewSlider from "../components/ReviewSlider";
@@ -144,97 +143,61 @@ export default function CategoriesPage() {
 
   return (
     <div className="">
-      {/* Header Section with dynamic statistics */}
-      <div className="relative rounded-[20px] h-[100vh] md:h-[85vh] md:m-6 overflow-hidden">
-        {/* Video background */}
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="video-bg absolute h-full w-full object-cover z-[-1] md:rounded-[20px]"
-        >
-          <source src="/videos/hero.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-
-        {/* Statistics overlay */}
-        <div className="absolute bottom-16 left-16 z-10 max-w-[90%]">
-          {/* Stats badges */}
-          <div className="flex flex-wrap gap-3 mb-4">
-            {/* Sections badge with glassmorphism */}
-            <div className="relative w-[247px] h-[64px]">
-              {/* Glass background */}
-              <div className="absolute inset-0 bg-[#3D334A]/30 backdrop-blur-[20px] rounded-[15px]"></div>
-              {/* Content */}
-              <div className="relative w-full h-full px-5 py-2.5 flex items-center gap-2">
-                <div className="w-[46px] h-[44px] bg-[#3D334A]/30 backdrop-blur-[20px] rounded-[10px] flex items-center justify-center">
-                  <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 2H15V8H21V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V4C3 3.46957 3.21071 2.96086 3.58579 2.58579C3.96086 2.21071 4.46957 2 5 2H9Z" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </div>
-                <span className="font-pt text-white text-base font-medium">
-                  {subcategoriesCount} {t("common.sections") || "разделов"}
-                </span>
-              </div>
-            </div>
-
-            {/* Complexes badge with glassmorphism */}
-            <div className="relative w-[247px] h-[64px]">
-              {/* Glass background */}
-              <div className="absolute inset-0 bg-[#3D334A]/30 backdrop-blur-[20px] rounded-[15px]"></div>
-              {/* Content */}
-              <div className="relative w-full h-full px-5 py-2.5 flex items-center gap-2">
-                <div className="w-[46px] h-[44px] bg-white/20 rounded-[10px] flex items-center justify-center">
-                  <Image 
-                    src="/assets/icons/Video.png" 
-                    alt="Complexes" 
-                    width={30} 
-                    height={30}
-                    className="w-[30px] h-[30px]"
-                  />
-                </div>
-                <span className="font-pt text-white text-base font-medium">
-                  {setsCount} {t("common.complexes") || "комплексов"}
-                </span>
-              </div>
-            </div>
-
-            {/* Exercises badge with glassmorphism */}
-            <div className="relative w-[247px] h-[64px]">
-              {/* Glass background */}
-              <div className="absolute inset-0 bg-[#3D334A]/30 backdrop-blur-[20px] rounded-[15px]"></div>
-              {/* Content */}
-              <div className="relative w-full h-full px-5 py-2.5 flex items-center gap-2">
-                <div className="w-[46px] h-[44px] bg-white/20 rounded-[10px] flex items-center justify-center">
-                  <Image 
-                    src="/assets/icons/Pulse.png" 
-                    alt="Exercises" 
-                    width={30} 
-                    height={30}
-                    className="w-[30px] h-[30px]"
-                  />
-                </div>
-                <span className="font-pt text-white text-base font-medium">
-                  {exercisesCount} {t("common.exercises") || "упражнений"}
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Category title with glassmorphism */}
-          <div className="relative w-[779px] h-[158px]">
-            {/* Glass background */}
-            <div className="absolute inset-0 bg-[#3D334A]/30 backdrop-blur-[20px] rounded-[20px]"></div>
-            {/* Content */}
-            <div className="relative w-full h-full px-6 py-3 flex items-center">
-              <h1 className="font-bowler text-white text-3xl md:text-4xl uppercase tracking-wide">
-                {categoryTitle}
-              </h1>
-            </div>
-          </div>
-        </div>
-      </div>
+      <MainHeader
+        ShowBlock={false}
+        OptionalComponent={null}
+        stats={[
+          {
+            icon: (
+              <Image
+                src="/assets/icons/Book.png"
+                alt="Sections"
+                width={24}
+                height={24}
+                className="w-6 h-6"
+              />
+            ),
+            value: subcategoriesCount,
+            label: t("common.sections") || "Sections",
+          },
+          {
+            icon: (
+              <Image
+                src="/assets/icons/Video.png"
+                alt="Complexes"
+                width={24}
+                height={24}
+                className="w-6 h-6"
+              />
+            ),
+            value: setsCount,
+            label: t("common.complexes") || "Complexes",
+          },
+          {
+            icon: (
+              <Image
+                src="/assets/icons/Pulse.png"
+                alt="Exercises"
+                width={24}
+                height={24}
+                className="w-6 h-6"
+              />
+            ),
+            value: exercisesCount,
+            label: t("common.exercises") || "Exercises",
+          },
+        ]}
+        showArrows={false}
+        useVideo={true}
+        customBlockTitle={categoryTitle.toUpperCase()}
+        customBlockDescription={
+          mainCategory
+            ? getLocalized(mainCategory.description)
+            : t("common.categories") || "Categories"
+        }
+        hideBlock={false}
+        hideHeaderText={false}
+      />
       <div className="md:pt-[100px] pt-[400px]">
         {/* Разделы (Subcategories) */}
         <Section 

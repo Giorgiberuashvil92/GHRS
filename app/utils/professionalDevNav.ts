@@ -36,6 +36,16 @@ function isProfessionalPath(pathname: string): boolean {
   return pathname === "/professional" || pathname.startsWith("/professional/");
 }
 
+/** prof-dev tabbar-ის ლოგო (GRS + Rehabilitation Center) — მხოლოდ ამ გვერდებზე */
+export function shouldUseProfessionalTabLogo(pathname: string | null): boolean {
+  if (!pathname) return false;
+  return (
+    isProfessionalPath(pathname) ||
+    isAllCoursePath(pathname) ||
+    isSingleCoursePath(pathname)
+  );
+}
+
 /** ამ path-ებზე ვაჩვენებთ გაფართოებულ prof-dev მენიუს ჰედერში */
 export function isProfessionalDevSection(pathname: string | null): boolean {
   if (!pathname) return false;

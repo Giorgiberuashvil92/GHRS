@@ -159,7 +159,6 @@ export default function InstructorFilter({
           }}
           className="bg-[#F7F4FF] border border-[#E9DFF6] text-[#3D334A] text-[14px] md:text-[19px] font-medium cursor-pointer px-4 py-2 rounded-xl outline-none focus:ring-2 focus:ring-[#D4BAFC] focus:border-[#D4BAFC]"
         >
-          <option value={t("teachers.sort.most_courses")}>{t("teachers.sort.most_courses") || "Most Courses"}</option>
           <option value={t("teachers.sort.alphabetical_asc")}>{t("teachers.sort.alphabetical_asc") || "A-Z"}</option>
           <option value={t("teachers.sort.alphabetical_desc")}>{t("teachers.sort.alphabetical_desc") || "Z-A"}</option>
           <option value={t("teachers.sort.highest_rated")}>{t("teachers.sort.highest_rated") || "Highest Rated"}</option>

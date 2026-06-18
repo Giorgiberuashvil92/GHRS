@@ -62,11 +62,9 @@ export class InstructorService {
       query.isActive = isActive;
     }
     
-    // კატეგორიის ფილტრი - ვიპოვოთ ინსტრუქტორები რომლებსაც აქვთ კურსები ამ კატეგორიაში
     if (categoryId) {
       console.log(`📁 Filtering instructors by category: ${categoryId}`);
       
-      // 1. ვიპოვოთ ყველა გამოქვეყნებული კურსი ამ კატეგორიაში
       const coursesInCategory = await this.courseModel
         .find({
           isPublished: true,
@@ -78,7 +76,6 @@ export class InstructorService {
 
       console.log(`📚 Found ${coursesInCategory.length} courses in this category`);
 
-      // 2. მოვიძიოთ უნიკალური instructor names
       const instructorNames = [
         ...new Set(
           coursesInCategory
@@ -90,12 +87,10 @@ export class InstructorService {
       console.log(`👨‍🏫 Unique instructors with courses in this category: ${instructorNames.length}`, instructorNames);
 
       if (instructorNames.length === 0) {
-        // თუ არ არის ინსტრუქტორები ამ კატეგორიაში, დავაბრუნოთ ცარიელი
-        console.log(`⚠️ No instructors found for category ${categoryId}`);
+      console.log(`⚠️ No instructors found for category ${categoryId}`);
         return { instructors: [], total: 0 };
       }
 
-      // 3. დავამატოთ ფილტრი რომ მხოლოდ ეს ინსტრუქტორები დაბრუნდეს
       query.name = { $in: instructorNames };
     }
 

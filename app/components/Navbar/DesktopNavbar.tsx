@@ -3,14 +3,15 @@ import React, { useMemo } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "../../context/AuthContext";
 
-import { SimpleLogo } from "../Logo";
+import { SimpleLogo, ProfessionalTabLogo, RehabilitationTabLogo, BlogTabLogo } from "../Logo";
+import { getProfDevNavContext } from "../../utils/professionalDevNav";
+import { getNavbarLogoVariant } from "../../utils/navLogo";
 import NavbarIconButton from "./NavbarIconButton";
 import LanguageSelector from "./LanguageSelector";
 import Link from "next/link";
 import { MenuItem, getDefaultMenuItems } from "../Header/Header";
 import BackgroundImage from "./BackgroundImage";
 import { useI18n } from "../../context/I18nContext";
-import { getProfDevNavContext } from "../../utils/professionalDevNav";
 
 const LEGACY_STATIC_MENU_FIRST = "Все комплексы";
 
@@ -38,6 +39,7 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
 
   const localizedMenu = useMemo(() => getDefaultMenuItems(t), [t, locale]);
   const profNav = useMemo(() => getProfDevNavContext(pathname), [pathname]);
+  const logoVariant = useMemo(() => getNavbarLogoVariant(pathname), [pathname]);
   const effectiveMenuItems = useMemo(() => {
     const legacy =
       menuItems?.length === 4 && menuItems[0]?.name === LEGACY_STATIC_MENU_FIRST;
@@ -79,8 +81,6 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
         return "bg-[url('/assets/images/header44.png')] bg-cover bg-center min-h-[70px]";
       case "/blog":
         return "bg-[url('/assets/images/header22.png')] bg-cover bg-center min-h-[70px]";
-      case "/allComplex":
-        return "bg-[url('/assets/images/header33.png')] bg-cover bg-center min-h-[70px]";
       default:
         return "bg-gradient-to-br from-[rgba(94,43,143,0.4)] to-[rgba(61,51,74,0.3)] min-h-[70px]";
     }
@@ -96,9 +96,9 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
   };
 
   const profSubBase =
-    "inline-flex items-center justify-center px-3 sm:px-3.5 py-1.5 rounded-full text-[10px] sm:text-[11px] font-bowler uppercase tracking-[0.06em] leading-none transition-all duration-200 border";
+    "inline-flex items-center justify-center px-3 sm:px-3.5 py-1.5 rounded-full text-[13px] sm:text-[14px] font-bowler uppercase tracking-[0.06em] leading-none transition-all duration-200 border";
   const profSubIdle =
-    "text-white/88 border-white/15 bg-white/[0.07] hover:bg-white/[0.14] hover:border-white/25 hover:text-white";
+    "text-white/88 border-white/15 bg-white/[0.07] hover:text-gray-950 duration-700";
   const profSubActive =
     "text-white border-white/30 bg-white/[0.18] shadow-[inset_0_1px_0_rgba(255,255,255,0.12)]";
 
@@ -119,9 +119,25 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
         <div className="flex p-3.5 items-center w-full min-h-0">
         {!pathname.startsWith("/article/") && <BackgroundImage imageUrl={data?.featuredImages?.[0]} />}
         <Link href="/" className="hover:brightness-0 duration-700 shrink-0 relative z-10" aria-label="Navigate to homepage">
-          <SimpleLogo />
+          {logoVariant === "professional" ? (
+            <ProfessionalTabLogo />
+          ) : logoVariant === "rehabilitation" ? (
+            <RehabilitationTabLogo />
+          ) : logoVariant === "blog" ? (
+            <BlogTabLogo />
+          ) : (
+            <SimpleLogo />
+          )}
         </Link>
-        <ul className="flex ml-[89px] mr-[73px] justify-between w-full min-w-0">
+        <ul
+          className={`flex ${
+            logoVariant === "professional"
+              ? "ml-6"
+              : logoVariant === "rehabilitation" || logoVariant === "blog"
+                ? "ml-10"
+                : "ml-[89px]"
+          } mr-[73px] justify-between w-full min-w-0`}
+        >
           {effectiveMenuItems.map(({ id, name, route }) => (
             <Link key={id} href={route}>
               <li className="text-white font-bold text-[18px] hover:text-gray-950 duration-700 leading-[100%] tracking-[-1%]">

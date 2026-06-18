@@ -48,7 +48,7 @@ function MainHeader({
 }: MainHeaderProps) {
   const { t, locale } = useI18n();
   const { statistics } = useStatistics();
-  const [showContent, setShowContent] = useState(false);
+  const [showContent, setShowContent] = useState(true);
 
   // Debug: Log stats data
   console.log('📊 MainHeader Stats Debug:', {
@@ -74,7 +74,7 @@ function MainHeader({
     { id: 4, name: t("navigation.contacts"), route: "/contact" },
   ];
 
-  const handleNextClick = () => setShowContent(true);
+  const handleNextClick = () => setShowContent((prev) => !prev);
   const handlePrevClick = () => setShowContent(false);
 
   const isVisible = !showArrows || showContent;
@@ -129,6 +129,7 @@ function MainHeader({
           <button
             onClick={handlePrevClick}
             className="w-16 h-16 bg-black/30 backdrop-blur-sm rounded-2xl flex items-center justify-center transition-all duration-300 hover:bg-black/40 hover:scale-105"
+            aria-label="Hide header content"
           >
             <svg
               width="16"
@@ -151,6 +152,7 @@ function MainHeader({
           <button
             onClick={handleNextClick}
             className="w-16 h-16 bg-black/30 backdrop-blur-sm rounded-2xl flex items-center justify-center transition-all duration-300 hover:bg-black/40 hover:scale-105"
+            aria-label="Toggle header content"
           >
             <svg
               width="16"
@@ -211,9 +213,7 @@ function MainHeader({
         ))}
 
         <div
-          className={`md:absolute bottom-8 block transform transition-all duration-500 ${
-            isVisible ? "translate-x-0 opacity-100" : "-translate-x-10 opacity-0"
-          }`}
+          className={`md:absolute bottom-8 ${isVisible ? "block" : "hidden"}`}
         >
           {!hideStats && (
             <div className="flex gap-4 flex-col md:flex-row mb-4 w-full justify-between">
