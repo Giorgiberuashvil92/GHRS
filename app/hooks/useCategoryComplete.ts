@@ -16,6 +16,8 @@ export interface BackendSet {
   sortOrder: number;
   totalExercises?: number;
   totalDuration?: string;
+  /** Set-level duration from API (e.g. "25:00", "32:57 min") */
+  duration?: string;
   price?: {
     monthly?: number;
     quarterly?: number;

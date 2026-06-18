@@ -76,6 +76,10 @@
       "all_courses": "All {{count}} courses →",
       "კურსები": "კურსები",
       "ყველა_კურსი": "ყველა {{count}} კურსი →"
+    },
+    "test_banner": {
+      "title": "Take a test and choose the course suitable for you",
+      "button": "take test"
     }
   },
   "marketplace": {
@@ -156,6 +160,7 @@
   "complex_equipment": "Equipment:",
   "complex_warnings": "Warnings:",
   "complex_total_duration": "Total complex duration {{duration}} min",
+  "complex_total_duration_hours": "Total complex duration {{duration}} hours",
   "complex_exercises_count": "{{count}} exercises",
   "complex_beginner_level": "Beginner Level",
   "complex_intermediate_level": "Intermediate Level",
@@ -181,6 +186,7 @@
     "sets_count": "{{count}} sets",
     "exercises_count": "{{count}} exercises",
     "hours_count": "{{count}} hours",
+    "minutes_count": "{{count}} minutes",
     "loading": "Loading...",
     "duration_minutes": "{{duration}} min",
     "currency": "$",

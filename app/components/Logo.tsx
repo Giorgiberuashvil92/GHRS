@@ -27,7 +27,6 @@ export const SimpleLogo = () => {
   );
 };
 
-/** GRS + Rehabilitation Center — prof-dev tabbar (professional, allCourse, singleCourse) */
 export const ProfessionalTabLogo = ({ mobile = false }: { mobile?: boolean }) => {
   return (
     <Image

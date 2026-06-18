@@ -70,6 +70,10 @@
       "popular_courses": "პოპულარული კურსები",
       "error": "შეცდომა კურსების ჩატვირთვაში",
       "all_courses": "ყველა {{count}} კურსი →"
+    },
+    "test_banner": {
+      "title": "გაიარეთ ტესტი და მოირჩიეთ თქვენთვის შესაფერისი კურსი",
+      "button": "ტესტის გავლა"
     }
   },
   "marketplace": {
@@ -150,6 +154,7 @@
   "complex_equipment": "აღჭურვილობა:",
   "complex_warnings": "გაფრთხილებები:",
   "complex_total_duration": "კომპლექსის საერთო ხანგრძლივობა {{duration}} წთ",
+  "complex_total_duration_hours": "კომპლექსის საერთო ხანგრძლივობა {{duration}} საათი",
   "complex_exercises_count": "{{count}} ვარჯიში",
   "complex_beginner_level": "საწყისი დონე",
   "complex_intermediate_level": "საშუალო დონე",
@@ -175,6 +180,7 @@
     "sets_count": "{{count}} კომპლექსი",
     "exercises_count": "{{count}} ვარჯიში",
     "hours_count": "{{count}} საათი",
+    "minutes_count": "{{count}} წუთი",
     "loading": "იტვირთება...",
     "duration_minutes": "{{duration}} წთ",
     "currency": "₾",

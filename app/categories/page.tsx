@@ -11,17 +11,14 @@ import { Footer } from "../components/Footer";
 import MainHeader from "../components/Header/MainHeader";
 import { useI18n } from "../context/I18nContext";
 import Image from "next/image";
+import {
+  sumSetsExerciseCount,
+} from "@/app/utils/setDescriptionMeta";
 
 export default function CategoriesPage() {
   const { categories, loading: categoriesLoading, error: categoriesError } = useCategories();
   const { sets, loading: setsLoading, error: setsError } = useAllSets();
   const { t, locale } = useI18n();
-
-  console.log("📊 Categories Page Data:");
-  console.log("  Total categories:", categories.length);
-  console.log("  Categories:", categories);
-  console.log("  Total sets:", sets.length);
-  console.log("  Sets:", sets);
 
   // Helper to get localized string
   const getLocalized = (value: any): string => {
@@ -135,9 +132,8 @@ export default function CategoriesPage() {
   // Calculate statistics
   const subcategoriesCount = displaySubcategories.length;
   const setsCount = sets.length;
-  const exercisesCount = sets.reduce((total: number, set: any) => total + (set.totalExercises || 0), 0);
+  const exercisesCount = sumSetsExerciseCount(sets, locale);
   
-  // Get the main category name (for now, we'll use a general title, but this can be dynamic per category)
   const mainCategory = categories.find((cat: any) => !cat.parentId);
   const categoryTitle = mainCategory ? getLocalized(mainCategory.name) : (t("common.categories") || "Категории");
 

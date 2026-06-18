@@ -33,6 +33,7 @@ export interface Set {
   thumbnailImage: string;
   totalExercises: number;
   totalDuration: string;
+  duration?: string;
   difficultyLevels: number;
   levels: {
     beginner: {

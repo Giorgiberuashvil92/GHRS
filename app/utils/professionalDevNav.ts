@@ -36,11 +36,12 @@ function isProfessionalPath(pathname: string): boolean {
   return pathname === "/professional" || pathname.startsWith("/professional/");
 }
 
-/** prof-dev tabbar-ის ლოგო (GRS + Rehabilitation Center) — მხოლოდ ამ გვერდებზე */
+/** prof-dev tabbar-ის ლოგო (GRS + Professional Development) — prof-dev გვერდებზე */
 export function shouldUseProfessionalTabLogo(pathname: string | null): boolean {
   if (!pathname) return false;
   return (
     isProfessionalPath(pathname) ||
+    isTeachersPath(pathname) ||
     isAllCoursePath(pathname) ||
     isSingleCoursePath(pathname)
   );
@@ -66,23 +67,13 @@ export function getProfDevNavContext(pathname: string | null): ProfDevNavContext
   };
   if (!pathname || !isProfessionalDevSection(pathname)) return empty;
 
-  let parent: ProfDevParentLink | undefined;
-
-  // Individual course pages need a parent link back to their section
-  // because they use different route patterns (/singleCourse/ vs /allCourse/)
-  if (isSingleCoursePath(pathname)) {
-    parent = { href: ALL_COURSES, labelKey: "navigation.prof_dev_tab_courses" };
-  }
-  
-  // Note: Individual instructor/course detail pages don't need parent links
-  // because main tabs (Professional, All Courses, All Instructors) are always visible
-  // and serve as navigation back to listing pages
+  // Detail pages (e.g. /singleCourse/:id) don't need a parent link — the main
+  // prof-dev tabs (Professional, All Courses, All Instructors) are always visible.
 
   return {
     show: true,
     profLandingHref: PROF_LANDING,
     allCoursesHref: ALL_COURSES,
     allInstructorsHref: ALL_INSTRUCTORS,
-    parent,
   };
 }

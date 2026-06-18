@@ -15,6 +15,10 @@ import { useI18n } from "../../context/I18nContext";
 import Image from "next/image";
 // import { BackendExercise } from "@/types/exercise";
 import { Footer } from "@/app/components/Footer";
+import {
+  getSetExerciseCount,
+  sumSetsDurationHours,
+} from "@/app/utils/setDescriptionMeta";
 
 function SectionContent() {
   const searchParams = useSearchParams();
@@ -30,128 +34,53 @@ function SectionContent() {
     (sub) => sub._id === subcategoryId
   );
 
-  const subcategorySets =
-    categoryData?.sets?.filter((set) => set.subCategoryId === subcategoryId) ||
-    [];
+  const subcategorySets = useMemo(() => {
+    const currentSubCategoryId = String(subcategoryId || "");
+    return (
+      categoryData?.sets?.filter((set: any) => {
+        const setSubCategoryId = set.subCategoryId
+          ? typeof set.subCategoryId === "object"
+            ? String(set.subCategoryId._id || set.subCategoryId)
+            : String(set.subCategoryId)
+          : "";
+        return (
+          setSubCategoryId === currentSubCategoryId ||
+          setSubCategoryId === subcategoryId
+        );
+      }) || []
+    );
+  }, [categoryData?.sets, subcategoryId]);
 
-  // Calculate total hours from subcategory sets (must be before early returns)
-  const calculateTotalHours = useMemo(() => {
-    if (!subcategorySets || subcategorySets.length === 0) {
-      console.log("⏰ No subcategorySets for hours calculation");
-      return 0;
+  const getLocale = () => {
+    if (typeof window !== "undefined") {
+      const storedLocale = localStorage.getItem("locale");
+      return storedLocale && ["ka", "ru", "en"].includes(storedLocale)
+        ? storedLocale
+        : "ru";
     }
-    
-    console.log("⏰ Calculating hours from sets:", subcategorySets.map((set: any) => ({
-      setId: set._id?.substring(0, 8),
-      totalDuration: set.totalDuration,
-      hasDuration: !!set.totalDuration,
-      exercisesCount: set.exercises?.length || 0
-    })));
-    
-    const totalMinutes = subcategorySets.reduce((acc, set: any) => {
-      let setMinutes = 0;
-      
-      if (set.totalDuration && set.totalDuration !== "00:00") {
-        // Parse duration format "HH:MM:SS" or "MM:SS"
-        const parts = set.totalDuration.split(':').map(Number);
-        
-        if (parts.length === 3) {
-          // HH:MM:SS format
-          const [hours, mins, secs] = parts;
-          setMinutes = hours * 60 + mins + secs / 60;
-          console.log(`⏰ Set ${set._id?.substring(0, 8)}...: ${set.totalDuration} = ${hours}h ${mins}m ${secs}s = ${setMinutes.toFixed(2)} minutes`);
-        } else if (parts.length === 2) {
-          // MM:SS format
-          const [mins, secs] = parts;
-          setMinutes = mins + secs / 60;
-          console.log(`⏰ Set ${set._id?.substring(0, 8)}...: ${set.totalDuration} = ${mins}m ${secs}s = ${setMinutes.toFixed(2)} minutes`);
-        } else {
-          console.log(`⏰ Set ${set._id?.substring(0, 8)}...: Invalid duration format: ${set.totalDuration}`);
-        }
-      } 
-      // თუ არ აქვს totalDuration ან არის "00:00", ვითვლით exercises-ის videoDuration-ების ჯამს
-      else if (set.exercises && set.exercises.length > 0) {
-        console.log(`⏰ Set ${set._id?.substring(0, 8)}...: Processing ${set.exercises.length} exercises`);
-        
-        // დეტალური ლოგი თითოეული exercise-ისთვის
-        set.exercises.forEach((exercise: any, index: number) => {
-          console.log(`  Exercise ${index + 1}:`, {
-            id: exercise._id?.substring(0, 8),
-            videoDuration: exercise.videoDuration,
-            duration: exercise.duration,
-            videoUrl: exercise.videoUrl,
-            videoUrlEn: exercise.videoUrlEn,
-            videoDurationType: typeof exercise.videoDuration,
-            durationType: typeof exercise.duration
-          });
-        });
-        
-        setMinutes = set.exercises.reduce((exerciseAcc: number, exercise: any) => {
-          let exerciseMinutes = 0;
-          
-          // პირველ რიგში ვცდილობთ videoDuration-ს
-          if (exercise.videoDuration) {
-            const videoDur = String(exercise.videoDuration).trim();
-            if (videoDur && videoDur !== "0" && videoDur !== "00:00" && videoDur !== "0:00") {
-              const parts = videoDur.split(':').map(Number).filter(n => !isNaN(n));
-              if (parts.length === 3) {
-                // HH:MM:SS format
-                const [hours, mins, secs] = parts;
-                exerciseMinutes = hours * 60 + mins + secs / 60;
-                console.log(`  📹 Exercise ${exercise._id?.substring(0, 8)}...: videoDuration="${videoDur}" = ${hours}h ${mins}m ${secs}s = ${exerciseMinutes.toFixed(2)} minutes`);
-              } else if (parts.length === 2) {
-                // MM:SS format
-                const [mins, secs] = parts;
-                exerciseMinutes = mins + secs / 60;
-                console.log(`  📹 Exercise ${exercise._id?.substring(0, 8)}...: videoDuration="${videoDur}" = ${mins}m ${secs}s = ${exerciseMinutes.toFixed(2)} minutes`);
-              } else if (parts.length === 1) {
-                // წამებში (number)
-                exerciseMinutes = parts[0] / 60;
-                console.log(`  📹 Exercise ${exercise._id?.substring(0, 8)}...: videoDuration="${videoDur}" (seconds) = ${exerciseMinutes.toFixed(2)} minutes`);
-              } else {
-                console.log(`  ⚠️ Exercise ${exercise._id?.substring(0, 8)}...: Invalid videoDuration format: "${videoDur}"`);
-              }
-            } else {
-              console.log(`  ⚠️ Exercise ${exercise._id?.substring(0, 8)}...: videoDuration is empty or zero: "${videoDur}"`);
-            }
-          }
-          
-          // თუ videoDuration-ით არაფერი გამოვიდა, ვცდილობთ duration-ს
-          if (exerciseMinutes === 0 && exercise.duration) {
-            const dur = String(exercise.duration).trim();
-            if (dur && dur !== "0" && dur !== "00:00" && dur !== "0:00") {
-              const parts = dur.split(':').map(Number).filter(n => !isNaN(n));
-              if (parts.length === 2) {
-                const [mins, secs] = parts;
-                exerciseMinutes = mins + secs / 60;
-                console.log(`  ⏱️ Exercise ${exercise._id?.substring(0, 8)}...: duration="${dur}" = ${mins}m ${secs}s = ${exerciseMinutes.toFixed(2)} minutes`);
-              } else if (parts.length === 1) {
-                exerciseMinutes = parts[0] / 60;
-                console.log(`  ⏱️ Exercise ${exercise._id?.substring(0, 8)}...: duration="${dur}" (seconds) = ${exerciseMinutes.toFixed(2)} minutes`);
-              }
-            }
-          }
-          
-          if (exerciseMinutes === 0) {
-            console.log(`  ❌ Exercise ${exercise._id?.substring(0, 8)}...: No valid duration found`);
-          }
-          
-          return exerciseAcc + exerciseMinutes;
-        }, 0);
-        
-        console.log(`⏰ Set ${set._id?.substring(0, 8)}...: Total = ${setMinutes.toFixed(2)} minutes (${(setMinutes / 60).toFixed(2)} hours)`);
-      } else {
-        console.log(`⏰ Set ${set._id?.substring(0, 8)}...: No totalDuration and no exercises`);
-      }
-      
-      return acc + setMinutes;
-    }, 0);
-    
-    const totalHours = Math.round((totalMinutes / 60) * 10) / 10; // Round to 1 decimal
-    console.log(`⏰ Total: ${totalMinutes.toFixed(2)} minutes = ${totalHours} hours`);
-    
-    return totalHours;
-  }, [subcategorySets]);
+    return "ru";
+  };
+
+  const getLocalizedText = (
+    field: { ka: string; en: string; ru: string } | undefined,
+    loc: string = "ru"
+  ): string => {
+    if (!field) return "";
+    return (
+      field[loc as keyof typeof field] ||
+      field.ru ||
+      field.en ||
+      field.ka ||
+      ""
+    );
+  };
+
+  const locale = getLocale();
+
+  const calculateTotalHours = useMemo(
+    () => sumSetsDurationHours(subcategorySets),
+    [subcategorySets]
+  );
 
   if (loading) {
     return (
@@ -188,70 +117,20 @@ function SectionContent() {
     );
   }
 
-  // ვიღებთ ენის პარამეტრს
-  const getLocale = () => {
-    if (typeof window !== "undefined") {
-      const storedLocale = localStorage.getItem("locale");
-      return storedLocale && ["ka", "ru", "en"].includes(storedLocale)
-        ? storedLocale
-        : "ru";
-    }
-    return "ru";
-  };
-
-  const locale = getLocale();
-
   // ამოვიღოთ რაოდენობები
   const setsCount = subcategorySets.length;
   
-  // 🔍 DEBUG: დალოგვა subcategorySets-ის
-  console.log("📊 Section Page Debug:", {
-    subcategoryId,
-    categoryId,
-    setsCount,
-    subcategorySets: subcategorySets.map((set: any) => ({
-      setId: set._id,
-      setName: set.name,
-      exercisesArray: set.exercises,
-      exercisesArrayLength: set.exercises?.length,
-      totalExercises: set.totalExercises,
-      calculated: set.exercises?.length || set.totalExercises || 0
-    }))
-  });
-  
-  // სავარჯიშოების რაოდენობა - ვიყენებთ exercises მასივს, რომელიც აბრუნებს backend-ი
-  // ან თუ არ არის, ვითვლით სეტების exercises მასივების ჯამს
-  const exercisesCount = 
-    subcategorySets.reduce(
-      (total, set: any) => {
-        const setExercises = set.exercises?.length || set.totalExercises || 0;
-        console.log(`🔢 Set ${set._id?.substring(0, 8)}...: exercises.length=${set.exercises?.length}, totalExercises=${set.totalExercises}, calculated=${setExercises}, runningTotal=${total + setExercises}`);
-        return total + setExercises;
-      },
-      0
-    ) || 0;
-  
-  console.log("✅ Final exercisesCount:", exercisesCount);
-  console.log("📈 Summary:", {
-    setsCount,
-    exercisesCount,
-    expectedTotal: subcategorySets.reduce((sum: number, set: any) => sum + (set.exercises?.length || 0), 0)
-  });
-
-  // Helper function to get localized text (moved before usage)
-  const getLocalizedText = (
-    field: { ka: string; en: string; ru: string } | undefined,
-    locale: string = "ru"
-  ): string => {
-    if (!field) return "";
+  // სავარჯიშოების რაოდენობა — description / totalExercises / exercises
+  const exercisesCount = subcategorySets.reduce((total, set: any) => {
     return (
-      field[locale as keyof typeof field] ||
-      field.ru ||
-      field.en ||
-      field.ka ||
-      ""
+      total +
+      getSetExerciseCount({
+        description: getLocalizedText(set.description, locale),
+        totalExercises: set.totalExercises,
+        fallbackExerciseCount: set.exercises?.length,
+      })
     );
-  };
+  }, 0);
 
   // დებაგინგი - ყველა სეტის subCategoryId
   console.log('🔍 All sets subCategoryIds:', {

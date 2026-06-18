@@ -59,6 +59,8 @@ interface BackendSet {
   thumbnailImage: string;
   totalExercises: number;
   totalDuration: string;
+  /** Set-level duration from API (e.g. "25:00" = 25 minutes) */
+  duration?: string;
   difficultyLevels: number;
   levels: Levels;
   price: Price;

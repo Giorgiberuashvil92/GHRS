@@ -4,7 +4,7 @@ import React, { useRef, useState, useEffect } from "react";
 import MainHeader from "../components/Header/MainHeader";
 import Image from "next/image";
 import SliderArrows from "../components/SliderArrows";
-import Subscribe from "../components/Subscribe";
+import ProfessionalTestBanner from "../components/ProfessionalTestBanner";
 import ReviewSlider from "../components/ReviewSlider";
 import CourseSlider from "../components/CourseSlider";
 import TeacherSlider from "../components/TeacherSlider";
@@ -439,18 +439,7 @@ const Professional = () => {
         </div>
       )}
 
-      <Subscribe
-        backgroundImage="/assets/images/bluebg.jpg"
-        titleKey="subscription.title"
-        buttonTextKey="buttons.subscribe"
-        buttonTextColor="#3D334A"
-        buttonBgColor="#FFFFFF"
-        href="/shoppingcard"
-        bgCenter={true}
-        containerStyles="custom-class"
-        titleStyles="text-white"
-        buttonStyles="hover:opacity-80"
-      />
+      <ProfessionalTestBanner />
       <Footer />
     </div>
   );

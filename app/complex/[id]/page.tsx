@@ -14,13 +14,13 @@ import Blog from "../../components/Blog";
 import { useSet } from "../../hooks/useSet";
 import { useI18n } from "../../context/I18nContext";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { useExercisesBySet } from "../../hooks/useExercises";
 import { useUserAccess } from "../../hooks/useUserAccess";
 import { Footer } from "@/app/components/Footer";
 import WorksSlider from "@/app/components/WorksSlider";
 import MainHeader from "@/app/components/Header/MainHeader";
 import { formatPriceByLocale } from "@/app/utils/currency";
+import { parseSetDescriptionMeta } from "@/app/utils/setDescriptionMeta";
 import Image from "next/image";
 
 interface Params {
@@ -36,72 +36,48 @@ const Complex = ({ params }: ComplexPageProps) => {
   const setId = resolvedParams.id;
   const { t } = useI18n();
 
-  // ყოველთვის პირდაპირ set-ს ვიღებთ ID-ით
   const {
     set: directSet,
     loading: setLoading,
     error: setError,
   } = useSet(setId);
 
-  // საბოლოო loading და error states
   const loading = setLoading;
   const error = setError;
 
-  // Set-ის მონაცემები
   const rawSetData = directSet;
 
-  // ვიღებთ სავარჯიშოებს
   const { exercises, loading: exercisesLoading } = useExercisesBySet(setId);
 
-  // ვამოწმებთ user-ის access-ს
   const { hasAccess } = useUserAccess(setId);
 
-  // Helper ფუნქცია - უნდა ჩანდეს play ღილაკი თუ არა
-  const shouldShowPlayButton = (difficulty: string) => {
-    const exerciseCount = exercisesByDifficulty?.[difficulty] || 0;
-    // Play button ჩანს თუ user-ს აქვს access და არის ვარჯიშები
-    return hasAccess && exerciseCount > 0;
-  };
+  const exercisesByDifficulty =
+    exercises?.reduce((acc, exercise) => {
+      acc[exercise.difficulty] = (acc[exercise.difficulty] || 0) + 1;
+      return acc;
+    }, {} as { [key: string]: number }) ?? {};
 
-  // Helper ფუნქცია - უნდა ჩანდეს lock icon თუ არა
-  const shouldShowLockIcon = (difficulty: string) => {
-    const exerciseCount = exercisesByDifficulty?.[difficulty] || 0;
-    // Lock icon ჩანს თუ:
-    // 1. User-ს არ აქვს access, ან
-    // 2. Specific difficulty-ს 0 ვარჯიშო აქვს
-    const result = !hasAccess || exerciseCount === 0;
-    return result;
-  };
+  const getExerciseCount = (difficulty: string) =>
+    exercisesByDifficulty[difficulty] || 0;
 
-  // ვითვლით სავარჯიშოების რაოდენობას სირთულის მიხედვით
-  const exercisesByDifficulty = exercises?.reduce((acc, exercise) => {
-    acc[exercise.difficulty] = (acc[exercise.difficulty] || 0) + 1;
-    return acc;
-  }, {} as { [key: string]: number });
+  const hasExercisesForDifficulty = (difficulty: string) =>
+    getExerciseCount(difficulty) > 0;
 
-  // ვითვლით ჯამურ ხანგრძლივობას
-  const totalDurationInMinutes =
-    exercises?.reduce((total: number, exercise: any) => {
-      const duration = exercise.duration || "0:00";
-      const [minutes, seconds] = duration.split(":").map(Number);
-      return total + minutes + (seconds || 0) / 60;
-    }, 0) || 0;
+  const activeDifficultyCardClass =
+    "bg-[url('/assets/images/categorySliderBgs/bg1.jpg')] bg-cover bg-center bg-no-repeat";
+  const inactiveDifficultyCardClass = "bg-[rgba(249,247,254,1)]";
 
-  // ვაფორმატებთ ხანგრძლივობას "HH:MM" ფორმატში
-  const formattedTotalDuration = `${Math.floor(
-    totalDurationInMinutes
-  )}:${String(Math.round((totalDurationInMinutes % 1) * 60)).padStart(2, "0")}`;
+  // ღილაკები — მხოლოდ წვდომაზე (+ უნდა იყოს სავარჯიშო)
+  const shouldShowPlayButton = (difficulty: string) =>
+    hasAccess && hasExercisesForDifficulty(difficulty);
 
-  // ვითვლით საათებს სტატისტიკისთვის
-  const totalHours = Math.round(totalDurationInMinutes / 60);
+  const shouldShowLockIcon = (difficulty: string) =>
+    hasExercisesForDifficulty(difficulty) && !hasAccess;
 
-  // ვამატებთ დათვლილ მონაცემებს setData-ში
   const setData = rawSetData
     ? {
         ...rawSetData,
-        totalExercises: exercises?.length || 0,
-        totalDuration: formattedTotalDuration,
-        exercises, // ვამატებთ სავარჯიშოების სრულ სიას
+        exercises,
       }
     : null;
 
@@ -167,6 +143,15 @@ const Complex = ({ params }: ComplexPageProps) => {
   };
 
   const locale = getLocale();
+
+  const descriptionMeta = parseSetDescriptionMeta({
+    description: rawSetData ? getLocalizedText(rawSetData.description, locale) : "",
+    setDuration: rawSetData?.duration,
+    totalExercises: rawSetData?.totalExercises,
+    fallbackExerciseCount: exercises?.length,
+  });
+
+  const displayExerciseCount = descriptionMeta.exerciseCount;
 
   // Helper: გადაყავს `{new paragraph}` (ან `{new paragraph }`) მაკერი ახალ პარაგრაფებად
   const renderParagraphs = (text: string | undefined): React.ReactNode => {
@@ -302,18 +287,23 @@ const Complex = ({ params }: ComplexPageProps) => {
   const statsData = [
     {
       icon: <Image src="/assets/icons/Video.png" alt="Complexes" width={24} height={24} className="w-6 h-6" />,
-      value: setData?.totalExercises || exercises?.length || 0,
-      label: t("header.sets_count", { count: String(setData?.totalExercises || exercises?.length || 0) }).replace(/\d+\s*/, "") || "комплексов",
+      value: displayExerciseCount,
+      label: t("header.sets_count", { count: String(displayExerciseCount) }).replace(/\d+\s*/, "") || "комплексов",
     },
     {
       icon: <Image src="/assets/icons/Pulse.png" alt="Exercises" width={24} height={24} className="w-6 h-6" />,
-      value: exercises?.length || setData?.totalExercises || 0,
-      label: t("header.exercises_count", { count: String(exercises?.length || setData?.totalExercises || 0) }).replace(/\d+\s*/, "") || "упражнений",
+      value: displayExerciseCount,
+      label: t("header.exercises_count", { count: String(displayExerciseCount) }).replace(/\d+\s*/, "") || "упражнений",
     },
     {
       icon: <Image src="/assets/icons/Book.png" alt="Hours" width={24} height={24} className="w-6 h-6" />,
-      value: totalHours || 0,
-      label: t("header.hours_count", { count: String(totalHours || 0) }).replace(/\d+\s*/, "") || "часов",
+      value: descriptionMeta.durationDisplayValue,
+      label: t(
+        descriptionMeta.useHoursForDuration
+          ? "header.hours_count"
+          : "header.minutes_count",
+        { count: String(descriptionMeta.durationDisplayValue) }
+      ).replace(/\d+\s*/, "") || (descriptionMeta.useHoursForDuration ? "часов" : "минут"),
     },
   ];
 
@@ -404,11 +394,18 @@ const Complex = ({ params }: ComplexPageProps) => {
                     <span className="text-[rgba(132,111,160,1)] md:text-2xl text-[16px] leading-[120%] font-medium">
                       {getLocalizedText(setData.description, locale)}
                     </span>
-                    <p className="text-[rgba(132,111,160,1)] md:text-2xl text-[16px] leading-[120%] font-medium">
-                      {t("complex_total_duration", {
-                        duration: (setData as any)?.duration || setData?.totalDuration || "N/A",
-                      })}
-                    </p>
+                    {descriptionMeta.durationMinutes > 0 ? (
+                      <p className="text-[rgba(132,111,160,1)] md:text-2xl text-[16px] leading-[120%] font-medium">
+                        {t(
+                          descriptionMeta.useHoursForDuration
+                            ? "complex_total_duration_hours"
+                            : "complex_total_duration",
+                          {
+                            duration: String(descriptionMeta.durationDisplayValue),
+                          }
+                        )}
+                      </p>
+                    ) : null}
                   </div>
                   <div>
                     <h4 className="mb-[10px] text-[rgba(61,51,74,1)] tracking-[-1%] leading-[100%] text-[18px]">
@@ -497,11 +494,19 @@ const Complex = ({ params }: ComplexPageProps) => {
             <div className="order-1 md:order-3 flex flex-col md:gap-4 gap-5">
               {/* Beginner Level */}
               <div
-                className="relative bg-[url('/assets/images/categorySliderBgs/bg1.jpg')] bg-cover bg-center bg-no-repeat p-5 rounded-[10px] flex justify-between items-center"
+                className={`relative p-5 rounded-[10px] flex justify-between items-center ${
+                  hasExercisesForDifficulty("easy")
+                    ? activeDifficultyCardClass
+                    : inactiveDifficultyCardClass
+                }`}
               >
                 <div className="flex md:flex-row md:gap-[40px] flex-col md:items-center">
                   <h3
-                    className="text-[rgba(255,255,255,1)] md:text-2xl text-[18px] leading-[120%] tracking-[-3%] uppercase"
+                    className={`md:text-2xl text-[18px] leading-[120%] tracking-[-3%] uppercase ${
+                      hasExercisesForDifficulty("easy")
+                        ? "text-[rgba(255,255,255,1)]"
+                        : "text-[rgba(132,111,160,1)]"
+                    }`}
                   >
                     {t("complex_beginner_level")}
                   </h3>
@@ -623,15 +628,15 @@ const Complex = ({ params }: ComplexPageProps) => {
               {/* Intermediate Level */}
               <div
                 className={`p-5 rounded-[10px] flex justify-between items-center ${
-                  shouldShowPlayButton("medium")
-                    ? "bg-[url('/assets/images/categorySliderBgs/bg1.jpg')] bg-cover bg-center bg-no-repeat"
-                    : "bg-[rgba(249,247,254,1)]"
+                  hasExercisesForDifficulty("medium")
+                    ? activeDifficultyCardClass
+                    : inactiveDifficultyCardClass
                 }`}
               >
                 <div className="flex md:flex-row md:gap-[40px] flex-col md:items-center">
                   <h3
                     className={`md:text-2xl text-[18px] leading-[120%] tracking-[-3%] uppercase ${
-                      shouldShowPlayButton("medium")
+                      hasExercisesForDifficulty("medium")
                         ? "text-[rgba(255,255,255,1)]"
                         : "text-[rgba(132,111,160,1)]"
                     }`}
@@ -669,16 +674,16 @@ const Complex = ({ params }: ComplexPageProps) => {
               {/* Advanced Level */}
               <div
                 className={`p-5 rounded-[10px] flex justify-between items-center ${
-                  shouldShowPlayButton("hard")
-                    ? "bg-[url('/assets/images/categorySliderBgs/bg1.jpg')] bg-cover bg-center bg-no-repeat"
-                    : "bg-[rgba(249,247,254,1)]"
+                  hasExercisesForDifficulty("hard")
+                    ? activeDifficultyCardClass
+                    : inactiveDifficultyCardClass
                 }`}
               >
                 <div className="flex md:flex-row md:gap-[40px] flex-col md:items-center">
                   <h3
                     className={`md:text-2xl text-[18px] leading-[120%] tracking-[-3%] uppercase ${
-                      shouldShowPlayButton("hard")
-                        ? "text-[rgba(132,111,160,1)]"
+                      hasExercisesForDifficulty("hard")
+                        ? "text-[rgba(255,255,255,1)]"
                         : "text-[rgba(132,111,160,1)]"
                     }`}
                   >

@@ -16,7 +16,10 @@ import { Footer } from "@/app/components/Footer";
 import MainHeader from "@/app/components/Header/MainHeader";
 import Section from "../../components/Section";
 import Works from "../../components/Works";
-// import DesktopNavbar from "@/app/components/Navbar/DesktopNavbar";
+import {
+  getSetExerciseCount,
+  sumSetsDurationHours,
+} from "@/app/utils/setDescriptionMeta";
 
 export default function CategoriesPage({
   params,
@@ -31,77 +34,10 @@ export default function CategoriesPage({
 
   const selectedCategory = categoryData?.category;
 
-  // საათების გამოთვლა (როგორც subcategory-ს გვერდზე) - early return-ის წინ
-  const calculateTotalHours = useMemo(() => {
-    if (!categoryData?.sets || categoryData.sets.length === 0) {
-      return 0;
-    }
-    
-    const subcategoriesCount = categoryData?.subcategories?.length || 0;
-    const setsToCalculate = subcategoriesCount > 0
-      ? categoryData.sets.filter((set: any) => !set.subCategoryId) || []
-      : categoryData.sets || [];
-    
-    if (!setsToCalculate || setsToCalculate.length === 0) {
-      return 0;
-    }
-    
-    const totalMinutes = setsToCalculate.reduce((acc: number, set: any) => {
-      let setMinutes = 0;
-      
-      if (set.totalDuration && set.totalDuration !== "00:00") {
-        const parts = set.totalDuration.split(':').map(Number);
-        
-        if (parts.length === 3) {
-          const [hours, mins, secs] = parts;
-          setMinutes = hours * 60 + mins + secs / 60;
-        } else if (parts.length === 2) {
-          const [mins, secs] = parts;
-          setMinutes = mins + secs / 60;
-        }
-      } else if (set.exercises && set.exercises.length > 0) {
-        setMinutes = set.exercises.reduce((exerciseAcc: number, exercise: any) => {
-          let exerciseMinutes = 0;
-          
-          if (exercise.videoDuration) {
-            const videoDur = String(exercise.videoDuration).trim();
-            if (videoDur && videoDur !== "0" && videoDur !== "00:00" && videoDur !== "0:00") {
-              const parts = videoDur.split(':').map(Number).filter(n => !isNaN(n));
-              if (parts.length === 3) {
-                const [hours, mins, secs] = parts;
-                exerciseMinutes = hours * 60 + mins + secs / 60;
-              } else if (parts.length === 2) {
-                const [mins, secs] = parts;
-                exerciseMinutes = mins + secs / 60;
-              } else if (parts.length === 1) {
-                exerciseMinutes = parts[0] / 60;
-              }
-            }
-          }
-          
-          if (exerciseMinutes === 0 && exercise.duration) {
-            const dur = String(exercise.duration).trim();
-            if (dur && dur !== "0" && dur !== "00:00" && dur !== "0:00") {
-              const parts = dur.split(':').map(Number).filter(n => !isNaN(n));
-              if (parts.length === 2) {
-                const [mins, secs] = parts;
-                exerciseMinutes = mins + secs / 60;
-              } else if (parts.length === 1) {
-                exerciseMinutes = parts[0] / 60;
-              }
-            }
-          }
-          
-          return exerciseAcc + exerciseMinutes;
-        }, 0);
-      }
-      
-      return acc + setMinutes;
-    }, 0);
-    
-    const totalHours = Math.round((totalMinutes / 60) * 10) / 10;
-    return totalHours;
-  }, [categoryData?.sets, categoryData?.subcategories]);
+  const calculateTotalHours = useMemo(
+    () => sumSetsDurationHours(categoryData?.sets || []),
+    [categoryData?.sets]
+  );
 
   if (loading) {
     return (
@@ -169,17 +105,17 @@ export default function CategoriesPage({
   
 
 
-  const exercisesCount = categoryData?.exercises?.length || 
-    categoryData?.sets?.reduce(
-      (total, set: any) => {
-        const setExercises = set.exercises?.length || set.totalExercises || 0;
-        console.log(`🔢 Set ${set._id}: exercises.length=${set.exercises?.length}, totalExercises=${set.totalExercises}, calculated=${setExercises}`);
-        return total + setExercises;
-      },
-      0
-    ) || 0;
-  
-  console.log("✅ Final exercisesCount:", exercisesCount);
+  const exercisesCount =
+    categoryData?.sets?.reduce((total, set: any) => {
+      return (
+        total +
+        getSetExerciseCount({
+          description: getLocalizedText(set.description, locale),
+          totalExercises: set.totalExercises,
+          fallbackExerciseCount: set.exercises?.length,
+        })
+      );
+    }, 0) || 0;
 
   // ფორმატირების ფუნქცია
   const formatSet = (set: any) => ({

@@ -21,6 +21,10 @@
       "courses": "courses",
       "instructors": "instructors",
       "students": "students"
+    },
+    "test_banner": {
+      "title": "Take a test and choose the course suitable for you",
+      "button": "take test"
     }
   }
 }

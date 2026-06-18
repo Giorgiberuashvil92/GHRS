@@ -10,6 +10,7 @@ interface BackendSet {
   thumbnailImage: string;
   totalExercises: number;
   totalDuration: string;
+  duration?: string;
   difficultyLevels: number;
   levels: {
     beginner: {
@@ -64,6 +65,7 @@ const transformSet = (backendSet: BackendSet): Set => {
     thumbnailImage: backendSet.thumbnailImage || "/assets/images/workMan.png",
     totalExercises: backendSet.totalExercises,
     totalDuration: backendSet.totalDuration,
+    duration: backendSet.duration,
     difficultyLevels: backendSet.difficultyLevels,
     levels: backendSet.levels,
     price: backendSet.price,

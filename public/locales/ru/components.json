@@ -70,6 +70,11 @@
       "popular_courses": "ПОПУЛЯРНЫЕ КУРСЫ",
       "error": "Ошибка загрузки курсов",
       "all_courses": "ВСЕ {{count}} КУРСОВ →"
+    },
+    "test_banner": {
+      "title_line1": "Пройдите тест",
+      "title_line2": "и подберите подходящий вам курс",
+      "button": "ПРОЙТИ ТЕСТИРОВАНИЕ"
     }
   },
   "marketplace": {
@@ -150,6 +155,7 @@
   "complex_equipment": "Оборудование:",
   "complex_warnings": "Предупреждения:",
   "complex_total_duration": "Общая длительность комплекса {{duration}} мин",
+  "complex_total_duration_hours": "Общая длительность комплекса {{duration}} час",
   "complex_exercises_count": "{{count}} упражнений",
   "complex_beginner_level": "Начальный уровень",
   "complex_intermediate_level": "Средний уровень",
@@ -175,6 +181,7 @@
     "sets_count": "{{count}} комплексов",
     "exercises_count": "{{count}} упражнений",
     "hours_count": "{{count}} часов",
+    "minutes_count": "{{count}} минут",
     "loading": "Загрузка...",
     "duration_minutes": "{{duration}} мин",
     "currency": "₽",

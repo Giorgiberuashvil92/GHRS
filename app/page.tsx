@@ -12,62 +12,28 @@ import { useAllSets } from "./hooks/useSets";
 import { Footer } from "./components/Footer";
 import { useI18n } from "./context/I18nContext";
 import MainHeader from "./components/Header/MainHeader";
-import useStatistics from "./hooks/useStatistics";
 import Image from "next/image";
+import {
+  sumSetsDurationHours,
+  sumSetsExerciseCount,
+} from "./utils/setDescriptionMeta";
 
 const Home = () => {
   const { sets } = useAllSets();
-  const { t } = useI18n();
-  const { statistics } = useStatistics();
-  console.log('📊 Total sets fetched:', sets?.length);
-  console.log('📦 Sets data:', sets);
-  console.log('📊 Statistics from hook:', statistics);
+  const { t, locale } = useI18n();
 
-  // Use statistics from hook (more accurate) - fallback to sets calculation if not available
-  const setsCount = statistics?.total?.sets || sets?.length || 0;
-  const exercisesCount = statistics?.total?.exercises || (sets ? sets.reduce((acc, set) => acc + (set.totalExercises || 0), 0) : 0);
-  
-  // Hours: use statistics if available, otherwise calculate from sets
-  const hoursCount = React.useMemo(() => {
-    // First try to use statistics hook (most accurate)
-    if (statistics?.total?.hours && statistics.total.hours > 0) {
-      return statistics.total.hours;
-    }
-    
-    // Fallback: calculate from sets
-    if (!sets || sets.length === 0) return 0;
-    
-    const totalMinutes = sets.reduce((acc, set) => {
-      if (!set.totalDuration) return acc;
-      
-      // Parse duration format "HH:MM:SS" or "MM:SS"
-      const parts = set.totalDuration.split(':').map(Number);
-      let minutes = 0;
-      
-      if (parts.length === 3) {
-        // HH:MM:SS format
-        const [hours, mins, secs] = parts;
-        minutes = hours * 60 + mins + secs / 60;
-      } else if (parts.length === 2) {
-        // MM:SS format
-        const [mins, secs] = parts;
-        minutes = mins + secs / 60;
-      }
-      
-      return acc + minutes;
-    }, 0);
-    
-    return Math.round((totalMinutes / 60) * 10) / 10; // Round to 1 decimal
-  }, [sets, statistics]);
+  const setsCount = sets?.length || 0;
 
-  console.log('📈 Final stats:', {
-    setsCount,
-    exercisesCount,
-    hoursCount,
-    fromStatistics: !!statistics?.total
-  });
+  const exercisesCount = React.useMemo(
+    () => (sets?.length ? sumSetsExerciseCount(sets, locale) : 0),
+    [sets, locale]
+  );
 
-  // Add stats data using statistics hook (accurate data)
+  const hoursCount = React.useMemo(
+    () => (sets?.length ? sumSetsDurationHours(sets) : 0),
+    [sets]
+  );
+
   const statsData = [
     {
       icon: <Image src="/assets/icons/Video.png" alt="Complexes" width={24} height={24} className="w-6 h-6" />,
