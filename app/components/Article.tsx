@@ -17,6 +17,9 @@ import { BsYoutube } from "react-icons/bs";
 import { BsInstagram } from "react-icons/bs";
 import { sanitizeHtml } from "../utils/sanitize";
 
+/** Same static hero as /blog SubHeader and BigBlogCard */
+const BLOG_HERO_IMAGE = "/assets/images/blogbg.jpg";
+
 interface ArticleProps {
   article: ArticleType;
 }
@@ -291,7 +294,7 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
     <>
       <div className="relative w-full h-[518px]">
         <Image
-          src={extractImageUrl(article.featuredImages?.[0]) || '/assets/images/default-article.jpg'}
+          src={BLOG_HERO_IMAGE}
           alt={article.title[language]}
           fill
           className="object-cover rounded-10"
@@ -675,22 +678,18 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
               }
             `}</style>
 
-            {/* Featured Images */}
             {article.featuredImages?.map((image, index) => {
-              // Try to parse JSON string if it contains array-like structure
               let imageUrl = image;
-              if (typeof image === 'string' && image.includes('[')) {
+              if (typeof image === "string" && image.includes("[")) {
                 try {
                   const parsed = JSON.parse(image);
                   imageUrl = Array.isArray(parsed) ? parsed[0] : image;
                 } catch (e) {
-                  // If parsing fails, use the original string
-                  console.error('Failed to parse image URL:', e);
+                  console.error("Failed to parse image URL:", e);
                 }
               }
 
-              // Skip if image URL is not a valid string or contains array-like structure
-              if (typeof imageUrl !== 'string' || imageUrl.includes('[')) {
+              if (typeof imageUrl !== "string" || imageUrl.includes("[")) {
                 return null;
               }
 
