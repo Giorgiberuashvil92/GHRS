@@ -12,8 +12,7 @@ export class EmailService {
     const gmailPass = this.configService.get<string>('GMAIL_APP_PASSWORD');
 
     console.log('📧 Initializing Gmail Service...');
-    console.log('Gmail User:', gmailUser);
-    console.log('Gmail Pass:', gmailPass ? '****' + gmailPass.slice(-4) : 'NOT SET');
+    console.log('Gmail credentials configured:', Boolean(gmailUser && gmailPass));
 
     this.transporter = nodemailer.createTransport({
       service: 'gmail',

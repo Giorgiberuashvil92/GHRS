@@ -5,7 +5,9 @@ import React, {
   Suspense,
   useEffect,
   useCallback,
+  useMemo,
 } from "react";
+import { getVideoType, resolveExerciseVideo } from "../../lib/exercise-video";
 import DesktopNavbar from "../components/Navbar/DesktopNavbar";
 import { defaultMenuItems } from "../components/Header/Header";
 // import Image from "next/image";
@@ -192,44 +194,6 @@ const getYouTubeVideoId = (url: string) => {
   return match && match[2].length === 11 ? match[2] : null;
 };
 
-// ვიდეოს ტიპის შემოწმების ფუნქცია
-const getVideoType = (url: string): "youtube" | "direct" | "unknown" => {
-  if (!url) return "unknown";
-
-  // Invalid URLs check
-  if (
-    !url ||
-    url === "thumbnailFile" ||
-    url === "videoFile" ||
-    url.length < 10
-  ) {
-    console.log("❌ Invalid URL:", url);
-    return "unknown";
-  }
-  console.log("✅ Checking URL:", url);
-
-  // YouTube URL პატერნები
-  const youtubePatterns = [
-    /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.+/,
-    /^(https?:\/\/)?(www\.)?youtube\.com\/watch\?v=([^&]+)/,
-    /^(https?:\/\/)?(www\.)?youtu\.be\/([^?]+)/,
-  ];
-
-  if (youtubePatterns.some((pattern) => pattern.test(url))) {
-    return "youtube";
-  }
-
-  // პირდაპირი ვიდეო URL-ის პატერნები
-  const videoExtensions = /\.(mp4|webm|ogg|m4v|mov|avi|mkv)$/i;
-  const videoHosts = /(ghrs-group\.com|ghrs-group\.ru)/i;
-
-  if (videoExtensions.test(url) || videoHosts.test(url)) {
-    return "direct";
-  }
-
-  return "unknown";
-};
-
 // YouTube API ტიპები
 interface YouTubePlayer {
   Player: new (
@@ -397,7 +361,7 @@ const VideoPlayer = ({
 
 function PlayerContent() {
   const searchParams = useSearchParams();
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   // const { isAuthenticated } = useAuth();
   const { recordActivity } = useActivityTracker();
   const [currentExercise, setCurrentExercise] =
@@ -485,21 +449,16 @@ function PlayerContent() {
   // შემდეგ/წინა ვარჯიშზე გადასვლა
 
   // ვარჯიშების ფილტრაცია difficulty-ის მიხედვით და რიგის შეცვლა
-  const exercises = (
-    allExercises?.filter((ex) =>
-      difficulty ? ex.difficulty === difficulty : true
-    ) || []
-  ).reverse(); // ამოვაბრუნოთ რიგი რომ 1, 2, 3, 4 იყოს
+  const exercises = useMemo(() => (
+    allExercises?.filter(exercise => !difficulty || exercise.difficulty === difficulty) || []
+  ).reverse(), [allExercises, difficulty]);
 
-  // Set first exercise as current by default and scroll to it
+  // Keep the selected exercise in sync with the latest response and route filters.
   useEffect(() => {
-    if (exercises.length > 0 && !currentExercise) {
-      setCurrentExercise(exercises[0]);
-      if (scrollContainerRef.current) {
-        scrollContainerRef.current.scrollLeft = 0;
-      }
-    }
-  }, [exercises, currentExercise]);
+    if (exercisesLoading) return;
+    const next = exercises.find(exercise => exercise._id === currentExercise?._id) || exercises[0] || null;
+    if (next !== currentExercise) setCurrentExercise(next);
+  }, [exercises, currentExercise, exercisesLoading]);
 
   console.log("🎯 Player Data:", {
     setId,
@@ -675,96 +634,8 @@ function PlayerContent() {
             }
            
 
-            // Get video URL based on language and availability
-            const locale = getLocale();
-            let videoUrl: string | undefined;
-
-            // პირველად ვცდილობთ შესაბამისი ენის ვიდეოს
-            if (locale === "en" && currentExercise.videoUrlEn) {
-              videoUrl = currentExercise.videoUrlEn;
-              console.log("✅ Selected EN video:", videoUrl);
-            } else if (locale === "ru" && currentExercise.videoUrl) {
-              videoUrl = currentExercise.videoUrl;
-              console.log("✅ Selected RU video:", videoUrl);
-            } else if (locale === "ka" && currentExercise.videoUrl) {
-              videoUrl = currentExercise.videoUrl;
-              console.log("✅ Selected KA video:", videoUrl);
-            } else {
-              console.log("❌ No matching video found for locale:", locale);
-              console.log("  - videoUrl:", currentExercise.videoUrl);
-              console.log("  - videoUrlEn:", currentExercise.videoUrlEn);
-            }
-
-            // Convert .ru URLs to .com only for non-Russian locales
-            if (
-              videoUrl &&
-              videoUrl.includes("ghrs-group.ru") &&
-              locale !== "ru"
-            ) {
-              console.log(
-                "🔄 Converting .ru to .com for non-Russian locale:",
-                locale
-              );
-              videoUrl = videoUrl.replace("ghrs-group.ru", "ghrs-group.com");
-              console.log("✅ Converted URL:", videoUrl);
-            } else {
-              console.log(
-                "✅ Keeping original URL for locale:",
-                locale,
-                "URL:",
-                videoUrl
-              );
-            }
-
+            let videoUrl = resolveExerciseVideo(currentExercise, locale);
             let videoType = getVideoType(videoUrl || "");
-
-            console.log("🎥 Initial Video URL:", {
-              locale,
-              videoUrl,
-              videoType,
-              exercise: {
-                id: currentExercise._id,
-                videoUrl: currentExercise.videoUrl,
-                videoUrlEn: currentExercise.videoUrlEn,
-              },
-            });
-
-            // If language-specific URL is invalid, try fallback URLs
-            if (videoType === "unknown") {
-              
-
-              // ვცდილობთ სხვა ენის ვიდეოს fallback-ად
-              if (locale === "en" && currentExercise.videoUrl) {
-                videoUrl = currentExercise.videoUrl;
-              } else if (locale !== "en" && currentExercise.videoUrlEn) {
-                videoUrl = currentExercise.videoUrlEn;
-                console.log("✅ Fallback to EN video:", videoUrl);
-              } else {
-                console.log("❌ No fallback video found");
-              }
-
-              // Convert .ru URLs to .com only for non-Russian locales
-              if (
-                videoUrl &&
-                videoUrl.includes("ghrs-group.ru") &&
-                locale !== "ru"
-              ) {
-                console.log(
-                  "🔄 Converting .ru to .com for fallback (non-Russian locale):",
-                  locale
-                );
-                videoUrl = videoUrl.replace("ghrs-group.ru", "ghrs-group.com");
-                console.log("✅ Converted fallback URL:", videoUrl);
-              } else {
-                console.log(
-                  "✅ Keeping original fallback URL for locale:",
-                  locale,
-                  "URL:",
-                  videoUrl
-                );
-              }
-              videoType = getVideoType(videoUrl || "");
-            }
 
             // If both exercise URLs are invalid, try set's demo video
             if (
@@ -816,6 +687,7 @@ function PlayerContent() {
 
             return videoUrl && getVideoType(videoUrl) !== "unknown" ? (
               <VideoPlayer
+                key={`${currentExercise._id}:${videoUrl}`}
                 url={videoUrl}
                 title={getLocalizedText(currentExercise.name)}
                 onVideoComplete={handleVideoComplete}

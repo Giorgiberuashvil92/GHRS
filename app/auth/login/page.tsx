@@ -9,7 +9,7 @@ import { FaVk } from "react-icons/fa";
 import { FaArrowRightLong } from "react-icons/fa6";
 import { TbBrandOkRu } from "react-icons/tb";
 import { useAuth } from "../../context/AuthContext";
-import { login } from "../../config/api";
+import { forgotPassword, login } from "../../config/api";
 import { User } from "@/app/components/PersonalAccount/PersonInfo";
 import { useI18n } from "../../context/I18nContext";
 
@@ -30,6 +30,26 @@ const Login = () => {
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const [resetMessage, setResetMessage] = useState("");
+  const [resetError, setResetError] = useState("");
+  const [resetLoading, setResetLoading] = useState(false);
+
+  const handlePasswordReset = async () => {
+    setResetMessage("");
+    setResetError("");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(resetEmail.trim())) {
+      setResetError(t("auth.reset_invalid_email"));
+      return;
+    }
+    setResetLoading(true);
+    try {
+      await forgotPassword(resetEmail.trim());
+      setResetMessage(t("auth.reset_sent"));
+    } catch {
+      setResetError(t("auth.reset_send_error"));
+    } finally {
+      setResetLoading(false);
+    }
+  };
 
   // Debug: Check current locale and translations
   console.log('🌐 Current locale:', locale);
@@ -52,11 +72,6 @@ const Login = () => {
         formData.email,
         formData.password
       )) as LoginResponse;
-      
-      // 🔍 DEBUG
-      console.log('🔐 Backend Response:', response);
-      console.log('🔐 Token:', response.token);
-      console.log('🔐 User:', response.user);
       
       authLogin(response.token, response.user);
     } catch (err: unknown) {
@@ -160,17 +175,13 @@ const Login = () => {
                 className="w-full p-3 border border-[#E9DFF6] rounded-lg mb-3"
               />
               <button
-                onClick={() => {
-                  setResetMessage(t("auth.reset_link_sent") || "Password reset link sent to your email!");
-                  setTimeout(() => {
-                    setShowForgotPassword(false);
-                    setResetMessage("");
-                  }, 3000);
-                }}
+                onClick={handlePasswordReset}
+                disabled={resetLoading}
                 className="w-full bg-[#D4BAFC] text-white py-2 rounded-lg hover:bg-[#c5a9ed]"
               >
-                {t("auth.send_reset_link") || "Send reset link"}
+                {resetLoading ? t("auth.please_wait") : t("auth.send_reset_link")}
               </button>
+              {resetError && <p role="alert" className="text-red-600 mt-2 text-sm">{resetError}</p>}
               {resetMessage && <p className="text-green-600 mt-2 text-sm">{resetMessage}</p>}
             </div>
           )}

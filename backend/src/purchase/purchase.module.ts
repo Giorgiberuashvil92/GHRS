@@ -1,3 +1,4 @@
+import { User, UserSchema } from '../schemas/user.schema';
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PurchaseController } from './purchase.controller';
@@ -10,6 +11,7 @@ import { Course, CourseSchema } from '../schemas/course.schema';
   imports: [
     MongooseModule.forFeature([
       { name: Purchase.name, schema: PurchaseSchema },
+      { name: User.name, schema: UserSchema },
       { name: 'sets', schema: SetSchema },
       { name: Course.name, schema: CourseSchema }
     ])

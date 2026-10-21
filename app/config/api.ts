@@ -73,6 +73,8 @@ interface CourseData {
 
 // Protected endpoints that require JWT token
 const PROTECTED_ENDPOINTS = [
+  '/auth/session',
+  '/auth/logout',
   '/users/me',
   '/api/purchases/my-courses',
   '/purchases/check-access',
@@ -81,8 +83,9 @@ const PROTECTED_ENDPOINTS = [
 ];
 
 function requiresAuth(endpoint: string): boolean {
-  return PROTECTED_ENDPOINTS.some(protectedEndpoint => 
-    endpoint.startsWith(protectedEndpoint)
+  const path = endpoint.replace(/^\/api(?=\/)/, '');
+  return PROTECTED_ENDPOINTS.some(protectedEndpoint =>
+    path.startsWith(protectedEndpoint.replace(/^\/api(?=\/)/, ''))
   );
 }
 
@@ -317,9 +320,10 @@ export async function register(userData: RegistrationData) {
   });
 }
 
-export async function logout() {
+export async function logout(token?: string) {
   return apiRequest(API_CONFIG.ENDPOINTS.AUTH.LOGOUT, {
     method: "POST",
+    ...(token ? { headers: { Authorization: `Bearer ${token}` } } : {}),
   });
 }
 
@@ -549,3 +553,14 @@ export const fetchRelatedCourses = async (courseId: string, categoryId: string, 
     throw error;
   }
 };
+export async function forgotPassword(email: string) {
+  return apiRequest('/api/auth/forgot-password', {
+    method: 'POST', body: JSON.stringify({ email }),
+  });
+}
+
+export async function resetPassword(token: string, password: string) {
+  return apiRequest('/api/auth/reset-password', {
+    method: 'POST', body: JSON.stringify({ token, password }),
+  });
+}

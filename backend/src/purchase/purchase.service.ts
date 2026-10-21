@@ -1,3 +1,4 @@
+import { User, UserDocument } from '../schemas/user.schema';
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
@@ -7,6 +8,7 @@ import { Purchase, PurchaseDocument } from '../schemas/purchase.schema';
 export class PurchaseService {
   constructor(
     @InjectModel(Purchase.name) private purchaseModel: Model<PurchaseDocument>,
+    @InjectModel(User.name) private userModel: Model<UserDocument>,
   ) {}
 
   async createPurchase(data: {
@@ -70,6 +72,9 @@ export class PurchaseService {
     }
     
     try {
+      const user = await this.userModel.findOne({ _id: userId, deletedAt: null }).select('fullAccess');
+      if (!user) return false;
+      if (user.fullAccess) return true;
       const purchase = await this.purchaseModel.findOne({
         userId: new Types.ObjectId(userId),
         setId: new Types.ObjectId(setId),
@@ -112,6 +117,9 @@ export class PurchaseService {
     }
     
     try {
+      const user = await this.userModel.findOne({ _id: userId, deletedAt: null }).select('fullAccess');
+      if (!user) return false;
+      if (user.fullAccess) return true;
       const purchase = await this.purchaseModel.findOne({
         userId: new Types.ObjectId(userId),
         courseId: new Types.ObjectId(courseId),

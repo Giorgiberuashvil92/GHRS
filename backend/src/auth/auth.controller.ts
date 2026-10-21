@@ -1,5 +1,6 @@
 import {
   Controller,
+  Get,
   Post,
   Body,
   UseGuards,
@@ -7,6 +8,7 @@ import {
   HttpCode,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
+import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { LocalAuthGuard } from './guards/local-auth.guard';
 import { UserResponse } from '../schemas/user.schema';
 
@@ -28,6 +30,31 @@ interface RegistrationDto {
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
+
+  @Get('session')
+  @UseGuards(JwtAuthGuard)
+  async session(@Request() req: { user: { userId: string; sessionId?: string } }) {
+    return this.authService.restoreSession(req.user.userId, req.user.sessionId);
+  }
+
+  @Post('logout')
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(200)
+  async logout(@Request() req: { user: { userId: string; sessionId?: string } }) {
+    return this.authService.logout(req.user.userId, req.user.sessionId);
+  }
+
+  @Post('forgot-password')
+  @HttpCode(200)
+  async forgotPassword(@Body() body: { email: string }) {
+    return this.authService.forgotPassword(body.email);
+  }
+
+  @Post('reset-password')
+  @HttpCode(200)
+  async resetPassword(@Body() body: { token: string; password: string }) {
+    return this.authService.resetPassword(body.token, body.password);
+  }
 
   @Post('login')
   @UseGuards(LocalAuthGuard)

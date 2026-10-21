@@ -104,6 +104,16 @@ export class User {
   @Prop({ required: true })
   password: string;
 
+  // Server-managed sessions persist until logout or credential reset.
+  @Prop({ type: [String], default: [], select: false })
+  sessionIds: string[];
+
+  @Prop({ select: false })
+  passwordResetTokenHash?: string;
+
+  @Prop({ select: false })
+  passwordResetExpiresAt?: Date;
+
   @Prop({ required: true })
   phone: string;
 
@@ -112,6 +122,18 @@ export class User {
 
   @Prop()
   image?: string;
+
+  @Prop({ type: [String], default: [] })
+  diseases: string[];
+
+  @Prop({ default: '' })
+  additionalInfo: string;
+
+  @Prop({ default: false })
+  fullAccess: boolean;
+
+  @Prop({ default: null })
+  deletedAt?: Date;
 
   @Prop({ default: Date.now })
   createdAt: Date;

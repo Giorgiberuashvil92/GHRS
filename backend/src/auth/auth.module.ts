@@ -22,7 +22,6 @@ import { EmailModule } from '../email/email.module';
         }
         return {
           secret,
-          signOptions: { expiresIn: '24h' },
         };
       },
       inject: [ConfigService],

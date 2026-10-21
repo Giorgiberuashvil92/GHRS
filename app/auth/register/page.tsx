@@ -63,7 +63,20 @@ const Register = () => {
       router.push("/auth/register/steps");
     } catch (error) {
       if (error instanceof Error) {
-        setEmailError(error.message);
+        const message = error.message.replace(/^HTTP \d+:\s*/, "");
+        const existingAccountMessages = {
+          ka: "ამ ელფოსტით ანგარიში უკვე არსებობს. გთხოვთ, გაიაროთ ავტორიზაცია ან გამოიყენოთ სხვა ელფოსტა.",
+          en: "An account with this email already exists. Please log in or use another email address.",
+          ru: "Аккаунт с этой почтой уже существует. Войдите в аккаунт или используйте другой адрес.",
+        };
+        const existingAccountTranslation = t("auth.email_already_exists");
+        setEmailError(
+          message === "This member already exists"
+            ? existingAccountTranslation === "auth.email_already_exists"
+              ? existingAccountMessages[locale]
+              : existingAccountTranslation
+            : t("auth.error_occurred")
+        );
       } else {
         setEmailError(t("auth.error_occurred") || "An error occurred, please try again");
       }

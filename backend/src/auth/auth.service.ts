@@ -1,4 +1,6 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { createHash, randomBytes } from 'crypto';
+import { ConfigService } from '@nestjs/config';
+import { BadRequestException, ConflictException, Injectable, ServiceUnavailableException, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -32,7 +34,61 @@ export class AuthService {
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     private jwtService: JwtService,
     private emailService: EmailService,
+    private configService: ConfigService,
   ) {}
+
+  async forgotPassword(email: string) {
+    if (typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+      throw new BadRequestException('Please enter a valid email address');
+    }
+    const result = { success: true, message: 'If an account exists, a password reset link has been sent.' };
+    const user = await this.userModel.findOne({ email: email.trim(), deletedAt: null });
+    if (!user) return result;
+
+    const frontendUrl = this.configService.get<string>('FRONTEND_URL');
+    if (!frontendUrl) throw new ServiceUnavailableException('Password reset is temporarily unavailable');
+    const token = randomBytes(32).toString('hex');
+    const tokenHash = createHash('sha256').update(token).digest('hex');
+    const resetUrl = new URL('/auth/reset-password', frontendUrl);
+    resetUrl.searchParams.set('token', token);
+    await this.userModel.updateOne({ _id: user._id }, { $set: {
+      passwordResetTokenHash: tokenHash,
+      passwordResetExpiresAt: new Date(Date.now() + 30 * 60 * 1000),
+    } });
+    try {
+      await this.emailService.sendEmail({
+        to: user.email,
+        subject: 'Password reset - GHRS',
+        html: `<p>პაროლის აღსადგენად / To reset your password / Для сброса пароля:</p><p><a href="${resetUrl.toString().replace(/&/g, '&amp;').replace(/"/g, '&quot;')}">Reset password</a></p><p>ბმული მოქმედებს 30 წუთი. / This link expires in 30 minutes. / Ссылка действительна 30 минут.</p><p>If you did not request this, ignore this email.</p>`,
+      });
+    } catch {
+      await this.userModel.updateOne({ _id: user._id, passwordResetTokenHash: tokenHash }, {
+        $unset: { passwordResetTokenHash: 1, passwordResetExpiresAt: 1 },
+      });
+      throw new ServiceUnavailableException('Could not send reset email. Please try again later.');
+    }
+    return result;
+  }
+
+  async resetPassword(token: string, password: string) {
+    if (typeof token !== 'string' || !/^[a-f0-9]{64}$/.test(token)) {
+      throw new BadRequestException('Invalid or expired reset link');
+    }
+    if (typeof password !== 'string' || password.length < 8 || password.length > 72) {
+      throw new BadRequestException('Password must be between 8 and 72 characters');
+    }
+    const passwordHash = await bcrypt.hash(password, 10);
+    const user = await this.userModel.findOneAndUpdate({
+      passwordResetTokenHash: createHash('sha256').update(token).digest('hex'),
+      passwordResetExpiresAt: { $gt: new Date() },
+      deletedAt: null,
+    }, {
+      $set: { password: passwordHash, sessionIds: [] },
+      $unset: { passwordResetTokenHash: 1, passwordResetExpiresAt: 1 },
+    });
+    if (!user) throw new BadRequestException('Invalid or expired reset link');
+    return { success: true };
+  }
 
   private generateVerificationCode(): string {
     return Math.floor(100000 + Math.random() * 900000).toString();
@@ -69,7 +125,7 @@ export class AuthService {
   ): Promise<{ success: boolean; message: string }> {
     const existingUser = await this.userModel.findOne({ email });
     if (existingUser) {
-      throw new UnauthorizedException(
+      throw new ConflictException(
         'This member already exists',
       );
     }
@@ -128,7 +184,7 @@ export class AuthService {
   }
 
   async validateUser(email: string, password: string): Promise<UserResponse> {
-    const user = await this.userModel.findOne({ email });
+    const user = await this.userModel.findOne({ email, deletedAt: null });
     if (!user) {
       throw new UnauthorizedException('Invalid email or password');
     }
@@ -153,7 +209,10 @@ export class AuthService {
   }
 
   async login(user: UserResponse) {
-    const payload = { email: user.email, sub: user.id };
+    const sessionId = randomBytes(32).toString('hex');
+    const result = await this.userModel.updateOne({ _id: user.id, deletedAt: null }, { $push: { sessionIds: sessionId } });
+    if (!result.matchedCount) throw new UnauthorizedException('Account unavailable');
+    const payload = { email: user.email, sub: user.id, sid: sessionId };
     const token = await this.jwtService.sign(payload);
     return {
       token,
@@ -166,7 +225,7 @@ export class AuthService {
       email: registrationData.email,
     });
     if (existingUser) {
-      throw new UnauthorizedException(
+      throw new ConflictException(
         'This member already exists',
       );
     }
@@ -208,20 +267,27 @@ export class AuthService {
     
     const { password, ...result } = savedUser.toObject();
 
-    return {
-      token: this.jwtService.sign({
-        email: result.email,
-        sub: result._id?.toString() || '',
-      }),
-      user: {
-        id: result._id?.toString() || '',
-        name: result.name,
-        email: result.email,
-        phone: result.phone,
-        location: result.location,
-        image: result.image,
-      },
+    return this.login({
+      id: result._id?.toString() || '', name: result.name, email: result.email,
+      phone: result.phone, location: result.location, image: result.image,
+    });
+  }
+
+  async restoreSession(userId: string, sessionId?: string) {
+    const user = await this.userModel.findOne({ _id: userId, deletedAt: null }).select('_id name email phone location image');
+    if (!user) throw new UnauthorizedException();
+    const userData: UserResponse = {
+      id: user._id.toString(), name: user.name, email: user.email,
+      phone: user.phone, location: user.location, image: user.image,
     };
+    // Existing unexpired tokens migrate to persistent sessions without another login.
+    if (!sessionId) return this.login(userData);
+    return { user: userData };
+  }
+
+  async logout(userId: string, sessionId?: string) {
+    if (sessionId) await this.userModel.updateOne({ _id: userId }, { $pull: { sessionIds: sessionId } });
+    return { success: true };
   }
 
   // ახალი მეთოდი achievements-ების ინიციალიზაციისთვის
