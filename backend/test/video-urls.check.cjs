@@ -1,0 +1,17 @@
+const assert = require('node:assert/strict');
+require('ts-node').register({ transpileOnly: true });
+const { permanentVideoUrl } = require('../src/exercise/video-url');
+const { ExerciseSchema } = require('../src/schemas/exercise.schema');
+const { model } = require('mongoose');
+const old = 'https://bucket.account.r2.cloudflarestorage.com/admin-videos/hello%20world.mp4?X-Amz-Date=20200101T000000Z&X-Amz-Expires=86400';
+const expected = 'https://ghrs-admin.vercel.app/api/r2/play/admin-videos/hello%20world.mp4';
+assert.equal(permanentVideoUrl(old), expected);
+assert.equal(permanentVideoUrl(expected), expected);
+assert.equal(permanentVideoUrl('https://ghrs-group.ru/video.m4v'), 'https://ghrs-group.ru/video.m4v');
+assert.equal(permanentVideoUrl('https://other.example/admin-videos/a.mp4'), 'https://other.example/admin-videos/a.mp4');
+const Exercise = model('VideoUrlCheck', ExerciseSchema);
+const existing = Exercise.hydrate({ videoUrlEn: old });
+assert.equal(existing.toJSON().videoUrlEn, expected, 'Existing stored expired links must work without rewriting the database');
+const created = new Exercise({ videoUrlEn: old });
+assert.equal(created.get('videoUrlEn', null, { getters: false }), expected, 'New writes must store stable links');
+console.log('PASS: expired links, stable writes, existing documents, encoding and other providers');

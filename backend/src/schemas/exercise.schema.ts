@@ -1,5 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Types } from 'mongoose';
+import { permanentVideoUrl } from '../exercise/video-url';
 
 export type ExerciseDocument = Exercise & Document;
 
@@ -88,13 +89,13 @@ export class Exercise {
   })
   warnings: LocalizedString;
 
-  @Prop({ required: false })
+  @Prop({ required: false, get: permanentVideoUrl, set: permanentVideoUrl })
   videoUrl: string;
 
-  @Prop({ required: false })
+  @Prop({ required: false, get: permanentVideoUrl, set: permanentVideoUrl })
   videoUrlEn: string;
 
-  @Prop({ required: false })
+  @Prop({ required: false, get: permanentVideoUrl, set: permanentVideoUrl })
   demoVideoUrl: string;
 
   @Prop({ required: false })
