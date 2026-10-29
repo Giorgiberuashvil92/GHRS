@@ -7,14 +7,15 @@ import { apiRequest, logout as endSession } from '../config/api';
 interface AuthContextType {
   isAuthenticated: boolean;
   user: User | null;
-  login: (token: string, userData: User) => void;
+  login: (token: string, userData: User, returnTo?: string) => void;
   logout: () => void;
   isLoading: boolean;
 }
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 function saveSession(token: string, user: User) {
-  localStorage.setItem('token', token);
-  localStorage.setItem('user', JSON.stringify(user));
+  if (localStorage.getItem('token') !== token) localStorage.setItem('token', token);
+  const serializedUser = JSON.stringify(user);
+  if (localStorage.getItem('user') !== serializedUser) localStorage.setItem('user', serializedUser);
   document.cookie = `token=${token}; path=/; max-age=31536000; SameSite=Lax${window.location.protocol === 'https:' ? '; Secure' : ''}`;
 }
 function clearSession() {
@@ -31,8 +32,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     let active = true;
+    let pendingToken: string | null = null;
+    let lastCheckedToken: string | null = null;
+    let lastCheckAt = 0;
     const initializeAuth = async () => {
       const token = localStorage.getItem('token');
+      if (token && pendingToken === token) return;
       try {
         const storedUser = localStorage.getItem('user');
         if (!token || !storedUser) {
@@ -48,11 +53,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           if (active) { setIsAuthenticated(false); setUser(null); }
           return;
         }
+        if (token === lastCheckedToken && Date.now() - lastCheckAt < 60_000) {
+          if (active) { setIsAuthenticated(true); setUser(cachedUser); }
+          return;
+        }
+        pendingToken = token;
         try {
           const session = await apiRequest<{ token?: string; user: User }>('/api/auth/session');
           // A logout or a login in another tab must win over this pending request.
           if (!active || localStorage.getItem('token') !== token) return;
           saveSession(session.token || token, session.user);
+          lastCheckedToken = session.token || token;
+          lastCheckAt = Date.now();
           setIsAuthenticated(true); setUser(session.user);
         } catch (error) {
           if (!active || localStorage.getItem('token') !== token) return;
@@ -60,8 +72,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             clearSession(); setIsAuthenticated(false); setUser(null);
           } else {
             // A temporary connection failure does not erase a persistent session.
+            lastCheckedToken = token;
+            lastCheckAt = Date.now();
             setIsAuthenticated(true); setUser(cachedUser);
           }
+        } finally {
+          if (pendingToken === token) pendingToken = null;
         }
       } finally { if (active) setIsLoading(false); }
     };
@@ -75,10 +91,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => { active = false; window.removeEventListener('storage', onStorage); window.removeEventListener('focus', onFocus); };
   }, []);
 
-  const login = (token: string, userData: User) => {
+  const login = (token: string, userData: User, returnTo?: string) => {
     saveSession(token, userData);
     setIsAuthenticated(true); setUser(userData);
-    router.push('/personalAccount');
+    router.push(returnTo === '/test' ? '/test' : '/personalAccount');
   };
   const logout = () => {
     const token = localStorage.getItem('token');

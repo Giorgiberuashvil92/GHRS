@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
 import { Set, SetDocument } from '../schemas/set.schema';
@@ -88,7 +88,7 @@ export class SetService {
     return updatedSet;
   }
 
-  async findAll(query: { categoryId?: string; subCategoryId?: string }) {
+  async findAll(query: { categoryId?: string; subCategoryId?: string; view?: string }) {
     const filter: any = { isActive: true };
     
     if (query.categoryId) {
@@ -99,12 +99,26 @@ export class SetService {
       filter.subCategoryId = new Types.ObjectId(query.subCategoryId);
     }
 
-    return this.setModel
-      .find(filter)
-      .populate('category')
-      .populate('subcategory')
-      .sort({ sortOrder: 1 })
-      .exec();
+    if (query.view === 'summary') {
+      const sets = await this.setModel.find(filter)
+        .select('_id name description thumbnailImage totalExercises totalDuration duration difficultyLevels levels price priceKa priceEn discountedPrice discountedPriceKa discountedPriceEn isActive isPublished sortOrder categoryId subCategoryId updatedAt')
+        .populate('category', '_id name').populate('subcategory', '_id name')
+        .sort({ sortOrder: 1 }).lean().exec();
+      return sets.map(set => ({ ...set,
+        thumbnailImage: /^data:image\/[\w.+-]+;base64,/.test(set.thumbnailImage || '')
+          ? `/api/sets/${set._id}/thumbnail?v=${new Date(set.updatedAt || 0).getTime()}`
+          : set.thumbnailImage,
+      }));
+    }
+    return this.setModel.find(filter).populate('category').populate('subcategory').sort({ sortOrder: 1 }).exec();
+  }
+
+  async getThumbnail(id: string) {
+    if (!Types.ObjectId.isValid(id)) throw new BadRequestException('Invalid set ID');
+    const set = await this.setModel.findById(id).select('thumbnailImage updatedAt').lean().exec();
+    const match = set?.thumbnailImage?.match(/^data:(image\/[\w.+-]+);base64,([\s\S]+)$/);
+    if (!match) throw new NotFoundException('Thumbnail not found');
+    return { type: match[1], body: Buffer.from(match[2], 'base64'), version: new Date(set.updatedAt || 0).getTime() };
   }
 
   async findOne(id: string) {

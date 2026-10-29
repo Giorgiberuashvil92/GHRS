@@ -1,11 +1,14 @@
-import { 
-  Controller, 
-  Get, 
-  Post, 
-  Body, 
-  Param, 
-  Query, 
-  Patch, 
+import { Response } from 'express';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Param,
+  Query,
+  Res,
+  Headers,
+  Patch,
   Delete,
   UseInterceptors,
   UploadedFile,
@@ -65,14 +68,14 @@ export class SetController {
 
       console.log('📝 Parsed data:', parsedData);
 
-      if (!parsedData.name.en || !parsedData.name.ru || 
+      if (!parsedData.name.en || !parsedData.name.ru ||
           !parsedData.description.en || !parsedData.description.ru ||
           !parsedData.recommendations.en || !parsedData.recommendations.ru) {
         throw new BadRequestException('All language fields are required');
       }
 
       let thumbnailImage = '';
-      
+
       if (file && file.buffer) {
         console.log('⬆️ Uploading file to Cloudinary...');
         thumbnailImage = await this.uploadToCloudinary(file, 'image');
@@ -95,7 +98,7 @@ export class SetController {
         ...parsedData,
         thumbnailImage,
       });
-      
+
       console.log('✅ Set created successfully:', result.name?.ka || 'Set');
       return result;
     } catch (error) {
@@ -163,7 +166,7 @@ export class SetController {
         ...parsedData,
         ...(thumbnailImage && { thumbnailImage }),
       });
-      
+
       console.log('✅ Set updated successfully:', result.name?.en || 'Set');
       return result;
     } catch (error) {
@@ -176,8 +179,19 @@ export class SetController {
   }
 
   @Get()
-  findAll(@Query() query: { categoryId?: string; subCategoryId?: string }) {
+  findAll(@Query() query: { categoryId?: string; subCategoryId?: string; view?: string }) {
     return this.setService.findAll(query);
+  }
+
+  @Get(':id/thumbnail')
+  async thumbnail(@Param('id') id: string, @Headers('if-none-match') ifNoneMatch: string, @Res() response: Response) {
+    const thumbnail = await this.setService.getThumbnail(id);
+    const etag = `"${id}-${thumbnail.version}"`;
+    response.setHeader('ETag', etag);
+    response.setHeader('Cache-Control', 'public, max-age=86400');
+    if (thumbnail.type === 'image/svg+xml') response.setHeader('Content-Security-Policy', "default-src 'none'; sandbox;");
+    if (ifNoneMatch === etag) return response.status(304).end();
+    return response.type(thumbnail.type).send(thumbnail.body);
   }
 
   @Get(':id')
@@ -193,7 +207,7 @@ export class SetController {
   @Post(':id/duplicate')
   async duplicate(@Param('id') id: string) {
     console.log('🔄 Set duplication started for ID:', id);
-    
+
     try {
       const duplicatedSet = await this.setService.duplicate(id);
       console.log('✅ Set duplicated successfully:', duplicatedSet.name?.en || 'Set');
@@ -207,7 +221,7 @@ export class SetController {
   @Post(':id/update-statistics')
   async updateStatistics(@Param('id') id: string) {
     console.log('📊 Updating statistics for set ID:', id);
-    
+
     try {
       await this.setService.updateSetStatistics(id);
       return { message: 'Statistics updated successfully', setId: id };
@@ -220,16 +234,16 @@ export class SetController {
   @Post('update-all-statistics')
   async updateAllStatistics() {
     console.log('📊 Updating statistics for all sets');
-    
+
     try {
       const sets = await this.setService.findAll({});
-      const updatePromises = sets.map(set => 
+      const updatePromises = sets.map(set =>
         this.setService.updateSetStatistics(set._id.toString())
       );
       await Promise.all(updatePromises);
-      return { 
-        message: 'All set statistics updated successfully', 
-        count: sets.length 
+      return {
+        message: 'All set statistics updated successfully',
+        count: sets.length
       };
     } catch (error) {
       console.error('❌ Bulk statistics update error:', error);

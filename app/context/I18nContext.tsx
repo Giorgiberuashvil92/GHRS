@@ -1,4 +1,5 @@
 "use client";
+import { loadTranslations } from "../../lib/translations";
 import React, { createContext, useContext, useState, useEffect } from "react";
 
 type Locale = "ka" | "ru" | "en";
@@ -44,42 +45,17 @@ const getNestedValue = (obj: Record<string, unknown>, path: string): string => {
   return value === undefined ? path : (value as string);
 };
 
-// Deep merge translations
-const deepMerge = (
-  target: Record<string, unknown>,
-  source: Record<string, unknown>
-): Record<string, unknown> => {
-  const output = { ...target };
-  Object.keys(source).forEach((key) => {
-    if (
-      key in target &&
-      typeof target[key] === "object" &&
-      target[key] !== null &&
-      typeof source[key] === "object" &&
-      source[key] !== null
-    ) {
-      output[key] = deepMerge(
-        target[key] as Record<string, unknown>,
-        source[key] as Record<string, unknown>
-      );
-    } else {
-      output[key] = source[key];
-    }
-  });
-  return output;
-};
-
 export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
   const [locale, setLocaleState] = useState<Locale>(() => {
     if (typeof window !== "undefined") {
       const savedLocale = localStorage.getItem("locale") as Locale;
-      console.log("🔍 I18nProvider initializing, savedLocale:", savedLocale);
+
       if (savedLocale && ["ka", "ru", "en"].includes(savedLocale)) {
-        console.log("✅ Using saved locale:", savedLocale);
+
         return savedLocale;
       }
       // თუ არ არის შენახული, დავაყენოთ default და შევინახოთ
-      console.log("⚠️ No saved locale, setting default to 'ka'");
+
       localStorage.setItem("locale", "ka");
     }
     return "ka";
@@ -89,88 +65,30 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    console.log("📚 Loading translations for locale:", locale);
-    const loadTranslations = async () => {
-      setIsLoading(true);
-      try {
-        const files = [
-          "common",
-          "home",
-          "advantages",
-          "subscribe",
-          "sets",
-          "header",
-          "components",
-          "personalAccount",
-          "footer",
-          "contact",
-          "rehabilitation",
-          "course",
-          "professional",
-          "legal"
-        ];
-
-        // ჯერ ცალკე ფაილებიდან ჩატვირთვა
-        const translations = await Promise.all(
-          files.map((file) =>
-            fetch(`/locales/${locale}/${file}.json`)
-              .then((res) => res.json())
-              .catch(() => ({})) // თუ ფაილი არ არსებობს, დააბრუნე ცარიელი
-          )
-        );
-
-        let mergedTranslations = translations.reduce<Record<string, unknown>>(
-          (acc, curr) => deepMerge(acc, curr as Record<string, unknown>),
-          {}
-        );
-
-        // შემდეგ სცადე მთავარი locale ფაილის ჩატვირთვა (ru.json, ka.json, en.json)
-        // ეს არის optional და არ არის აუცილებელი
-        try {
-          const mainLocaleResponse = await fetch(`/locales/${locale}.json`);
-          if (mainLocaleResponse.ok) {
-            const mainLocaleFile = await mainLocaleResponse.json();
-            mergedTranslations = deepMerge(mergedTranslations, mainLocaleFile as Record<string, unknown>);
-          }
-        } catch (error) {
-          // No main locale file found, using split files only - this is expected
-        }
-
-        console.log("✅ Translations loaded for:", locale);
-        setTranslationData(mergedTranslations);
-      } catch (error) {
-        console.error("❌ Failed to load translations:", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    loadTranslations();
+    let cancelled = false;
+    setIsLoading(true);
+    loadTranslations(locale)
+      .then(messages => { if (!cancelled) setTranslationData(messages); })
+      .catch(error => console.error('Failed to load translations:', error))
+      .finally(() => { if (!cancelled) setIsLoading(false); });
+    return () => { cancelled = true; };
   }, [locale]);
 
   const setLocale = (newLocale: Locale) => {
-    console.log("🌍 setLocale called:", { current: locale, new: newLocale });
+
     if (newLocale !== locale) {
-      console.log("✅ Updating locale to:", newLocale);
+
       setLocaleState(newLocale);
       localStorage.setItem("locale", newLocale);
-      console.log("💾 Locale saved to localStorage:", newLocale);
+
     } else {
-      console.log("⏭️ Locale unchanged, skipping update");
+
     }
   };
 
   const t = (key: string, options?: Record<string, string>): string => {
     let translation = getNestedValue(translationData, key);
 
-    // Debug specific auth keys
-    if (key.startsWith('auth.')) {
-      console.log(`🔍 Translation lookup for "${key}":`, {
-        locale,
-        found: translation !== key,
-        value: translation
-      });
-    }
 
     if (translation === key) return key;
 
@@ -197,7 +115,7 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
       : `[[Invalid translation for ${key}]]`;
   };
 
-  if (isLoading) {
+  if (isLoading && Object.keys(translationData).length === 0) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-center">

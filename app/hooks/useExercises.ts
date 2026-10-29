@@ -64,7 +64,7 @@ interface UseExercisesReturn {
 
 function getFallbackExercises(): BackendExercise[] {
   const fallbackDate = new Date().toISOString();
-  
+
   return [
     {
       _id: "fallback_exercise_1",
@@ -148,63 +148,36 @@ export function useExercises(options: UseExercisesOptions = {}): UseExercisesRet
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  console.log("🔴 useExercises hook initialized with options:", options);
-
   const fetchExercises = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      console.log("🏃‍♂️ Starting fetchExercises...", { options });
-
       const { apiRequest, API_CONFIG } = await import("../config/api");
       let endpoint = API_CONFIG.ENDPOINTS.EXERCISES;
-      
-      console.log("🔗 Base endpoint:", endpoint);
-      
+
       // ვქმნით query parameters
       const params = new URLSearchParams();
       if (options.categoryId) params.append('categoryId', options.categoryId);
       if (options.subCategoryId) params.append('subCategoryId', options.subCategoryId);
       if (options.setId) params.append('setId', options.setId);
-      
+
       // თუ არის query params, ვუმატებთ endpoint-ს
       if (params.toString()) {
         endpoint = `${endpoint}?${params.toString()}`;
       }
 
       const fullUrl = `${API_CONFIG.BASE_URL}${endpoint}`;
-      
-      console.log("📡 Exercises API Request Details:", {
-        endpoint,
-        baseUrl: API_CONFIG.BASE_URL,
-        fullUrl,
-        options,
-        timestamp: new Date().toISOString()
-      });
 
-      console.log("🔄 About to call apiRequest...");
       const backendExercises: BackendExercise[] = await apiRequest<BackendExercise[]>(endpoint);
-      console.log("✅ apiRequest completed successfully");
-
-      console.log("🏃‍♂️ Raw Exercises Response:", {
-        data: backendExercises,
-        type: typeof backendExercises,
-        isArray: Array.isArray(backendExercises),
-        length: backendExercises?.length,
-        firstItem: backendExercises?.[0]
-      });
 
       if (!Array.isArray(backendExercises)) {
         throw new Error("Exercises API response is not an array");
       }
 
-      console.log("✅ Using raw backend exercises data");
-
       // აღარ გავაკეთებთ ტრანსფორმაციას - raw data-ს ვიყენებთ
       setExercises(backendExercises);
-      console.log("✅ setExercises called with:", backendExercises.length, "exercises");
-      
+
     } catch (err) {
       console.error("❌ Error fetching exercises:", err);
       console.error("❌ Exercises Error details:", {
@@ -212,35 +185,21 @@ export function useExercises(options: UseExercisesOptions = {}): UseExercisesRet
         stack: err instanceof Error ? err.stack : undefined,
         timestamp: new Date().toISOString()
       });
-      
+
       const fallbackExercises = getFallbackExercises();
-      console.log("🔄 Using fallback exercises:", fallbackExercises);
+
       setExercises(fallbackExercises);
       setError(err instanceof Error ? err.message : "API Error - using fallback exercises data");
     } finally {
       setLoading(false);
-      console.log("🏁 fetchExercises completed, loading set to false");
+
     }
   };
 
   useEffect(() => {
-    console.log("🔄 useEffect triggered, calling fetchExercises");
-    console.log("🔄 useEffect dependencies:", {
-      categoryId: options.categoryId,
-      subCategoryId: options.subCategoryId,
-      setId: options.setId,
-      difficulty: options.difficulty,
-      optionsObject: options
-    });
+
     fetchExercises();
   }, [options.categoryId, options.subCategoryId, options.setId, options.difficulty]);
-
-  console.log("🔴 useExercises returning:", {
-    exercisesCount: exercises.length,
-    loading,
-    error,
-    exercises: exercises
-  });
 
   return {
     exercises,
@@ -274,25 +233,22 @@ export function usePopularExercises() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-
   const fetchPopularExercises = async () => {
     try {
       setLoading(true);
       setError(null);
 
-
       const { apiRequest, API_CONFIG } = await import("../config/api");
       const endpoint = `${API_CONFIG.ENDPOINTS.EXERCISES}/popular`;
 
       const backendExercises: BackendExercise[] = await apiRequest<BackendExercise[]>(endpoint);
-     
 
       if (!Array.isArray(backendExercises)) {
         throw new Error("Popular exercises API response is not an array");
       }
 
       setExercises(backendExercises);
-      
+
     } catch (err) {
       const fallbackExercises = getFallbackExercises();
       setExercises(fallbackExercises);
@@ -305,7 +261,6 @@ export function usePopularExercises() {
   useEffect(() => {
     fetchPopularExercises();
   }, []);
-
 
   return {
     exercises,

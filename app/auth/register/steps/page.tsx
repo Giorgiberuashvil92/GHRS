@@ -532,7 +532,7 @@ const RegisterSteps = () => {
       await register(registrationDataToSend);
       // В случае успеха
       localStorage.removeItem("registrationData"); // Удалим временные данные
-      router.push("/auth/login");
+      router.push(new URLSearchParams(window.location.search).get("returnTo") === "/test" ? "/auth/login?returnTo=%2Ftest" : "/auth/login");
     } catch (error) {
       console.error("Registration failed:", error);
       // Здесь можно добавить error handling

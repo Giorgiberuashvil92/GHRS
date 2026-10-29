@@ -1,3 +1,4 @@
+import { getPublicJson } from '../../lib/public-request';
 import { useState, useEffect } from 'react';
 import { API_CONFIG } from '../config/api';
 
@@ -25,18 +26,12 @@ const useStatistics = (): UseStatisticsReturn => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
 
-  const fetchStatistics = async () => {
+  const fetchStatistics = async (force = false) => {
     try {
       setIsLoading(true);
       setError(null);
       
-      const response = await fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.STATISTICS.GLOBAL}`);
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const data = await response.json();
+      const data = await getPublicJson<Statistics>(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.STATISTICS.GLOBAL}`, { force });
       setStatistics(data);
     } catch (err) {
       console.error('❌ Error fetching global statistics:', err);
@@ -66,7 +61,7 @@ const useStatistics = (): UseStatisticsReturn => {
     statistics,
     isLoading,
     error,
-    refetch: fetchStatistics
+    refetch: () => fetchStatistics(true)
   };
 };
 

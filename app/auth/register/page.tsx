@@ -60,7 +60,7 @@ const Register = () => {
         })
       );
 
-      router.push("/auth/register/steps");
+      router.push(new URLSearchParams(window.location.search).get("returnTo") === "/test" ? "/auth/register/steps?returnTo=%2Ftest" : "/auth/register/steps");
     } catch (error) {
       if (error instanceof Error) {
         const message = error.message.replace(/^HTTP \d+:\s*/, "");

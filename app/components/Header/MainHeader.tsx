@@ -4,7 +4,6 @@ import React, { useState } from "react";
 import DesktopNavbar from "../Navbar/DesktopNavbar";
 import { useI18n } from "../../context/I18nContext";
 import MobileNavbar from "../Navbar/MobileNavbar";
-import useStatistics from "../../hooks/useStatistics";
 import Link from "next/link";
 
 interface Stat {
@@ -47,25 +46,8 @@ function MainHeader({
   hideBlock = false,
 }: MainHeaderProps) {
   const { t, locale } = useI18n();
-  const { statistics } = useStatistics();
   const [showContent, setShowContent] = useState(true);
 
-  // Debug: Log stats data
-  console.log('📊 MainHeader Stats Debug:', {
-    stats,
-    statsLength: stats.length,
-    statsType: typeof stats,
-    statsIsArray: Array.isArray(stats),
-    statsDetails: stats.map((stat, index) => ({
-      index,
-      value: stat.value,
-      valueType: typeof stat.value,
-      label: stat.label,
-      hasIcon: !!stat.icon
-    })),
-    hideStats,
-    statisticsFromHook: statistics
-  });
 
   const localizedMenuItems = [
     { id: 1, name: t("navigation.all_complexes"), route: "/allComplex" },
@@ -117,7 +99,7 @@ function MainHeader({
           Your browser does not support the video tag.
         </video>
       ) : (
-        <div 
+        <div
           className="absolute inset-0 w-full h-full bg-cover bg-center z-[-1] md:rounded-[20px]"
           style={{ backgroundImage: `url(${backgroundImage})` }}
         />
@@ -176,14 +158,14 @@ function MainHeader({
 
       {ShowBlock && (
         <div className="absolute bottom-0 right-0 hidden md:flex gap-4 bg-[#F9F7FE] rounded-tl-[80px] p-6 pb-8 z-10 items-end">
-          <Link 
+          <Link
             href="/about"
             className="text-white bg-[#3D334A] rounded-[40px] w-[246px] h-[222px] flex items-start justify-start p-8 transition-transform duration-300 hover:scale-105 cursor-pointer font-bold uppercase text-lg shadow-2xl leading-tight font-bowler"
             style={{ wordSpacing: 'normal', hyphens: 'none' }}
           >
             {t("header.learn_more") || "Изучить подробнее"}
           </Link>
-          <Link 
+          <Link
             href="/allComplex"
             className="text-white bg-gradient-to-br from-[#D4BAFC] via-[#C4A6F1] to-[#B794E8] rounded-[40px] w-[246px] h-[222px] flex items-start justify-start p-8 transition-transform duration-300 hover:scale-105 cursor-pointer font-bold uppercase text-lg shadow-2xl leading-tight font-bowler"
             style={{ wordSpacing: 'normal', hyphens: 'none' }}
@@ -218,14 +200,6 @@ function MainHeader({
           {!hideStats && (
             <div className="flex gap-4 flex-col md:flex-row mb-4 w-full justify-between">
               {stats.map((stat, index) => {
-                // Debug: Log each stat item
-                console.log(`📈 MainHeader Stat [${index}]:`, {
-                  value: stat.value,
-                  valueType: typeof stat.value,
-                  label: stat.label,
-                  hasIcon: !!stat.icon,
-                  isNaN: typeof stat.value === 'number' ? isNaN(stat.value) : 'N/A'
-                });
 
                 return (
                   <div

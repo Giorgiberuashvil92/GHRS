@@ -22,6 +22,7 @@ import { StatisticsModule } from './statistics/statistics.module';
 import { EmailModule } from './email/email.module'; // ← დამატებული
 import { LegalModule } from './legal/legal.module';
 import { ConsultationModule } from './consultation/consultation.module';
+import { QuestionnaireModule } from './questionnaire/questionnaire.module';
 import { TestModule } from './test/test.module';
 
 @Module({
@@ -57,6 +58,7 @@ import { TestModule } from './test/test.module';
     LegalModule,
     ConsultationModule,
     TestModule,
+    QuestionnaireModule,
   ],
   controllers: [AppController],
   providers: [AppService],

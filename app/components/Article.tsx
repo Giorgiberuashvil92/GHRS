@@ -17,9 +17,6 @@ import { BsYoutube } from "react-icons/bs";
 import { BsInstagram } from "react-icons/bs";
 import { sanitizeHtml } from "../utils/sanitize";
 
-/** Same static hero as /blog SubHeader and BigBlogCard */
-const BLOG_HERO_IMAGE = "/assets/images/blogbg.jpg";
-
 interface ArticleProps {
   article: ArticleType;
 }
@@ -294,10 +291,14 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
     <>
       <div className="relative w-full h-[518px]">
         <Image
-          src={BLOG_HERO_IMAGE}
+          src={
+            extractImageUrl(article.featuredImages?.[0]) ||
+            "/assets/images/blogbg.jpg"
+          }
           alt={article.title[language]}
           fill
           className="object-cover rounded-10"
+          priority
         />
       </div>
 

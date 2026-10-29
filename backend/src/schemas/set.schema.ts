@@ -3,25 +3,25 @@ import { Document, Types } from 'mongoose';
 
 export type SetDocument = Set & Document;
 
-interface LocalizedString {
+export interface LocalizedString {
   ka: string;
   en: string;
   ru: string;
 }
 
-interface Level {
+export interface Level {
   exerciseCount: number;
   isLocked: boolean;
 }
 
-interface Price {
+export interface Price {
   monthly: number;
   threeMonths: number;
   sixMonths: number;
   yearly: number;
 }
 
-interface Levels {
+export interface Levels {
   beginner: Level;
   intermediate: Level;
   advanced: Level;
@@ -34,6 +34,8 @@ interface Levels {
   toObject: { virtuals: true }
 })
 export class Set {
+  createdAt?: Date;
+  updatedAt?: Date;
   @Prop({
     type: {
       en: { type: String, required: true },

@@ -83,7 +83,7 @@ const Complex = ({ params }: ComplexPageProps) => {
 
   console.log(setData, "სეტის დატა");
   const [popoverOpen, setPopoverOpen] = useState(false);
-  const playBtnRef = useRef<HTMLButtonElement>(null);
+  const playBtnRef = useRef<HTMLAnchorElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
   const [activeTabIndex, setActiveTabIndex] = useState(0);
   
@@ -518,6 +518,9 @@ const Complex = ({ params }: ComplexPageProps) => {
                 </div>
                 {shouldShowPlayButton("easy") && (
                   <Link
+                    aria-label={t("complex_beginner_level")}
+                    className="after:absolute after:inset-0 after:rounded-[10px] focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-white"
+                    ref={playBtnRef}
                     href={{
                       pathname: "/player",
                       query: {
@@ -526,13 +529,11 @@ const Complex = ({ params }: ComplexPageProps) => {
                       },
                     }}
                   >
-                    <button ref={playBtnRef} className="relative z-10">
                       <CiPlay1
                         size={20}
                         color="white"
                         className="hover:text-[#846FA0] hover:text-2xl hover:scale-125"
                       />
-                    </button>
                   </Link>
                 )}
                 {shouldShowLockIcon("easy") && (
@@ -627,7 +628,7 @@ const Complex = ({ params }: ComplexPageProps) => {
 
               {/* Intermediate Level */}
               <div
-                className={`p-5 rounded-[10px] flex justify-between items-center ${
+                className={`relative p-5 rounded-[10px] flex justify-between items-center ${
                   hasExercisesForDifficulty("medium")
                     ? activeDifficultyCardClass
                     : inactiveDifficultyCardClass
@@ -658,6 +659,8 @@ const Complex = ({ params }: ComplexPageProps) => {
                 </div>
                 {shouldShowPlayButton("medium") && (
                   <Link
+                    aria-label={t("complex_intermediate_level")}
+                    className="after:absolute after:inset-0 after:rounded-[10px] focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-white"
                     href={{
                       pathname: "/player",
                       query: {
@@ -673,7 +676,7 @@ const Complex = ({ params }: ComplexPageProps) => {
 
               {/* Advanced Level */}
               <div
-                className={`p-5 rounded-[10px] flex justify-between items-center ${
+                className={`relative p-5 rounded-[10px] flex justify-between items-center ${
                   hasExercisesForDifficulty("hard")
                     ? activeDifficultyCardClass
                     : inactiveDifficultyCardClass
@@ -704,6 +707,8 @@ const Complex = ({ params }: ComplexPageProps) => {
                 </div>
                 {shouldShowPlayButton("hard") && (
                   <Link
+                    aria-label={t("complex_advanced_level")}
+                    className="after:absolute after:inset-0 after:rounded-[10px] focus-visible:outline-none focus-visible:after:ring-2 focus-visible:after:ring-white"
                     href={{
                       pathname: "/player",
                       query: {

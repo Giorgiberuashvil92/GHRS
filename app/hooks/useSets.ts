@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import { Set, LocalizedString } from "../types/category";
 import { API_CONFIG } from "../config/api";
+import { getPublicJson } from '../../lib/public-request';
 
 interface BackendSet {
   _id: string;
@@ -62,7 +63,7 @@ const transformSet = (backendSet: BackendSet): Set => {
     _id: backendSet._id,
     name: backendSet.name,
     description: backendSet.description,
-    thumbnailImage: backendSet.thumbnailImage || "/assets/images/workMan.png",
+    thumbnailImage: (backendSet.thumbnailImage?.startsWith("/api/") ? `${API_CONFIG.BASE_URL}${backendSet.thumbnailImage}` : backendSet.thumbnailImage) || "/assets/images/workMan.png",
     totalExercises: backendSet.totalExercises,
     totalDuration: backendSet.totalDuration,
     duration: backendSet.duration,
@@ -85,57 +86,25 @@ export function useAllSets(): UseSetsReturn {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchSets = async () => {
-    const isDev = process.env.NODE_ENV === 'development';
-    
+  const fetchSets = async (force = false) => {
+
     try {
       setLoading(true);
       setError(null);
-      
-      // ✅ FIXED: Always use /api prefix - Next.js rewrites will handle routing
-      // Fetch ALL sets including inactive/unpublished for accurate count
-      const endpoint = '/api/sets?includeAll=true&limit=1000';
+
+      // List cards only need summary fields; full details load on the detail page.
+      const endpoint = '/api/sets?view=summary';
       const url = `${API_CONFIG.BASE_URL}${endpoint}`;
-      
-      if (isDev) {
-        console.log('🔵 Fetching ALL sets from:', url);
-      }
-      
-      // ✅ პირდაპირ fetch - bypass apiRequest cache
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        cache: 'no-store', // არ გამოიყენოს cache
-      });
-      
-      if (isDev) {
-        console.log('📡 Response status:', response.status);
-      }
-      
-      if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-      }
-      
-      const backendSets = await response.json();
-      
-      if (isDev) {
-        console.log('✅ Sets fetched:', backendSets.length);
-      }
-      
+
+      const backendSets = await getPublicJson<BackendSet[]>(url, { force });
+
       if (!Array.isArray(backendSets)) {
         throw new Error("API response is not an array");
       }
-      
+
       const transformedSets = backendSets.map(transformSet);
       setSets(transformedSets);
-      
-      if (isDev) {
-        console.log('✅ Total sets loaded:', transformedSets.length);
-        console.log('📊 Active sets:', transformedSets.filter(s => s.isActive).length);
-        console.log('📊 Published sets:', transformedSets.filter(s => s.isPublished).length);
-      }
+
     } catch (err) {
       console.error("❌ Error fetching sets:", err);
       setError(err instanceof Error ? err.message : "API Error");
@@ -149,5 +118,5 @@ export function useAllSets(): UseSetsReturn {
     fetchSets();
   }, []);
 
-  return { sets, loading, error, refetch: fetchSets };
+  return { sets, loading, error, refetch: () => fetchSets(true) };
 }

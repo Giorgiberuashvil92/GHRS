@@ -28,23 +28,15 @@ export class StatisticsService {
   }
 
   async getGlobalStatistics() {
-    // Get total sets (complexes)
-    const totalSets = await this.setModel.countDocuments({ isActive: true });
-
-    // Get total exercises
-    const totalExercises = await this.exerciseModel.countDocuments({ isActive: true });
-
-    // Calculate total hours from sets using totalDuration field
-    const sets = await this.setModel.find({ isActive: true }, 'totalDuration');
-    const totalMinutes = sets.reduce((acc, set) => {
-      return acc + this.convertDurationToMinutes(set.totalDuration);
-    }, 0);
-    
-    const totalHours = Math.round((totalMinutes / 60) * 10) / 10; // Round to 1 decimal place
-
-    // Get published sets and exercises
-    const publishedSets = await this.setModel.countDocuments({ isActive: true, isPublished: true });
-    const publishedExercises = await this.exerciseModel.countDocuments({ isActive: true, isPublished: true });
+    const [totalSets, totalExercises, sets, publishedSets, publishedExercises] = await Promise.all([
+      this.setModel.countDocuments({ isActive: true }),
+      this.exerciseModel.countDocuments({ isActive: true }),
+      this.setModel.find({ isActive: true }, 'totalDuration').lean(),
+      this.setModel.countDocuments({ isActive: true, isPublished: true }),
+      this.exerciseModel.countDocuments({ isActive: true, isPublished: true }),
+    ]);
+    const totalMinutes = sets.reduce((acc, set) => acc + this.convertDurationToMinutes(set.totalDuration), 0);
+    const totalHours = Math.round((totalMinutes / 60) * 10) / 10;
 
     return {
       total: {

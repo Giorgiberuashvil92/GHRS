@@ -93,12 +93,12 @@ type Exercise = {
 const getLocale = () => {
   if (typeof window !== "undefined") {
     const storedLocale = localStorage.getItem("locale");
-    console.log("🔍 Stored locale in localStorage:", storedLocale);
+
     const result =
       storedLocale && ["ka", "ru", "en"].includes(storedLocale)
         ? storedLocale
         : "ru";
-    console.log("🔍 Final locale result:", result);
+
     return result;
   }
   return "ru";
@@ -125,14 +125,6 @@ const getExercises = (
   t: (key: string) => string,
   completedExercises: string[] = []
 ): Exercise[] => {
-  console.log("🔍 getExercises input:", {
-    exercises: exercises.map((e) => ({
-      id: e._id,
-      name: e.name,
-      difficulty: e.difficulty,
-    })),
-    completedExercises,
-  });
 
   if (!exercises) return [];
 
@@ -152,12 +144,6 @@ const getExercises = (
     if (completedExercises.includes(exercise._id)) {
       status = "done";
     }
-
-    console.log(`🎯 Exercise ${index + 1} (${exercise._id}):`, {
-      allPreviousCompleted,
-      isCompleted: completedExercises.includes(exercise._id),
-      status,
-    });
 
     // ვქმნით steps მასივს
     const description = getLocalizedText(exercise.description);
@@ -334,7 +320,7 @@ const VideoPlayer = ({
               console.error("Video error:", e);
             }}
             onLoadedData={() => {
-              console.log("✅ Video loaded successfully");
+
               if (videoRef.current) {
                 videoRef.current
                   .play()
@@ -367,7 +353,7 @@ function PlayerContent() {
   const [currentExercise, setCurrentExercise] =
     useState<BackendExercise | null>(null);
   const [completedExercises, setCompletedExercises] = useState<string[]>([]);
-  const [videoProgress, setVideoProgress] = useState<number>(0);
+  const progressBarRef = useRef<HTMLDivElement>(null);
   const [exerciseStartTime, setExerciseStartTime] = useState<number | null>(
     null
   );
@@ -403,12 +389,6 @@ function PlayerContent() {
   // ვარჯიშის დასრულების ფუნქცია
   const handleExerciseComplete = useCallback(
     async (exerciseId: string) => {
-      console.log("✅ Completing exercise:", exerciseId);
-      console.log("📊 Current state:", {
-        completedExercises,
-        currentExercise: currentExercise?._id,
-        exerciseId,
-      });
 
       // გამოვთვალოთ დახარჯული დრო
       const timeSpent = exerciseStartTime
@@ -418,7 +398,7 @@ function PlayerContent() {
       // ჩავწეროთ აქტივობა
       try {
         await recordActivity("exercise", exerciseId, timeSpent);
-        console.log("📊 Activity recorded:", { exerciseId, timeSpent });
+
       } catch (error) {
         console.error("❌ Failed to record activity:", error);
       }
@@ -460,15 +440,6 @@ function PlayerContent() {
     if (next !== currentExercise) setCurrentExercise(next);
   }, [exercises, currentExercise, exercisesLoading]);
 
-  console.log("🎯 Player Data:", {
-    setId,
-    difficulty,
-    exercisesCount: exercises.length,
-    exercises: exercises,
-    set: setData,
-    loading: setLoading || exercisesLoading,
-  });
-
   // Function to change current exercise
   const handleExerciseChange = (exercise: BackendExercise, index: number) => {
     setCurrentExercise(exercise);
@@ -499,7 +470,7 @@ function PlayerContent() {
       // Set completed - record set activity
       recordActivity("set", setId)
         .then(() => {
-          console.log("🎯 Set completed and recorded:", setId);
+
         })
         .catch((error) => {
           console.error("❌ Failed to record set completion:", error);
@@ -511,7 +482,6 @@ function PlayerContent() {
   const handleVideoComplete = useCallback(() => {
     if (!currentExercise) return;
 
-    console.log("🎬 Video completed:", currentExercise._id);
     // ვიდეოს დასრულებისას ავტომატურად ვნიშნავთ ვარჯიშს შესრულებულად
     if (!completedExercises.includes(currentExercise._id)) {
       handleExerciseComplete(currentExercise._id);
@@ -526,10 +496,14 @@ function PlayerContent() {
     }
   }, [currentExercise, completedExercises, handleExerciseComplete, exercises]);
 
+  useEffect(() => {
+    if (progressBarRef.current) progressBarRef.current.style.width = '0%';
+  }, [currentExercise?._id]);
+
   // ვიდეოს პროგრესის ჰენდლერი
   const handleVideoProgress = useCallback((progress: number) => {
-    setVideoProgress(progress);
-    console.log("📊 Video progress:", progress.toFixed(1) + "%");
+    if (progressBarRef.current) progressBarRef.current.style.width = `${Math.max(0, Math.min(100, Number.isFinite(progress) ? progress : 0))}%`;
+
   }, []);
 
   const loading = setLoading || exercisesLoading;
@@ -614,7 +588,6 @@ function PlayerContent() {
   return (
     <div>
 
-      
       <DesktopNavbar
         menuItems={defaultMenuItems}
         blogBg={false}
@@ -624,7 +597,7 @@ function PlayerContent() {
       <div className="flex flex-col items-center md:overflow-hidden">
         <div className="w-full h-[calc(100vh-200px)] rounded-[20px] md:rounded-[30px] overflow-hidden">
           {(() => {
-            
+
             if (!currentExercise) {
               return (
                 <div className="w-full h-full flex items-center justify-center bg-gray-100 rounded-[20px] md:rounded-[30px]">
@@ -632,7 +605,6 @@ function PlayerContent() {
                 </div>
               );
             }
-           
 
             let videoUrl = resolveExerciseVideo(currentExercise, locale);
             let videoType = getVideoType(videoUrl || "");
@@ -643,10 +615,6 @@ function PlayerContent() {
               setData &&
               "demoVideoUrl" in setData
             ) {
-              console.log("🎥 Trying demo video:", {
-                demoVideoUrl: setData.demoVideoUrl,
-                type: typeof setData.demoVideoUrl,
-              });
 
               let demoUrl: string | undefined;
 
@@ -707,7 +675,8 @@ function PlayerContent() {
             <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
               <div
                 className="h-full bg-purple-600 transition-all duration-300"
-                style={{ width: `${videoProgress}%` }}
+                ref={progressBarRef}
+                style={{ width: "0%" }}
               />
             </div>
           </div>

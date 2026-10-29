@@ -76,6 +76,7 @@ const PROTECTED_ENDPOINTS = [
   '/auth/session',
   '/auth/logout',
   '/users/me',
+  '/questionnaires/me',
   '/api/purchases/my-courses',
   '/purchases/check-access',
   '/purchases/check-course-access',

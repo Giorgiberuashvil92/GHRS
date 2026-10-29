@@ -112,7 +112,7 @@ const Home = () => {
           buttonTextKey="buttons.take_test"
           buttonTextColor="#3D334A"
           buttonBgColor="#FFFFFF"
-          href="/test"
+          href={`/test?lang=${locale === "ru" ? "ru" : "en"}`}
           bgCenter={true}
           containerStyles="custom-class"
           titleStyles="text-white"

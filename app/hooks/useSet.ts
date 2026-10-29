@@ -94,7 +94,7 @@ interface UseSetReturn {
 
 function getFallbackSet(): BackendSet {
   const fallbackDate = new Date().toISOString();
-  
+
   return {
     _id: "fallback_set_1",
     name: {
@@ -139,45 +139,23 @@ export function useSet(setId: string): UseSetReturn {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  console.log("🔴 useSet hook initialized with setId:", setId);
-
   const fetchSet = async () => {
     try {
       setLoading(true);
       setError(null);
 
-      console.log("🏃‍♂️ Starting fetchSet...", { setId });
-
       const { apiRequest, API_CONFIG } = await import("../config/api");
       // ✅ FIXED: Always use /api prefix - Next.js rewrites will handle routing
       const endpoint = `/api/sets/${setId}`.toLowerCase();
 
-      console.log("📡 Set API Request Details:", {
-        endpoint,
-        baseUrl: API_CONFIG.BASE_URL,
-        fullUrl: `${API_CONFIG.BASE_URL}${endpoint}`,
-        setId,
-        timestamp: new Date().toISOString(),
-        endpointIsLowercase: endpoint === endpoint.toLowerCase()
-      });
-
       const backendSet: BackendSet = await apiRequest<BackendSet>(endpoint);
-      console.log("✅ Set API request completed successfully");
-
-      console.log("🏃‍♂️ Raw Set Response:", {
-        data: backendSet,
-        type: typeof backendSet,
-        setId: backendSet?._id,
-        name: backendSet?.name
-      });
 
       if (!backendSet) {
         throw new Error("Set API response is empty");
       }
 
       setSet(backendSet);
-      console.log("✅ setSet called with:", backendSet);
-      
+
     } catch (err) {
       console.error("❌ Error fetching set:", err);
       console.error("❌ Set Error details:", {
@@ -185,33 +163,26 @@ export function useSet(setId: string): UseSetReturn {
         stack: err instanceof Error ? err.stack : undefined,
         timestamp: new Date().toISOString()
       });
-      
+
       const fallbackSet = getFallbackSet();
-      console.log("🔄 Using fallback set:", fallbackSet);
+
       setSet(fallbackSet);
       setError(err instanceof Error ? err.message : "API Error - using fallback set data");
     } finally {
       setLoading(false);
-      console.log("🏁 fetchSet completed, loading set to false");
+
     }
   };
 
   useEffect(() => {
     if (setId) {
-      console.log("🔄 useEffect triggered, calling fetchSet");
+
       fetchSet();
     } else {
-      console.log("⚠️ No setId provided, skipping fetchSet");
+
       setLoading(false);
     }
   }, [setId]);
-
-  console.log("🔴 useSet returning:", {
-    set: set?._id,
-    loading,
-    error,
-    hasSet: !!set
-  });
 
   return {
     set,

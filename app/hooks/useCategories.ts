@@ -1,4 +1,5 @@
 "use client";
+import { getPublicJson } from '../../lib/public-request';
 
 import { useState, useEffect } from "react";
 
@@ -115,56 +116,27 @@ export function useCategories(): UseCategoriesReturn {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  console.log("🎯 useCategories HOOK INITIALIZED");
-
-  const fetchCategories = async () => {
+  const fetchCategories = async (force = false) => {
     try {
       setLoading(true);
       setError(null);
 
-      console.log("🚀 Starting fetchCategories...");
-      console.log("🔍 Window location:", typeof window !== 'undefined' ? window.location.href : 'SSR');
-
-      const { apiRequest, API_CONFIG } = await import("../config/api");
+      const { API_CONFIG } = await import("../config/api");
       const endpoint = API_CONFIG.ENDPOINTS.CATEGORIES;
       const fullUrl = `${API_CONFIG.BASE_URL}${endpoint}`;
-      
-      console.log("📡 API Request Details:", {
-        endpoint,
-        baseUrl: API_CONFIG.BASE_URL,
-        fullUrl,
-        timestamp: new Date().toISOString()
-      });
 
-      const backendCategories: BackendCategory[] = await apiRequest<BackendCategory[]>(endpoint);
-
-      console.log("📦 Raw API Response:", {
-        data: backendCategories,
-        type: typeof backendCategories,
-        isArray: Array.isArray(backendCategories),
-        length: backendCategories?.length,
-        firstItem: backendCategories?.[0],
-        allCategoryIds: backendCategories?.map(c => c._id)
-      });
+      const backendCategories: BackendCategory[] = await getPublicJson<BackendCategory[]>(fullUrl, { force });
 
       if (!Array.isArray(backendCategories)) {
         throw new Error("API response is not an array");
       }
 
-      console.log("✅ Using raw backend data without transformation");
-
       // ✅ Return ALL categories (both main and subcategories)
       // Components can filter them as needed
-      console.log("🔍 All categories:", {
-        totalCategories: backendCategories.length,
-        mainCategories: backendCategories.filter(c => !c.parentId).length,
-        subcategories: backendCategories.filter(c => c.parentId).length,
-        allCategories: backendCategories
-      });
 
       // ✅ Set all categories (not just main ones)
       setCategories(backendCategories);
-      
+
     } catch (err: unknown) {
       console.error("❌ Error fetching categories:", err);
       console.error("❌ Error details:", {
@@ -172,16 +144,16 @@ export function useCategories(): UseCategoriesReturn {
         stack: err instanceof Error ? err.stack : undefined,
         timestamp: new Date().toISOString()
       });
-      
+
       const fallbackCategories = getFallbackCategories();
-      console.log("🔄 Using fallback categories:", fallbackCategories);
+
       setCategories(fallbackCategories);
       // Don't set error if we have fallback data - just log it
       console.warn("⚠️ API failed but fallback data is available");
       setError(null); // Clear error since we have fallback data
     } finally {
       setLoading(false);
-      console.log("🏁 fetchCategories completed");
+
     }
   };
 
@@ -193,7 +165,7 @@ export function useCategories(): UseCategoriesReturn {
     categories,
     loading,
     error,
-    refetch: fetchCategories,
+    refetch: () => fetchCategories(true),
   };
 }
 

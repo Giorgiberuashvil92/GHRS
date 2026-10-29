@@ -173,10 +173,30 @@ export class CategoryService {
   }
 
   async getSubcategories(categoryId: string): Promise<Category[]> {
-    return this.categoryModel.find({ parentId: new Types.ObjectId(categoryId), isActive: true })
+    const subcategories = await this.categoryModel.find({ parentId: new Types.ObjectId(categoryId), isActive: true })
       .populate('subcategories')
       .populate('sets')
       .exec();
+
+    const counts = await this.setModel.aggregate<{
+      _id: Types.ObjectId;
+      count: number;
+    }>([
+      {
+        $match: {
+          categoryId: new Types.ObjectId(categoryId),
+          subCategoryId: { $in: subcategories.map((subcategory) => subcategory._id) },
+          isActive: true,
+        },
+      },
+      { $group: { _id: '$subCategoryId', count: { $sum: 1 } } },
+    ]);
+    const countsById = new Map(counts.map(({ _id, count }) => [_id.toString(), count]));
+
+    return subcategories.map((subcategory) => ({
+      ...subcategory.toObject(),
+      setsCount: countsById.get(subcategory._id.toString()) ?? 0,
+    }));
   }
 
   async getSubCategoryById(categoryId: string, subCategoryId: string): Promise<Category> {

@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaGoogle } from "react-icons/fa";
 import { FaYandex } from "react-icons/fa";
 import { FaVk } from "react-icons/fa";
@@ -26,6 +26,8 @@ const Login = () => {
     password: "",
   });
   const [error, setError] = useState("");
+  const [returnTo, setReturnTo] = useState("");
+  useEffect(() => { if (new URLSearchParams(window.location.search).get("returnTo") === "/test") setReturnTo("/test"); }, []);
   const [isLoading, setIsLoading] = useState(false);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
@@ -73,7 +75,7 @@ const Login = () => {
         formData.password
       )) as LoginResponse;
       
-      authLogin(response.token, response.user);
+      authLogin(response.token, response.user, new URLSearchParams(window.location.search).get('returnTo') || undefined);
     } catch (err: unknown) {
       console.error('❌ Login Error:', err);
       if (err instanceof Error) {
@@ -189,7 +191,7 @@ const Login = () => {
           <p className="text-[#3D334A] text-[18px] leading-[120%] font-medium font-pt mt-3">
             {t("auth.no_account") || "Don't have an account?"}{" "}
             <Link
-              href="/auth/register"
+              href={returnTo ? "/auth/register?returnTo=%2Ftest" : "/auth/register"}
               className="text-[#D4BAFC] tracking-[-1%] font-medium leading-[100%] font-pt hover:underline"
             >
               {t("auth.registration") || "Registration"}
