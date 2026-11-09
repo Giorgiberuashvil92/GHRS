@@ -1,0 +1,43 @@
+{
+  "main_title": "Ein Angebot rund um Ihre Gesundheit",
+  "navigation": {
+    "all_complexes": "Alle Komplexe",
+    "about": "Über uns",
+    "blog": "Blog",
+    "contacts": "Kontakt"
+  },
+  "rehabilitation": {
+    "title": "MODERNE ISRAELISCHE REHABILITATIONSMETHODEN",
+    "description": "Zur Wiederherstellung und Erhaltung der Beweglichkeit und Arbeitsfähigkeit",
+    "detail_description": "Moderne israelische Rehabilitationsmethoden in der Orthopädie, Neurologie, posttraumatischen Gangrehabilitation und anderen.",
+    "section_title": "Rehabilitation"
+  },
+  "categories": {
+    "fifteen_categories": "15 Kategorien",
+    "stores": "Lagerräume",
+    "restaurants": "Restaurants",
+    "six_sections": "6 Abschnitte",
+    "thirty_six_complexes": "36 Komplexe",
+    "one_twenty_five_exercises": "125 Übungen"
+  },
+  "complex": {
+    "one_twenty_five_lessons": "125 Lektionen",
+    "one_hundred_two_minutes": "102 Minuten",
+    "three_difficulty_stages": "3 Schwierigkeitsstufen",
+    "general_recovery_title": "Allgemeine Erholung, unterstützender Komplex",
+    "price": "500 ₾",
+    "per_month": "Pro Monat",
+    "purchase": "Kaufen",
+    "subscription_offer": "Aufmerksamkeit! Rabatte gelten für Abonnements ab 3 Monaten"
+  },
+  "blog": {
+    "title": "Kurse und Meisterkurse für erfahrene Therapeuten. Workshop zur Behandlung orthopädischer Probleme",
+    "mobile_title": "RÜCKEN- UND NAckenschmerzen: So verbessern Sie die Körperhaltung auf natürliche Weise.",
+    "description": "Mit Sicherheitstipps vor und nach der Fraktur von Kristen Gasnik",
+    "category_label": "Orthopädie"
+  },
+  "buttons": {
+    "learn_more": "Erfahren Sie mehr",
+    "to_catalog": "Zum Katalog"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "course": {
+    "all_courses": {
+      "title": "Курси",
+      "search_placeholder": "Ім'я або ім'я інструктора",
+      "instructor": "Інструктор",
+      "badge_english": "В УКРГЛІНІ",
+      "no_courses": "Не знайдено курсів",
+      "try_other_search": "Спробуйте різні параметри пошуку",
+      "show_more": "Показати більше",
+      "loading": "Завантаження...",
+      "error": "Курси для завантаження помилок"
+    },
+    "tabs": {
+      "description": "Опис",
+      "syllabus": "Сильлабус",
+      "announcements": "Анонси",
+      "reviews": "Відгуки"
+    },
+    "lessons_count": "{{count}} Про нас",
+    "lessons_label": "Кількість уроків",
+    "not_specified": "Не вказано",
+    "languages_label": "Курси англійської мови",
+    "price_label": "Ціна курсу",
+    "short_description_title": "Короткий опис:",
+    "duration": "Тривалість",
+    "duration_minutes": "{{duration}} Зручності",
+    "access_granted": "✓ У вас є",
+    "purchase_course": "КУРЧА КУРС",
+    "login_to_purchase": "ЛОГІН ДО ПУРХАЗУ",
+    "success_title": "Продовжити",
+    "not_found_title": "Не знайдено",
+    "not_found_message": "Курс за цією адресою не існує або був вилучений.",
+    "view_all_courses": "Усі курси",
+    "related_courses": "Схожі курси",
+    "total_duration": "Загальна тривалість",
+    "prerequisites_title": "Передумови:",
+    "learning_outcomes_title": "Результати навчання:",
+    "tags_label": "Теги:",
+    "lesson_label": "Уроки {{number}}",
+    "minutes_short": "хв",
+    "reviews_section_title": "Відгуки студентів",
+    "no_reviews_yet": "Немає відгуків",
+    "error_loading": "Курс на завантаження помилок",
+    "no_description": "Не опис"
+  }
+}

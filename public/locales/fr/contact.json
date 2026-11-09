@@ -1,0 +1,15 @@
+{
+  "title": "Contact",
+  "working_hours": "09:00 - 19:00 Heure de Tel-Aviv",
+  "working_mode": "Heures de travail",
+  "phone": "+972 53-9617579",
+  "hotline": "Téléphone portable",
+  "email_info": "Écrivez ici pour toutes questions",
+  "form_title": "Formulaire de rétroaction",
+  "first_name": "Prénom",
+  "last_name": "Nom de famille",
+  "email": "Adresse électronique",
+  "subject": "Sujet",
+  "message": "Votre message",
+  "send": "Envoyer"
+}

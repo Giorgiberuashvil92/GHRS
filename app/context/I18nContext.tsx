@@ -1,8 +1,10 @@
 "use client";
+import { consultationMessages } from "../../lib/translations/consultation";
+import { mergeMessages } from "../../lib/translations/merge";
 import { loadTranslations } from "../../lib/translations";
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-type Locale = "ka" | "ru" | "en";
+import { type Locale, isLocale, isRtl, getContentLocale } from "../../lib/locales";
 
 interface I18nContextType {
   locale: Locale;
@@ -26,7 +28,8 @@ export const useLanguage = () => {
   if (!context) {
     throw new Error("useLanguage must be used within an I18nProvider");
   }
-  return { language: context.locale };
+  // API content currently has three language fields; keep it visible in new UI languages.
+  return { language: getContentLocale(context.locale) };
 };
 
 interface I18nProviderProps {
@@ -46,44 +49,41 @@ const getNestedValue = (obj: Record<string, unknown>, path: string): string => {
 };
 
 export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
-  const [locale, setLocaleState] = useState<Locale>(() => {
-    if (typeof window !== "undefined") {
-      const savedLocale = localStorage.getItem("locale") as Locale;
-
-      if (savedLocale && ["ka", "ru", "en"].includes(savedLocale)) {
-
-        return savedLocale;
-      }
-      // თუ არ არის შენახული, დავაყენოთ default და შევინახოთ
-
-      localStorage.setItem("locale", "ka");
-    }
-    return "ka";
-  });
+  const [locale, setLocaleState] = useState<Locale>("ka");
+  const [restored, setRestored] = useState(false);
+  useEffect(() => {
+    try {
+      const saved = localStorage.getItem("locale");
+      if (isLocale(saved)) setLocaleState(saved);
+    } catch { /* Language selection still works when browser storage is disabled. */ }
+    setRestored(true);
+  }, []);
 
   const [translationData, setTranslationData] = useState<Record<string, unknown>>({});
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
+    if (!restored) return;
     let cancelled = false;
     setIsLoading(true);
-    loadTranslations(locale)
-      .then(messages => { if (!cancelled) setTranslationData(messages); })
+    loadTranslations("en").then(async fallback => [
+      fallback, await loadTranslations(locale).catch(() => fallback),
+    ])
+      .then(([fallback, messages]) => { if (!cancelled) setTranslationData(mergeMessages(mergeMessages(fallback, messages), { consultation: consultationMessages[locale] })); })
       .catch(error => console.error('Failed to load translations:', error))
       .finally(() => { if (!cancelled) setIsLoading(false); });
     return () => { cancelled = true; };
+  }, [locale, restored]);
+
+  useEffect(() => {
+    document.documentElement.lang = locale;
+    document.documentElement.dir = isRtl(locale) ? "rtl" : "ltr";
   }, [locale]);
 
   const setLocale = (newLocale: Locale) => {
-
-    if (newLocale !== locale) {
-
-      setLocaleState(newLocale);
-      localStorage.setItem("locale", newLocale);
-
-    } else {
-
-    }
+    if (!isLocale(newLocale)) return;
+    setLocaleState(newLocale);
+    try { localStorage.setItem("locale", newLocale); } catch { /* Optional persistence. */ }
   };
 
   const t = (key: string, options?: Record<string, string>): string => {
@@ -93,7 +93,7 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
     if (translation === key) return key;
 
     if (typeof translation === "object" && translation !== null) {
-      const localeValue = (translation as Record<string, string>)[locale];
+      const localeValue = (translation as Record<string, string>)[locale] || (translation as Record<string, string>).en;
       if (typeof localeValue === "string") {
         translation = localeValue;
       } else {
@@ -103,10 +103,7 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
 
     if (options && typeof translation === "string") {
       Object.keys(options).forEach((optionKey) => {
-        translation = translation.replace(
-          `{{${optionKey}}}`,
-          options[optionKey]
-        );
+        translation = translation.split(`{{${optionKey}}}`).join(options[optionKey]);
       });
     }
 

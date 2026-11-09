@@ -1,0 +1,47 @@
+{
+  "course": {
+    "all_courses": {
+      "title": "Corsi",
+      "search_placeholder": "Inserire il nome del corso o il nome dell'istruttore",
+      "instructor": "Instructor",
+      "badge_english": "IN ITALIANO",
+      "no_courses": "Nessun corso trovato",
+      "try_other_search": "Prova diversi parametri di ricerca",
+      "show_more": "Mostra di più",
+      "loading": "Caricamento...",
+      "error": "Corsi di caricamento degli errori"
+    },
+    "tabs": {
+      "description": "Designazione",
+      "syllabus": "Syllabus",
+      "announcements": "Annunci",
+      "reviews": "Recensioni"
+    },
+    "lessons_count": "{{count}} lezioni di lezioni",
+    "lessons_label": "Numero di lezioni",
+    "not_specified": "Non specificato",
+    "languages_label": "Lingue del corso",
+    "price_label": "Prezzo del corso",
+    "short_description_title": "Breve descrizione:",
+    "duration": "Durata",
+    "duration_minutes": "{{duration}} minuti",
+    "access_granted": "✓ Hai capito",
+    "purchase_course": "CORSO DI PUBBLICAZIONE",
+    "login_to_purchase": "LOGICO ALLA PUBBLICAZIONE",
+    "success_title": "Successo",
+    "not_found_title": "Corso non trovato",
+    "not_found_message": "Il corso a questo indirizzo non esiste o è stato rimosso.",
+    "view_all_courses": "Tutti i corsi",
+    "related_courses": "Corsi obbligatori",
+    "total_duration": "Durata totale",
+    "prerequisites_title": "Prerequisiti:",
+    "learning_outcomes_title": "Risultati di apprendimento:",
+    "tags_label": "Tag:",
+    "lesson_label": "Lezione {{number}}",
+    "minutes_short": "min min",
+    "reviews_section_title": "Recensioni degli studenti",
+    "no_reviews_yet": "Nessuna recensione",
+    "error_loading": "Corso di caricamento errori",
+    "no_description": "Nessuna descrizione"
+  }
+}

@@ -1,0 +1,234 @@
+{
+  "rehabilitation": {
+    "title": "Riabilitazione",
+    "description": "Metodi di riabilitazione israeliani moderni per il ripristino e il mantenimento della mobilità e della capacità lavorativa",
+    "learn_more": "Per saperne di più →",
+    "all_exercises": "Tutti gli esercizi",
+    "header": {
+      "title": "MODERN ISRAELI REHABILITAZIONE METODI",
+      "subtitle": "Per il ripristino e il mantenimento della mobilità e della capacità di lavoro"
+    },
+    "page": {
+      "subscription": {
+        "title": "Abbonamento",
+        "payment": {
+          "title": "Vari metodi di pagamento",
+          "description": "Puoi pagare l'abbonamento utilizzando una carta bancaria o un codice QR nel tuo account personale"
+        },
+        "planning": {
+          "title": "Pianificazione",
+          "description": "Capacità di creare un programma di formazione e ricevere notifiche dalla piattaforma sulla prossima sessione di formazione"
+        },
+        "trial": {
+          "title": "Abbonamento di prova",
+          "description": "Si tratta di un abbonamento di 3 o 5 giorni di calendario con l'opzione di rinnovo automatico per 3 o 5 giorni di calendario"
+        },
+        "course_access": {
+          "title": "Accesso ai corsi",
+          "description": "Dopo aver pagato l'abbonamento, l'accesso al tuo complesso di esercizi video scelto verrà attivato automaticamente nel tuo account personale"
+        },
+        "cancellation": {
+          "title": "Annulla iscrizione",
+          "description": "Puoi annullare il rinnovo automatico dell'abbonamento nel tuo account personale rimuovendo il marchio corrispondente"
+        },
+        "discount": {
+          "title": "10% di sconto per 3 mesi e 25% per 6 mesi di abbonamento",
+          "button": "Abbonamento acquisto"
+        }
+      },
+      "no_plan": {
+        "title": "Nessun Piano di Riabilitazione?",
+        "description": "Programmare una consultazione con un medico di riabilitazione",
+        "button": "Consultazione dei libri"
+      }
+    }
+  },
+  "category": {
+    "title": "Esercizi",
+    "view_all": "Visualizza tutto →"
+  },
+  "works": {
+    "all_sets": "Tutti {{count}} set →",
+    "სამუშაოები": "სამუშაოები",
+    "ყველა_სეტი": "ყველა {{count}} სეტი →"
+  },
+  "professional": {
+    "title": "Sviluppo professionale",
+    "description": "Il dipartimento di educazione e sviluppo professionale in riabilitazione, fisioterapia e massaggio terapeutico - questa è una collaborazione con specialisti israeliani e centri di formazione, come il Medical Massage College, fondato e diretto dal Dr. Aaron Yakobi.",
+    "learn_more": "Per saperne di più →",
+    "header": {
+      "title": "SVILUPPO PROFESSIONALE",
+      "description": "Formazione e sviluppo professionale in riabilitazione, fisioterapia e massaggio terapeutico, in collaborazione con i centri di formazione israeliani."
+    },
+    "our_courses": "I nostri corsi",
+    "cards": {
+      "qualified_teachers": "istruttori qualificati",
+      "exclusive_courses": "corsi esclusivi",
+      "students_learning": "studenti attualmente in formazione"
+    },
+    "პროფესიონალური_განვითარება": "პროფესიონალური განვითარება",
+    "ჩვენი_კურსები": "ჩვენი კურსები",
+    "courses": {
+      "title": "Corsi",
+      "instructor_courses": "Corsi di Istruttore",
+      "popular_courses": "Features",
+      "error": "Corsi di caricamento degli errori",
+      "all_courses": "Tutti {{count}} corsi →",
+      "კურსები": "კურსები",
+      "ყველა_კურსი": "ყველა {{count}} კურსი →"
+    },
+    "test_banner": {
+      "title": "Fai un test e scegli il corso adatto a te",
+      "button": "test"
+    }
+  },
+  "marketplace": {
+    "description": "Stiamo sviluppando la direzione del mercato. I nostri partner in questa direzione possono essere centri di riabilitazione, cliniche, sanatori, club sportivi, massaggi...",
+    "status": "Lo sviluppo"
+  },
+  "blog": {
+    "title": "Blog",
+    "featured_articles": "Articoli in evidenza",
+    "popular_articles": "Articoli popolari",
+    "recent_articles": "Articoli recenti",
+    "all_articles": "Tutti gli articoli",
+    "view_all": "Vedi tutto",
+    "see_all": "Vedi tutto",
+    "share_social": "Condividi sui social media",
+    "category": "Categoria",
+    "default_title": "Corsi e masterclass per terapisti esperti. Workshop sul trattamento dei problemi ortopedici",
+    "default_mobile_title": "NECK PAIN: COME MIGLIARE NATURALLENTE POSTURE NATURALLY",
+    "default_description": "Con consigli di sicurezza da seguire prima e dopo una frattura di Kristen Gasnik",
+    "banner": {
+      "title": "Corsi e masterclass per terapisti esperti. Workshop sul trattamento dei problemi ortopedici",
+      "mobile_title": "NECK PAIN: COME MIGLIARE NATURALLENTE POSTURE NATURALLY",
+      "description": "Con consigli di sicurezza da seguire prima e dopo una frattura di Kristen Gasnik",
+      "category": "Ortopedia"
+    }
+  },
+  "download": {
+    "title": "Interazione <br /> possibilità di <br /> diverse piattaforme"
+  },
+  "article": {
+    "table_of_contents": "Tabella dei contenuti",
+    "comments": "Osservazioni",
+    "comment_count": "{{count}} commenti",
+    "read_time": "{{time}} min min",
+    "rate_article": "Voce articolo",
+    "ratings": "({{count}} valutazioni)",
+    "write_comment": "Scrivi un commento",
+    "show_more_comments": "Mostra di più",
+    "no_comments": "Nessun commento ancora",
+    "login_to_comment": "Si prega di accedere per lasciare un commento"
+  },
+  "common": {
+    "similar_articles": "Articoli simili",
+    "no_similar_articles": "Nessun articolo simile trovato",
+    "orthopedics": "Ortopedia",
+    "sections_title": "Sezioni"
+  },
+  "teachers": {
+    "our_teachers": "Instructor",
+    "all_instructors": "Tutti gli istruttori",
+    "courses": "corsi",
+    "students": "studenti",
+    "load_error": "Non poteva caricare istruttori",
+    "not_found": "Nessun istruttore trovato",
+    "no_courses_instructor": "Questo istruttore non ha ancora corsi pubblicati.",
+    "loading": "Caricamento insegnanti...",
+    "view_all": "VISTA",
+    "more_details": "PIÙ SETTAGLI"
+  },
+  "teacher": {
+    "instructorCourses": "Corsi di Istruttore",
+    "instructorCertificates": "Certificati dell'istruttore",
+    "wikipedia": "Wikipedia"
+  },
+  "course": {
+    "duration": "Durata",
+    "duration_minutes": "{{duration}} minuti",
+    "not_specified": "Non specificato",
+    "enter_comment": "Inserisci il tuo commento",
+    "total_duration": "Durata totale",
+    "related_courses": "Corsi obbligatori"
+  },
+  "complex_description": "Designazione",
+  "complex_additional": "Ulteriori informazioni",
+  "complex_demo_video": "Demo Video",
+  "complex_general_instructions": "Istruzioni generali:",
+  "complex_recommendations": "Raccomandazioni",
+  "complex_equipment": "Attrezzatura:",
+  "complex_warnings": "Avvertenze:",
+  "complex_total_duration": "Durata totale complessa {{duration}} min min",
+  "complex_total_duration_hours": "Durata totale complessa {{duration}} ore",
+  "complex_exercises_count": "{{count}} esercizi",
+  "complex_beginner_level": "Livello di principiante",
+  "complex_intermediate_level": "Livello intermedio",
+  "complex_advanced_level": "Livello avanzato",
+  "header": {
+    "ecosystem_title": "Un ecosistema di servizi per prenderti cura della tua salute",
+    "rehabilitation_title": "MODERN ISRAELI REHABILITAZIONE METODI",
+    "rehabilitation_subtitle": "Per il ripristino e il mantenimento della mobilità e della capacità di lavoro",
+    "rehabilitation": "Riabilitazione",
+    "rehabilitation_description": "Moderni metodi di riabilitazione israeliana in ortopedia, neurologia, recupero post-traumatica dell'andit, e tecniche terapeutiche avanzate aggiuntive",
+    "neck_spine": "Spina cervicale",
+    "learn_more": "Per saperne di più",
+    "to_catalog": "A catalogo",
+    "per_month": "Per mese",
+    "purchase": "Acquisto",
+    "our_courses": "I nostri corsi",
+    "subscription_discount_notice": "Attenzione! Gli sconti si applicano agli abbonamenti di 3 mesi o più",
+    "categories_count": "15 categorie",
+    "online_chat": "chat online",
+    "lessons_count": "1000+ lezioni",
+    "complexes_count": "36 complessi",
+    "subcategories_count": "{{count}} sottocategorie",
+    "sets_count": "{{count}} Set set set set",
+    "exercises_count": "{{count}} esercizi",
+    "hours_count": "{{count}} ore",
+    "minutes_count": "{{count}} minuti",
+    "loading": "Caricamento...",
+    "duration_minutes": "{{duration}} min min",
+    "currency": "$",
+    "subscription_period": {
+      "one_month": "1 mese",
+      "three_months": "3 mesi",
+      "six_months": "6 mesi",
+      "twelve_months": "12 mesi"
+    },
+    "pricing": {
+      "title": "Prezzi",
+      "monthly": "Mensile",
+      "three_months": "3 mesi",
+      "six_months": "6 mesi",
+      "yearly": "Anno",
+      "discount_notice": "Attenzione! Gli sconti si applicano agli abbonamenti di 3 mesi o più"
+    }
+  },
+  "video_notification": {
+    "title": "Esercizi video",
+    "exercise_complexes": {
+      "title": "Esercizi complessi",
+      "description": "La sezione di riabilitazione fornisce complessi di esercizio nelle seguenti aree: ortopedia, neurologia, obesità, riabilitazione per gli anziani, riabilitazione post-COVID-19, riabilitazione del gait, afasia e disarthria. Tutti i complessi di esercizio sono sviluppati da specialisti israeliani in conformità con i protocolli di riabilitazione israeliani."
+    },
+    "for_children": {
+      "title": "Per i bambini",
+      "description": "I bambini di età superiore ai 10 anni e gli adolescenti troveranno sezioni rilevanti relative alla postura, alla scoliosi giovanile e alla colonna vertebrale toracica, così come ai problemi di tracolla, ai problemi dell'arto inferiore e alla correzione."
+    },
+    "articles": {
+      "title": "Articoli",
+      "description": "La nostra biblioteca presenta articoli che servono come introduzioni teoriche ad ogni area di Riabilitazione e coprono possibili problemi e patologie, anatomia, fisiologia e biomeccanica."
+    },
+    "purchase": {
+      "premium_content": "Contenuto Premium",
+      "set_requires_purchase": "Il \"{{setName}}\"set richiede l'acquisto",
+      "content_requires_purchase": "Questo contenuto richiede l'acquisto",
+      "what_you_get": "Che cosa si ottiene:",
+      "unlimited_access": "Accesso illimitato",
+      "all_exercises": "Tutti gli esercizi",
+      "progress_tracking": "Monitoraggio dei progressi",
+      "buy_now": "Acquista ora",
+      "browse_courses": "Sfoglia i corsi"
+    }
+  }
+}

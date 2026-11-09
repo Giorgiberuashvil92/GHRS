@@ -1,0 +1,234 @@
+{
+  "rehabilitation": {
+    "title": "Rehabilitation",
+    "description": "Moderne israelische Rehabilitationsmethoden zur Wiederherstellung und Erhaltung der Mobilität und Arbeitsfähigkeit",
+    "learn_more": "Erfahren Sie mehr →",
+    "all_exercises": "Alle Übungen",
+    "header": {
+      "title": "MODERNE ISRAELISCHE REHABILITATIONSMETHODEN",
+      "subtitle": "Zur Wiederherstellung und Erhaltung der Mobilität und Arbeitsfähigkeit"
+    },
+    "page": {
+      "subscription": {
+        "title": "Zeichnung",
+        "payment": {
+          "title": "Verschiedene Zahlungsmethoden",
+          "description": "Sie können das Abonnement mit einer Bankkarte oder einem QR-Code in Ihrem persönlichen Konto bezahlen."
+        },
+        "planning": {
+          "title": "Planung",
+          "description": "Möglichkeit, einen Trainingsplan zu erstellen und Benachrichtigungen von der Plattform über die nächste Trainingseinheit zu erhalten"
+        },
+        "trial": {
+          "title": "Trial Subscription",
+          "description": "Dies ist ein Abonnement für 3 oder 5 Kalendertage mit der Option einer automatischen Verlängerung für 3 oder 5 Kalendertage."
+        },
+        "course_access": {
+          "title": "Kurszugang",
+          "description": "Nach der Bezahlung des Abonnements wird der Zugriff auf den von Ihnen gewählten Videoübungskomplex automatisch in Ihrem persönlichen Konto aktiviert"
+        },
+        "cancellation": {
+          "title": "Abonnement kündigen",
+          "description": "Sie können die automatische Abonnementverlängerung in Ihrem persönlichen Konto stornieren, indem Sie die entsprechende Markierung entfernen"
+        },
+        "discount": {
+          "title": "10 % Rabatt für ein 3-Monats-Abonnement und 25 % für ein 6-Monats-Abonnement",
+          "button": "Abonnement kaufen"
+        }
+      },
+      "no_plan": {
+        "title": "Kein Rehabilitationsplan?",
+        "description": "Vereinbaren Sie einen Beratungstermin mit einem Rehabilitationsarzt",
+        "button": "Buchberatung"
+      }
+    }
+  },
+  "category": {
+    "title": "Übungen",
+    "view_all": "Alle ansehen"
+  },
+  "works": {
+    "all_sets": "Alle {{count}}-Sets →",
+    "სამუშაოები": "სამუშაოები",
+    "ყველა_სეტი": "ყველა {{count}} სეტი →"
+  },
+  "professional": {
+    "title": "Berufliche Weiterbildung",
+    "description": "Die Abteilung für Bildung und berufliche Entwicklung in Rehabilitation, Physiotherapie und therapeutischer Massage - dies ist eine Zusammenarbeit mit israelischen Spezialisten und Trainingszentren, wie dem Medical Massage College, gegründet und geleitet von Dr. Aaron Yakobi.",
+    "learn_more": "Erfahren Sie mehr →",
+    "header": {
+      "title": "BERUFLICHE ENTWICKLUNG",
+      "description": "Ausbildung und berufliche Entwicklung in Rehabilitation, Physiotherapie und therapeutischer Massage - in Zusammenarbeit mit israelischen Trainingszentren."
+    },
+    "our_courses": "Unsere Kurse",
+    "cards": {
+      "qualified_teachers": "qualifizierte Ausbilder",
+      "exclusive_courses": "exklusive Kurse",
+      "students_learning": "Studierende derzeit in der Ausbildung"
+    },
+    "პროფესიონალური_განვითარება": "პროფესიონალური განვითარება",
+    "ჩვენი_კურსები": "ჩვენი კურსები",
+    "courses": {
+      "title": "Kurse",
+      "instructor_courses": "Ausbilderkurse",
+      "popular_courses": "VORGESTELLT",
+      "error": "Fehler beim Laden der Kurse",
+      "all_courses": "Alle {{count}}-Kurse →",
+      "კურსები": "კურსები",
+      "ყველა_კურსი": "ყველა {{count}} კურსი →"
+    },
+    "test_banner": {
+      "title": "Machen Sie einen Test und wählen Sie den für Sie geeigneten Kurs",
+      "button": "Abnahmeprüfung"
+    }
+  },
+  "marketplace": {
+    "description": "Wir entwickeln die Richtung des Marktes. Unsere Partner in dieser Richtung können Rehabilitationszentren, Kliniken, Sanatorien, Sportvereine, Massagen ...",
+    "status": "In der Entwicklung"
+  },
+  "blog": {
+    "title": "Blog",
+    "featured_articles": "Ausgewählte Artikel",
+    "popular_articles": "Beliebte Artikel",
+    "recent_articles": "Aktuelle Artikel",
+    "all_articles": "Alle Artikel",
+    "view_all": "Alle anzeigen",
+    "see_all": "Alle anzeigen",
+    "share_social": "Share auf Social Media",
+    "category": "Kategorie",
+    "default_title": "Kurse und Meisterkurse für erfahrene Therapeuten. Workshop zur Behandlung orthopädischer Probleme",
+    "default_mobile_title": "RÜCKEN- UND NAckenschmerzen: So verbessern Sie die Körperhaltung auf natürliche Weise.",
+    "default_description": "Mit Sicherheitstipps vor und nach einer Fraktur von Kristen Gasnik",
+    "banner": {
+      "title": "Kurse und Meisterkurse für erfahrene Therapeuten. Workshop zur Behandlung orthopädischer Probleme",
+      "mobile_title": "RÜCKEN- UND NAckenschmerzen: So verbessern Sie die Körperhaltung auf natürliche Weise.",
+      "description": "Mit Sicherheitstipps vor und nach einer Fraktur von Kristen Gasnik",
+      "category": "Orthopädie"
+    }
+  },
+  "download": {
+    "title": "Interaktion <br /> Möglichkeit auf <br /> verschiedenen Plattformen"
+  },
+  "article": {
+    "table_of_contents": "Inhaltsverzeichnis",
+    "comments": "Kommentare",
+    "comment_count": "{{count}} Bemerkungen",
+    "read_time": "{{time}} min.",
+    "rate_article": "Artikel bewerten",
+    "ratings": "({{count}} Bewertungen)",
+    "write_comment": "Schreibe einen Kommentar",
+    "show_more_comments": "Mehr anzeigen",
+    "no_comments": "Noch keine Kommentare",
+    "login_to_comment": "Bitte loggen Sie sich ein, um einen Kommentar zu hinterlassen"
+  },
+  "common": {
+    "similar_articles": "Ähnliche Artikel",
+    "no_similar_articles": "Keine ähnlichen Artikel gefunden",
+    "orthopedics": "Orthopädie",
+    "sections_title": "Abschnitte"
+  },
+  "teachers": {
+    "our_teachers": "Ausbilder",
+    "all_instructors": "Alle Kursleiter",
+    "courses": "Kurse",
+    "students": "Studenten",
+    "load_error": "Die Lehrer konnten nicht geladen werden",
+    "not_found": "Keine Dozenten gefunden",
+    "no_courses_instructor": "Dieser Lehrer hat noch keine veröffentlichten Kurse.",
+    "loading": "Lehrer werden geladen...",
+    "view_all": "ANSICHT ALLE",
+    "more_details": "WEITERE DETAILS"
+  },
+  "teacher": {
+    "instructorCourses": "Kurse für Ausbilder",
+    "instructorCertificates": "Zertifikate der Ausbilder",
+    "wikipedia": "Wikipedia"
+  },
+  "course": {
+    "duration": "Dauer",
+    "duration_minutes": "{{duration}} Minuten",
+    "not_specified": "Nicht angegeben",
+    "enter_comment": "Geben Sie Ihren Kommentar ein",
+    "total_duration": "Gesamtdauer",
+    "related_courses": "Verwandte Kurse"
+  },
+  "complex_description": "Beschreibung",
+  "complex_additional": "Zusätzlich",
+  "complex_demo_video": "Demo-Video",
+  "complex_general_instructions": "Allgemeine Hinweise:",
+  "complex_recommendations": "Empfehlungen:",
+  "complex_equipment": "Ausrüstung:",
+  "complex_warnings": "Warnungen:",
+  "complex_total_duration": "Komplexe Gesamtdauer {{duration}} min.",
+  "complex_total_duration_hours": "Komplexe Gesamtdauer {{duration}} Stunden",
+  "complex_exercises_count": "{{count}} Übungen",
+  "complex_beginner_level": "Anfängerniveau",
+  "complex_intermediate_level": "Mittelstufe",
+  "complex_advanced_level": "Fortgeschrittenes Niveau",
+  "header": {
+    "ecosystem_title": "Ein Angebot rund um Ihre Gesundheit",
+    "rehabilitation_title": "MODERNE ISRAELISCHE REHABILITATIONSMETHODEN",
+    "rehabilitation_subtitle": "Zur Wiederherstellung und Erhaltung der Mobilität und Arbeitsfähigkeit",
+    "rehabilitation": "Rehabilitation",
+    "rehabilitation_description": "Moderne israelische Rehabilitationsmethoden in den Bereichen Orthopädie, Neurologie, posttraumatische Gangwiederherstellung und weitere fortschrittliche Therapietechniken",
+    "neck_spine": "Halswirbelsäule",
+    "learn_more": "Erfahren Sie mehr",
+    "to_catalog": "Zum Katalog",
+    "per_month": "Pro Monat",
+    "purchase": "Kaufen",
+    "our_courses": "Unsere Kurse",
+    "subscription_discount_notice": "Aufmerksamkeit! Rabatte gelten für Abonnements ab 3 Monaten",
+    "categories_count": "15 Kategorien",
+    "online_chat": "Online-Chat",
+    "lessons_count": "Über 1000 Lektionen",
+    "complexes_count": "36 Komplexe",
+    "subcategories_count": "{{count}} Unterkategorien",
+    "sets_count": "{{count}} Setzwerke",
+    "exercises_count": "{{count}} Übungen",
+    "hours_count": "{{count}} Stunden",
+    "minutes_count": "{{count}} Minuten",
+    "loading": "Wird geladen...",
+    "duration_minutes": "{{duration}} min.",
+    "currency": "$",
+    "subscription_period": {
+      "one_month": "1 Monat",
+      "three_months": "3 Monate",
+      "six_months": "6 Monate",
+      "twelve_months": "12 Monate"
+    },
+    "pricing": {
+      "title": "Preise",
+      "monthly": "Monatlich",
+      "three_months": "3 Monate",
+      "six_months": "6 Monate",
+      "yearly": "Jährlich",
+      "discount_notice": "Aufmerksamkeit! Rabatte gelten für Abonnements ab 3 Monaten"
+    }
+  },
+  "video_notification": {
+    "title": "Videoübungen",
+    "exercise_complexes": {
+      "title": "Übungskomplexe",
+      "description": "Der Rehabilitationsbereich bietet Übungskomplexe in den folgenden Bereichen: Orthopädie, Neurologie, Fettleibigkeit, Rehabilitation für ältere Menschen, Post-COVID-19-Rehabilitation, Gangrehabilitation, Aphasie und Dysarthrie. Alle Übungskomplexe werden von israelischen Spezialisten in Übereinstimmung mit israelischen Rehabilitationsprotokollen entwickelt."
+    },
+    "for_children": {
+      "title": "Für Kinder",
+      "description": "Kinder ab 10 Jahren und Jugendliche finden relevante Abschnitte zu den Themen Körperhaltung, Jugendskoliose und Brustwirbelsäule sowie Schultergürtelprobleme, Probleme der unteren Gliedmaßen und Korrektur."
+    },
+    "articles": {
+      "title": "Artikel",
+      "description": "Unsere Bibliothek enthält Artikel, die als theoretische Einführung in jeden Bereich der Rehabilitation dienen und mögliche Probleme und Pathologien, Anatomie, Physiologie und Biomechanik abdecken."
+    },
+    "purchase": {
+      "premium_content": "Premium-Inhalte",
+      "set_requires_purchase": "Die \"{{setName}}Set erfordert Kauf",
+      "content_requires_purchase": "Dieser Inhalt erfordert Kauf",
+      "what_you_get": "Was Sie bekommen:",
+      "unlimited_access": "Unbegrenzter Zugang",
+      "all_exercises": "Alle Übungen",
+      "progress_tracking": "Fortschrittsverfolgung",
+      "buy_now": "Jetzt kaufen",
+      "browse_courses": "Kurse durchsuchen"
+    }
+  }
+}

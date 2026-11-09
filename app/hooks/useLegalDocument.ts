@@ -20,6 +20,14 @@ export const useLegalDocument = (type: string, locale: string) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    let cancelled = false;
+    setDocument(null);
+    // New interface languages use their static translations until CMS content exists.
+    if (!['ka', 'en', 'ru'].includes(locale)) {
+      setLoading(false);
+      setError(null);
+      return;
+    }
     const fetchDocument = async () => {
       try {
         setLoading(true);
@@ -34,19 +42,22 @@ export const useLegalDocument = (type: string, locale: string) => {
         }
 
         const data = await response.json();
-        setDocument(data);
+        if (!cancelled) setDocument(data);
       } catch (err) {
         console.error('Error fetching legal document:', err);
-        setError(err instanceof Error ? err.message : 'Unknown error');
-        setDocument(null);
+        if (!cancelled) {
+          setError(err instanceof Error ? err.message : 'Unknown error');
+          setDocument(null);
+        }
       } finally {
-        setLoading(false);
+        if (!cancelled) setLoading(false);
       }
     };
 
     if (type && locale) {
       fetchDocument();
     }
+    return () => { cancelled = true; };
   }, [type, locale]);
 
   return { document, loading, error };

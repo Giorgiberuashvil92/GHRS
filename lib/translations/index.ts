@@ -1,4 +1,4 @@
-const loaders = { ka: () => import('./ka'), en: () => import('./en'), ru: () => import('./ru') };
+const loaders = { ka: () => import('./ka'), en: () => import('./en'), ru: () => import('./ru'), he: () => import('./he'), ar: () => import('./ar'), de: () => import('./de'), fr: () => import('./fr'), it: () => import('./it'), uk: () => import('./uk') };
 const loaded = new Map<string, Promise<Record<string, unknown>>>();
 export function loadTranslations(locale: keyof typeof loaders) {
   let result = loaded.get(locale);

@@ -1,0 +1,43 @@
+{
+  "main_title": "מערכת אקולוגית של מוצרים שמטרתם ליצור את הבריאות שלך",
+  "navigation": {
+    "all_complexes": "כל המתחמים",
+    "about": "אודותינו",
+    "blog": "בלוג",
+    "contacts": "יצירת קשר"
+  },
+  "rehabilitation": {
+    "title": "שיטות שיקום ישראליות מודרניות",
+    "description": "להתאוששות ושמירה על ניידות ויכולת עבודה",
+    "detail_description": "שיטות שיקום ישראליות מודרניות באורטופדיה, נוירולוגיה, שיקום הליכה פוסט טראומטי ואחרות.",
+    "section_title": "שיקום"
+  },
+  "categories": {
+    "fifteen_categories": "15 קטגוריות",
+    "stores": "חנויות",
+    "restaurants": "מסעדות",
+    "six_sections": "6 סעיפים",
+    "thirty_six_complexes": "36 מתחמים",
+    "one_twenty_five_exercises": "125 תרגילים"
+  },
+  "complex": {
+    "one_twenty_five_lessons": "125 שיעורים",
+    "one_hundred_two_minutes": "102 דקות",
+    "three_difficulty_stages": "3 שלבי קושי",
+    "general_recovery_title": "התאוששות כללית, תומכת במתחם",
+    "price": "500 ₾",
+    "per_month": "לְחוֹדֶשׁ",
+    "purchase": "לִרְכּוֹשׁ",
+    "subscription_offer": "תְשׁוּמַת לֵב! ההנחות חלות על מנויים של 3 חודשים ומעלה"
+  },
+  "blog": {
+    "title": "קורסים וכיתות אמן למטפלים מנוסים. סדנה לטיפול בבעיות אורטופדיות",
+    "mobile_title": "כאבי גב וצוואר: כיצד לשפר את היציבה באופן טבעי.",
+    "description": "עם עצות בטיחות לעקוב לפני ואחרי שבר מאת Kristen Gasnik",
+    "category_label": "אוֹרְתוֹפֵּדִיָה"
+  },
+  "buttons": {
+    "learn_more": "למידע נוסף",
+    "to_catalog": "לקטלוג"
+  }
+}

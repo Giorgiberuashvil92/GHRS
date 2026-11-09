@@ -1,0 +1,47 @@
+{
+  "course": {
+    "all_courses": {
+      "title": "קורסים",
+      "search_placeholder": "הזן את שם הקורס או שם המדריך",
+      "instructor": "מַדְרִיך",
+      "badge_english": "באנגלית",
+      "no_courses": "לא נמצאו קורסים",
+      "try_other_search": "נסה פרמטרי חיפוש שונים",
+      "show_more": "הצג עוד",
+      "loading": "בטעינה...",
+      "error": "שגיאה בטעינת קורסים"
+    },
+    "tabs": {
+      "description": "תֵאוּר",
+      "syllabus": "סילבוס",
+      "announcements": "הכרזות",
+      "reviews": "ביקורות"
+    },
+    "lessons_count": "שיעורי {{count}}",
+    "lessons_label": "מספר שיעורים",
+    "not_specified": "לא צוין",
+    "languages_label": "שפות הקורס",
+    "price_label": "מחיר הקורס",
+    "short_description_title": "תיאור קצר:",
+    "duration": "מֶשֶׁך",
+    "duration_minutes": "{{duration}} דקות",
+    "access_granted": "✓ יש לך גישה",
+    "purchase_course": "קורס רכישה",
+    "login_to_purchase": "התחבר לרכישה",
+    "success_title": "הַצלָחָה",
+    "not_found_title": "הקורס לא נמצא",
+    "not_found_message": "הקורס בכתובת זו אינו קיים או הוסר.",
+    "view_all_courses": "כל הקורסים",
+    "related_courses": "קורסים קשורים",
+    "total_duration": "משך הזמן הכולל",
+    "prerequisites_title": "דרישות קדם:",
+    "learning_outcomes_title": "תוצרי למידה:",
+    "tags_label": "תגיות:",
+    "lesson_label": "שיעור {{number}}",
+    "minutes_short": "דקה",
+    "reviews_section_title": "ביקורות סטודנטים",
+    "no_reviews_yet": "אין ביקורות עדיין",
+    "error_loading": "שגיאה בטעינת הקורס",
+    "no_description": "אין תיאור"
+  }
+}

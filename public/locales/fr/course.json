@@ -1,0 +1,47 @@
+{
+  "course": {
+    "all_courses": {
+      "title": "Cours",
+      "search_placeholder": "Entrez le nom du cours ou le nom de l'instructeur",
+      "instructor": "Instructeur",
+      "badge_english": "FRANÇAIS",
+      "no_courses": "Aucun cours trouvé",
+      "try_other_search": "Essayez différents paramètres de recherche",
+      "show_more": "Afficher plus",
+      "loading": "Chargement...",
+      "error": "Erreur lors du chargement des cours"
+    },
+    "tabs": {
+      "description": "Désignation des marchandises",
+      "syllabus": "Syllabe",
+      "announcements": "Avis",
+      "reviews": "Examens"
+    },
+    "lessons_count": "{{count}}  Enseignements",
+    "lessons_label": "Nombre de cours",
+    "not_specified": "Non spécifié",
+    "languages_label": "Langues de cours",
+    "price_label": "Prix du cours",
+    "short_description_title": "Brève description:",
+    "duration": "Durée",
+    "duration_minutes": "{{duration}} minutes",
+    "access_granted": "✓ VOUS AVEZ ACCÈS",
+    "purchase_course": "COURS DE PURCHASE",
+    "login_to_purchase": "LOGIN POUR L'ÉCHELLE",
+    "success_title": "Succès",
+    "not_found_title": "Cours non trouvé",
+    "not_found_message": "Le cours à cette adresse n'existe pas ou a été supprimé.",
+    "view_all_courses": "Tous les cours",
+    "related_courses": "Cours connexes",
+    "total_duration": "Durée totale",
+    "prerequisites_title": "Préalables:",
+    "learning_outcomes_title": "Acquis d'apprentissage :",
+    "tags_label": "Étiquettes :",
+    "lesson_label": "Leçon {{number}}",
+    "minutes_short": "min.",
+    "reviews_section_title": "Avis aux étudiants",
+    "no_reviews_yet": "Pas encore de commentaires",
+    "error_loading": "Erreur lors du chargement du cours",
+    "no_description": "Pas de description"
+  }
+}

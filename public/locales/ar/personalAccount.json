@@ -1,0 +1,68 @@
+{
+  "personal_account": {
+    "loading": "جارٍ التحميل...",
+    "user_not_found": "لم يتم العثور على المستخدم",
+    "auth_required": "الترخيص مطلوب",
+    "statistics": "إحصائيات",
+    "tabs": {
+      "description": "وصف",
+      "additional": "إضافي",
+      "demo_video": "فيديو تجريبي"
+    },
+    "stats": {
+      "total_time": "الوقت الإجمالي",
+      "exercises": "تمارين",
+      "exercises_label": "تمارين",
+      "average_time": "متوسط ​​الوقت",
+      "current_streak": "الخط الحالي",
+      "days": "أيام"
+    },
+    "recommendations": "مُستَحسَن",
+    "continue_watching": {
+      "title": "لم تنته من مشاهدة الفيديو التدريبي. هل ترغب في الاستمرار؟",
+      "button": "مواصلة المشاهدة"
+    },
+    "person_goals": {
+      "title": "دعونا نحدد الهدف",
+      "description": "ممارسة التمارين الرياضية بانتظام سوف تساعدك على الحفاظ على الحافز. قم بإعداد الإشعارات وسنساعدك على عدم نسيان التمرين.",
+      "set_goal": "تحديد الهدف",
+      "reminder_settings": "ضبط التذكيرات",
+      "reminder_description": "من خلال ممارسة الرياضة 4 مرات على الأقل في الأسبوع، سوف تعتاد تدريجياً على الإيقاع.",
+      "which_days": "ما هي الأيام التي تريد ممارسة الرياضة فيها؟",
+      "from": "من",
+      "to": "ل",
+      "calendar_select": "حدد التقويم للإخطارات",
+      "save": "حفظ"
+    },
+    "days_in_row": {
+      "days_streak": "أيام متتالية",
+      "record": "سجل: {{count}} أيام على التوالي"
+    },
+    "person_info": {
+      "profile_photo": "صورة الملف الشخصي",
+      "email": "البريد الإلكتروني",
+      "location": "موقع",
+      "phone": "الهاتف",
+      "edit": "تحرير →"
+    },
+    "subscription_history": {
+      "title": "تاريخ الاشتراك",
+      "order_from": "اطلب من {{date}}",
+      "cancel_subscription": "إلغاء الاشتراك",
+      "view": "منظر",
+      "pay": "يدفع",
+      "statuses": {
+        "completed": "مكتمل",
+        "awaiting_payment": "في انتظار الدفع",
+        "expired": "انتهت صلاحية الاشتراك"
+      }
+    },
+    "achievements": {
+      "title": "الإنجازات",
+      "hide": "إخفاء الإنجازات",
+      "share": "مشاركة الإحصائيات والإنجازات",
+      "no_achievements": "ليس لديك أي إنجازات حتى الآن",
+      "start_exercising": "البدء في ممارسة الرياضة لكسب الإنجازات"
+    }
+  }
+}

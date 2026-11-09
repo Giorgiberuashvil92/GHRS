@@ -40,7 +40,7 @@ const getLocalizedCategoryName = (
   locale: string
 ): string => {
   if (typeof name === "string") return name;
-  const loc = locale === "en" || locale === "ru" || locale === "ka" ? locale : "ka";
+  const loc = locale === "en" || locale === "ru" || locale === "ka" ? locale : "en";
   return pickLocalized(name, loc);
 };
 

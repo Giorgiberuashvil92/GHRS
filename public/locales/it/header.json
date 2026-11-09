@@ -1,0 +1,43 @@
+{
+  "main_title": "Un ecosistema di servizi per prenderti cura della tua salute",
+  "navigation": {
+    "all_complexes": "Tutti i complessi",
+    "about": "Chi siamo",
+    "blog": "Blog",
+    "contacts": "Contatti"
+  },
+  "rehabilitation": {
+    "title": "MODERN ISRAELI REHABILITAZIONE METODI",
+    "description": "Per il recupero e il mantenimento della mobilità e della capacità di lavoro",
+    "detail_description": "Moderni metodi di riabilitazione israeliana in ortopedia, neurologia, riabilitazione post-traumatica e altri.",
+    "section_title": "Riabilitazione"
+  },
+  "categories": {
+    "fifteen_categories": "15 categorie",
+    "stores": "Negozi",
+    "restaurants": "Ristoranti",
+    "six_sections": "6 sezioni",
+    "thirty_six_complexes": "36 complessi",
+    "one_twenty_five_exercises": "125 esercizi"
+  },
+  "complex": {
+    "one_twenty_five_lessons": "125 lezioni",
+    "one_hundred_two_minutes": "102 minuti",
+    "three_difficulty_stages": "3 fasi di difficoltà",
+    "general_recovery_title": "Recupero generale, complesso di supporto",
+    "price": "500 ₾",
+    "per_month": "Per mese",
+    "purchase": "Acquisto",
+    "subscription_offer": "Attenzione! Gli sconti si applicano agli abbonamenti di 3 mesi o più"
+  },
+  "blog": {
+    "title": "Corsi e corsi di perfezionamento per terapisti esperti. Workshop sul trattamento dei problemi ortopedici",
+    "mobile_title": "NECK PAIN: COME MIGLIARE NATURALLENTE POSTURE NATURALLY",
+    "description": "Con consigli di sicurezza da seguire prima e dopo la frattura di Kristen Gasnik",
+    "category_label": "Ortopedia"
+  },
+  "buttons": {
+    "learn_more": "Per saperne di più",
+    "to_catalog": "A catalogo"
+  }
+}

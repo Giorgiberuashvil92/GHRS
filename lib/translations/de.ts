@@ -1,0 +1,16 @@
+import m0 from '../../public/locales/de/common.json';
+import m1 from '../../public/locales/de/home.json';
+import m2 from '../../public/locales/de/advantages.json';
+import m3 from '../../public/locales/de/subscribe.json';
+import m4 from '../../public/locales/de/sets.json';
+import m5 from '../../public/locales/de/header.json';
+import m6 from '../../public/locales/de/components.json';
+import m7 from '../../public/locales/de/personalAccount.json';
+import m8 from '../../public/locales/de/footer.json';
+import m9 from '../../public/locales/de/contact.json';
+import m10 from '../../public/locales/de/rehabilitation.json';
+import m11 from '../../public/locales/de/course.json';
+import m12 from '../../public/locales/de/professional.json';
+import m13 from '../../public/locales/de/legal.json';
+import { mergeMessages } from './merge';
+export default [m0, m1, m2, m3, m4, m5, m6, m7, m8, m9, m10, m11, m12, m13].reduce<Record<string, unknown>>(mergeMessages, {});

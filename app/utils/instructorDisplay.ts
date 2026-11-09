@@ -17,7 +17,7 @@ export type InstructorLocalizedNameFields = {
 
 export function resolveCourseLocale(locale: string | undefined | null): CourseLocale {
   if (locale === "en" || locale === "ru" || locale === "ka") return locale;
-  return "ka";
+  return "en";
 }
 
 /**

@@ -1,0 +1,234 @@
+{
+  "rehabilitation": {
+    "title": "שיקום",
+    "description": "שיטות שיקום ישראליות חדישות לשיקום ושמירה על ניידות וכושר עבודה",
+    "learn_more": "למידע נוסף →",
+    "all_exercises": "כל התרגילים",
+    "header": {
+      "title": "שיטות שיקום ישראליות מודרניות",
+      "subtitle": "לשיקום ושמירה על ניידות וכושר עבודה"
+    },
+    "page": {
+      "subscription": {
+        "title": "מִנוּי",
+        "payment": {
+          "title": "שיטות תשלום שונות",
+          "description": "אתה יכול לשלם עבור המנוי באמצעות כרטיס בנק או קוד QR בחשבון האישי שלך"
+        },
+        "planning": {
+          "title": "תִכנוּן",
+          "description": "יכולת ליצור לוח אימונים ולקבל הודעות מהפלטפורמה על האימון הבא"
+        },
+        "trial": {
+          "title": "מנוי ניסיון",
+          "description": "זהו מנוי ל-3 או 5 ימים קלנדריים עם אפשרות לחידוש אוטומטי ל-3 או 5 ימים קלנדריים"
+        },
+        "course_access": {
+          "title": "גישה לקורס",
+          "description": "לאחר תשלום עבור המנוי, הגישה למתחם תרגילי הווידאו שבחרת תופעל אוטומטית בחשבונך האישי"
+        },
+        "cancellation": {
+          "title": "בטל מנוי",
+          "description": "אתה יכול לבטל את חידוש המנוי האוטומטי בחשבון האישי שלך על ידי הסרת הסימן המתאים"
+        },
+        "discount": {
+          "title": "10% הנחה ל-3 חודשים ו-25% ל-6 חודשי מנוי",
+          "button": "רכישת מנוי"
+        }
+      },
+      "no_plan": {
+        "title": "אין תוכנית שיקום?",
+        "description": "קבעו פגישת ייעוץ עם רופא שיקומי",
+        "button": "ייעוץ ספרים"
+      }
+    }
+  },
+  "category": {
+    "title": "תרגילים",
+    "view_all": "הצג הכל →"
+  },
+  "works": {
+    "all_sets": "כל ערכות {{count}} →",
+    "სამუშაოები": "სამუშაოები",
+    "ყველა_სეტი": "ყველა {{count}} სეტი →"
+  },
+  "professional": {
+    "title": "פיתוח מקצועי",
+    "description": "המחלקה לחינוך ופיתוח מקצועי בשיקום, פיזיותרפיה ועיסוי טיפולי - מדובר בשיתוף פעולה עם מומחים ומרכזי הכשרה ישראלים כמו המכללה לעיסוי רפואי, שהוקמה ובהנהלת ד\"ר אהרון יקובי.",
+    "learn_more": "למידע נוסף →",
+    "header": {
+      "title": "פיתוח מקצועי",
+      "description": "הכשרה ופיתוח מקצועי בשיקום, פיזיותרפיה ועיסוי טיפולי - בשיתוף עם מרכזי הדרכה בישראל."
+    },
+    "our_courses": "הקורסים שלנו",
+    "cards": {
+      "qualified_teachers": "מדריכים מוסמכים",
+      "exclusive_courses": "קורסים בלעדיים",
+      "students_learning": "תלמידים בהכשרה כרגע"
+    },
+    "პროფესიონალური_განვითარება": "პროფესიონალური განვითარება",
+    "ჩვენი_კურსები": "ჩვენი კურსები",
+    "courses": {
+      "title": "קורסים",
+      "instructor_courses": "קורסי מדריכים",
+      "popular_courses": "מוּבלָט",
+      "error": "שגיאה בטעינת קורסים",
+      "all_courses": "כל הקורסים {{count}} →",
+      "კურსები": "კურსები",
+      "ყველა_კურსი": "ყველა {{count}} კურსი →"
+    },
+    "test_banner": {
+      "title": "גשו למבחן ובחרו את הקורס המתאים לכם",
+      "button": "לעשות מבחן"
+    }
+  },
+  "marketplace": {
+    "description": "אנחנו מפתחים את כיוון השוק. השותפים שלנו בכיוון זה יכולים להיות מרכזי שיקום, מרפאות, בתי הבראה, מועדוני ספורט, עיסויים...",
+    "status": "בפיתוח"
+  },
+  "blog": {
+    "title": "בלוג",
+    "featured_articles": "מאמרים מומלצים",
+    "popular_articles": "מאמרים פופולריים",
+    "recent_articles": "מאמרים אחרונים",
+    "all_articles": "כל המאמרים",
+    "view_all": "הצג הכל",
+    "see_all": "ראה הכל",
+    "share_social": "שתפו ברשתות החברתיות",
+    "category": "קָטֵגוֹרִיָה",
+    "default_title": "קורסים וכיתות אמן למטפלים מנוסים. סדנה לטיפול בבעיות אורטופדיות",
+    "default_mobile_title": "כאבי גב וצוואר: כיצד לשפר את היציבה באופן טבעי.",
+    "default_description": "עם עצות בטיחות לעקוב לפני ואחרי שבר מאת קריסטן גסניק",
+    "banner": {
+      "title": "קורסים וכיתות אמן למטפלים מנוסים. סדנה לטיפול בבעיות אורטופדיות",
+      "mobile_title": "כאבי גב וצוואר: כיצד לשפר את היציבה באופן טבעי.",
+      "description": "עם עצות בטיחות לעקוב לפני ואחרי שבר מאת קריסטן גסניק",
+      "category": "אוֹרְתוֹפֵּדִיָה"
+    }
+  },
+  "download": {
+    "title": "אפשרות אינטראקציה <br /> בפלטפורמות שונות של <br />"
+  },
+  "article": {
+    "table_of_contents": "תוֹכֶן הָעִניָנִים",
+    "comments": "הערות",
+    "comment_count": "הערות {{count}}",
+    "read_time": "{{time}} דקות",
+    "rate_article": "דרג מאמר",
+    "ratings": "(דירוגי {{count}})",
+    "write_comment": "כתוב תגובה",
+    "show_more_comments": "הצג עוד",
+    "no_comments": "אין תגובות עדיין",
+    "login_to_comment": "אנא היכנס כדי להשאיר תגובה"
+  },
+  "common": {
+    "similar_articles": "מאמרים דומים",
+    "no_similar_articles": "לא נמצאו מאמרים דומים",
+    "orthopedics": "אוֹרְתוֹפֵּדִיָה",
+    "sections_title": "קטעים"
+  },
+  "teachers": {
+    "our_teachers": "מדריכים",
+    "all_instructors": "כל המדריכים",
+    "courses": "קורסים",
+    "students": "תלמידים",
+    "load_error": "לא ניתן לטעון מדריכים",
+    "not_found": "לא נמצאו מדריכים",
+    "no_courses_instructor": "למדריך זה אין עדיין קורסים שפורסמו.",
+    "loading": "טוען מורים...",
+    "view_all": "הצג הכל",
+    "more_details": "פרטים נוספים"
+  },
+  "teacher": {
+    "instructorCourses": "קורסי מדריכים",
+    "instructorCertificates": "תעודות מדריך",
+    "wikipedia": "ויקיפדיה"
+  },
+  "course": {
+    "duration": "מֶשֶׁך",
+    "duration_minutes": "{{duration}} דקות",
+    "not_specified": "לא צוין",
+    "enter_comment": "הכנס את התגובה שלך",
+    "total_duration": "משך הזמן הכולל",
+    "related_courses": "קורסים קשורים"
+  },
+  "complex_description": "תֵאוּר",
+  "complex_additional": "נוֹסָף",
+  "complex_demo_video": "סרטון הדגמה",
+  "complex_general_instructions": "הנחיות כלליות:",
+  "complex_recommendations": "המלצות:",
+  "complex_equipment": "צִיוּד:",
+  "complex_warnings": "אזהרות:",
+  "complex_total_duration": "משך מורכב הכולל {{duration}} דקות",
+  "complex_total_duration_hours": "משך מורכב הכולל {{duration}} שעות",
+  "complex_exercises_count": "תרגילי {{count}}",
+  "complex_beginner_level": "רמת מתחילים",
+  "complex_intermediate_level": "רמת ביניים",
+  "complex_advanced_level": "רמה מתקדמת",
+  "header": {
+    "ecosystem_title": "מערכת אקולוגית של מוצרים ממוקדת בריאות שנועדה לעזור לך להשיג בריאות",
+    "rehabilitation_title": "שיטות שיקום ישראליות מודרניות",
+    "rehabilitation_subtitle": "לשיקום ושמירה על ניידות וכושר עבודה",
+    "rehabilitation": "שיקום",
+    "rehabilitation_description": "שיטות שיקום ישראליות מודרניות באורטופדיה, נוירולוגיה, התאוששות מהליכה פוסט טראומטית וטכניקות טיפוליות מתקדמות נוספות",
+    "neck_spine": "עמוד שדרה צווארי",
+    "learn_more": "למידע נוסף",
+    "to_catalog": "לקטלוג",
+    "per_month": "לְחוֹדֶשׁ",
+    "purchase": "לִרְכּוֹשׁ",
+    "our_courses": "הקורסים שלנו",
+    "subscription_discount_notice": "תְשׁוּמַת לֵב! ההנחות חלות על מנויים של 3 חודשים ומעלה",
+    "categories_count": "15 קטגוריות",
+    "online_chat": "צ'אט מקוון",
+    "lessons_count": "1000+ שיעורים",
+    "complexes_count": "36 מתחמים",
+    "subcategories_count": "קטגוריות משנה {{count}}",
+    "sets_count": "סטים של {{count}}",
+    "exercises_count": "תרגילי {{count}}",
+    "hours_count": "{{count}} שעות",
+    "minutes_count": "{{count}} דקות",
+    "loading": "בטעינה...",
+    "duration_minutes": "{{duration}} דקות",
+    "currency": "$",
+    "subscription_period": {
+      "one_month": "1 חודש",
+      "three_months": "3 חודשים",
+      "six_months": "6 חודשים",
+      "twelve_months": "12 חודשים"
+    },
+    "pricing": {
+      "title": "תמחור",
+      "monthly": "יַרחוֹן",
+      "three_months": "3 חודשים",
+      "six_months": "6 חודשים",
+      "yearly": "שְׁנָתִי",
+      "discount_notice": "תְשׁוּמַת לֵב! ההנחות חלות על מנויים של 3 חודשים ומעלה"
+    }
+  },
+  "video_notification": {
+    "title": "תרגילי וידאו",
+    "exercise_complexes": {
+      "title": "מתחמי פעילות גופנית",
+      "description": "מדור השיקום מעניק מתחמי פעילות גופנית בתחומים הבאים: אורטופדיה, נוירולוגיה, השמנת יתר, שיקום קשישים, שיקום לאחר מחלת ה-COVID-19, שיקום הליכה, אפזיה ודיסארתריה. כל מתחמי האימון מפותחים על ידי מומחים ישראלים בהתאם לפרוטוקולי השיקום הישראליים."
+    },
+    "for_children": {
+      "title": "לילדים",
+      "description": "ילדים מגיל 10 ומעלה ובני נוער ימצאו סעיפים רלוונטיים הקשורים ליציבה, עקמת נעורים ועמוד שדרה ביתי, כמו גם בעיות בחגורת הכתפיים, בעיות בגפיים התחתונות ותיקון."
+    },
+    "articles": {
+      "title": "מאמרים",
+      "description": "הספרייה שלנו כוללת מאמרים המשמשים כמבוא תיאורטי לכל תחום שיקום ומכסים בעיות ופתולוגיות אפשריות, אנטומיה, פיזיולוגיה וביומכניקה."
+    },
+    "purchase": {
+      "premium_content": "תוכן פרימיום",
+      "set_requires_purchase": "ערכת \"{{setName}}\" דורשת רכישה",
+      "content_requires_purchase": "תוכן זה דורש רכישה",
+      "what_you_get": "מה אתה מקבל:",
+      "unlimited_access": "גישה בלתי מוגבלת",
+      "all_exercises": "כל התרגילים",
+      "progress_tracking": "מעקב אחר התקדמות",
+      "buy_now": "קנה עכשיו",
+      "browse_courses": "עיין בקורסים"
+    }
+  }
+}

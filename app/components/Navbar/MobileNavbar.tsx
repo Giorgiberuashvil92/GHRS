@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { usePathname } from "next/navigation";
 import { MobileLogo, ProfessionalTabLogo, RehabilitationTabLogo, BlogTabLogo } from "../Logo";
+import LanguageSelector from "./LanguageSelector";
 import NavbarIconButton from "./NavbarIconButton";
 import { getDefaultMenuItems } from "../Header/Header";
 import Link from "next/link";
@@ -156,6 +157,7 @@ const MobileNavbar = () => {
               </div>
             </div>
           ) : null}
+          <LanguageSelector />
           {menuItems.map((item, index) => (
             <Link href={item.route} key={index}>
               <button

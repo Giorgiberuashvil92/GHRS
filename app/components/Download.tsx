@@ -10,7 +10,7 @@ const Download = () => {
     en: "/assets/images/mobile-en.jpeg",
     ru: "/assets/images/mobile.png",
   };
-  const imageSrc = imageSources[locale] ?? imageSources["ru"];
+  const imageSrc = imageSources[locale] ?? imageSources[locale === "ka" ? "ru" : "en"];
 
   return (
     <div className="my-6 px-2 md:px-5">

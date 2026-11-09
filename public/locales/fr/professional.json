@@ -1,0 +1,30 @@
+{
+  "professional": {
+    "header": {
+      "title": "DÉVELOPPEMENT PROFESSIONNEL",
+      "description": "Formation et perfectionnement professionnel en réadaptation, en physiothérapie et en massage thérapeutique, en collaboration avec les centres de formation israéliens."
+    },
+    "our_courses": "Nos cours",
+    "cards": {
+      "qualified_teachers": "instructeurs qualifiés",
+      "exclusive_courses": "cours exclusifs",
+      "students_learning": "étudiants actuellement en formation"
+    },
+    "courses": {
+      "title": "COURS",
+      "instructor_courses": "Cours d'instructeur",
+      "popular_courses": "COURS CARACTÉRISTIQUES",
+      "all_courses": "TOUS {{count}} COURS →",
+      "error": "Erreur lors du chargement des cours"
+    },
+    "stats": {
+      "courses": "cours",
+      "instructors": "instructeurs",
+      "students": "étudiants"
+    },
+    "test_banner": {
+      "title": "Faites un test et choisissez le cours qui vous convient",
+      "button": "faire l'essai"
+    }
+  }
+}

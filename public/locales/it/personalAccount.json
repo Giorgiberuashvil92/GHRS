@@ -1,0 +1,68 @@
+{
+  "personal_account": {
+    "loading": "Caricamento...",
+    "user_not_found": "Utente non trovato",
+    "auth_required": "Autorizzazione richiesta",
+    "statistics": "Statistiche",
+    "tabs": {
+      "description": "Designazione",
+      "additional": "Ulteriori informazioni",
+      "demo_video": "Demo Video"
+    },
+    "stats": {
+      "total_time": "Tempo totale",
+      "exercises": "Esercizi",
+      "exercises_label": "esercizi",
+      "average_time": "Tempo medio",
+      "current_streak": "Corrente Streak",
+      "days": "giorni"
+    },
+    "recommendations": "Consigliato",
+    "continue_watching": {
+      "title": "Non hai finito di guardare l'esercizio video. Vuoi continuare?",
+      "button": "Continua a guardare"
+    },
+    "person_goals": {
+      "title": "Mettiamo un obiettivo.",
+      "description": "L'esercizio regolare vi aiuterà a mantenere la motivazione. Impostare le notifiche e ti aiuteremo a non dimenticare il tuo allenamento.",
+      "set_goal": "Obiettivo",
+      "reminder_settings": "Set promemoria",
+      "reminder_description": "Esercitando almeno 4 volte alla settimana, gradualmente si abitua al ritmo.",
+      "which_days": "Quali giorni vuoi esercitare?",
+      "from": "Da",
+      "to": "A",
+      "calendar_select": "Selezionare il calendario per le notifiche",
+      "save": "Salva"
+    },
+    "days_in_row": {
+      "days_streak": "GIORNI IN UNA ROW",
+      "record": "Registrazione: {{count}} giorni di fila"
+    },
+    "person_info": {
+      "profile_photo": "Foto del profilo",
+      "email": "Email",
+      "location": "Location",
+      "phone": "Telefono",
+      "edit": "Modifica →"
+    },
+    "subscription_history": {
+      "title": "Storia dell'abbonamento",
+      "order_from": "ORDINANZA {{date}}",
+      "cancel_subscription": "SUBSCRIPAZIONE CANCEL",
+      "view": "VISTA",
+      "pay": "PAGY",
+      "statuses": {
+        "completed": "Completo",
+        "awaiting_payment": "Risveglio del pagamento",
+        "expired": "Abbonamento scaduto"
+      }
+    },
+    "achievements": {
+      "title": "Risultati",
+      "hide": "Nascondi i risultati",
+      "share": "Statistiche e realizzazioni",
+      "no_achievements": "Non hai ancora alcun risultato.",
+      "start_exercising": "Iniziare a esercitarsi per ottenere risultati"
+    }
+  }
+}

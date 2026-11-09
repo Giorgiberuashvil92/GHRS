@@ -1,0 +1,68 @@
+{
+  "personal_account": {
+    "loading": "Chargement...",
+    "user_not_found": "Utilisateur introuvable",
+    "auth_required": "Autorisation requise",
+    "statistics": "Statistiques",
+    "tabs": {
+      "description": "Désignation des marchandises",
+      "additional": "Complémentaire",
+      "demo_video": "Démo Vidéo"
+    },
+    "stats": {
+      "total_time": "Durée totale",
+      "exercises": "Exercices",
+      "exercises_label": "Exercices",
+      "average_time": "Temps moyen",
+      "current_streak": "Streak actuel",
+      "days": "jours"
+    },
+    "recommendations": "Recommandation",
+    "continue_watching": {
+      "title": "Tu n'as pas fini de regarder l'exercice vidéo.  Voulez-vous continuer ?",
+      "button": "Continuer à regarder"
+    },
+    "person_goals": {
+      "title": "Fixons un objectif",
+      "description": "L'exercice régulier vous aidera à maintenir votre motivation. Configurez les notifications et nous vous aiderons à ne pas oublier votre entraînement.",
+      "set_goal": "Définir l'objectif",
+      "reminder_settings": "Définir les rappels",
+      "reminder_description": "En faisant de l'exercice au moins 4 fois par semaine, vous vous habituerez progressivement au rythme.",
+      "which_days": "Quels jours voulez-vous faire de l'exercice?",
+      "from": "À partir",
+      "to": "Aux",
+      "calendar_select": "Sélectionner un calendrier pour les notifications",
+      "save": "Enregistrer"
+    },
+    "days_in_row": {
+      "days_streak": "LES JOURS D'UN ROW",
+      "record": "Enregistrement : {{count}}  jours d'affilée"
+    },
+    "person_info": {
+      "profile_photo": "Photo de profil",
+      "email": "E-mail",
+      "location": "Lieu",
+      "phone": "Téléphone",
+      "edit": "Modifier →"
+    },
+    "subscription_history": {
+      "title": "Historique de l'abonnement",
+      "order_from": "DÉCRET DE {{date}}",
+      "cancel_subscription": "SOUMISSION D'ANNULATION",
+      "view": "VUE",
+      "pay": "PAYE",
+      "statuses": {
+        "completed": "Achevé",
+        "awaiting_payment": "En attente de paiement",
+        "expired": "Échec de l'abonnement"
+      }
+    },
+    "achievements": {
+      "title": "Réalisations",
+      "hide": "Cacher les réalisations",
+      "share": "Partager les statistiques et les réalisations",
+      "no_achievements": "Vous n'avez pas encore de succès.",
+      "start_exercising": "Commencer l'exercice pour gagner des réalisations"
+    }
+  }
+}

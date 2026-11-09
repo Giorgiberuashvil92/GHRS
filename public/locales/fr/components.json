@@ -1,0 +1,234 @@
+{
+  "rehabilitation": {
+    "title": "Rééducation",
+    "description": "Méthodes modernes de réadaptation israéliennes pour rétablir et maintenir la mobilité et la capacité de travail",
+    "learn_more": "En savoir plus →",
+    "all_exercises": "Tous les exercices",
+    "header": {
+      "title": "MÉTHODES MÉTHODES DE RÉHABILITATION D'ISRAELI",
+      "subtitle": "Pour rétablir et maintenir la mobilité et la capacité de travail"
+    },
+    "page": {
+      "subscription": {
+        "title": "Abonnement",
+        "payment": {
+          "title": "Différentes méthodes de paiement",
+          "description": "Vous pouvez payer l'abonnement en utilisant une carte bancaire ou un code QR dans votre compte personnel"
+        },
+        "planning": {
+          "title": "Planification",
+          "description": "Capacité de créer un calendrier de formation et de recevoir des avis de la plateforme sur la prochaine session de formation"
+        },
+        "trial": {
+          "title": "Abonnement à l'essai",
+          "description": "Il s'agit d'un abonnement de 3 ou 5 jours civils avec possibilité de renouvellement automatique pour 3 ou 5 jours civils"
+        },
+        "course_access": {
+          "title": "Accès au cours",
+          "description": "Après avoir payé l'abonnement, l'accès à votre complexe d'exercice vidéo choisi sera automatiquement activé dans votre compte personnel"
+        },
+        "cancellation": {
+          "title": "Annuler l'abonnement",
+          "description": "Vous pouvez annuler le renouvellement automatique d'abonnement dans votre compte personnel en supprimant la marque correspondante"
+        },
+        "discount": {
+          "title": "Rabais de 10% pour 3 mois et 25% pour 6 mois d'abonnement",
+          "button": "Achat Abonnement"
+        }
+      },
+      "no_plan": {
+        "title": "Pas de plan de réadaptation?",
+        "description": "Planifier une consultation avec un médecin de réadaptation",
+        "button": "Consultation du livre"
+      }
+    }
+  },
+  "category": {
+    "title": "Exercices",
+    "view_all": "Afficher tout →"
+  },
+  "works": {
+    "all_sets": "Tous {{count}} sets →",
+    "სამუშაოები": "სამუშაოები",
+    "ყველა_სეტი": "ყველა {{count}} სეტი →"
+  },
+  "professional": {
+    "title": "Développement professionnel",
+    "description": "Le département de l'éducation et du développement professionnel en réadaptation, physiothérapie et massage thérapeutique - il s'agit d'une collaboration avec des spécialistes israéliens et des centres de formation, tels que le Medical Massage College, fondé et dirigé par le Dr. Aaron Yakobi.",
+    "learn_more": "En savoir plus →",
+    "header": {
+      "title": "DÉVELOPPEMENT PROFESSIONNEL",
+      "description": "Formation et perfectionnement professionnel en réadaptation, en physiothérapie et en massage thérapeutique, en collaboration avec les centres de formation israéliens."
+    },
+    "our_courses": "Nos cours",
+    "cards": {
+      "qualified_teachers": "instructeurs qualifiés",
+      "exclusive_courses": "cours exclusifs",
+      "students_learning": "étudiants actuellement en formation"
+    },
+    "პროფესიონალური_განვითარება": "პროფესიონალური განვითარება",
+    "ჩვენი_კურსები": "ჩვენი კურსები",
+    "courses": {
+      "title": "Cours",
+      "instructor_courses": "Cours d'instructeur",
+      "popular_courses": "CARACTÉRISTIQUES",
+      "error": "Erreur lors du chargement des cours",
+      "all_courses": "Tous {{count}}  cours →",
+      "კურსები": "კურსები",
+      "ყველა_კურსი": "ყველა {{count}} კურსი →"
+    },
+    "test_banner": {
+      "title": "Faites un test et choisissez le cours qui vous convient",
+      "button": "faire l'essai"
+    }
+  },
+  "marketplace": {
+    "description": "Nous développons l'orientation du marché.  Nos partenaires dans cette direction peuvent être des centres de réadaptation, cliniques, sanatoriums, clubs sportifs, massages ...",
+    "status": "Développement"
+  },
+  "blog": {
+    "title": "Blog",
+    "featured_articles": "Articles vedettes",
+    "popular_articles": "Articles populaires",
+    "recent_articles": "Articles récents",
+    "all_articles": "Tous les articles",
+    "view_all": "Afficher tout",
+    "see_all": "Voir tout",
+    "share_social": "Partager sur les médias sociaux",
+    "category": "Catégorie",
+    "default_title": "Cours et masterclasses pour les thérapeutes expérimentés.  Atelier sur le traitement des problèmes orthopédiques",
+    "default_mobile_title": "Comment améliorer la nature de la position.",
+    "default_description": "Avec des conseils de sécurité à suivre avant et après une fracture par Kristen Gasnik",
+    "banner": {
+      "title": "Cours et masterclasses pour les thérapeutes expérimentés.  Atelier sur le traitement des problèmes orthopédiques",
+      "mobile_title": "Comment améliorer la nature de la position.",
+      "description": "Avec des conseils de sécurité à suivre avant et après une fracture par Kristen Gasnik",
+      "category": "Orthopédie"
+    }
+  },
+  "download": {
+    "title": "Interactions <br />  possibilité sur <br />  différentes plates-formes"
+  },
+  "article": {
+    "table_of_contents": "Table des matières",
+    "comments": "Commentaires",
+    "comment_count": "{{count}}  commentaires",
+    "read_time": "{{time}} min.",
+    "rate_article": "Taux article",
+    "ratings": "({{count}} les cotes)",
+    "write_comment": "Écrire un commentaire",
+    "show_more_comments": "Afficher plus",
+    "no_comments": "Pas encore de commentaires",
+    "login_to_comment": "Veuillez vous connecter pour laisser un commentaire"
+  },
+  "common": {
+    "similar_articles": "Articles similaires",
+    "no_similar_articles": "Aucun article similaire trouvé",
+    "orthopedics": "Orthopédie",
+    "sections_title": "Sections"
+  },
+  "teachers": {
+    "our_teachers": "Instructeurs",
+    "all_instructors": "Tous les formateurs",
+    "courses": "cours",
+    "students": "étudiants",
+    "load_error": "Impossible de charger les instructeurs",
+    "not_found": "Aucun moniteur trouvé",
+    "no_courses_instructor": "Cet instructeur n'a pas encore publié de cours.",
+    "loading": "Chargement des enseignants...",
+    "view_all": "Tout voir",
+    "more_details": "D'AUTRES DÉTAILS"
+  },
+  "teacher": {
+    "instructorCourses": "Cours de l'instructeur",
+    "instructorCertificates": "Certificats d'instructeur",
+    "wikipedia": "Wikipédia"
+  },
+  "course": {
+    "duration": "Durée",
+    "duration_minutes": "{{duration}} minutes",
+    "not_specified": "Non spécifié",
+    "enter_comment": "Entrez votre commentaire",
+    "total_duration": "Durée totale",
+    "related_courses": "Cours connexes"
+  },
+  "complex_description": "Désignation des marchandises",
+  "complex_additional": "Complémentaire",
+  "complex_demo_video": "Démo Vidéo",
+  "complex_general_instructions": "Instructions générales:",
+  "complex_recommendations": "Recommandations :",
+  "complex_equipment": "Équipement:",
+  "complex_warnings": "Avertissements :",
+  "complex_total_duration": "Durée totale du complexe {{duration}} min.",
+  "complex_total_duration_hours": "Durée totale du complexe {{duration}}  heures",
+  "complex_exercises_count": "{{count}}  Exercices",
+  "complex_beginner_level": "Niveau débutant",
+  "complex_intermediate_level": "Niveau intermédiaire",
+  "complex_advanced_level": "Niveau avancé",
+  "header": {
+    "ecosystem_title": "Un ensemble de services pour prendre soin de votre santé",
+    "rehabilitation_title": "MÉTHODES MÉTHODES DE RÉHABILITATION D'ISRAELI",
+    "rehabilitation_subtitle": "Pour rétablir et maintenir la mobilité et la capacité de travail",
+    "rehabilitation": "Rééducation",
+    "rehabilitation_description": "Méthodes modernes de réadaptation israéliennes en orthopédie, neurologie, récupération de la démarche post-traumatique et techniques thérapeutiques avancées supplémentaires",
+    "neck_spine": "Céphalée cervicale",
+    "learn_more": "En savoir plus",
+    "to_catalog": "Pour cataloguer",
+    "per_month": "Par mois",
+    "purchase": "Achat",
+    "our_courses": "Nos cours",
+    "subscription_discount_notice": "Garde à vous ! Les rabais s'appliquent aux abonnements de 3 mois ou plus",
+    "categories_count": "15 catégories",
+    "online_chat": "Chat en ligne",
+    "lessons_count": "1000+ leçons",
+    "complexes_count": "36 complexes",
+    "subcategories_count": "{{count}}  sous-catégories",
+    "sets_count": "{{count}}  ensembles",
+    "exercises_count": "{{count}}  Exercices",
+    "hours_count": "{{count}}  heures",
+    "minutes_count": "{{count}} minutes",
+    "loading": "Chargement...",
+    "duration_minutes": "{{duration}} min.",
+    "currency": "$",
+    "subscription_period": {
+      "one_month": "1 mois",
+      "three_months": "3 mois",
+      "six_months": "6 mois",
+      "twelve_months": "12 mois"
+    },
+    "pricing": {
+      "title": "Prix",
+      "monthly": "Mensuel",
+      "three_months": "3 mois",
+      "six_months": "6 mois",
+      "yearly": "Année",
+      "discount_notice": "Garde à vous ! Les rabais s'appliquent aux abonnements de 3 mois ou plus"
+    }
+  },
+  "video_notification": {
+    "title": "Exercices vidéo",
+    "exercise_complexes": {
+      "title": "Complexes d'exercices",
+      "description": "La section de réadaptation offre des complexes d'exercice dans les domaines suivants : orthopédie, neurologie, obésité, réadaptation pour les personnes âgées, réadaptation post-COVID-19, réadaptation de la démarche, aphasie et dysarthrie.  Tous les complexes d'exercices sont développés par des spécialistes israéliens conformément aux protocoles de réhabilitation israéliens."
+    },
+    "for_children": {
+      "title": "Pour les enfants",
+      "description": "Les enfants âgés de 10 ans et plus et les adolescents trouveront des sections pertinentes liées à la posture, la scoliose juvénile et la colonne thoracique, ainsi que des problèmes de ceintures d'épaule, des problèmes de membres inférieurs et la correction."
+    },
+    "articles": {
+      "title": "Articles",
+      "description": "Notre bibliothèque présente des articles qui servent d'introductions théoriques à chaque domaine de la réadaptation et couvrent les problèmes et pathologies possibles, l'anatomie, la physiologie et la biomécanique."
+    },
+    "purchase": {
+      "premium_content": "Contenu premium",
+      "set_requires_purchase": "Les \"{{setName}}\" set nécessite l'achat",
+      "content_requires_purchase": "Ce contenu nécessite l'achat",
+      "what_you_get": "Ce que vous obtenez:",
+      "unlimited_access": "Accès illimité",
+      "all_exercises": "Tous les exercices",
+      "progress_tracking": "Suivi des progrès accomplis",
+      "buy_now": "Acheter maintenant",
+      "browse_courses": "Parcourir les cours"
+    }
+  }
+}

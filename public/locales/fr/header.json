@@ -1,0 +1,43 @@
+{
+  "main_title": "Un ensemble de services pour prendre soin de votre santé",
+  "navigation": {
+    "all_complexes": "Tous les complexes",
+    "about": "À propos",
+    "blog": "Blog",
+    "contacts": "Contact"
+  },
+  "rehabilitation": {
+    "title": "MÉTHODES MÉTHODES DE RÉHABILITATION D'ISRAELI",
+    "description": "Pour la récupération et le maintien de la mobilité et de la capacité de travail",
+    "detail_description": "Méthodes modernes de réadaptation israélienne en orthopédie, en neurologie, en réadaptation post-traumatique et autres.",
+    "section_title": "Rééducation"
+  },
+  "categories": {
+    "fifteen_categories": "15 catégories",
+    "stores": "Magasins",
+    "restaurants": "Restaurants",
+    "six_sections": "6 sections",
+    "thirty_six_complexes": "36 complexes",
+    "one_twenty_five_exercises": "125 exercices"
+  },
+  "complex": {
+    "one_twenty_five_lessons": "125 leçons",
+    "one_hundred_two_minutes": "102 minutes",
+    "three_difficulty_stages": "3 phases de difficulté",
+    "general_recovery_title": "Récupération générale, complexe d'appui",
+    "price": "500 ₾",
+    "per_month": "Par mois",
+    "purchase": "Achat",
+    "subscription_offer": "Garde à vous ! Les rabais s'appliquent aux abonnements de 3 mois ou plus"
+  },
+  "blog": {
+    "title": "Cours et master classes pour les thérapeutes expérimentés.  Atelier sur le traitement des problèmes orthopédiques",
+    "mobile_title": "Comment améliorer la nature de la position.",
+    "description": "Avec des conseils de sécurité à suivre avant et après la fracture par Kristen Gasnik",
+    "category_label": "Orthopédie"
+  },
+  "buttons": {
+    "learn_more": "En savoir plus",
+    "to_catalog": "Pour cataloguer"
+  }
+}

@@ -1,10 +1,11 @@
+import { localeCodes } from './locales';
 import { appWithTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const nextI18NextConfig = {
   i18n: {
     defaultLocale: 'ka',
-    locales: ['ka', 'ru', 'en'],
+    locales: localeCodes,
     localeDetection: false,
   },
   react: {

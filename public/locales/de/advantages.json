@@ -1,0 +1,31 @@
+{
+  "title": "Vorteile",
+  "personal_support": {
+    "title": "Persönlicher Support",
+    "description": "Wenn Sie Fragen haben, können Sie diese im Chat auf der Website an einen Kurator-Berater stellen und erhalten umgehend eine Antwort. Wenn Sie in unserem Videokatalog keinen Übungskomplex zur Lösung Ihres Problems gefunden haben, bereiten unsere Kuratoren persönlich einen MASSGESCHNEIDERTEN Übungskomplex für Sie vor oder bieten eine Beratung mit einem REHABILITOLOGEN an, der auf die von Ihnen benötigte Richtung spezialisiert ist."
+  },
+  "inspiration": {
+    "title": "WIR INSPEKTIONEN",
+    "description": "Nach der Demonstration der Übungstechnik folgen Wiederholungen gemäß Protokoll und die musikalische Untermalung gibt den Rhythmus des Trainings vor."
+  },
+  "exercise_count": {
+    "title": "75 ÜBUNGSKOMPLEXE",
+    "description": "Die Übungen werden gemäß den israelischen Rehabilitationsprotokollen in Playlists gesammelt."
+  },
+  "accessibility": {
+    "title": "ZUGÄNGLICHKEIT",
+    "description": "Erschwingliche Abonnementpreise, persönlicher Ansatz."
+  },
+  "informativeness": {
+    "title": "INFORMATIVITÄT",
+    "description": "Die Beschreibung der Übungskomplexe liefert Informationen über die für das Training benötigte Ausrüstung, betont die wichtigsten Punkte und gibt Empfehlungen für die Durchführung von Übungen und den Trainingsverlauf."
+  },
+  "train_anywhere": {
+    "title": "Zug, wo immer es bequem ist",
+    "description": "Sie müssen nur den Player auf einem Computer, Tablet oder Telefon einschalten und Sie können ein vollwertiges Training mit einem Personal Trainer überall und zu jeder beliebigen Zeit durchführen."
+  },
+  "video_count": {
+    "title": "Über 1000 Videoübungen",
+    "description": "Alle unsere Materialien werden mit einer schrittweisen Demonstration der Übungstechnik gefilmt und durch Infografiken ergänzt, die komplexe Bewegungen und Momente hervorheben."
+  }
+}

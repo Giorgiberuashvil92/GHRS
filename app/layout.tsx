@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "ka_GE",
-    alternateLocale: ["en_US", "ru_RU"],
+    alternateLocale: ["en_US", "ru_RU", "he_IL", "ar", "de_DE", "fr_FR", "it_IT", "uk_UA"],
     siteName: "GHRS",
     title: "GHRS - Georgian Health & Rehabilitation System",
     description: "Professional health and rehabilitation platform",

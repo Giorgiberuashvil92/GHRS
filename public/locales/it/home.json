@@ -1,0 +1,64 @@
+{
+  "hero": {
+    "title": "Metodi israeliani per la riabilitazione e la salute",
+    "description": "Metodi israeliani moderni per recuperare e mantenere la mobilità e la capacità lavorativa"
+  },
+  "advantages": {
+    "title": "Vantaggi",
+    "personal_support": {
+      "title": "Supporto personale",
+      "description": "Se avete domande, è possibile chiedere loro a un Curatore-consulente nella Chat sul sito e ricevere prontamente una risposta. Se non avete trovato un complesso di esercizi per risolvere il vostro problema nel nostro catalogo video, i nostri Curatori prepareranno un complesso di esercizi CUSTOMIZED personalmente per voi, o offrire una consultazione con un REHABILITOLOGIST specializzato nella direzione di cui avete bisogno."
+    },
+    "inspiration": {
+      "title": "INIZIO",
+      "description": "Dopo aver dimostrato la tecnica di esercizio, le ripetizioni seguono secondo il protocollo, e l'accompagnamento musicale imposta il ritmo dell'allenamento."
+    },
+    "exercise_count": {
+      "title": "75 COMPLESSI ESERCIZI",
+      "description": "Gli esercizi vengono raccolti nelle playlist secondo i protocolli di riabilitazione israeliani."
+    },
+    "accessibility": {
+      "title": "ACCESSIBILITÀ",
+      "description": "Prezzi abbonabili, approccio personale."
+    },
+    "informativeness": {
+      "title": "INFORMATIVA",
+      "description": "La descrizione dei Complessi di Esercizio fornisce informazioni sulle attrezzature necessarie per la formazione, sottolinea i punti chiave e fornisce raccomandazioni per l'esecuzione di esercizi e il corso di formazione."
+    },
+    "train_anywhere": {
+      "title": "Treno ovunque comodo",
+      "description": "Basta accendere il giocatore su un computer, tablet o telefono e si può condurre un allenamento a pieno titolo con un Personal Trainer ovunque e in qualsiasi momento conveniente."
+    },
+    "video_count": {
+      "title": "1000+ ESERCIZI DI VIDEO",
+      "description": "Tutti i nostri materiali vengono filmati con una dimostrazione graduale della tecnica di esercizio e completati da infografiche che evidenziano movimenti e momenti complessi."
+    }
+  },
+  "subscription": {
+    "title": "Completando un corso sulla nostra piattaforma, si riceve un diploma o un certificato nella professione acquisita.",
+    "test_title": "Prendere un test e scegliere il complesso di esercizio adatto a voi",
+    "feedback_title": "Condividi le tue impressioni",
+    "feedback_subtitle": "Fai un breve sondaggio e lascia un feedback sul lavoro con la nostra piattaforma"
+  },
+  "marketplace": {
+    "title": "Stiamo sviluppando la direzione MARKETPLACE",
+    "description": "I nostri partner in questa direzione possono essere centri di riabilitazione, cliniche, sanatori, club sportivi, massaggi...",
+    "status": "Lo sviluppo"
+  },
+  "works": {
+    "exercises_title": "Esercizi",
+    "all_sets": "TUTTO {{count}} ESERCIZIO →"
+  },
+  "buttons": {
+    "subscribe": "Abbonamento di acquisto",
+    "take_test": "TAKE TEST",
+    "take_survey": "prendere l'indagine"
+  },
+  "fuel_promo": {
+    "region_label": "Promozione dei partner — carburante",
+    "title": "17 tetri off per litro su carburante nelle stazioni di rifornimento partner",
+    "subtitle": "Termini e lista delle stazioni — vedere il sito ufficiale del partner.",
+    "cta": "Per saperne di più",
+    "dismiss_aria": "Disdetta banner"
+  }
+}

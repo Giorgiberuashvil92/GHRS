@@ -1,0 +1,64 @@
+{
+  "hero": {
+    "title": "Israelische Methoden für Rehabilitation und Gesundheit",
+    "description": "Moderne israelische Methoden zur Rehabilitation und zum Erhalt von Mobilität und Arbeitsfähigkeit"
+  },
+  "advantages": {
+    "title": "Vorteile",
+    "personal_support": {
+      "title": "Persönlicher Support",
+      "description": "Wenn Sie Fragen haben, können Sie diese im Chat auf der Website an einen Kurator-Berater stellen und erhalten umgehend eine Antwort. Wenn Sie in unserem Videokatalog keinen Übungskomplex zur Lösung Ihres Problems gefunden haben, bereiten unsere Kuratoren persönlich einen MASSGESCHNEIDERTEN Übungskomplex für Sie vor oder bieten eine Beratung mit einem REHABILITOLOGEN an, der auf die von Ihnen benötigte Richtung spezialisiert ist."
+    },
+    "inspiration": {
+      "title": "WIR INSPEKTIONEN",
+      "description": "Nach der Demonstration der Übungstechnik folgen Wiederholungen gemäß Protokoll und die musikalische Untermalung gibt den Rhythmus des Trainings vor."
+    },
+    "exercise_count": {
+      "title": "75 ÜBUNGSKOMPLEXE",
+      "description": "Die Übungen werden gemäß den israelischen Rehabilitationsprotokollen in Playlists gesammelt."
+    },
+    "accessibility": {
+      "title": "ZUGÄNGLICHKEIT",
+      "description": "Erschwingliche Abonnementpreise, persönlicher Ansatz."
+    },
+    "informativeness": {
+      "title": "INFORMATIVITÄT",
+      "description": "Die Beschreibung der Übungskomplexe liefert Informationen über die für das Training benötigte Ausrüstung, betont die wichtigsten Punkte und gibt Empfehlungen für die Durchführung von Übungen und den Trainingsverlauf."
+    },
+    "train_anywhere": {
+      "title": "Zug, wo immer es bequem ist",
+      "description": "Sie müssen nur den Player auf einem Computer, Tablet oder Telefon einschalten und Sie können ein vollwertiges Training mit einem Personal Trainer überall und zu jeder beliebigen Zeit durchführen."
+    },
+    "video_count": {
+      "title": "Über 1000 Videoübungen",
+      "description": "Alle unsere Materialien werden mit einer schrittweisen Demonstration der Übungstechnik gefilmt und durch Infografiken ergänzt, die komplexe Bewegungen und Momente hervorheben."
+    }
+  },
+  "subscription": {
+    "title": "Durch den Abschluss eines Kurses auf unserer Plattform erhalten Sie ein Diplom oder ein Zertifikat im erworbenen Beruf.",
+    "test_title": "Machen Sie einen Test und wählen Sie den für Sie geeigneten Übungskomplex",
+    "feedback_title": "Teilen Sie Ihre Impressionen",
+    "feedback_subtitle": "Machen Sie eine kurze Umfrage und hinterlassen Sie Feedback zur Arbeit mit unserer Plattform"
+  },
+  "marketplace": {
+    "title": "Wir entwickeln die MARKETPLACE-Richtung",
+    "description": "Unsere Partner in dieser Richtung können Rehabilitationszentren, Kliniken, Sanatorien, Sportvereine, Massage... sein.",
+    "status": "In der Entwicklung"
+  },
+  "works": {
+    "exercises_title": "Übungen",
+    "all_sets": "ALLE {{count}} ÜBUNGEN →"
+  },
+  "buttons": {
+    "subscribe": "Abonnement kaufen",
+    "take_test": "PRÜFUNG",
+    "take_survey": "Besichtigung"
+  },
+  "fuel_promo": {
+    "region_label": "Partnerförderung – Treibstoff",
+    "title": "17 Tetri Rabatt pro Liter auf Kraftstoff an Partnertankstellen",
+    "subtitle": "Bedingungen und stationsliste - siehe offizielle website des partners.",
+    "cta": "Erfahren Sie mehr",
+    "dismiss_aria": "Banner schließen"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "personal_account": {
+    "loading": "Wird geladen...",
+    "user_not_found": "Benutzer nicht gefunden",
+    "auth_required": "Genehmigung erforderlich",
+    "statistics": "Statistik",
+    "tabs": {
+      "description": "Beschreibung",
+      "additional": "Zusätzlich",
+      "demo_video": "Demo-Video"
+    },
+    "stats": {
+      "total_time": "Gesamtzeit",
+      "exercises": "Übungen",
+      "exercises_label": "Übungen",
+      "average_time": "Durchschnittliche Zeit",
+      "current_streak": "Aktueller Streak",
+      "days": "Tage"
+    },
+    "recommendations": "Empfohlen",
+    "continue_watching": {
+      "title": "Sie haben die Video-Übung noch nicht beendet. Möchten Sie weitermachen?",
+      "button": "Schauen Sie weiter"
+    },
+    "person_goals": {
+      "title": "Lass uns ein Ziel setzen",
+      "description": "Regelmäßige Bewegung hilft Ihnen, die Motivation aufrechtzuerhalten. Richten Sie Benachrichtigungen ein und wir helfen Ihnen, Ihr Training nicht zu vergessen.",
+      "set_goal": "Ziel setzen",
+      "reminder_settings": "Ermahnungen",
+      "reminder_description": "Durch mindestens viermaliges Training pro Woche gewöhnen Sie sich nach und nach an den Rhythmus.",
+      "which_days": "An welchen Tagen möchtest du trainieren?",
+      "from": "Aus",
+      "to": "bis",
+      "calendar_select": "Wählen Sie den Kalender für Benachrichtigungen aus",
+      "save": "Speichern"
+    },
+    "days_in_row": {
+      "days_streak": "TAGE IN FOLGE",
+      "record": "Rekord: {{count}} Tage in Folge"
+    },
+    "person_info": {
+      "profile_photo": "Profilfoto",
+      "email": "E-Mail",
+      "location": "Standort",
+      "phone": "Telefon",
+      "edit": "Bearbeiten →"
+    },
+    "subscription_history": {
+      "title": "Subscription History",
+      "order_from": "BESTELLUNG VON {{date}}",
+      "cancel_subscription": "ABO KÜNDIGEN",
+      "view": "VIEW",
+      "pay": "ZAHLEN",
+      "statuses": {
+        "completed": "Vollendet",
+        "awaiting_payment": "Warten auf Zahlung",
+        "expired": "Abonnement abgelaufen"
+      }
+    },
+    "achievements": {
+      "title": "Erfolge",
+      "hide": "Erfolge ausblenden",
+      "share": "Statistiken und Erfolge teilen",
+      "no_achievements": "Sie haben noch keine Erfolge",
+      "start_exercising": "Beginnen Sie mit dem Training, um Erfolge zu erzielen"
+    }
+  }
+}

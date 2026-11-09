@@ -294,3 +294,20 @@ button {
     display: none;
   }
 }
+
+/* RTL text needs connected Arabic glyphs and natural spacing. Physical utility
+   classes retain their existing LTR design, with text alignment mirrored here. */
+html[dir="rtl"] body,
+html[dir="rtl"] .font-bowler,
+html[dir="rtl"] .font-pt {
+  font-family: Arial, "Segoe UI", sans-serif;
+  letter-spacing: normal;
+}
+html[dir="rtl"] .text-left { text-align: right; }
+html[dir="rtl"] .text-right { text-align: left; }
+html[dir="rtl"] input[type="email"],
+html[dir="rtl"] input[type="tel"],
+html[dir="rtl"] input[type="url"] {
+  direction: ltr;
+  text-align: start;
+}

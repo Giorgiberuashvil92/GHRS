@@ -1,0 +1,47 @@
+{
+  "course": {
+    "all_courses": {
+      "title": "Kurse",
+      "search_placeholder": "Geben Sie den Kursnamen oder den Namen des Dozenten ein",
+      "instructor": "Lehrer",
+      "badge_english": "AUF ENGLISCH",
+      "no_courses": "Keine Kurse gefunden",
+      "try_other_search": "Probieren Sie verschiedene Suchparameter aus",
+      "show_more": "Mehr anzeigen",
+      "loading": "Wird geladen...",
+      "error": "Fehler beim Laden der Kurse"
+    },
+    "tabs": {
+      "description": "Beschreibung",
+      "syllabus": "Syllabus",
+      "announcements": "Ankündigungen",
+      "reviews": "Rezensionen"
+    },
+    "lessons_count": "{{count}} Unterricht",
+    "lessons_label": "Anzahl der Unterrichtsstunden",
+    "not_specified": "Nicht angegeben",
+    "languages_label": "Kurssprachen",
+    "price_label": "Kurspreis",
+    "short_description_title": "Kurzbeschreibung:",
+    "duration": "Dauer",
+    "duration_minutes": "{{duration}} Minuten",
+    "access_granted": "✓ Sie haben Zugang",
+    "purchase_course": "KAUFKURS",
+    "login_to_purchase": "Zum Kaufen anmelden",
+    "success_title": "Erfolgreich",
+    "not_found_title": "Kurs nicht gefunden",
+    "not_found_message": "Der Kurs an dieser Adresse existiert nicht oder wurde entfernt.",
+    "view_all_courses": "Alle Kurse",
+    "related_courses": "Verwandte Kurse",
+    "total_duration": "Gesamtdauer",
+    "prerequisites_title": "Voraussetzungen:",
+    "learning_outcomes_title": "Lernergebnisse:",
+    "tags_label": "Tags:",
+    "lesson_label": "Lektion {{number}}",
+    "minutes_short": "min.",
+    "reviews_section_title": "Schülerbewertungen",
+    "no_reviews_yet": "Noch keine Bewertungen",
+    "error_loading": "Fehler beim Laden des Kurses",
+    "no_description": "Keine Beschreibung"
+  }
+}

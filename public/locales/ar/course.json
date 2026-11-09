@@ -1,0 +1,47 @@
+{
+  "course": {
+    "all_courses": {
+      "title": "الدورات",
+      "search_placeholder": "أدخل اسم الدورة أو اسم المدرب",
+      "instructor": "مدرب",
+      "badge_english": "باللغة الإنجليزية",
+      "no_courses": "لم يتم العثور على دورات",
+      "try_other_search": "جرب معلمات بحث مختلفة",
+      "show_more": "عرض المزيد",
+      "loading": "جارٍ التحميل...",
+      "error": "خطأ في تحميل الدورات"
+    },
+    "tabs": {
+      "description": "وصف",
+      "syllabus": "المنهج",
+      "announcements": "إعلانات",
+      "reviews": "التعليقات"
+    },
+    "lessons_count": "دروس {{count}}",
+    "lessons_label": "عدد الدروس",
+    "not_specified": "غير محدد",
+    "languages_label": "لغات الدورة",
+    "price_label": "سعر الدورة",
+    "short_description_title": "وصف قصير:",
+    "duration": "مدة",
+    "duration_minutes": "دقائق {{duration}}",
+    "access_granted": "✓ لديك حق الوصول",
+    "purchase_course": "دورة الشراء",
+    "login_to_purchase": "تسجيل الدخول للشراء",
+    "success_title": "نجاح",
+    "not_found_title": "لم يتم العثور على الدورة",
+    "not_found_message": "الدورة التدريبية الموجودة في هذا العنوان غير موجودة أو تمت إزالتها.",
+    "view_all_courses": "جميع الدورات",
+    "related_courses": "الدورات ذات الصلة",
+    "total_duration": "المدة الإجمالية",
+    "prerequisites_title": "المتطلبات الأساسية:",
+    "learning_outcomes_title": "نتائج التعلم:",
+    "tags_label": "العلامات:",
+    "lesson_label": "الدرس {{number}}",
+    "minutes_short": "دقيقة",
+    "reviews_section_title": "مراجعات الطلاب",
+    "no_reviews_yet": "لا توجد تعليقات حتى الآن",
+    "error_loading": "خطأ في تحميل الدورة",
+    "no_description": "لا يوجد وصف"
+  }
+}

@@ -199,7 +199,7 @@ export const Footer: FC = () => {
               {isSubmitting ? (
                 <>
                   <span className="animate-spin">⏳</span>
-                  {locale === 'en' ? 'Sending...' : locale === 'ru' ? 'Отправка...' : 'იგზავნება...'}
+                  {t("consultation.sending")}
                 </>
               ) : (
                 <>
@@ -216,16 +216,12 @@ export const Footer: FC = () => {
         {/* Success/Error Messages */}
         {submitStatus === 'success' && (
           <div className="mt-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg font-pt">
-            {locale === 'en' ? '✅ Thank you! We will contact you soon.' : 
-             locale === 'ru' ? '✅ Спасибо! Мы свяжемся с вами в ближайшее время.' : 
-             '✅ მადლობა! ჩვენ მალე დაგიკავშირდებით.'}
+            {t("consultation.success")}
           </div>
         )}
         {submitStatus === 'error' && (
           <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg font-pt">
-            {errorMessage || (locale === 'en' ? '❌ Something went wrong. Please try again.' : 
-             locale === 'ru' ? '❌ Что-то пошло не так. Пожалуйста, попробуйте еще раз.' : 
-             '❌ რაღაც არასწორად მოხდა. გთხოვთ სცადოთ ხელახლა.')}
+            {errorMessage || t("consultation.error")}
           </div>
         )}
       </div>
@@ -359,7 +355,7 @@ export const Footer: FC = () => {
           )}
 
           {/* ინგლისური სოციალური ქსელები */}
-          {locale === "en" && (
+          {locale !== "ru" && locale !== "ka" && (
             <>
               <a
                 href={socialLinks.instagram}

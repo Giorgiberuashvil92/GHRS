@@ -9,6 +9,7 @@ import { FaArrowRightLong } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
 import { TbBrandOkRu } from "react-icons/tb";
 import { sendVerificationCode } from "../../config/api";
+import { getContentLocale } from "../../../lib/locales";
 import { useI18n } from "../../context/I18nContext";
 
 const Register = () => {
@@ -73,7 +74,7 @@ const Register = () => {
         setEmailError(
           message === "This member already exists"
             ? existingAccountTranslation === "auth.email_already_exists"
-              ? existingAccountMessages[locale]
+              ? existingAccountMessages[getContentLocale(locale)]
               : existingAccountTranslation
             : t("auth.error_occurred")
         );

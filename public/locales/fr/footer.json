@@ -1,0 +1,46 @@
+{
+  "consultation": {
+    "title": "LIBÉRER UNE DEMANDE",
+    "titleHighlight": "CONSULTATION :",
+    "button": "DEMANDE DE PRÉSENTATION",
+    "consent": "En cliquant sur le bouton vous acceptez le traitement des données personnelles"
+  },
+  "form": {
+    "name": "Nom",
+    "phone": "Téléphone",
+    "email": "E-mail"
+  },
+  "workHours": "Heures de travail: 9:00 - 19:00 heure de Tel-Aviv",
+  "links": {
+    "home": "Accueil",
+    "rehabilitation": "Rééducation",
+    "development": "Développement professionnel",
+    "blog": "Blog",
+    "about": "À propos",
+    "faq": "FAQ",
+    "userGuide": "Guide de l'utilisateur",
+    "allSets": "Tous les ensembles",
+    "orthopedics": "Orthopédie",
+    "cervical": "Épine cervicale",
+    "thoracic": "Oxydes thoraciques",
+    "lumbar": "Lombaire de la colonne vertébrale",
+    "upperLimbs": "Sujets des membres supérieurs",
+    "lowerLimbs": "Questions relatives aux membres inférieurs",
+    "posture": "Questions relatives aux postes",
+    "neurology": "Neurologie",
+    "parkinsons": "La maladie de Parkinson",
+    "stroke": "Accidents",
+    "facialNerve": "Paralysie faciale de Nerve",
+    "multipleSclerosis": "Sclérose en plaques",
+    "aphasia": "Aphasie et dysarthrie",
+    "obesity": "Obésité",
+    "gaitRehab": "Réadaptation post-traumatique à la gait",
+    "elderlyRehab": "Réadaptation des personnes âgées",
+    "covidRehab": "Réadaptation post-COVID-19"
+  },
+  "copyright": "Copyright © 2023 GHRS LLC",
+  "footerUserAgreement": "Contrat d'utilisation",
+  "footerConsent": "Consentement au traitement des données personnelles",
+  "footerPrivacyPolicy": "Politique de confidentialité",
+  "footerDataProcessing": "Traitement des données personnelles"
+}

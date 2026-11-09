@@ -1,0 +1,68 @@
+{
+  "personal_account": {
+    "loading": "בטעינה...",
+    "user_not_found": "המשתמש לא נמצא",
+    "auth_required": "נדרש אישור",
+    "statistics": "סטָטִיסטִיקָה",
+    "tabs": {
+      "description": "תֵאוּר",
+      "additional": "נוֹסָף",
+      "demo_video": "סרטון הדגמה"
+    },
+    "stats": {
+      "total_time": "זמן כולל",
+      "exercises": "תרגילים",
+      "exercises_label": "תרגילים",
+      "average_time": "זמן ממוצע",
+      "current_streak": "רצף נוכחי",
+      "days": "ימים"
+    },
+    "recommendations": "מוּמלָץ",
+    "continue_watching": {
+      "title": "לא סיימת לצפות בתרגיל הווידאו. האם תרצה להמשיך?",
+      "button": "המשך לצפות"
+    },
+    "person_goals": {
+      "title": "בואו נגדיר מטרה",
+      "description": "פעילות גופנית סדירה תעזור לך לשמור על מוטיבציה. הגדר התראות ואנו נעזור לך לא לשכוח את האימון שלך.",
+      "set_goal": "הגדר מטרה",
+      "reminder_settings": "הגדר תזכורות",
+      "reminder_description": "על ידי פעילות גופנית לפחות 4 פעמים בשבוע, תתרגלו בהדרגה לקצב.",
+      "which_days": "באילו ימים אתה רוצה להתאמן?",
+      "from": "מִן",
+      "to": "אֶל",
+      "calendar_select": "בחר לוח שנה להתראות",
+      "save": "שמירה"
+    },
+    "days_in_row": {
+      "days_streak": "ימים ברציפות",
+      "record": "שיא: {{count}} ימים ברציפות"
+    },
+    "person_info": {
+      "profile_photo": "תמונת פרופיל",
+      "email": "דוא״ל",
+      "location": "מִקוּם",
+      "phone": "טלפון",
+      "edit": "ערוך →"
+    },
+    "subscription_history": {
+      "title": "היסטוריית מנויים",
+      "order_from": "הזמנה מ-{{date}}",
+      "cancel_subscription": "בטל את המנוי",
+      "view": "נוֹף",
+      "pay": "לְשַׁלֵם",
+      "statuses": {
+        "completed": "הושלם",
+        "awaiting_payment": "ממתין לתשלום",
+        "expired": "פג תוקף המנוי"
+      }
+    },
+    "achievements": {
+      "title": "הישגים",
+      "hide": "הסתר הישגים",
+      "share": "שתף סטטיסטיקות והישגים",
+      "no_achievements": "עדיין אין לך הישגים",
+      "start_exercising": "התחל להתאמן כדי להשיג הישגים"
+    }
+  }
+}

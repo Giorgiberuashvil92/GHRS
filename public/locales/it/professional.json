@@ -1,0 +1,30 @@
+{
+  "professional": {
+    "header": {
+      "title": "SVILUPPO PROFESSIONALE",
+      "description": "Formazione e sviluppo professionale in riabilitazione, fisioterapia e massaggio terapeutico, in collaborazione con i centri di formazione israeliani."
+    },
+    "our_courses": "I nostri corsi",
+    "cards": {
+      "qualified_teachers": "istruttori qualificati",
+      "exclusive_courses": "corsi esclusivi",
+      "students_learning": "studenti attualmente in formazione"
+    },
+    "courses": {
+      "title": "GIUDICI",
+      "instructor_courses": "Corsi di Istruttore",
+      "popular_courses": "GIUDICI CARATTERISTICHE",
+      "all_courses": "TUTTO {{count}} GIUDICI →",
+      "error": "Corsi di caricamento degli errori"
+    },
+    "stats": {
+      "courses": "corsi",
+      "instructors": "istruttori",
+      "students": "studenti"
+    },
+    "test_banner": {
+      "title": "Fai un test e scegli il corso adatto a te",
+      "button": "test"
+    }
+  }
+}

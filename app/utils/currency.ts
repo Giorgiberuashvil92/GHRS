@@ -1,3 +1,4 @@
+import { type Locale, getContentLocale } from "../../lib/locales";
 /**
  * Currency Conversion Utilities
  * Converts prices from RUB to supported PayPal currencies
@@ -122,9 +123,9 @@ export function formatPriceWithConversion(
  */
 export function formatPriceByLocale(
   amountInRUB: number,
-  locale: 'ka' | 'ru' | 'en' = 'ru'
+  locale: Locale = 'ru'
 ): string {
-  switch (locale) {
+  switch (getContentLocale(locale)) {
     case 'ru':
       // Russian: Show in Rubles (but payment will be in USD)
       return `${amountInRUB.toLocaleString('ru-RU')} ₽`;

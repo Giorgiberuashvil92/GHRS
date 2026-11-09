@@ -14,6 +14,6 @@ export class CreateConsultationRequestDto {
   @IsNotEmpty()
   email: string;
 
-  @IsEnum(['en', 'ru', 'ka'])
+  @IsEnum(['en', 'ru', 'ka', 'he', 'ar', 'de', 'fr', 'it', 'uk'])
   locale: string;
 }

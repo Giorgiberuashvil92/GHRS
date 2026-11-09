@@ -1,4 +1,5 @@
-export type ContentLocale = "ka" | "en" | "ru";
+import { type Locale, getContentLocale } from "../../lib/locales";
+export type ContentLocale = Locale;
 
 /**
  * მრავალენოვანი ველის არჩევა არჩეული ენის მიხედვით + ლოგიკური fallback
@@ -9,7 +10,8 @@ export function pickLocalized(
   loc: ContentLocale
 ): string {
   if (!obj) return "";
-  const order: ContentLocale[] =
+  loc = getContentLocale(loc);
+  const order: ("ka" | "en" | "ru")[] =
     loc === "en"
       ? ["en", "ru", "ka"]
       : loc === "ru"

@@ -40,3 +40,6 @@ next-env.d.ts
 # Backend
 backend/dist
 backend/node_modules
+
+# Temporary cache used by the locale generation script
+/scripts/.translation-cache.json

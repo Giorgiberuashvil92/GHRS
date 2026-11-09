@@ -17,7 +17,7 @@ export class ConsultationRequest {
   @Prop({ enum: ['pending', 'contacted', 'completed', 'cancelled'], default: 'pending' })
   status: string;
 
-  @Prop({ enum: ['en', 'ru', 'ka'], required: true })
+  @Prop({ enum: ['en', 'ru', 'ka', 'he', 'ar', 'de', 'fr', 'it', 'uk'], required: true })
   locale: string;
 
   @Prop()

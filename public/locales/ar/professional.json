@@ -1,0 +1,30 @@
+{
+  "professional": {
+    "header": {
+      "title": "التطوير المهني",
+      "description": "التدريب والتطوير المهني في مجال إعادة التأهيل والعلاج الطبيعي والتدليك العلاجي – بالتعاون مع مراكز التدريب الإسرائيلية."
+    },
+    "our_courses": "دوراتنا",
+    "cards": {
+      "qualified_teachers": "المدربين المؤهلين",
+      "exclusive_courses": "دورات حصرية",
+      "students_learning": "الطلاب المتدربين حاليا"
+    },
+    "courses": {
+      "title": "الدورات",
+      "instructor_courses": "دورات المدربين",
+      "popular_courses": "الدورات المميزة",
+      "all_courses": "جميع دورات {{count}} →",
+      "error": "خطأ في تحميل الدورات"
+    },
+    "stats": {
+      "courses": "الدورات",
+      "instructors": "المدربين",
+      "students": "طلاب"
+    },
+    "test_banner": {
+      "title": "قم بإجراء الاختبار واختر الدورة المناسبة لك",
+      "button": "إجراء الاختبار"
+    }
+  }
+}

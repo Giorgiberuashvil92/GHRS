@@ -1,0 +1,30 @@
+{
+  "professional": {
+    "header": {
+      "title": "פיתוח מקצועי",
+      "description": "הכשרה ופיתוח מקצועי בשיקום, פיזיותרפיה ועיסוי טיפולי - בשיתוף עם מרכזי הדרכה בישראל."
+    },
+    "our_courses": "הקורסים שלנו",
+    "cards": {
+      "qualified_teachers": "מדריכים מוסמכים",
+      "exclusive_courses": "קורסים בלעדיים",
+      "students_learning": "תלמידים בהכשרה כרגע"
+    },
+    "courses": {
+      "title": "קורסים",
+      "instructor_courses": "קורסי מדריכים",
+      "popular_courses": "קורסים מומלצים",
+      "all_courses": "כל הקורסים {{count}} →",
+      "error": "שגיאה בטעינת קורסים"
+    },
+    "stats": {
+      "courses": "קורסים",
+      "instructors": "מדריכים",
+      "students": "תלמידים"
+    },
+    "test_banner": {
+      "title": "גשו למבחן ובחרו את הקורס המתאים לכם",
+      "button": "לעשות מבחן"
+    }
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "main_title": "النظام البيئي للمنتجات التي تهدف إلى تشكيل صحتك",
+  "navigation": {
+    "all_complexes": "جميع المجمعات",
+    "about": "من نحن",
+    "blog": "مدونة",
+    "contacts": "اتصل بنا"
+  },
+  "rehabilitation": {
+    "title": "طرق إعادة التأهيل الإسرائيلية الحديثة",
+    "description": "للتعافي والحفاظ على الحركة والقدرة على العمل",
+    "detail_description": "طرق إعادة التأهيل الإسرائيلية الحديثة في جراحة العظام والأعصاب وإعادة تأهيل المشية بعد الصدمة وغيرها.",
+    "section_title": "إعادة التأهيل"
+  },
+  "categories": {
+    "fifteen_categories": "15 فئة",
+    "stores": "متاجر",
+    "restaurants": "مطاعم",
+    "six_sections": "6 أقسام",
+    "thirty_six_complexes": "36 مجمعا",
+    "one_twenty_five_exercises": "125 تمرين"
+  },
+  "complex": {
+    "one_twenty_five_lessons": "125 درسا",
+    "one_hundred_two_minutes": "102 دقيقة",
+    "three_difficulty_stages": "3 مراحل صعوبة",
+    "general_recovery_title": "الانتعاش العام، ودعم المجمع",
+    "price": "500 ₾",
+    "per_month": "كل شهر",
+    "purchase": "شراء",
+    "subscription_offer": "انتباه! تنطبق الخصومات على الاشتراكات لمدة 3 أشهر أو أكثر"
+  },
+  "blog": {
+    "title": "دورات ودروس رئيسية للمعالجين ذوي الخبرة. ورشة عمل حول علاج مشاكل العظام",
+    "mobile_title": "آلام الظهر والرقبة: كيفية تحسين وضعية الجسم بشكل طبيعي.",
+    "description": "مع نصائح السلامة التي يجب اتباعها قبل وبعد الكسر بقلم كريستين غاسنيك",
+    "category_label": "جراحة العظام"
+  },
+  "buttons": {
+    "learn_more": "يتعلم أكثر",
+    "to_catalog": "للفهرسة"
+  }
+}

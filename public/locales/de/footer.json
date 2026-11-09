@@ -1,0 +1,46 @@
+{
+  "consultation": {
+    "title": "HINTERLASSEN SIE EINE ANFRAGE FÜR",
+    "titleHighlight": "BERATUNG:",
+    "button": "ANTRAG AUF ERTEILUNG",
+    "consent": "Durch Anklicken des Buttons stimmen Sie der Verarbeitung personenbezogener Daten zu"
+  },
+  "form": {
+    "name": "Name",
+    "phone": "Telefon",
+    "email": "E-Mail"
+  },
+  "workHours": "Arbeitszeit: 9:00 Uhr - 19:00 Uhr Tel Aviv Zeit",
+  "links": {
+    "home": "Startseite",
+    "rehabilitation": "Rehabilitation",
+    "development": "Berufliche Weiterbildung",
+    "blog": "Blog",
+    "about": "Über uns",
+    "faq": "FAQ",
+    "userGuide": "Benutzerhandbuch",
+    "allSets": "Alle Sets",
+    "orthopedics": "Orthopädie",
+    "cervical": "Halswirbelsäule",
+    "thoracic": "Brustwirbelsäule",
+    "lumbar": "Lendenwirbelsäule",
+    "upperLimbs": "Probleme mit Oberschenkeln",
+    "lowerLimbs": "Probleme mit den unteren Gliedmaßen",
+    "posture": "Haltungsprobleme",
+    "neurology": "Neurologie",
+    "parkinsons": "Parkinson-Krankheit",
+    "stroke": "Schlaganfall",
+    "facialNerve": "Gesichtsnervenlähmung",
+    "multipleSclerosis": "Multiple Sklerose",
+    "aphasia": "Aphasie und Dysarthrie",
+    "obesity": "Fettleibigkeit",
+    "gaitRehab": "Posttraumatische Gangrehabilitation",
+    "elderlyRehab": "Rehabilitation für ältere Menschen",
+    "covidRehab": "Rehabilitation nach COVID-19"
+  },
+  "copyright": "Urheberrecht © 2023 GHRS LLC",
+  "footerUserAgreement": "Nutzungsvereinbarung",
+  "footerConsent": "Zustimmung zur Verarbeitung personenbezogener Daten",
+  "footerPrivacyPolicy": "Datenschutzrichtlinie",
+  "footerDataProcessing": "Verarbeitung personenbezogener Daten"
+}

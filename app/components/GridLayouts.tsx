@@ -1,5 +1,6 @@
 // GridLayouts.tsx
 "use client";
+import { getContentLocale } from "../../lib/locales";
 import React from "react";
 import BlogSlider from "./BlogSlider";
 import OtherGrid from "./OtherGrid";
@@ -77,7 +78,7 @@ const GridLayouts: React.FC<GridLayoutsProps> = ({
                   scrollRef={scrollRef}
                   currentPage={currentPage}
                   blogsPerPage={blogsPerPage}
-                  language={locale}
+                  language={getContentLocale(locale)}
                   showHeader={showHeader}
                 />
               );
@@ -88,7 +89,7 @@ const GridLayouts: React.FC<GridLayoutsProps> = ({
                   scrollRef={scrollRef}
                   currentPage={currentPage}
                   blogsPerPage={blogsPerPage}
-                  language={locale}
+                  language={getContentLocale(locale)}
                   showHeader={showHeader}
                 />
               );
@@ -99,7 +100,7 @@ const GridLayouts: React.FC<GridLayoutsProps> = ({
                   scrollRef={scrollRef}
                   currentPage={currentPage}
                   blogsPerPage={blogsPerPage}
-                  language={locale}
+                  language={getContentLocale(locale)}
                   showHeader={showHeader}
                 />
               );

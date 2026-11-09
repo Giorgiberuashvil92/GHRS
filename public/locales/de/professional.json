@@ -1,0 +1,30 @@
+{
+  "professional": {
+    "header": {
+      "title": "BERUFLICHE ENTWICKLUNG",
+      "description": "Ausbildung und berufliche Entwicklung in Rehabilitation, Physiotherapie und therapeutischer Massage - in Zusammenarbeit mit israelischen Trainingszentren."
+    },
+    "our_courses": "Unsere Kurse",
+    "cards": {
+      "qualified_teachers": "qualifizierte Ausbilder",
+      "exclusive_courses": "exklusive Kurse",
+      "students_learning": "Studierende derzeit in der Ausbildung"
+    },
+    "courses": {
+      "title": "KURSE",
+      "instructor_courses": "Ausbilderkurse",
+      "popular_courses": "AUSGEWÄHLTE KURSE",
+      "all_courses": "ALLE {{count}}-KURSE →",
+      "error": "Fehler beim Laden der Kurse"
+    },
+    "stats": {
+      "courses": "Kurse",
+      "instructors": "Ausbilder",
+      "students": "Studenten"
+    },
+    "test_banner": {
+      "title": "Machen Sie einen Test und wählen Sie den für Sie geeigneten Kurs",
+      "button": "Abnahmeprüfung"
+    }
+  }
+}

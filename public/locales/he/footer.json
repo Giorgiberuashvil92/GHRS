@@ -1,0 +1,46 @@
+{
+  "consultation": {
+    "title": "השאירו בקשה עבור",
+    "titleHighlight": "יִעוּץ:",
+    "button": "שלח בקשה",
+    "consent": "בלחיצה על הכפתור אתה מסכים לעיבוד הנתונים האישיים"
+  },
+  "form": {
+    "name": "שם",
+    "phone": "טלפון",
+    "email": "דוא״ל"
+  },
+  "workHours": "שעות עבודה: 9:00 - 19:00 שעון תל אביב",
+  "links": {
+    "home": "דף הבית",
+    "rehabilitation": "שיקום",
+    "development": "פיתוח מקצועי",
+    "blog": "בלוג",
+    "about": "אודותינו",
+    "faq": "שאלות נפוצות",
+    "userGuide": "מדריך למשתמש",
+    "allSets": "כל הסטים",
+    "orthopedics": "אוֹרְתוֹפֵּדִיָה",
+    "cervical": "עמוד שדרה צווארי",
+    "thoracic": "עמוד שדרה חזה",
+    "lumbar": "עמוד שדרה מותני",
+    "upperLimbs": "בעיות בגפיים העליונות",
+    "lowerLimbs": "בעיות בגפיים התחתונות",
+    "posture": "בעיות יציבה",
+    "neurology": "נוירולוגיה",
+    "parkinsons": "מחלת פרקינסון",
+    "stroke": "שָׁבָץ",
+    "facialNerve": "שיתוק עצב הפנים",
+    "multipleSclerosis": "טרשת נפוצה",
+    "aphasia": "אפזיה ודיסארתריה",
+    "obesity": "הַשׁמָנָה",
+    "gaitRehab": "שיקום הליכה פוסט טראומטי",
+    "elderlyRehab": "שיקום לקשישים",
+    "covidRehab": "שיקום לאחר COVID-19"
+  },
+  "copyright": "זכויות יוצרים © 2023 GHRS LLC",
+  "footerUserAgreement": "הסכם משתמש",
+  "footerConsent": "הסכמה לעיבוד נתונים אישיים",
+  "footerPrivacyPolicy": "מדיניות פרטיות",
+  "footerDataProcessing": "עיבוד נתונים אישיים"
+}

@@ -1,0 +1,31 @@
+{
+  "title": "Avantages",
+  "personal_support": {
+    "title": "Soutien personnel",
+    "description": "Si vous avez des questions, vous pouvez les poser à un conservateur-consultant dans le Chat sur le site et recevoir rapidement une réponse. Si vous n'avez pas trouvé de complexe d'exercice pour résoudre votre problème dans notre catalogue vidéo, nos curateurs prépareront un complexe d'exercice CUSTOMISÉ personnellement pour vous, ou offriront une consultation avec un REHABILITOLOGIST spécialisé dans la direction dont vous avez besoin."
+  },
+  "inspiration": {
+    "title": "NOUS INSPIRONS",
+    "description": "Après avoir démontré la technique de l'exercice, les répétitions suivent selon le protocole, et l'accompagnement musical fixe le rythme de l'entraînement."
+  },
+  "exercise_count": {
+    "title": "75 COMPLEXES EXERCICES",
+    "description": "Les exercices sont rassemblés dans des listes de lecture conformément aux protocoles de réhabilitation israéliens."
+  },
+  "accessibility": {
+    "title": "ACCESSIBILITÉ",
+    "description": "Prix d'abonnement abordables, approche personnelle."
+  },
+  "informativeness": {
+    "title": "INFORMATIQUE",
+    "description": "La description des complexes d'exercices fournit de l'information sur l'équipement nécessaire à la formation, met l'accent sur les points clés et donne des recommandations pour l'exécution d'exercices et le cours de formation."
+  },
+  "train_anywhere": {
+    "title": "Train partout où c'est pratique",
+    "description": "Vous avez juste besoin d'allumer le lecteur sur un ordinateur, une tablette ou un téléphone et vous pouvez effectuer un entraînement à part entière avec un formateur personnel n'importe où et à tout moment pratique."
+  },
+  "video_count": {
+    "title": "1000+ EXERCICES VIDEO",
+    "description": "Tous nos matériaux sont filmés avec une démonstration étape par étape de la technique d'exercice et complétés par des infographies mettant en évidence des mouvements et des moments complexes."
+  }
+}
