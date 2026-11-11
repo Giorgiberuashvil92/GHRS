@@ -59,6 +59,7 @@ const Home = () => {
         OptionalComponent={null}
         stats={statsData as never[]}
         useVideo={true}
+        videoSource={locale === "ru" ? "/videos/hero.mp4" : "/videos/heroEn.mp4"}
         backgroundImage="/assets/images/main-header-bg.jpg"
         customBlockTitle=""
         customBlockDescription=""
@@ -112,7 +113,7 @@ const Home = () => {
           buttonTextKey="buttons.take_test"
           buttonTextColor="#3D334A"
           buttonBgColor="#FFFFFF"
-          href={`/test?lang=${locale === "ru" ? "ru" : "en"}`}
+          href={`/test?lang=${locale}`}
           bgCenter={true}
           containerStyles="custom-class"
           titleStyles="text-white"

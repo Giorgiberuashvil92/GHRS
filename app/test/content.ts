@@ -1,12 +1,21 @@
+import type { Locale } from "../../lib/locales";
+import ar from "./locales/ar.json";
+import de from "./locales/de.json";
+import fr from "./locales/fr.json";
+import he from "./locales/he.json";
+import it from "./locales/it.json";
+import ka from "./locales/ka.json";
+import uk from "./locales/uk.json";
+
 export type QuestionnaireAnswers = {
-  locale: 'en' | 'ru'; purpose: 'rehabilitation' | 'professional'; nickname: string; fullName?: string;
+  locale: Locale; purpose: 'rehabilitation' | 'professional'; nickname: string; fullName?: string;
   phone: string; email?: string; gender?: string; age?: number; weight?: number;
   trainingLevel?: string; conditionId?: string; conditionDetails?: string; additionalInfo?: string; consent: boolean;
 };
-export type Label = { en: string; ru: string };
+export type Label = { en: string; ru: string; ka?: string };
 export type Options = { groups: { id: string; label: Label; options: { id: string; label: Label }[] }[]; catalog: { id: string; label: Label; href: string }[] };
 export type Submission = { _id: string; answers: QuestionnaireAnswers; createdAt: string; outcome: 'catalog' | 'review' | 'professional'; conditionLabel?: Label; links: { href: string; title: Label }[] };
-export const copy = {
+const baseCopy = {
   en: {
     eyebrow: 'YOUR GHRS JOURNEY', title: 'A little about you.\nA clearer way forward.', intro: 'Tell us about your goals and experience so we can help you find your way around GHRS.',
     time: 'About 3 minutes', steps: ['About you', 'Your experience', 'Review & send'], stepHints: ['Your goals and contact details', 'Your level and area of interest', 'Check your answers before sending'],
@@ -14,7 +23,7 @@ export const copy = {
     nickname: 'Nickname', fullName: 'Full name', phone: 'Phone', email: 'Contact email', gender: 'Gender', age: 'Age', weight: 'Weight (kg)', optional: 'Optional',
     catalogUnavailable: 'Live catalog sections are temporarily unavailable. You can still complete the questionnaire below.',
     second: 'Your starting point', secondHint: 'Choose the experience level and condition that best describe you. You can leave optional questions blank.', level: 'Training level', beginner: 'Beginner', beginnerHint: 'Starting out or returning to exercise', intermediate: 'Intermediate', intermediateHint: 'Some regular training experience', advanced: 'Advanced', advancedHint: 'Extensive training experience',
-    condition: 'Condition or area of interest', select: 'Choose an option', catalog: 'Available catalog sections', otherDetails: 'Tell us more', additionalInfo: 'Additional information', additionalPlaceholder: 'Anything else you would like the GHRS team to know…', otherPlaceholder: 'Describe what you would like help with…', conditionHint: 'Choose a catalog section to explore its complexes, or a condition for our team to review.',
+    condition: 'Condition or area of interest', select: 'Choose an option', otherDetails: 'Tell us more', additionalInfo: 'Additional information', additionalPlaceholder: 'Anything else you would like the GHRS team to know…', otherPlaceholder: 'Describe what you would like help with…', conditionHint: 'Choose the condition or area that best matches your interest.',
     third: 'Everything look right?', thirdHint: 'Your questionnaire will be available to the GHRS team. The submission date is added automatically.', consent: 'I agree to share these answers, including health information, with the GHRS team to help with my request.',
     back: 'Back', next: 'Continue', submit: 'Send questionnaire', sending: 'Sending…', loading: 'Loading your questionnaire…', loadError: 'We couldn’t load the questionnaire. Please try again.', saveError: 'Your questionnaire wasn’t sent. Your answers are still here; please try again.', sessionError: 'Your session has ended. Sign in again to send your answers.', retry: 'Try again', home: 'Back to home',
     signIn: 'Make it personal', signInHint: 'Sign in to connect your answers to your account and share them with the GHRS team.', signInButton: 'Sign in to continue',
@@ -29,7 +38,7 @@ export const copy = {
     nickname: 'Ник', fullName: 'ФИО', phone: 'Телефон', email: 'Контактная почта', gender: 'Пол', age: 'Возраст', weight: 'Вес (кг)', optional: 'Необязательно',
     catalogUnavailable: 'Разделы каталога временно недоступны. Вы можете заполнить анкету ниже.',
     second: 'Ваша отправная точка', secondHint: 'Выберите свой уровень подготовки и интересующее направление. Необязательные вопросы можно пропустить.', level: 'Уровень подготовки', beginner: 'Начальный', beginnerHint: 'Начинаете или возвращаетесь к занятиям', intermediate: 'Средний', intermediateHint: 'Есть опыт регулярных тренировок', advanced: 'Продвинутый', advancedHint: 'Большой опыт тренировок',
-    condition: 'Заболевание или направление', select: 'Выберите вариант', catalog: 'Доступные разделы каталога', otherDetails: 'Расскажите подробнее', additionalInfo: 'Дополнительная информация', additionalPlaceholder: 'Что ещё вы хотели бы сообщить команде GHRS…', otherPlaceholder: 'Опишите, с чем вам нужна помощь…', conditionHint: 'Выберите раздел каталога, чтобы посмотреть комплексы, или заболевание для рассмотрения нашей командой.',
+    condition: 'Заболевание или направление', select: 'Выберите вариант', otherDetails: 'Расскажите подробнее', additionalInfo: 'Дополнительная информация', additionalPlaceholder: 'Что ещё вы хотели бы сообщить команде GHRS…', otherPlaceholder: 'Опишите, с чем вам нужна помощь…', conditionHint: 'Выберите заболевание или направление, которое вас интересует.',
     third: 'Всё верно?', thirdHint: 'Анкета будет доступна команде GHRS. Дата заполнения проставляется автоматически.', consent: 'Я соглашаюсь передать ответы, включая информацию о здоровье, команде GHRS для работы с моим запросом.',
     back: 'Назад', next: 'Продолжить', submit: 'Отправить анкету', sending: 'Отправка…', loading: 'Загружаем вашу анкету…', loadError: 'Не удалось загрузить анкету. Попробуйте ещё раз.', saveError: 'Анкета не отправлена. Ваши ответы сохранены в форме — попробуйте ещё раз.', sessionError: 'Сеанс завершён. Войдите снова, чтобы отправить ответы.', retry: 'Попробовать снова', home: 'На главную',
     signIn: 'Начнём с вашего аккаунта', signInHint: 'Войдите, чтобы связать ответы с вашим аккаунтом и передать их команде GHRS.', signInButton: 'Войти и продолжить',
@@ -38,3 +47,9 @@ export const copy = {
     female: 'Женский', male: 'Мужской', other: 'Другое', prefer: 'Предпочитаю не указывать', notProvided: 'Не указано', date: 'Дата заполнения', automatic: 'Проставляется автоматически при отправке',
   },
 };
+
+export const copy: Record<Locale, typeof baseCopy.en> = { ...baseCopy, ar: ar.copy, de: de.copy, fr: fr.copy, he: he.copy, it: it.copy, ka: ka.copy, uk: uk.copy };
+const conditionLabels: Partial<Record<Locale, Record<string, string>>> = { ar: ar.labels, de: de.labels, fr: fr.labels, he: he.labels, it: it.labels, ka: ka.labels, uk: uk.labels };
+export function localizedCondition(id: string, label: Label, locale: Locale) {
+  return conditionLabels[locale]?.[id] ?? (locale === "ru" || locale === "ka" ? label[locale] || label.en : label.en);
+}

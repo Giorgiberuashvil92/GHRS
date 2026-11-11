@@ -1,8 +1,10 @@
 import { Transform } from 'class-transformer';
 import { IsBoolean, IsEmail, IsIn, IsNumber, IsOptional, IsString, Matches, Max, MaxLength, Min, MinLength } from 'class-validator';
 const trim = ({ value }: { value: unknown }) => typeof value === 'string' ? value.trim() : value;
+const questionnaireLocales = ['ar', 'de', 'en', 'fr', 'he', 'it', 'ka', 'ru', 'uk'] as const;
+
 export class SubmitQuestionnaireDto {
-  @IsIn(['en', 'ru']) locale: 'en' | 'ru';
+  @IsIn(questionnaireLocales) locale: typeof questionnaireLocales[number];
   @IsIn(['rehabilitation', 'professional']) purpose: 'rehabilitation' | 'professional';
   @Transform(trim) @IsString() @MinLength(1) @MaxLength(80) nickname: string;
   @Transform(trim) @IsOptional() @IsString() @MaxLength(200) fullName?: string;

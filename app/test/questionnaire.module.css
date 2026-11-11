@@ -3,8 +3,7 @@
 .top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 28px; gap: 16px; }
 .home { font-size: 14px; color: #766582; display: inline-flex; align-items: center; gap: 9px; }
 .languages { display: flex; padding: 4px; border: 1px solid #e9e0f0; border-radius: 30px; background: white; }
-.languages button { border-radius: 24px; padding: 7px 13px; font-size: 12px; font-weight: 700; }
-.languages button[aria-pressed=true] { background: #3d334a; color: white; }
+.languages select { border-radius: 24px; padding: 7px 13px; font-size: 12px; font-weight: 700; color: #3d334a; }
 .layout { display: grid; grid-template-columns: 340px minmax(0,1fr); gap: 30px; align-items: start; }
 .aside { background: #453452; border-radius: 28px; padding: 36px 30px; color: white; overflow: hidden; position: sticky; top: 24px; }
 .eyebrow { letter-spacing: .15em; font-size: 11px; font-weight: 700; color: #dfcaf3; }
@@ -56,14 +55,15 @@
 .empty .primary { margin-top: 28px; }
 .successIcon { width: 64px; height: 64px; display: grid; place-items: center; background: #ede3f6; border-radius: 50%; margin: 0 auto 25px; color: #735188; font-size: 28px; }
 .links { display: grid; gap: 12px; margin: 28px 0; }
-.resultLink { display: flex; justify-content: space-between; align-items: center; gap: 16px; text-align: left; border: 1px solid #dcccE8; border-radius: 15px; padding: 20px; background: #faf5ff; }
+.resultLink { display: flex; justify-content: space-between; align-items: center; gap: 16px; text-align: start; border: 1px solid #dcccE8; border-radius: 15px; padding: 20px; background: #faf5ff; }
 .resultLink strong { font-size: 16px; display: block; }
 .resultLink small { display: block; font-size: 12px; color: #8b7998; margin-top: 5px; }
-.page button:focus-visible, .page a:focus-visible { outline: 2px solid #9468b6; outline-offset: 4px; }
+.page[dir="rtl"] .directionalArrow { transform: scaleX(-1); }
+.page button:focus-visible, .page a:focus-visible, .page select:focus-visible { outline: 2px solid #9468b6; outline-offset: 4px; }
 @media(max-width: 1000px) { .layout { grid-template-columns: 280px minmax(0,1fr); gap: 20px; } .aside { padding: 28px 22px; } .aside h1 { font-size: 28px; } .card { padding: 28px; } .levelGrid { grid-template-columns: 1fr; } }
 @media(max-width: 720px) { .container { padding: 22px 16px 50px; } .layout { grid-template-columns: 1fr; } .aside { position: static; padding: 25px; border-radius: 22px; } .aside h1 { font-size: 28px; margin: 14px 0; } .intro { font-size: 14px; } .time { margin-top: 16px; } .steps { flex-direction: row; gap: 8px; justify-content: space-between; margin-top: 26px; } .steps li { flex-direction: column; gap: 8px; text-align: center; flex: 1; } .steps strong { font-size: 11px; } .steps small { display: none; } .card { padding: 24px 20px; border-radius: 22px; min-height: 0; } .card h2 { font-size: 25px; } .fields, .choiceGrid { grid-template-columns: 1fr; } .summary { gap: 0 16px; } .primary { padding: 13px 17px; } }
 
 .brand { max-width: 1192px; margin: auto; padding: 22px 24px; display: flex; align-items: center; justify-content: space-between; gap: 20px; border-bottom: 1px solid #e9e0f0; }
 .brand a { display: block; background: #493556; padding: 10px 16px; border-radius: 15px; }
 .brand img { width: 82px; height: auto; }
-.brand span { font-size: 10px; letter-spacing: .15em; color: #8b7998; text-align: right; max-width: 190px; line-height: 1.6; }
+.brand span { font-size: 10px; letter-spacing: .15em; color: #8b7998; text-align: end; max-width: 190px; line-height: 1.6; }

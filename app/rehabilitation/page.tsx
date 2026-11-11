@@ -53,7 +53,7 @@ const Rehabilitation = () => {
               href="/allComplex"
               className="text-white bg-[#3D334A] rounded-[20px] w-[246px] h-[222px] flex items-start justify-start p-8 transition-transform duration-300 hover:scale-105 cursor-pointer font-bold uppercase text-lg shadow-2xl leading-tight"
             >
-              {t("rehabilitation.all_exercises") || "все Упражнения"}
+              {t("rehabilitation.all_exercises") || "All exercises"}
             </a>
           </div>
         }

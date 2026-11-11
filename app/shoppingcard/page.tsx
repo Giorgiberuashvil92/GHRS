@@ -73,8 +73,8 @@ const ShoppingCard = () => {
         const parsedCart = JSON.parse(savedCart);
         const transformedCart = parsedCart.map((item: ParsedCartItem) => ({
           id: item.id,
-          title: item.name?.ru || item.title || "Unknown",
-          desc: item.description?.ru || item.desc || "No description",
+          title: item.name?.[locale as keyof NonNullable<ParsedCartItem["name"]>] || item.name?.en || item.title || "Unknown",
+          desc: item.description?.[locale as keyof NonNullable<ParsedCartItem["description"]>] || item.description?.en || item.desc || "No description",
           img: item.image || item.img || "",
           price: item.price || 0,
           subscription: parseInt(item.period || "1") || 1,
@@ -87,7 +87,7 @@ const ShoppingCard = () => {
     } catch (error) {
       console.error("❌ Error loading cart:", error);
     }
-  }, []);
+  }, [locale]);
 
   const handleRemove = (id: string) => {
     setCart((prev) => {

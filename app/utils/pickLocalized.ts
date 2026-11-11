@@ -1,25 +1,15 @@
-import { type Locale, getContentLocale } from "../../lib/locales";
+import { type Locale } from "../../lib/locales";
 export type ContentLocale = Locale;
 
 /**
  * მრავალენოვანი ველის არჩევა არჩეული ენის მიხედვით + ლოგიკური fallback
- * (ka: ka → en → ru; en: en → ru → ka; ru: ru → en → ka)
+ * (არჩეული ენა → ინგლისური)
  */
 export function pickLocalized(
-  obj: { en?: string; ru?: string; ka?: string } | undefined | null,
+  obj: Partial<Record<Locale, string>> | undefined | null,
   loc: ContentLocale
 ): string {
   if (!obj) return "";
-  loc = getContentLocale(loc);
-  const order: ("ka" | "en" | "ru")[] =
-    loc === "en"
-      ? ["en", "ru", "ka"]
-      : loc === "ru"
-        ? ["ru", "en", "ka"]
-        : ["ka", "en", "ru"];
-  for (const k of order) {
-    const v = obj[k];
-    if (v != null && String(v).trim() !== "") return String(v);
-  }
-  return "";
+  const selected = obj[loc];
+  return selected?.trim() ? selected : obj.en?.trim() ? obj.en : "";
 }

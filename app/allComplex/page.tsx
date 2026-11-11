@@ -44,9 +44,7 @@ const AllComplex = () => {
     if (!field) return "";
     return (
       field[locale as keyof typeof field] ||
-      field.ru ||
       field.en ||
-      field.ka ||
       ""
     );
   };
@@ -144,7 +142,7 @@ const AllComplex = () => {
   //       <div className="text-center">
   //         <div className="animate-spin rounded-full h-16 w-16 border-4 border-purple-600 border-t-transparent mb-4 mx-auto"></div>
   //         <h2 className="text-2xl font-semibold text-gray-700">
-  //           {loadingText[locale as keyof typeof loadingText] || loadingText.ru}
+  //           {loadingText[locale as keyof typeof loadingText] || loadingText.en}
   //         </h2>
   //       </div>
   //     </div>
@@ -162,7 +160,7 @@ const AllComplex = () => {
 
       <h1 className="font-bowler text-[32px] md:text-[64px] md:px-10 px-5 pt-8 md:pt-10 leading-[120%] tracking-[-3%] text-[#3D334A]">
         {pageTexts.title[locale as keyof typeof pageTexts.title] ||
-          pageTexts.title.ru}
+          pageTexts.title.en}
       </h1>
 
       <div className="bg-white md:mx-5 md:my-10 md:rounded-[30px]">
@@ -176,7 +174,7 @@ const AllComplex = () => {
           <CiSearch color="black" size={25} />
           <input
             type="text"
-            placeholder={pageTexts.searchPlaceholder[locale as keyof typeof pageTexts.searchPlaceholder] || pageTexts.searchPlaceholder.ru}
+            placeholder={pageTexts.searchPlaceholder[locale as keyof typeof pageTexts.searchPlaceholder] || pageTexts.searchPlaceholder.en}
             className="w-full font-bowler bg-white text-[#846FA0] text-[16px] md:text-[19px] font-medium ml-2 md:ml-4 outline-none"
           />
         </div>
@@ -261,7 +259,7 @@ const AllComplex = () => {
         title={
           pageTexts.sections.popularComplexes[
             locale as keyof typeof pageTexts.sections.popularComplexes
-          ] || pageTexts.sections.popularComplexes.ru
+          ] || pageTexts.sections.popularComplexes.en
         }
         sets={sets.slice(0, 8)}
         fromMain={true}
@@ -354,14 +352,14 @@ const AllComplex = () => {
         })} */}
       {/* Works components with real data */}
       {/* <Works
-        title={pageTexts.sections.popularSections[locale as keyof typeof pageTexts.sections.popularSections] || pageTexts.sections.popularSections.ru}
+        title={pageTexts.sections.popularSections[locale as keyof typeof pageTexts.sections.popularSections] || pageTexts.sections.popularSections.en}
         sets={popularSets}
         fromMain={true} customMargin={""} customBorderRadius={""} seeAll={false} scrollable={false}      />
 
       
 
       <Works
-        title={pageTexts.sections.orthopedics[locale as keyof typeof pageTexts.sections.orthopedics] || pageTexts.sections.orthopedics.ru}
+        title={pageTexts.sections.orthopedics[locale as keyof typeof pageTexts.sections.orthopedics] || pageTexts.sections.orthopedics.en}
         sets={orthopedicSets.length > 0 ? orthopedicSets : sets.slice(0, 4)}
         fromMain={true} customMargin={""} customBorderRadius={""} seeAll={false} scrollable={false}      /> */}
 

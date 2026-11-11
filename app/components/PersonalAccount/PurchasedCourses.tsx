@@ -59,7 +59,6 @@ export default function PurchasedCourses() {
 
   // Get text based on current locale with fallback
   const getText = (textObj: { en: string; ru: string }) => {
-    if (locale === "ka") return textObj.ru; // Use Russian as fallback for Georgian
     return textObj[locale as "en" | "ru"] || textObj.en;
   };
 

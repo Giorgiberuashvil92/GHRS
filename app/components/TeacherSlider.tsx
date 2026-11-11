@@ -44,7 +44,7 @@ const TeacherSlider: React.FC<TeacherSliderProps> = ({ teachers = [] }) => {
     if (!content) return "";
     const key = locale as keyof typeof content;
     // პირველად მიმდინარე ენა, შემდეგ en, ბოლოს ru (არ ვაბრუნებთ ყოველთვის რუსულს)
-    return (content[key] || content.en || content.ru || "").trim() || "";
+    return (content[key] || content.en || "").trim() || "";
   };
   const [currentIndex, setCurrentIndex] = useState(0);
   const [allTeachers, setAllTeachers] = useState<Teacher[]>([]);

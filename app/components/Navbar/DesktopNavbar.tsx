@@ -112,7 +112,7 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
     Boolean(profNav.parent?.href && pathname === profNav.parent.href);
 
   return (
-    <header className="sticky font-bowler top-0 left-0 right-0 z-50 w-full md:flex hidden justify-between px-10 py-5 transition-all duration-300">
+    <header dir="ltr" className="sticky font-bowler top-0 left-0 right-0 z-50 w-full md:flex hidden justify-between px-10 py-5 transition-all duration-300">
       <div
         className={`w-[780px] flex flex-col rounded-[24px] border border-white/10 relative overflow-hidden ${getBackgroundStyle()}`}
       >
@@ -130,20 +130,18 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
           )}
         </Link>
         <ul
-          className={`flex ${
+          className={`flex flex-wrap items-center gap-x-3 gap-y-2 ms-4 ${
             logoVariant === "professional"
-              ? "ml-6"
+              ? "xl:ms-6"
               : logoVariant === "rehabilitation" || logoVariant === "blog"
-                ? "ml-10"
-                : "ml-[89px]"
-          } mr-[73px] justify-between w-full min-w-0`}
+                ? "xl:ms-10"
+                : "xl:ms-[89px]"
+          } xl:me-[73px] justify-between w-full min-w-0`}
         >
           {effectiveMenuItems.map(({ id, name, route }) => (
-            <Link key={id} href={route}>
-              <li className="text-white font-bold text-[18px] hover:text-gray-950 duration-700 leading-[100%] tracking-[-1%]">
-                {name}
-              </li>
-            </Link>
+            <li key={id} className="max-w-full text-white font-bold text-[16px] xl:text-[18px] hover:text-gray-950 duration-700 leading-[100%] tracking-[-1%]">
+              <Link href={route}>{name}</Link>
+            </li>
           ))}
         </ul>
         </div>

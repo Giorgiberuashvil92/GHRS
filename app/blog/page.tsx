@@ -8,6 +8,8 @@ import MobileNavbar from "../components/Navbar/MobileNavbar";
 import { Footer } from "../components/Footer";
 import SubHeader from "../components/Header/SubHeader";
 // import { useBlogs, useFeaturedBlogs, usePopularBlogs } from "../hooks/useBlogs";
+import { useCategories } from "../hooks/useCategories";
+import { useArticleText } from "../hooks/useArticleText";
 import { useArticles } from "../hooks/useArticles";
 import { useI18n } from "../context/I18nContext";
 import type { Article } from "../api/articles";
@@ -24,7 +26,8 @@ interface BlogCardProps {
 }
 
 const BlogCard = ({ article }: BlogCardProps) => {
-  const { t, locale } = useI18n();
+  const { locale } = useI18n();
+  const articleText = useArticleText();
 
   if (!article) {
     return (
@@ -41,7 +44,7 @@ const BlogCard = ({ article }: BlogCardProps) => {
   }
 
   const getLocalizedText = (field: { en: string; ru: string; ka?: string }) => {
-    return field[locale as keyof typeof field] || field.ru || field.en || "";
+    return field[locale as keyof typeof field] || field.en || "";
   };
 
   // Get category name
@@ -76,10 +79,10 @@ const BlogCard = ({ article }: BlogCardProps) => {
       <div className="bg-white rounded-[20px] p-5 flex flex-col justify-between h-full shadow-sm hover:shadow-lg transition-shadow duration-300 cursor-pointer">
         <div className="flex flex-col gap-3">
           <h3 className="font-bowler text-[#1A1A1A] text-xl font-semibold leading-tight line-clamp-2">
-            {clampText(getLocalizedText(article.title), 90)}
+            {clampText(articleText(article, "title"), 90)}
           </h3>
           <p className="font-pt text-[#1A1A1A]/70 text-sm line-clamp-3">
-            {clampText(getLocalizedText(article.excerpt), 180)}
+            {clampText(articleText(article, "excerpt"), 180)}
           </p>
         </div>
 
@@ -138,7 +141,8 @@ interface BigBlogCardProps {
 }
 
 const BigBlogCard = ({ article }: BigBlogCardProps) => {
-  const { t, locale } = useI18n();
+  const { locale } = useI18n();
+  const articleText = useArticleText();
 
   if (!article) {
     return (
@@ -154,7 +158,7 @@ const BigBlogCard = ({ article }: BigBlogCardProps) => {
   }
 
   const getLocalizedText = (field: { en: string; ru: string; ka?: string }) => {
-    return field[locale as keyof typeof field] || field.ru || field.en || "";
+    return field[locale as keyof typeof field] || field.en || "";
   };
 
   // Get category name
@@ -191,7 +195,7 @@ const BigBlogCard = ({ article }: BigBlogCardProps) => {
         <div className="absolute top-0 left-0 w-full h-[45%] overflow-hidden">
           <Image
             src={article.featuredImages?.[0] || "/assets/images/blogbg.jpg"}
-            alt={getLocalizedText(article.title)}
+            alt={articleText(article, "title")}
             fill
             className="object-cover opacity-80"
           />
@@ -244,10 +248,10 @@ const BigBlogCard = ({ article }: BigBlogCardProps) => {
             </span>
           )}
           <h2 className="font-bowler text-[#1A1A1A] text-lg md:text-xl font-semibold leading-tight line-clamp-2">
-            {clampText(getLocalizedText(article.title), 110)}
+            {clampText(articleText(article, "title"), 110)}
           </h2>
           <p className="font-pt text-[#1A1A1A]/80 text-sm line-clamp-3">
-            {clampText(getLocalizedText(article.excerpt).slice(0, 100), 100)}
+            {clampText(articleText(article, "excerpt").slice(0, 100), 100)}
           </p>
           
         </div>
@@ -287,6 +291,12 @@ const BlogRoute = () => {
   const { articles: allArticles } = useArticles({ isPublished: true, limit: 8 });
   const { articles: featuredArticles } = useArticles({ isFeatured: true, isPublished: true, limit: 4 });
   const { articles: popularArticles } = useArticles({ isPublished: true, limit: 6 });
+  const { categories } = useCategories();
+  const latestArticle = allArticles[0];
+  const categoryId = Array.isArray(latestArticle?.categoryId)
+    ? latestArticle.categoryId[0]
+    : latestArticle?.categoryId;
+  const latestCategory = categories.find(({ _id }) => _id === categoryId);
   const menuItems = getDefaultMenuItems(t);
   
   // TODO: Get actual total count from API
@@ -301,7 +311,7 @@ const BlogRoute = () => {
       />
       <MobileNavbar />
       {/* <Header variant="blog" /> */}
-      <SubHeader />
+      <SubHeader article={latestArticle} categoryName={latestCategory?.name} />
 
       {/* Featured Blogs Section */}
       <BlogHeader BlogCategory={t("navigation.blog")} totalCount={totalArticles} />

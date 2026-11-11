@@ -110,9 +110,7 @@ const Works: React.FC<WorksProps> = ({
   ): string => {
     return (
       localizedString[locale as keyof LocalizedString] ||
-      localizedString.ru ||
       localizedString.en ||
-      localizedString.ka ||
       ""
     );
   };

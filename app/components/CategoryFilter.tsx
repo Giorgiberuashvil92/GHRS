@@ -24,6 +24,8 @@ interface Category {
 }
 
 interface CategoryFilterProps {
+  selectedCategoryId?: string | null;
+  selectedSubcategoryId?: string | null;
   onCategoryChange: (categoryId: string | null) => void;
   onSubcategoryChange: (subcategoryId: string | null) => void;
   onSortChange?: (sortBy: string) => void;
@@ -45,6 +47,8 @@ const getLocalizedCategoryName = (
 };
 
 export default function CategoryFilter({
+  selectedCategoryId,
+  selectedSubcategoryId,
   onCategoryChange,
   onSubcategoryChange,
   onSortChange,
@@ -55,11 +59,17 @@ export default function CategoryFilter({
   const [allCategories, setAllCategories] = useState<Category[]>([]);
   const { t, locale } = useI18n();
   const [loading, setLoading] = useState(true);
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
-  const [selectedSubcategory, setSelectedSubcategory] = useState<Category | null>(null);
+  const [localCategory, setSelectedCategory] = useState<Category | null>(null);
+  const [localSubcategory, setSelectedSubcategory] = useState<Category | null>(null);
   const [sort, setSort] = useState(t("sort.popularity"));
   const displaySort = sortValue ?? sort;
 
+  const selectedCategory = selectedCategoryId === undefined
+    ? localCategory
+    : allCategories.find(category => category._id === selectedCategoryId);
+  const selectedSubcategory = selectedSubcategoryId === undefined
+    ? localSubcategory
+    : allCategories.find(category => category._id === selectedSubcategoryId);
   const mainCategories = allCategories.filter((cat) => !cat.parentId);
   const subcategories = selectedCategory
     ? allCategories.filter((cat) => cat.parentId === selectedCategory._id)
@@ -103,7 +113,7 @@ export default function CategoryFilter({
     );
   }
 
-  const allCategoriesLabel = t("all_categories") || "ВСЕ КАТЕГОРИИ";
+  const allCategoriesLabel = t("all_categories") || "ALL CATEGORIES";
 
   return (
     <div className="bg-white p-6 md:p-10 mb-6 md:mb-10 rounded-2xl text-[#1e1b29] text-sm font-medium">
@@ -189,7 +199,7 @@ export default function CategoryFilter({
       {/* სორტირება */}
       <div className="flex flex-wrap items-center gap-2 mt-6 md:mt-10">
         <span className="text-[#846FA0] text-[14px] md:text-[19px] font-medium">
-          {t("sort.label") || "Сортировать:"}
+          {t("sort.label") || "Sort by:"}
         </span>
         <select
           value={sort}

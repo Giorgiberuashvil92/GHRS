@@ -148,7 +148,7 @@ export default function InstructorFilter({
       {/* სორტირება */}
       <div className="flex flex-wrap items-center gap-2 mt-6 md:mt-10">
         <span className="text-[#846FA0] text-[14px] md:text-[19px] font-medium">
-          {t("sort.label") || "Сортировать:"}
+          {t("sort.label") || "Sort by:"}
         </span>
         <select
           value={displaySort}

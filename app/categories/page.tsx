@@ -24,7 +24,7 @@ export default function CategoriesPage() {
   const getLocalized = (value: any): string => {
     if (typeof value === "string") return value;
     if (value && typeof value === "object" && locale in value) {
-      return value[locale] || value.ru || value.en || value.ka || "";
+      return value[locale] || value.en || "";
     }
     return "";
   };
@@ -135,7 +135,7 @@ export default function CategoriesPage() {
   const exercisesCount = sumSetsExerciseCount(sets, locale);
   
   const mainCategory = categories.find((cat: any) => !cat.parentId);
-  const categoryTitle = mainCategory ? getLocalized(mainCategory.name) : (t("common.categories") || "Категории");
+  const categoryTitle = mainCategory ? getLocalized(mainCategory.name) : (t("common.categories") || "Categories");
 
   return (
     <div className="">
@@ -204,7 +204,7 @@ export default function CategoriesPage() {
         
         {/* Комплексы (Sets) */}
         <WorksSlider
-          title={t("common.complexes") || "Комплексы"}
+          title={t("common.complexes") || "Complexes"}
           works={transformedSets}
           fromMain={false}
           seeAll={true}
@@ -226,7 +226,7 @@ export default function CategoriesPage() {
         </div>
         <div className="md:mb-10">
           {" "}
-          <ReviewSlider title={t("common.reviews_title") || "ОТЗЫВЫ О НАС"} />
+          <ReviewSlider title={t("common.reviews_title") || "REVIEWS"} />
         </div>
         <div
           className="md:mb-10

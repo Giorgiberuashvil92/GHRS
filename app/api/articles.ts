@@ -1,22 +1,13 @@
+import type { Locale } from "../../lib/locales";
 import { API_CONFIG, apiRequest } from '../config/api';
+
+export type ArticleText = Record<"ka" | "en" | "ru", string> & Partial<Record<Locale, string>>;
 
 export interface Article {
   _id: string;
-  title: {
-    ka: string;
-    en: string;
-    ru: string;
-  };
-  excerpt: {
-    ka: string;
-    en: string;
-    ru: string;
-  };
-  content: {
-    ka: string;
-    en: string;
-    ru: string;
-  };
+  title: ArticleText;
+  excerpt: ArticleText;
+  content: ArticleText;
   blogId: string;
   categoryId: string | string[];
   categories?: Array<{
@@ -56,11 +47,7 @@ export interface Article {
   readTime: string;
   commentsCount: number;
   tableOfContents: {
-    title: {
-      ka: string;
-      en: string;
-      ru: string;
-    };
+    title: ArticleText;
     anchor: string;
     level: number;
   }[];

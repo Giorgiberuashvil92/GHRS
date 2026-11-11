@@ -1,37 +1,66 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
+import { extractImageUrl } from "../../utils/extractImageUrl";
+import { useArticleText } from "../../hooks/useArticleText";
+import { pickLocalized } from "../../utils/pickLocalized";
 import { CiBookmark } from "react-icons/ci";
 import { RiShareForwardLine } from "react-icons/ri";
 import { useI18n } from "../../context/I18nContext";
 
-function SubHeader({ ShowText = true, ShowIcons = true }) {
-  const { t } = useI18n();
-  
+/**
+ * @param {{ ShowText?: boolean, ShowIcons?: boolean, categoryName?: { en?: string, ru?: string, ka?: string }, article?: import("../../api/articles").Article }} props
+ */
+function SubHeader({ ShowText = true, ShowIcons = true, article, categoryName }) {
+  const { t, locale } = useI18n();
+  const articleText = useArticleText();
+  const title = article ? articleText(article, "title") : t("blog.banner.title");
+  const description = article ? articleText(article, "excerpt") : t("blog.banner.description");
+  const categoryRef = Array.isArray(article?.categoryId) ? article.categoryId[0] : article?.categoryId;
+  const categoryData = article?.categories?.[0] ?? article?.category ??
+    (typeof categoryRef === "object" ? categoryRef : undefined);
+  const categoryId = categoryData?._id ?? (typeof categoryRef === "string" ? categoryRef : undefined);
+  const category = article
+    ? pickLocalized(categoryData?.name ?? categoryName, locale) || t("navigation.blog")
+    : t("blog.banner.category");
+  const categoryBadgeClass = "mt-3 inline-block rounded-[8px] bg-[#E9DFF6] p-2 font-bowler uppercase text-[#3D334A]";
+
   return (
     <div>
       <div className="rounded-[20px] px-5 relative mx-6">
         <Image
           width={1020}
           height={718}
-          src={"/assets/images/blogbg.jpg"}
-          alt="blogBg"
+          src={extractImageUrl(article?.featuredImages?.[0]) || "/assets/images/blogbg.jpg"}
+          alt=""
           className="md:h-[718px] md:w-full h-[317px] w-full object-cover object-center rounded-[20px]"
           priority
         />
         {ShowText && (
-          <div className="pt-[27px] md:pl-[32px] pl-4 pr-[20px] md:pb-[20px] pb-3 md:bg-[#3D334A4D] md:backdrop-blur-sm absolute bottom-0 md:bottom-5 md:ml-5 rounded-[20px]">
-            <h2 className="hidden md:flex text-white text-[40px] leading-[120%] tracking-[-3%] md:w-[945px] w-[327px]">
-              {t("blog.banner.title")}
+          <div className="absolute inset-x-5 bottom-0 rounded-[20px] bg-[#3D334A]/70 p-4 text-white md:bottom-5 md:inset-x-10 md:max-w-[945px] md:p-8">
+            <h2 className="font-bowler text-[18px] leading-tight md:text-[40px]">
+              {article ? (
+                <Link href={`/article/${article._id}`} className="line-clamp-3 hover:underline">
+                  {title}
+                </Link>
+              ) : (
+                <>
+                  <span className="hidden md:inline">{title}</span>
+                  <span className="md:hidden">{t("blog.banner.mobile_title")}</span>
+                </>
+              )}
             </h2>
-            <h2 className="flex md:hidden font-bowler text-white text-[18px] leading-[120%] tracking-[-3%] mb-2.5">
-              {t("blog.banner.mobile_title")}
-            </h2>
-            <p className="mt-[66px] mb-[28px] hidden md:flex font-bold leading-[120%] w-[650px]">
-              {t("blog.banner.description")}
-            </p>
-            <span className="text-[#3D334A] p-2 rounded-[8px] bg-[#E9DFF6] text-[18px] leading-[90%] uppercase font-bowler">
-              {t("blog.banner.category")}
-            </span>
+            {description && <p className="mt-3 line-clamp-2 font-pt md:mt-5 md:line-clamp-3">{description}</p>}
+            {category && (article ? (
+              <Link
+                href={categoryId ? `/categories/${categoryId}` : "/categories"}
+                className={`${categoryBadgeClass} hover:underline`}
+              >
+                {category}
+              </Link>
+            ) : (
+              <span className={categoryBadgeClass}>{category}</span>
+            ))}
           </div>
         )}
         {ShowIcons && (

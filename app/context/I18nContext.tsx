@@ -59,7 +59,12 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
     setRestored(true);
   }, []);
 
-  const [translationData, setTranslationData] = useState<Record<string, unknown>>({});
+  const [translations, setTranslations] = useState<{
+    locale: Locale;
+    english: Record<string, unknown>;
+    localized: Record<string, unknown>;
+  }>();
+  const translationData = translations?.locale === locale ? translations.localized : translations?.english ?? {};
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -69,7 +74,15 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({ children }) => {
     loadTranslations("en").then(async fallback => [
       fallback, await loadTranslations(locale).catch(() => fallback),
     ])
-      .then(([fallback, messages]) => { if (!cancelled) setTranslationData(mergeMessages(mergeMessages(fallback, messages), { consultation: consultationMessages[locale] })); })
+      .then(([fallback, messages]) => {
+        if (cancelled) return;
+        const english = mergeMessages(fallback, { consultation: consultationMessages.en });
+        setTranslations({
+          locale,
+          english,
+          localized: mergeMessages(mergeMessages(english, messages), { consultation: consultationMessages[locale] }),
+        });
+      })
       .catch(error => console.error('Failed to load translations:', error))
       .finally(() => { if (!cancelled) setIsLoading(false); });
     return () => { cancelled = true; };

@@ -39,6 +39,11 @@ const AllCourse = () => {
   const [selectedSubcategoryId, setSelectedSubcategoryId] = useState<
     string | null
   >(null);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    setSelectedCategoryId(params.get("categoryId"));
+    setSelectedSubcategoryId(params.get("subcategoryId"));
+  }, []);
   const { t, locale } = useI18n();
   const menuItems = useMemo(() => getDefaultMenuItems(t), [t, locale]);
   type SortKey = "popularity" | "newest" | "priceAsc" | "priceDesc";
@@ -260,6 +265,8 @@ const AllCourse = () => {
           />
         </div>
         <CategoryFilter
+          selectedCategoryId={selectedCategoryId}
+          selectedSubcategoryId={selectedSubcategoryId}
           onCategoryChange={handleCategoryChange}
           onSubcategoryChange={handleSubcategoryChange}
           onSortChange={handleSortChange}

@@ -3,6 +3,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useI18n } from "../context/I18nContext";
 import { API_CONFIG } from "../config/api";
 
 interface Subcategory {
@@ -32,6 +33,7 @@ const SubcategoryDropdown = ({
   categoryId,
 }: SubcategoryDropdownProps) => {
   const router = useRouter();
+  const { locale } = useI18n();
   const [subcategories, setSubcategories] = useState<Subcategory[]>([]);
 
   useEffect(() => {
@@ -56,31 +58,18 @@ const SubcategoryDropdown = ({
   if (!isOpen || subcategories.length === 0) return null;
 
   // ვიღებთ ენის პარამეტრს
-  const getLocale = () => {
-    if (typeof window !== "undefined") {
-      const storedLocale = localStorage.getItem("locale");
-      return storedLocale && ["ka", "ru", "en"].includes(storedLocale)
-        ? storedLocale
-        : "ru";
-    }
-    return "ru";
-  };
-
   const getLocalizedText = (
     field: { ka: string; en: string; ru: string } | undefined,
-    locale: string = "ru"
+    locale: string = "en"
   ): string => {
     if (!field) return "";
     return (
       field[locale as keyof typeof field] ||
-      field.ru ||
       field.en ||
-      field.ka ||
       ""
     );
   };
 
-  const locale = getLocale();
 
   return (
     <div className="sticky top-[10px] left-[2px] z-[99999]  bg-white border border-[#E9DFF6] rounded-[20px] shadow-lg dropdown-content animate-in fade-in-0 zoom-in-95 duration-200 mt-2 w-[240px] md:w-full">

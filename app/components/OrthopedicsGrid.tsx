@@ -20,9 +20,7 @@ const OrthopedicsGrid: React.FC<OrthopedicsGridProps> = ({ sets, title }) => {
     if (!field) return "";
     return (
       field[locale as keyof typeof field] ||
-      field.ru ||
       field.en ||
-      field.ka ||
       ""
     );
   };
@@ -106,7 +104,7 @@ const OrthopedicsGrid: React.FC<OrthopedicsGridProps> = ({ sets, title }) => {
             onClick={() => setVisibleCount((prev) => prev + 8)}
             className="bg-[#D4BAFC] hover:bg-[#C4A6F1] text-white font-bowler text-[16px] md:text-[20px] uppercase px-16 md:px-24 py-3 md:py-4 rounded-[15px] transition-colors"
           >
-            {showMoreText[locale as keyof typeof showMoreText] || showMoreText.ru}
+            {showMoreText[locale as keyof typeof showMoreText] || showMoreText.en}
           </button>
         </div>
       )}

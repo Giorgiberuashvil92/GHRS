@@ -20,7 +20,7 @@ export class QuestionnaireController {
   submit(@Req() req: AuthRequest, @Body() answers: SubmitQuestionnaireDto) { return this.service.submit(req.user.userId, answers); }
   @Header('Cache-Control', 'no-store')
   @Get('admin')
-  list(@Query('search') search?: string, @Query('status') status?: string, @Query('page') page?: string) { return this.service.list(search, status, page); }
+  list(@Query('search') search?: string, @Query('status') status?: string, @Query('page') page?: string, @Query('purpose') purpose?: string) { return this.service.list(search, status, page, purpose); }
   @Header('Cache-Control', 'no-store')
   @Patch('admin/:id')
   review(@Param('id') id: string, @Body() body: ReviewDto) { return this.service.review(id, body.status, body.curatorNotes, 'Admin'); }

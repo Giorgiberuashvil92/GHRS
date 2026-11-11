@@ -1,4 +1,5 @@
 "use client";
+import { useArticleText } from "../hooks/useArticleText";
 import Image from "next/image";
 import { CiBookmark } from "react-icons/ci";
 import { IoIosShareAlt } from "react-icons/io";
@@ -43,11 +44,11 @@ interface OtherGridProps {
   currentPage: number;
   blogsPerPage: number;
   blogs: Blog[];
-  language: "ka" | "en" | "ru";
   showHeader?: boolean;
 }
 
-const OtherGrid: React.FC<OtherGridProps> = ({ blogs, language, showHeader = true }) => {
+const OtherGrid: React.FC<OtherGridProps> = ({ blogs, showHeader = true }) => {
+  const articleText = useArticleText();
   const otherBlogs = blogs.slice(1, 6);
 
   if (otherBlogs.length < 5) {
@@ -95,14 +96,14 @@ const OtherGrid: React.FC<OtherGridProps> = ({ blogs, language, showHeader = tru
                   src={orderedBlogs[0].imageUrl}
                   width={319}
                   height={247}
-                  alt={orderedBlogs[0].title[language]}
+                  alt={articleText(orderedBlogs[0], "title")}
                   className="rounded-[12px] object-cover w-full h-[247px] mb-3"
                 />
                 <p className="text-[#3D334A] font-pt tracking-[0%] mt-0 mb-1 text-[16px] md:text-[24px] leading-[120%] font-semibold px-3">
-                  {orderedBlogs[0].title[language]}
+                  {articleText(orderedBlogs[0], "title")}
                 </p>
                 <p className="mt-0 text-[#846FA0] font-pt font-medium leading-[120%] tracking-[0%] px-3">
-                  {orderedBlogs[0].excerpt[language]}
+                  {articleText(orderedBlogs[0], "excerpt")}
                 </p>
                 <div className="flex items-center gap-1.5 flex-col absolute top-2 right-2">
                   <div className="w-8 h-8 md:w-10 md:h-10 bg-[#F9F7FE]/30 rounded-[6px] flex justify-center items-center">
@@ -130,14 +131,14 @@ const OtherGrid: React.FC<OtherGridProps> = ({ blogs, language, showHeader = tru
                   src={orderedBlogs[1].imageUrl}
                   width={319}
                   height={247}
-                  alt={orderedBlogs[1].title[language]}
+                  alt={articleText(orderedBlogs[1], "title")}
                   className="rounded-[12px] object-cover w-full h-[247px] mb-3"
                 />
                 <p className="text-[#3D334A] tracking-[0%] font-pt mt-0 mb-2 text-[16px] md:text-[24px] leading-[120%] font-semibold px-3">
-                  {orderedBlogs[1].title[language]}
+                  {articleText(orderedBlogs[1], "title")}
                 </p>
                 <p className="mt-0 text-[#846FA0] font-medium font-pt leading-[120%] tracking-[0%] px-3">
-                  {orderedBlogs[1].excerpt[language]}
+                  {articleText(orderedBlogs[1], "excerpt")}
                 </p>
                 <div className="flex items-center gap-1.5 flex-col absolute top-2 right-2">
                   <div className="w-8 h-8 md:w-10 md:h-10 bg-[#F9F7FE]/30 rounded-[6px] flex justify-center items-center">
@@ -162,10 +163,10 @@ const OtherGrid: React.FC<OtherGridProps> = ({ blogs, language, showHeader = tru
             <Link href={`/blog/${orderedBlogs[2]._id}`}>
               <div className="min-h-full relative h-full flex flex-col justify-between bg-white rounded-[20px] p-5">
                 <p className="text-[#3D334A] tracking-[0%] font-pt mt-0 mb-2 text-[16px] md:text-[24px] leading-[120%] font-semibold px-3">
-                  {orderedBlogs[2].title[language]}
+                  {articleText(orderedBlogs[2], "title")}
                 </p>
                 <p className="mt-0 text-[#846FA0] font-pt font-medium leading-[120%] tracking-[0%] px-3">
-                  {orderedBlogs[2].excerpt[language]}
+                  {articleText(orderedBlogs[2], "excerpt")}
                 </p>
                 <div className="flex items-center gap-1.5 flex-col absolute top-2 right-2">
                   <div className="w-8 h-8 md:w-10 md:h-10 bg-[#F9F7FE]/30 rounded-[6px] flex justify-center items-center">
@@ -198,7 +199,7 @@ const OtherGrid: React.FC<OtherGridProps> = ({ blogs, language, showHeader = tru
             <Link href={`/blog/${orderedBlogs[3]._id}`}>
               <div className="min-h-full relative h-full flex flex-col justify-between bg-white rounded-[20px] p-5">
                 <p className="text-[#3D334A] font-pt tracking-[0%] mt-0 mb-2 text-[16px] md:text-[24px] leading-[120%] font-semibold px-3">
-                  {orderedBlogs[3].title[language]}
+                  {articleText(orderedBlogs[3], "title")}
                 </p>
 
                 <div className="flex items-center gap-1.5 flex-col absolute top-2 right-2">
@@ -232,7 +233,7 @@ const OtherGrid: React.FC<OtherGridProps> = ({ blogs, language, showHeader = tru
             <Link href={`/blog/${orderedBlogs[4]._id}`}>
               <div className="min-h-full relative h-full flex flex-col justify-between bg-white rounded-[20px] p-5">
                 <p className="text-[#3D334A] font-pt tracking-[0%] mt-0 mb-2 text-[16px] md:text-[24px] leading-[120%] font-semibold px-3">
-                  {orderedBlogs[4].title[language]}
+                  {articleText(orderedBlogs[4], "title")}
                 </p>
 
                 <div className="flex items-center gap-1.5 flex-col absolute top-2 right-2">
@@ -272,14 +273,14 @@ const OtherGrid: React.FC<OtherGridProps> = ({ blogs, language, showHeader = tru
                 src={blog.imageUrl}
                 width={300}
                 height={160}
-                alt={blog.title[language]}
+                alt={articleText(blog, "title")}
                 className="rounded-md object-cover w-full h-[120px] mb-3"
               />
               <p className="text-[#3D334A] tracking-[0%] md:mt-[10px] mt-0 md:mb-2 mb-2 text-[16px] md:text-[24px] leading-[120%] font-semibold px-3">
-                {blog.title[language]}
+                {articleText(blog, "title")}
               </p>
               <p className="mt-0 text-[#846FA0] font-medium leading-[120%] tracking-[0%] px-3">
-                {blog.excerpt[language]}
+                {articleText(blog, "excerpt")}
               </p>
               <div className="flex items-center gap-1.5 flex-col absolute top-2 right-2">
                 <div className="w-8 h-8 md:w-10 md:h-10 bg-[#F9F7FE]/30 rounded-[6px] flex justify-center items-center">

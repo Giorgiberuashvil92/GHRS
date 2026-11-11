@@ -26,9 +26,9 @@ const Achievements: React.FC<Props> = ({ alwaysShowAll }) => {
 
   // Get localized text from achievement
   const getLocalizedText = (textObj: { en: string; ru: string; ka: string }) => {
-    if (locale === 'ka') return textObj.ka || textObj.ru || textObj.en;
+    if (locale === 'ka') return textObj.ka || textObj.en;
     if (locale === 'ru') return textObj.ru || textObj.en;
-    return textObj.en || textObj.ru;
+    return textObj.en;
   };
 
   // Transform achievements for ChallengeCard

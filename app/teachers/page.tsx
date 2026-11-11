@@ -56,7 +56,6 @@ const BigTeacherCard = ({ instructor }: BigTeacherCardProps) => {
   const bioText =
     instructor.bio?.[locale as keyof typeof instructor.bio] ||
     instructor.bio?.en ||
-    instructor.bio?.ru ||
     "";
 
   const metaParts: string[] = [];

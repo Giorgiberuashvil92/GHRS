@@ -1,5 +1,6 @@
 // BlogSlider.tsx
 "use client";
+import { useArticleText } from "../hooks/useArticleText";
 import Image from "next/image";
 import { CiBookmark } from "react-icons/ci";
 import { IoIosShareAlt } from "react-icons/io";
@@ -88,10 +89,11 @@ const BlogSlider: React.FC<BlogSliderProps> = ({
   const featuredBlog = blogs[0];
   const otherBlogs = blogs.slice(1);
   const { t } = useI18n();
+  const articleText = useArticleText();
 
   const getLocalizedText = (field: { en: string; ru: string; ka?: string } | undefined): string => {
     if (!field) return "";
-    return field[language] || field.ru || field.en || "";
+    return field[language] || field.en || "";
   };
 
   const getCategoryName = (blog: Blog): string => {
@@ -173,7 +175,7 @@ const BlogSlider: React.FC<BlogSliderProps> = ({
                     "/assets/images/blogbg.jpg"
                   }
                   fill
-                  alt={getLocalizedText(featuredBlog.title)}
+                  alt={articleText(featuredBlog, "title")}
                   className="object-cover opacity-80"
                 />
               </div>
@@ -192,10 +194,10 @@ const BlogSlider: React.FC<BlogSliderProps> = ({
                   </span>
                 )}
                 <h2 className="font-bowler text-[#1A1A1A] text-lg md:text-xl font-semibold leading-tight">
-                  {clampText(getLocalizedText(featuredBlog.title), 110)}
+                  {clampText(articleText(featuredBlog, "title"), 110)}
                 </h2>
                 <p className="font-pt text-[#1A1A1A]/80 text-sm line-clamp-3">
-                  {clampText(getLocalizedText(featuredBlog.excerpt) || getLocalizedText(featuredBlog.description) || "", 100)}
+                  {clampText(articleText(featuredBlog, "excerpt") || getLocalizedText(featuredBlog.description) || "", 100)}
                 </p>
               </div>
             </div>
@@ -211,10 +213,10 @@ const BlogSlider: React.FC<BlogSliderProps> = ({
                   <div className="h-[249px] p-5 bg-white flex flex-col justify-between rounded-[20px] hover:shadow-lg duration-300 transition-shadow">
                     <div className="flex flex-col gap-3">
                       <h3 className="font-bowler text-[#1A1A1A] text-xl font-semibold leading-tight">
-                        {clampText(getLocalizedText(blog.title), 90)}
+                        {clampText(articleText(blog, "title"), 90)}
                       </h3>
                       <p className="font-pt text-[#1A1A1A]/70 text-sm line-clamp-3">
-                        {clampText(getLocalizedText(blog.excerpt) || getLocalizedText(blog.description) || "", 180)}
+                        {clampText(articleText(blog, "excerpt") || getLocalizedText(blog.description) || "", 180)}
                       </p>
                     </div>
                     <div className="flex justify-between items-end">
@@ -251,11 +253,11 @@ const BlogSlider: React.FC<BlogSliderProps> = ({
                     src={blog.featuredImages?.[0] || blog.imageUrl || ""}
                     width={189}
                     height={172}
-                    alt={getLocalizedText(blog.title)}
+                    alt={articleText(blog, "title")}
                     className="rounded-[10px]"
                   />
                   <p className="text-[#1A1A1A] text-sm leading-tight mt-2 line-clamp-2 font-semibold font-bowler">
-                    {getLocalizedText(blog.title)}
+                    {articleText(blog, "title")}
                   </p>
                   <div className="flex justify-end items-center gap-1.5 mt-2">
                     <div className="w-8 h-8 bg-[#F9F7FE] rounded-[6px] flex justify-center items-center">

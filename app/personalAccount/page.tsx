@@ -56,17 +56,17 @@ const PersonalAccountContent: React.FC = () => {
     
     return [
       { 
-        label: t("personal_account.stats.total_time") || "Общее время", 
+        label: t("personal_account.stats.total_time") || "Total time",
         text: formatTimeSpent(userStats.totalTimeSpent || 0),
         icon: FaRegCheckCircle 
       },
       { 
-        label: t("personal_account.stats.exercises") || "Упражнения", 
-        text: `${userStats.totalExercisesCompleted || 0} ${t("personal_account.stats.exercises_label") || "упражнений"}`,
+        label: t("personal_account.stats.exercises") || "Exercises",
+        text: `${userStats.totalExercisesCompleted || 0} ${t("personal_account.stats.exercises_label") || "exercises"}`,
         icon: FaStar 
       },
       { 
-        label: t("personal_account.stats.average_time") || "Среднее время", 
+        label: t("personal_account.stats.average_time") || "Average time",
         text: calculateAverageTime(userStats.totalTimeSpent || 0, activeDays),
         icon: FaRegCheckCircle 
       },
@@ -270,30 +270,12 @@ const PersonalAccountContent: React.FC = () => {
                     (cat) => cat._id === set.categoryId
                   );
 
-                  const getCategoryName = () => {
-                    if (!category) return "კატეგორია";
-                    if (locale === "ka")
-                      return (
-                        category.name.ka || category.name.ru || category.name.en
-                      );
-                    if (locale === "ru")
-                      return category.name.ru || category.name.en;
-                    return category.name.en || category.name.ru;
-                  };
-
-                  const getSetTitle = () => {
-                    if (locale === "ka") return set.name.ru || set.name.en; // Use Russian as fallback for Georgian
-                    if (locale === "ru") return set.name.ru || set.name.en;
-                    return set.name.en || set.name.ru;
-                  };
-
-                  const getSetDescription = () => {
-                    if (locale === "ka")
-                      return set.description.ru || set.description.en; // Use Russian as fallback for Georgian
-                    if (locale === "ru")
-                      return set.description.ru || set.description.en;
-                    return set.description.en || set.description.ru;
-                  };
+                  const getCategoryName = () =>
+                    category?.name[locale as keyof typeof category.name] || category?.name.en || "Category";
+                  const getSetTitle = () =>
+                    set.name[locale as keyof typeof set.name] || set.name.en;
+                  const getSetDescription = () =>
+                    set.description[locale as keyof typeof set.description] || set.description.en;
 
                   return {
                     id: set._id,

@@ -28,7 +28,7 @@ export default function CategoriesPage({
 }) {
   const { categoryId } = use(params);
   const { categoryData, loading, error } = useCategoryComplete(categoryId);
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
 
 
@@ -74,31 +74,18 @@ export default function CategoriesPage({
     );
   }
 
-  const getLocale = () => {
-    if (typeof window !== "undefined") {
-      const storedLocale = localStorage.getItem("locale");
-      return storedLocale && ["ka", "ru", "en"].includes(storedLocale)
-        ? storedLocale
-        : "ru";
-    }
-    return "ru";
-  };
-
   const getLocalizedText = (
     field: { ka: string; en: string; ru: string } | undefined,
-    locale: string = "ru"
+    locale: string = "en"
   ): string => {
     if (!field) return "";
     return (
       field[locale as keyof typeof field] ||
-      field.ru ||
       field.en ||
-      field.ka ||
       ""
     );
   };
 
-  const locale = getLocale();
 
   const setsCount = categoryData?.sets?.length || 0;
   const subcategoriesCount = categoryData?.subcategories?.length || 0;
@@ -264,7 +251,7 @@ export default function CategoriesPage({
               </h1>
               <Link href="/subcategories" className="hover:opacity-80 transition-opacity cursor-pointer">
                 <span className="font-bowler text-[#D4BAFC] text-[20px] md:text-[24px] leading-[90%] uppercase">
-                  {t("buttons.show_all") || "Смотреть все"} →
+                  {t("buttons.show_all") || "View all"} →
                 </span>
               </Link>
             </div>
@@ -340,7 +327,7 @@ export default function CategoriesPage({
             <WorksSlider
               works={popularSets}
               linkType="complex"
-              title={t("common.popular_exercises") || "ПОПУЛЯРНЫЕ УПРАЖНЕНИЯ"}
+              title={t("common.popular_exercises") || "POPULAR EXERCISES"}
               seeAll={false}
               categoryData={categoryData?.category?._id}
               fromMain={false}
@@ -396,7 +383,7 @@ export default function CategoriesPage({
             <WorksSlider
               works={directSets}
               linkType="complex"
-              title={t("common.other_complexes") || "ДРУГИЕ КОМПЛЕКСЫ"}
+              title={t("common.other_complexes") || "OTHER COMPLEXES"}
               seeAll={false}
               categoryData={categoryData?.category?._id}
               fromMain={false}

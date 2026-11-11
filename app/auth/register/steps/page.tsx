@@ -73,10 +73,10 @@ const Step2 = ({
   return (
     <div className="flex flex-col items-center justify-center max-w-[600px] mx-auto">
       <h2 className="text-[32px] leading-[100%] tracking-[-3%] font-bold mb-2 text-start w-full pl-10 text-[#3D334A] ">
-        {t("register.step2.title") || "Как вас зовут?"}
+        {t("register.step2.title") || "What is your name?"}
       </h2>
       <p className="mb-10 mt-2 text-[#846FA0] text-start pl- text-[18px] font-medium leading-[100%] font-pt">
-        {t("register.step2.description") || "Имя и фамилия будут отображаться в вашем личном кабинете"}
+        {t("register.step2.description") || "Your first and last name will appear in your account"}
       </p>
       <form
         onSubmit={handleNext}
@@ -85,14 +85,14 @@ const Step2 = ({
         <div className="flex flex-row font-pt gap-6 items-center justify-center mb-2 w-full">
           <input
             type="text"
-            placeholder={t("register.step2.firstName") || "Имя"}
+            placeholder={t("register.step2.firstName") || "First name"}
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             className="w-[276px] h-[60px] border border-[#E9DFF6] rounded-lg px-4 text-xl focus:outline-none focus:border-[#846FA0] bg-white text-[#3D334A]"
           />
           <input
             type="text"
-            placeholder={t("register.step2.lastName") || "Фамилия"}
+            placeholder={t("register.step2.lastName") || "Last name"}
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             className="w-[276px] h-[60px] border border-[#E9DFF6] rounded-lg px-4 text-xl focus:outline-none focus:border-[#846FA0] bg-white text-[#3D334A]"
@@ -104,14 +104,14 @@ const Step2 = ({
             onClick={onBack}
             className="bg-[#E9DFF6] text-[#3D334A] py-2 px-8 rounded-lg font-medium text-[18px] w-full"
           >
-            {t("register.back") || "Назад"}
+            {t("register.back") || "Back"}
           </button>
           <button
             type="submit"
             className="bg-[#D4BAFC] text-white py-2 px-8 rounded-lg font-medium text-[18px] disabled:opacity-50 w-full"
             disabled={!allFilled}
           >
-            {t("register.next") || "Далее"}
+            {t("register.next") || "Next"}
           </button>
         </div>
       </form>

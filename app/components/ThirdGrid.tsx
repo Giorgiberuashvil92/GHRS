@@ -1,4 +1,5 @@
 "use client";
+import { useArticleText } from "../hooks/useArticleText";
 import Image from "next/image";
 import { CiBookmark } from "react-icons/ci";
 import { IoIosShareAlt } from "react-icons/io";
@@ -42,11 +43,11 @@ interface ThirdGridProps {
   currentPage: number;
   blogsPerPage: number;
   blogs: Blog[];
-  language: "ka" | "en" | "ru";
   showHeader?: boolean;
 }
 
-const ThirdGrid: React.FC<ThirdGridProps> = ({ blogs, language }) => {
+const ThirdGrid: React.FC<ThirdGridProps> = ({ blogs }) => {
+  const articleText = useArticleText();
   // 7 ელემენტი
   const otherBlogs = blogs.slice(1, 8);
 
@@ -88,10 +89,10 @@ const ThirdGrid: React.FC<ThirdGridProps> = ({ blogs, language }) => {
             >
               <div className="h-[249px] flex flex-col justify-between bg-white rounded-[20px] p-2">
                 <p className="text-[#3D334A] font-pt tracking-[0%] mt-0 mb-1 text-[16px] md:text-[24px] leading-[120%] font-semibold px-3">
-                  {orderedBlogs[0].title[language]}
+                  {articleText(orderedBlogs[0], "title")}
                 </p>
                 <p className="mt-0 text-[#846FA0] font-pt font-medium leading-[120%] tracking-[0%] px-3">
-                  {orderedBlogs[0].excerpt[language]}
+                  {articleText(orderedBlogs[0], "excerpt")}
                 </p>
                 <div className="px-3 pb-3 font-bowler mt-2">
                   <span className="text-[#3D334A] font-bowler p-1.5 leading-[90%] bg-[#E9DFF6] rounded-[6px] text-[14px] uppercase">
@@ -109,7 +110,7 @@ const ThirdGrid: React.FC<ThirdGridProps> = ({ blogs, language }) => {
             >
               <div className="h-[249px] flex flex-col justify-between bg-white rounded-[20px] p-2">
                 <p className="text-[#3D334A] font-pt tracking-[0%] mt-0 mb-2 text-[16px] md:text-[24px] leading-[120%] font-semibold px-3">
-                  {orderedBlogs[1].title[language]}
+                  {articleText(orderedBlogs[1], "title")}
                 </p>
                 <div className="px-3 pb-3 font-bowler mt-1">
                   <span className="text-[#3D334A] font-bowler p-1.5 leading-[90%]  rounded-[6px] text-[14px] uppercase">
@@ -127,7 +128,7 @@ const ThirdGrid: React.FC<ThirdGridProps> = ({ blogs, language }) => {
             >
               <div className="h-[249px] flex flex-col justify-between bg-white rounded-[20px] p-2">
                 <p className="text-[#3D334A] font-pt tracking-[0%] mt-0 mb-2 text-[16px] md:text-[24px] leading-[120%] font-semibold px-3">
-                  {orderedBlogs[2].title[language]}
+                  {articleText(orderedBlogs[2], "title")}
                 </p>
                 <div className="px-3 pb-3 font-bowler mt-1">
                   <span className="text-[#3D334A] font-bowler p-1.5 leading-[90%]  rounded-[6px] text-[14px] uppercase">
@@ -145,7 +146,7 @@ const ThirdGrid: React.FC<ThirdGridProps> = ({ blogs, language }) => {
             >
               <div className="h-[249px] flex flex-col justify-between bg-white rounded-[20px] p-2">
                 <p className="text-[#3D334A] font-pt tracking-[0%] mt-0 mb-2 text-[16px] md:text-[24px] leading-[120%] font-semibold px-3">
-                  {orderedBlogs[3].title[language]}
+                  {articleText(orderedBlogs[3], "title")}
                 </p>
                 <div className="px-3 pb-3 font-bowler mt-1">
                   <span className="text-[#3D334A] font-bowler p-1.5 leading-[90%]  rounded-[6px] text-[14px] uppercase">
@@ -166,14 +167,14 @@ const ThirdGrid: React.FC<ThirdGridProps> = ({ blogs, language }) => {
                   src={orderedBlogs[4].imageUrl}
                   width={319}
                   height={247}
-                  alt={orderedBlogs[4].title[language]}
+                  alt={articleText(orderedBlogs[4], "title")}
                   className="rounded-[12px] object-cover w-full h-[247px] mb-3"
                 />
                 <p className="text-[#3D334A] font-pt tracking-[0%] mt-0 mb-2 text-[16px] md:text-[24px] leading-[120%] font-semibold px-3">
-                  {orderedBlogs[4].title[language]}
+                  {articleText(orderedBlogs[4], "title")}
                 </p>
                 <p className="mt-0 text-[#846FA0] font-medium font-pt leading-[120%] tracking-[0%] px-3">
-                  {orderedBlogs[4].excerpt[language]}
+                  {articleText(orderedBlogs[4], "excerpt")}
                 </p>
                 <div className="px-3 pb-3 font-bowler mt-1">
                   <span className="text-[#3D334A] font-bowler p-1.5 leading-[90%] rounded-[6px] text-[14px] uppercase">
@@ -191,7 +192,7 @@ const ThirdGrid: React.FC<ThirdGridProps> = ({ blogs, language }) => {
             >
               <div className="h-[249px] flex flex-col justify-between bg-white rounded-[20px] p-2">
                 <p className="text-[#3D334A] font-pt tracking-[0%] mt-0 mb-2 text-[16px] md:text-[24px] leading-[120%] font-semibold px-3">
-                  {orderedBlogs[5].title[language]}
+                  {articleText(orderedBlogs[5], "title")}
                 </p>
                 <div className="px-3 pb-3 font-bowler mt-1">
                   <span className="text-[#3D334A] font-bowler p-1.5 leading-[90%] rounded-[6px] text-[14px] uppercase">
@@ -210,13 +211,13 @@ const ThirdGrid: React.FC<ThirdGridProps> = ({ blogs, language }) => {
             <div className="min-w-[260px] max-w-[260px] flex-shrink-0 p-5 bg-white flex flex-col justify-between rounded-[20px]">
               <Image
                 src={blog.imageUrl}
-                alt={blog.title[language]}
+                alt={articleText(blog, "title")}
                 width={300}
                 height={160}
                 className="rounded-md object-cover w-full h-[120px] mb-3"
               />
               <p className="text-[#3D334A] text-[18px] leading-[120%] line-clamp-2 font-bold">
-                {blog.title[language]}
+                {articleText(blog, "title")}
               </p>
               <span className="text-[#3D334A] font-bowler p-1.5 leading-[90%] rounded-[6px] text-[14px] uppercase mt-2 inline-block">
                 {blog?.articles?.length} სტატია

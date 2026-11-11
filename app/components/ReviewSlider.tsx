@@ -95,9 +95,7 @@ const ReviewSlider = ({ title = "", embeddedInCard = false }: ReviewSliderProps)
     if (!field) return "";
     return (
       field[locale as keyof typeof field] ||
-      field.ru ||
       field.en ||
-      field.ka ||
       ""
     );
   };

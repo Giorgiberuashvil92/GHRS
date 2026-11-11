@@ -8,11 +8,13 @@ import MobileNavbar from "../../components/Navbar/MobileNavbar";
 import { getArticleById } from "../../api/articles";
 import type { Article as ArticleType } from "../../api/articles";
 import { Footer } from "@/app/components/Footer";
+import { useArticleText } from "../../hooks/useArticleText";
 import { useI18n } from "../../context/I18nContext";
 
 export default function ArticlePage() {
   const params = useParams();
-  const { locale, t } = useI18n();
+  const { t } = useI18n();
+  const articleText = useArticleText();
   const [article, setArticle] = useState<ArticleType | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -41,16 +43,10 @@ export default function ArticlePage() {
     fetchArticle();
   }, [params.id]);
 
-  // Update page title when article is loaded
+  const title = article ? articleText(article, "title") : "";
   useEffect(() => {
-    if (article) {
-      const getLocalizedText = (field: { en: string; ru: string; ka?: string }) => {
-        return field[locale as keyof typeof field] || field.ru || field.en || "";
-      };
-      const title = getLocalizedText(article.title);
-      document.title = `${title} - GRS`;
-    }
-  }, [article, locale]);
+    if (title) document.title = `${title} - GRS`;
+  }, [title]);
 
   if (loading) {
     return <div>Loading...</div>;

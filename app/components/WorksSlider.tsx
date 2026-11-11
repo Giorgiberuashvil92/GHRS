@@ -84,7 +84,7 @@ const WorksSlider: React.FC<WorksSliderProps> = ({
           {seeAll && showTopLink && (
             <Link href={seeAllHref} className="hover:opacity-80 transition-opacity cursor-pointer">
               <span className="font-bowler text-[#D4BAFC] text-[20px] md:text-[24px] leading-[90%] uppercase">
-                {t("buttons.show_all") || "Смотреть все"} →
+                {t("buttons.show_all") || "View all"} →
               </span>
             </Link>
           )}

@@ -90,31 +90,14 @@ type Exercise = {
 };
 
 // ლოკალიზაციის ფუნქცია
-const getLocale = () => {
-  if (typeof window !== "undefined") {
-    const storedLocale = localStorage.getItem("locale");
-
-    const result =
-      storedLocale && ["ka", "ru", "en"].includes(storedLocale)
-        ? storedLocale
-        : "ru";
-
-    return result;
-  }
-  return "ru";
-};
-
 const getLocalizedText = (
   field: LocalizedString | undefined,
-  forcedLocale?: string
+  locale: string
 ): string => {
   if (!field) return "";
-  const locale = forcedLocale || getLocale();
   return (
     field[locale as keyof typeof field] ||
-    field.ru ||
     field.en ||
-    field.ka ||
     ""
   );
 };
@@ -123,6 +106,7 @@ const getLocalizedText = (
 const getExercises = (
   exercises: BackendExercise[],
   t: (key: string) => string,
+  locale: string,
   completedExercises: string[] = []
 ): Exercise[] => {
 
@@ -146,7 +130,7 @@ const getExercises = (
     }
 
     // ვქმნით steps მასივს
-    const description = getLocalizedText(exercise.description);
+    const description = getLocalizedText(exercise.description, locale);
     const paragraphs = description
       .split("{new paragraph}")
       .map((p) => p.trim());
@@ -165,7 +149,7 @@ const getExercises = (
       id: index + 1,
       _id: exercise._id, // დავამატოთ _id
       title: `${t("exercise.title")} ${index + 1}. ${getLocalizedText(
-        exercise.name
+        exercise.name, locale
       ).toUpperCase()}`,
       steps,
       status,
@@ -619,30 +603,8 @@ function PlayerContent() {
               let demoUrl: string | undefined;
 
               if (typeof setData.demoVideoUrl === "object") {
-                // ვცდილობთ შესაბამისი ენის demo ვიდეოს
-                if (
-                  locale === "en" &&
-                  (setData.demoVideoUrl as LocalizedVideoUrl).en
-                ) {
-                  demoUrl = (setData.demoVideoUrl as LocalizedVideoUrl).en;
-                } else if (
-                  locale === "ru" &&
-                  (setData.demoVideoUrl as LocalizedVideoUrl).ru
-                ) {
-                  demoUrl = (setData.demoVideoUrl as LocalizedVideoUrl).ru;
-                } else if (
-                  locale === "ka" &&
-                  (setData.demoVideoUrl as LocalizedVideoUrl).ru
-                ) {
-                  demoUrl = (setData.demoVideoUrl as LocalizedVideoUrl).ru; // KA-სთვის ვიყენებთ RU-ს
-                }
-
-                // fallback-ად ვცდილობთ სხვა ენის ვიდეოს
-                if (!demoUrl) {
-                  demoUrl =
-                    (setData.demoVideoUrl as LocalizedVideoUrl).en ||
-                    (setData.demoVideoUrl as LocalizedVideoUrl).ru;
-                }
+                const demoVideo = setData.demoVideoUrl as LocalizedVideoUrl;
+                demoUrl = demoVideo?.[locale as keyof LocalizedVideoUrl] || demoVideo?.en;
               } else {
                 demoUrl = setData.demoVideoUrl as string;
               }
@@ -657,7 +619,7 @@ function PlayerContent() {
               <VideoPlayer
                 key={`${currentExercise._id}:${videoUrl}`}
                 url={videoUrl}
-                title={getLocalizedText(currentExercise.name)}
+                title={getLocalizedText(currentExercise.name, locale)}
                 onVideoComplete={handleVideoComplete}
                 onProgress={handleVideoProgress}
               />
@@ -761,9 +723,9 @@ function PlayerContent() {
                   <span
                     className={`text-xs font-normal ${textColor} text-center leading-tight`}
                   >
-                    {getLocalizedText(exercise.name).length > 40
-                      ? getLocalizedText(exercise.name).substring(0, 40) + "..."
-                      : getLocalizedText(exercise.name)}
+                    {getLocalizedText(exercise.name, locale).length > 40
+                      ? getLocalizedText(exercise.name, locale).substring(0, 40) + "..."
+                      : getLocalizedText(exercise.name, locale)}
                   </span>
                 </button>
               );
@@ -777,7 +739,7 @@ function PlayerContent() {
         <div className="relative w-full flex flex-col gap-4 md:gap-6">
           {/* ვერტიკალური ხაზების კონტეინერი */}
           <div className="hidden md:block absolute left-6 w-[2px] h-full">
-            {getExercises(exercises || [], t, completedExercises).map(
+            {getExercises(exercises || [], t, locale, completedExercises).map(
               (exercise, idx, arr) => {
                 const nextExercise = arr[idx + 1];
                 if (!nextExercise) return null;
@@ -821,7 +783,7 @@ function PlayerContent() {
             )}
           </div>
 
-          {getExercises(exercises || [], t, completedExercises).map(
+          {getExercises(exercises || [], t, locale, completedExercises).map(
             (exercise, idx, arr) => {
               // ვამოწმებთ წინა ვარჯიშების დასრულების სტატუსს
               const prevExercises = arr.slice(0, idx);

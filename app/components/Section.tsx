@@ -63,7 +63,7 @@ const Section = ({
   const { locale, t } = useI18n();
   const getLocalizedText = (field: { ka: string; en: string; ru: string } | undefined): string => {
     if (!field) return "";
-    return field[locale as keyof typeof field] || field.ru || field.en || field.ka || "";
+    return field[locale as keyof typeof field] || field.en || "";
   };
 
   const scrollLeft = () => {
@@ -92,11 +92,11 @@ const Section = ({
       <div className="flex items-center justify-between">
         <div className="flex flex-col gap-5">
           <h1 className="text-[48px] md:text-[64px] text-[#3D334A] leading-[100%] tracking-[-1%] font-bold font-bowler uppercase">
-            {t("common.popular_sections_title") || "Популярные разделы"}
+            {t("common.popular_sections_title") || "Popular sections"}
           </h1>
           <Link href="/subcategories" className="flex items-center gap-2 hover:opacity-80 transition-opacity cursor-pointer">
             <span className="font-bowler text-[#D4BAFC] text-[24px] leading-[90%] mr-2">
-              {t("buttons.show_all") || "Смотреть все"}
+              {t("buttons.show_all") || "View all"}
             </span>
             <FaArrowRightLong color="#D4BAFC"/>
           </Link>
@@ -130,7 +130,7 @@ const Section = ({
             ? getLocalizedText(subcat.category.name) 
             : parentCategory?.name 
             ? getLocalizedText(parentCategory.name)
-            : (t("common.orthopedics") || "Ортопедия");
+            : (t("common.orthopedics") || "Orthopedics");
           
           const setsCount = Array.isArray(subcat.sets) ? subcat.sets.length : 0;
           const complexText = locale === 'ka' ? 'კომპლექსი' : locale === 'en' ? 'complexes' : 'комплексов';

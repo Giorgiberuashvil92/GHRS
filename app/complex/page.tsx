@@ -20,7 +20,7 @@ import MainHeader from "../components/Header/MainHeader";
 function ComplexContent() {
   const searchParams = useSearchParams();
   const setId = searchParams.get("id") || "";
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   const { set: setData, loading: setLoading, error: setError } = useSet(setId);
 
@@ -58,31 +58,18 @@ function ComplexContent() {
   ];
 
   // ვიღებთ ენის პარამეტრს
-  const getLocale = () => {
-    if (typeof window !== "undefined") {
-      const storedLocale = localStorage.getItem("locale");
-      return storedLocale && ["ka", "ru", "en"].includes(storedLocale)
-        ? storedLocale
-        : "ru";
-    }
-    return "ru";
-  };
-
   const getLocalizedText = (
     field: { ka: string; en: string; ru: string } | undefined,
-    locale: string = "ru"
+    locale: string = "en"
   ): string => {
     if (!field) return "";
     return (
       field[locale as keyof typeof field] ||
-      field.ru ||
       field.en ||
-      field.ka ||
       ""
     );
   };
 
-  const locale = getLocale();
 
   interface PriceObject {
     monthly: number;
@@ -223,7 +210,7 @@ function ComplexContent() {
                   </h1>
                   <div className="rounded-[15px] overflow-hidden shadow-lg">
                     <ReactPlayer
-                      src="/videos/hero.mp4"
+                      src={locale === "ru" ? "/videos/hero.mp4" : "/videos/heroEn.mp4"}
                       controls
                       width="100%"
                       height="360px"

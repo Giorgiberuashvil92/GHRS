@@ -128,9 +128,7 @@ export function getLocalizedSetText(
   if (typeof field === "string") return field;
   return (
     field[locale as keyof typeof field] ||
-    field.ru ||
     field.en ||
-    field.ka ||
     ""
   );
 }

@@ -33,7 +33,7 @@ const pickLocalized = (
   locale: CourseLocale
 ): string => {
   if (!field) return "";
-  return field[locale] || field.en || field.ru || field.ka || "";
+  return field[locale] || field.en || "";
 };
 
 /** კურსში ჩაწერილი instructor.name — სტრიქონი ან მრავალენოვანი (API/legacy) */

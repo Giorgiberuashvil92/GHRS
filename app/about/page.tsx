@@ -33,7 +33,7 @@ interface Teacher {
 }
 
 const About = () => {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const { instructors, loading } = useInstructors();
 
   // instructors მონაცემების კონვერტაცია Teacher format-ში
@@ -132,7 +132,7 @@ const About = () => {
         {/* ინსტრუქტორების სექცია */}
         <div className="w-full px-4 md:px-6 md:mx-5 py-12 bg-[#F9F7FE] rounded-[30px] overflow-hidden">
           <h2 className="text-[32px] md:text-[40px] text-[#3D334A] font-light mb-6 font-bowler">
-            {t("teachers.our_teachers") || "НАШИ ПРЕПОДАВАТЕЛИ"}
+            {t("teachers.our_teachers") || "OUR INSTRUCTORS"}
           </h2>
 
           <div className="space-y-8">
@@ -192,7 +192,7 @@ const About = () => {
                       )}
 
                       <div className="space-y-3 text-[16px] text-[#846FA0] leading-relaxed max-w-[750px]">
-                        <p>{teacher.bio.ru || teacher.bio.en}</p>
+                        <p>{teacher.bio[locale as keyof typeof teacher.bio] || teacher.bio.en}</p>
                       </div>
 
                       <div className="mt-4 pt-4">

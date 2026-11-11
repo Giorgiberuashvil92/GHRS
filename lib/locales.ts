@@ -1,6 +1,6 @@
 /** Supported interface languages. Content without a translation falls back to English. */
 export const languages = [
-  { code: 'ka', label: 'KA', name: 'ქართული' },
+  { code: 'ka', label: 'GE', name: 'ქართული' },
   { code: 'ru', label: 'RU', name: 'Русский' },
   { code: 'en', label: 'EN', name: 'English' },
   { code: 'he', label: 'HE', name: 'עברית' },

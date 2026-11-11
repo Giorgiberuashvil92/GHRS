@@ -34,7 +34,7 @@ interface ComplexPageProps {
 const Complex = ({ params }: ComplexPageProps) => {
   const resolvedParams = React.use(params);
   const setId = resolvedParams.id;
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   const {
     set: directSet,
@@ -118,31 +118,18 @@ const Complex = ({ params }: ComplexPageProps) => {
     { label: t("complex_demo_video"), href: "#demo" },
   ];
 
-  const getLocale = () => {
-    if (typeof window !== "undefined") {
-      const storedLocale = localStorage.getItem("locale");
-      return storedLocale && ["ka", "ru", "en"].includes(storedLocale)
-        ? storedLocale
-        : "ru";
-    }
-    return "ru";
-  };
-
   const getLocalizedText = (
     field: { ka: string; en: string; ru: string } | undefined,
-    locale: string = "ru"
+    locale: string = "en"
   ): string => {
     if (!field) return "";
     return (
       field[locale as keyof typeof field] ||
-      field.ru ||
       field.en ||
-      field.ka ||
       ""
     );
   };
 
-  const locale = getLocale();
 
   const descriptionMeta = parseSetDescriptionMeta({
     description: rawSetData ? getLocalizedText(rawSetData.description, locale) : "",
@@ -228,13 +215,13 @@ const Complex = ({ params }: ComplexPageProps) => {
         type: "set",
         itemType: "set",
         name: setData.name, // multilingual object {ru, en, ka}
-        title: setData.name?.ru || setData.name?.en || "", // fallback title
+        title: getLocalizedText(setData.name, locale),
         price: finalPrice,
         period: finalPeriod,
         image: setData.thumbnailImage || "/assets/images/course.png",
         img: setData.thumbnailImage || "/assets/images/course.png",
         description: setData.description, // multilingual object
-        desc: setData.description?.ru || setData.description?.en || "",
+        desc: getLocalizedText(setData.description, locale),
         totalExercises: setData.totalExercises || 0,
         totalDuration: setData.totalDuration || "0:00",
       };
@@ -288,12 +275,12 @@ const Complex = ({ params }: ComplexPageProps) => {
     {
       icon: <Image src="/assets/icons/Video.png" alt="Complexes" width={24} height={24} className="w-6 h-6" />,
       value: displayExerciseCount,
-      label: t("header.sets_count", { count: String(displayExerciseCount) }).replace(/\d+\s*/, "") || "комплексов",
+      label: t("header.sets_count", { count: String(displayExerciseCount) }).replace(/\d+\s*/, "") || "complexes",
     },
     {
       icon: <Image src="/assets/icons/Pulse.png" alt="Exercises" width={24} height={24} className="w-6 h-6" />,
       value: displayExerciseCount,
-      label: t("header.exercises_count", { count: String(displayExerciseCount) }).replace(/\d+\s*/, "") || "упражнений",
+      label: t("header.exercises_count", { count: String(displayExerciseCount) }).replace(/\d+\s*/, "") || "exercises",
     },
     {
       icon: <Image src="/assets/icons/Book.png" alt="Hours" width={24} height={24} className="w-6 h-6" />,
@@ -303,7 +290,7 @@ const Complex = ({ params }: ComplexPageProps) => {
           ? "header.hours_count"
           : "header.minutes_count",
         { count: String(descriptionMeta.durationDisplayValue) }
-      ).replace(/\d+\s*/, "") || (descriptionMeta.useHoursForDuration ? "часов" : "минут"),
+      ).replace(/\d+\s*/, "") || (descriptionMeta.useHoursForDuration ? "hours" : "minutes"),
     },
   ];
 
@@ -351,7 +338,7 @@ const Complex = ({ params }: ComplexPageProps) => {
               handleAddToCart();
             }}
           >
-            {t("common.buy") || "ПРИОБРЕСТИ"}
+            {t("common.buy") || "BUY"}
           </div>
         </div>
       </div>
@@ -457,31 +444,10 @@ const Complex = ({ params }: ComplexPageProps) => {
                     <ReactPlayer
                       src={(() => {
                         const demoVideo = (setData as any)?.demoVideoUrl;
-                        let videoUrl: string | undefined;
-                        if (typeof demoVideo === "object" && demoVideo) {
-                          if (locale === "en" && demoVideo.en) {
-                            videoUrl = demoVideo.en;
-                          } else if (
-                            locale === "ru" &&
-                            demoVideo.ru
-                          ) {
-                            videoUrl = demoVideo.ru;
-                          } else if (
-                            locale === "ka" &&
-                            demoVideo.ru
-                          ) {
-                            videoUrl = demoVideo.ru; // KA-სთვის იყენებთ RU-ს
-                          }
-                          if (!videoUrl) {
-                            videoUrl =
-                              demoVideo.en ||
-                              demoVideo.ru;
-                          }
-                        } else {
-                          videoUrl = demoVideo as string;
-                        }
-                        // ვტოვებთ ზუსტად იმ URL-ს და ფორმატს, რაც მოდელშია მითითებული
-                        return videoUrl || "/videos/hero.mp4";
+                        const videoUrl = typeof demoVideo === "object" && demoVideo
+                          ? demoVideo[locale] || demoVideo.en
+                          : demoVideo;
+                        return videoUrl || (locale === "ru" ? "/videos/hero.mp4" : "/videos/heroEn.mp4");
                       })()}
                       controls
                       width="100%"

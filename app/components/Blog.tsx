@@ -82,9 +82,7 @@ const Blog: React.FC<BlogProps> = ({
     if (!field) return "";
     return (
       field[locale as keyof typeof field] ||
-      field.ru ||
       field.en ||
-      field.ka ||
       ""
     );
   };

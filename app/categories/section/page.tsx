@@ -24,7 +24,7 @@ function SectionContent() {
   const searchParams = useSearchParams();
   const subcategoryId = searchParams.get("subcategoryId") || "";
   const categoryId = searchParams.get("categoryId") || "";
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   // ვიყენებთ categoryComplete hook-ს მთავარი კატეგორიისთვის
   const { categoryData, loading, error } = useCategoryComplete(categoryId);
@@ -51,31 +51,18 @@ function SectionContent() {
     );
   }, [categoryData?.sets, subcategoryId]);
 
-  const getLocale = () => {
-    if (typeof window !== "undefined") {
-      const storedLocale = localStorage.getItem("locale");
-      return storedLocale && ["ka", "ru", "en"].includes(storedLocale)
-        ? storedLocale
-        : "ru";
-    }
-    return "ru";
-  };
-
   const getLocalizedText = (
     field: { ka: string; en: string; ru: string } | undefined,
-    loc: string = "ru"
+    loc: string = locale
   ): string => {
     if (!field) return "";
     return (
       field[loc as keyof typeof field] ||
-      field.ru ||
       field.en ||
-      field.ka ||
       ""
     );
   };
 
-  const locale = getLocale();
 
   const calculateTotalHours = useMemo(
     () => sumSetsDurationHours(subcategorySets),
@@ -328,7 +315,7 @@ function SectionContent() {
             <WorksSlider
               works={popularSets}
               linkType="complex"
-              title={t("common.popular_exercises") || "ПОПУЛЯРНЫЕ УПРАЖНЕНИЯ"}
+              title={t("common.popular_exercises") || "POPULAR EXERCISES"}
               seeAll={false}
               categoryData={categoryData?.category?._id}
               fromMain={false}

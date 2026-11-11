@@ -2,6 +2,7 @@ export function mergeMessages(target: Record<string, unknown>, source: Record<st
   const result = { ...target };
   for (const key of Object.keys(source)) {
     const left = target[key], right = source[key];
+    if (typeof left === "string" && (right == null || (typeof right === "string" && !right.trim()))) continue;
     result[key] = left && right && typeof left === 'object' && typeof right === 'object'
       ? mergeMessages(left as Record<string, unknown>, right as Record<string, unknown>) : right;
   }

@@ -23,8 +23,8 @@ export function resolveCourseLocale(locale: string | undefined | null): CourseLo
 /**
  * ინსტრუქტორის მრავალენოვანი ველი UI ენით:
  * - **en** → en, შემდეგ ka, ru (არ ვაჩვენებთ ru-ს en-ის ცარიელობისას პირველ რიგში)
- * - **ru** → ru, შემდეგ en, ka
- * - **ka** → ka, შემდეგ en, ru
+ * - **ru** → ru, შემდეგ en
+ * - **ka** → ka, შემდეგ en
  */
 export function pickInstructorLocalizedText(
   content: { ka?: string; en?: string; ru?: string } | undefined,
@@ -34,9 +34,7 @@ export function pickInstructorLocalizedText(
   const en = String(content.en ?? "").trim();
   const ru = String(content.ru ?? "").trim();
   const ka = String(content.ka ?? "").trim();
-  if (locale === "en") return en || ka || ru;
-  if (locale === "ru") return ru || en || ka;
-  return ka || en || ru;
+  return (locale === "ru" ? ru : locale === "ka" ? ka : en) || en;
 }
 
 /** API/Mongo-დან: მხოლოდ en, ru, ka */
@@ -94,7 +92,7 @@ function fullNameForUiLocale(
 
 /**
  * სრული სახელი ენის მიხედვით — იგივე ფოლბექი რაც კურსის `pickLocalized`-ს აქვს:
- * `მიმდინარე ენა → en → ru → ka`, ბოლოს `name`.
+ * `მიმდინარე ენა → en`, ბოლოს `name`.
  */
 export function instructorDisplayNameForLocale(
   inst: InstructorLocalizedNameFields,
@@ -108,7 +106,7 @@ export function instructorDisplayNameForLocale(
   const ka = fullNameForUiLocale(first, last, "ka");
 
   const primary =
-    (locale === "en" ? en : locale === "ru" ? ru : ka) || en || ru || ka;
+    (locale === "en" ? en : locale === "ru" ? ru : ka) || en;
   if (primary) return primary;
   const fallbackName = (inst.name || "").trim();
   if (!fallbackName) return "";
@@ -168,14 +166,14 @@ export function legacyCourseInstructorStringsPerLocale(raw: string): {
   return { en, ru, ka: ka || en };
 }
 
-/** ლეგაციის სტრიქონის ჩვენება UI ენაზე (იგივე ფოლბექი: მიმდინარე → en → ru → ka) */
+/** ლეგაციის სტრიქონის ჩვენება UI ენაზე (იგივე ფოლბექი: მიმდინარე → en) */
 export function displayLegacyCourseInstructorField(
   raw: string,
   locale: CourseLocale
 ): string {
   const { en, ru, ka } = legacyCourseInstructorStringsPerLocale(raw);
   const primary =
-    (locale === "en" ? en : locale === "ru" ? ru : ka) || en || ru || ka;
+    (locale === "en" ? en : locale === "ru" ? ru : ka) || en;
   return primary.trim();
 }
 

@@ -68,7 +68,7 @@ const MobileNavbar = () => {
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
   return (
-    <header className="py-2 md:hidden z-[9999999999] max-w-[700px]">
+    <header dir="ltr" className="py-2 md:hidden z-[9999999999] max-w-[700px]">
       <div className=" top-0 left-0 right-0 z-[9999999999] px-6 py-6 md:hidden w-full mx-auto">
         <div className={`px-4 py-3 flex justify-between items-center rounded-2xl ${getBackgroundStyle()} backdrop-blur-lg shadow-xl border border-white/10`}>
           <div onClick={toggleMenu}>

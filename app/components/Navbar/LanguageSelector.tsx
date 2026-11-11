@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useI18n } from "../../context/I18nContext";
 import { languages } from "../../../lib/locales";
 
+const sortedLanguages = [...languages].sort((a, b) => a.label.localeCompare(b.label, "en"));
+
 const LanguageSelector: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { locale, setLocale } = useI18n();
@@ -34,13 +36,13 @@ const LanguageSelector: React.FC = () => {
         <span aria-hidden="true" className="text-xs">⌄</span>
       </button>
       {isOpen && (
-        <div className="absolute top-[75px] end-0 rounded-2xl z-50 w-48 max-h-[60vh] overflow-y-auto py-2 bg-[#3D334A] shadow-xl border border-white/10">
-          {languages.map(language => (
+        <div className="absolute top-[75px] end-0 rounded-2xl z-50 w-max max-h-[60vh] overflow-y-auto py-2 bg-[#3D334A] shadow-xl border border-white/10">
+          {sortedLanguages.map(language => (
             <button type="button" key={language.code} lang={language.code} dir="auto"
               aria-current={language.code === locale ? 'true' : undefined}
               className="block w-full px-4 py-2 text-start text-white hover:bg-white/10 focus-visible:bg-white/10 rounded-md"
               onClick={() => { setLocale(language.code); setIsOpen(false); }}>
-              {language.name} <span className="text-white/60">{language.label}</span>
+              {language.label}
             </button>
           ))}
         </div>

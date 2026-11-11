@@ -19,6 +19,7 @@ interface MainHeaderProps {
   showArrows?: boolean;
   complexData?: any;
   useVideo?: boolean;
+  videoSource?: string;
   backgroundImage?: string;
   customTitle?: string | null;
   customSubtitle?: string | null;
@@ -36,6 +37,7 @@ function MainHeader({
   showArrows = true,
   complexData = null,
   useVideo = true,
+  videoSource,
   backgroundImage = "/assets/images/continueWatchingBanner.jpg",
   customTitle = null,
   customSubtitle = null,
@@ -71,12 +73,12 @@ function MainHeader({
       case "ru":
         return "/videos/hero.mp4";
       default:
-        return "/videos/hero.mp4";
+        return "/videos/heroEn.mp4";
     }
   };
 
   return (
-    <div className="relative rounded-[20px] h-[100vh] md:h-[85vh] md:m-6 overflow-hidden">
+    <div dir="ltr" className="relative rounded-[20px] h-[100vh] md:h-[85vh] md:m-6 overflow-hidden">
       <DesktopNavbar
         menuItems={localizedMenuItems}
         blogBg={false}
@@ -88,14 +90,14 @@ function MainHeader({
       {/* ვიდეო ან სურათი */}
       {useVideo ? (
         <video
-          key={locale}
+          key={videoSource ?? locale}
           autoPlay
           muted
           loop
           playsInline
           className="video-bg absolute h-full w-full object-cover z-[-1] md:rounded-[20px]"
         >
-          <source src={getVideoSource()} type="video/mp4" />
+          <source src={videoSource ?? getVideoSource()} type="video/mp4" />
           Your browser does not support the video tag.
         </video>
       ) : (
@@ -160,17 +162,17 @@ function MainHeader({
         <div className="absolute bottom-0 right-0 hidden md:flex gap-4 bg-[#F9F7FE] rounded-tl-[80px] p-6 pb-8 z-10 items-end">
           <Link
             href="/about"
-            className="text-white bg-[#3D334A] rounded-[40px] w-[246px] h-[222px] flex items-start justify-start p-8 transition-transform duration-300 hover:scale-105 cursor-pointer font-bold uppercase text-lg shadow-2xl leading-tight font-bowler"
+            className="text-white bg-[#3D334A] rounded-[40px] w-[clamp(100px,15vw,246px)] h-[222px] flex items-start justify-start p-8 transition-transform duration-300 hover:scale-105 cursor-pointer font-bold uppercase text-lg shadow-2xl leading-tight font-bowler"
             style={{ wordSpacing: 'normal', hyphens: 'none' }}
           >
-            {t("header.learn_more") || "Изучить подробнее"}
+            <span dir="auto">{t("header.learn_more") || "Learn more"}</span>
           </Link>
           <Link
             href="/allComplex"
-            className="text-white bg-gradient-to-br from-[#D4BAFC] via-[#C4A6F1] to-[#B794E8] rounded-[40px] w-[246px] h-[222px] flex items-start justify-start p-8 transition-transform duration-300 hover:scale-105 cursor-pointer font-bold uppercase text-lg shadow-2xl leading-tight font-bowler"
+            className="text-white bg-gradient-to-br from-[#D4BAFC] via-[#C4A6F1] to-[#B794E8] rounded-[40px] w-[clamp(100px,15vw,246px)] h-[222px] flex items-start justify-start p-8 transition-transform duration-300 hover:scale-105 cursor-pointer font-bold uppercase text-lg shadow-2xl leading-tight font-bowler"
             style={{ wordSpacing: 'normal', hyphens: 'none' }}
           >
-            {t("header.to_catalog") || "В каталог"}
+            <span dir="auto">{t("header.to_catalog") || "Browse catalog"}</span>
           </Link>
         </div>
       )}
@@ -179,26 +181,26 @@ function MainHeader({
         {/* თუ customTitle არის, მაშინ გამოაჩენე ის, თუარადა - ჩვეულებრივი */}
         {!hideHeaderText && (customTitle ? (
           <div className="mb-6 md:max-w-[888px]">
-            <h1 className="text-2xl md:text-5xl font-bold text-white font-bowler uppercase md:leading-[100%] leading-[120%] md:tracking-[-1%] tracking-[-3%]" style={{ wordSpacing: 'normal', hyphens: 'none' }}>
+            <h1 dir="auto" className="text-2xl md:text-5xl font-bold text-white font-bowler uppercase md:leading-[100%] leading-[120%] md:tracking-[-1%] tracking-[-3%]" style={{ wordSpacing: 'normal', hyphens: 'none' }}>
               {customTitle}
             </h1>
             {customSubtitle && (
-              <p className="text-base md:text-2xl text-white font-bowler font-medium mt-4 md:leading-[120%] leading-[120%]" style={{ wordSpacing: 'normal', hyphens: 'none' }}>
+              <p dir="auto" className="text-base md:text-2xl text-white font-bowler font-medium mt-4 md:leading-[120%] leading-[120%]" style={{ wordSpacing: 'normal', hyphens: 'none' }}>
                 {customSubtitle}
               </p>
             )}
           </div>
         ) : (
-          <h1 className="text-2xl md:text-5xl font-bold text-white mb-6 hidden md:block font-bowler" style={{ wordSpacing: 'normal', hyphens: 'none' }}>
+          <h1 dir="auto" className="text-2xl md:text-5xl font-bold text-white mb-6 hidden md:block font-bowler" style={{ wordSpacing: 'normal', hyphens: 'none' }}>
             {t("header.ecosystem_title")}
           </h1>
         ))}
 
         <div
-          className={`md:absolute bottom-8 ${isVisible ? "block" : "hidden"}`}
+          className={`md:absolute bottom-8 ${ShowBlock ? "md:max-w-[calc(100%-2*clamp(100px,15vw,246px)-128px)]" : ""} ${isVisible ? "block" : "hidden"}`}
         >
           {!hideStats && (
-            <div className="flex gap-4 flex-col md:flex-row mb-4 w-full justify-between">
+            <div dir="ltr" className="flex gap-4 flex-col md:flex-row mb-4 w-full justify-between">
               {stats.map((stat, index) => {
 
                 return (
@@ -211,7 +213,7 @@ function MainHeader({
                       <span className="text-2xl font-bold text-white font-pt">
                         {typeof stat.value === 'number' ? stat.value : String(stat.value)}
                       </span>
-                      <span className="text-base text-white/90 font-pt font-medium">{stat.label}</span>
+                      <span dir="auto" className="text-base text-white/90 font-pt font-medium">{stat.label}</span>
                     </div>
                   </div>
                 );
@@ -222,17 +224,17 @@ function MainHeader({
             <div className="bg-[#3d334a4d] rounded-3xl p-8 content-between grid max-w-212">
               {complexData ? (
                 <>
-                  <h1 className="text-xl md:text-2xl font-bold text-white mb-8 font-bowler">
-                    {complexData?.name?.[locale] || complexData?.name?.ru || complexData?.name?.en || complexData?.name?.ka}
+                  <h1 dir="auto" className="text-xl md:text-2xl font-bold text-white mb-8 font-bowler">
+                    {complexData?.name?.[locale] || complexData?.name?.en}
                   </h1>
-                  <p className="text-sm md:text-lg text-white font-pt">{complexData?.description?.[locale] || complexData?.description?.ru || complexData?.description?.en || complexData?.description?.ka}</p>
+                  <p dir="auto" className="text-sm md:text-lg text-white font-pt">{complexData?.description?.[locale] || complexData?.description?.en}</p>
                 </>
               ):(
                 <>
-                  <h1 className="text-[28px] md:text-[48px] font-bold text-white mb-6 md:mb-8 uppercase font-bowler tracking-[-1%] leading-[100%]">
+                  <h1 dir="auto" className="text-[28px] md:text-[48px] font-bold text-white mb-6 md:mb-8 uppercase font-bowler tracking-[-1%] leading-[100%]">
                     {customBlockTitle || t("header.rehabilitation")}
                   </h1>
-                  <p className="text-[18px] md:text-[24px] font-medium text-white font-pt leading-[120%] tracking-[-1%]">{customBlockDescription || t("header.rehabilitation_description")}</p>
+                  <p dir="auto" className="text-[18px] md:text-[24px] font-medium text-white font-pt leading-[120%] tracking-[-1%]">{customBlockDescription || t("header.rehabilitation_description")}</p>
                 </>
               )}
             </div>

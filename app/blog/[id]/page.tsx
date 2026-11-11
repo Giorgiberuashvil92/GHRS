@@ -7,6 +7,7 @@ import MobileNavbar from "../../components/Navbar/MobileNavbar";
 import { getBlogById } from "../../api/blogs";
 import type { Blog } from "../../api/blogs";
 import { Footer } from "@/app/components/Footer";
+import { useArticleText } from "../../hooks/useArticleText";
 import { useI18n } from "../../context/I18nContext";
 import SubHeader from "@/app/components/Header/SubHeader";
 
@@ -16,10 +17,11 @@ interface BlogContentProps {
 
 const BlogContent: React.FC<BlogContentProps> = ({ blog }) => {
   const { locale } = useI18n();
+  const articleText = useArticleText();
 
   const getLocalizedText = (field: { en: string; ru: string; ka?: string } | undefined) => {
     if (!field) return "";
-    return field[locale as keyof typeof field] || field.ru || field.en || "";
+    return field[locale as keyof typeof field] || field.en || "";
   };
 
   return (
@@ -84,10 +86,10 @@ const BlogContent: React.FC<BlogContentProps> = ({ blog }) => {
                 className="p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors"
               >
                 <h4 className="font-semibold text-[#3D334A] mb-2">
-                  {typeof article.title === 'object' ? getLocalizedText(article.title) : article.title || 'No title'}
+                  {articleText(article, "title") || "No title"}
                 </h4>
                 <p className="text-gray-600 text-sm">
-                  {typeof article.excerpt === 'object' ? getLocalizedText(article.excerpt) : article.excerpt || ''}
+                  {articleText(article, "excerpt")}
                 </p>
               </div>
             ))}

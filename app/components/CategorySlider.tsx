@@ -39,15 +39,13 @@ interface LocalizedString {
 
 const getLocalizedText = (
   localizedString: LocalizedString | string | null | undefined,
-  locale: string = "ru"
+  locale: string = "en"
 ): string => {
   if (typeof localizedString === "string") return localizedString;
   if (typeof localizedString === "object" && localizedString) {
     return (
       localizedString[locale as keyof LocalizedString] ||
-      localizedString.ru ||
       localizedString.en ||
-      localizedString.ka ||
       ""
     );
   }

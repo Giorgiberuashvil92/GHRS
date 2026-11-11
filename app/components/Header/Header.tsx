@@ -85,7 +85,7 @@ const Header: React.FC<HeaderProps> = ({
     priceKa?: PriceObject | null,
     discountedEn?: PriceObject | null,
     discountedKa?: PriceObject | null,
-    currentLocale: string = "ru"
+    currentLocale: string = locale
   ): number => {
     if (currentLocale === "en") {
       if (discountedEn && typeof discountedEn.monthly === "number")
@@ -106,14 +106,12 @@ const Header: React.FC<HeaderProps> = ({
 
   const getLocalizedText = (
     field: { ka: string; en: string; ru: string } | undefined,
-    currentLocale: string = "ru"
+    currentLocale: string = locale
   ): string => {
     if (!field) return "";
     return (
       field[currentLocale as keyof typeof field] ||
-      field.ru ||
       field.en ||
-      field.ka ||
       ""
     );
   };
@@ -280,7 +278,7 @@ const Header: React.FC<HeaderProps> = ({
             playsInline
             className="video-bg absolute h-full object-cover z-[-1] md:rounded-[20px]"
           >
-            <source src="/videos/hero.mp4" type="video/mp4" />
+            <source src={locale === "ru" ? "/videos/hero.mp4" : "/videos/heroEn.mp4"} type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         )}

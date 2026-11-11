@@ -8,7 +8,7 @@ import { FaFacebookF, FaShare } from "react-icons/fa";
 import { MdStar } from "react-icons/md";
 import { FaUserCircle } from "react-icons/fa";
 import Link from "next/link";
-import { useLanguage, useI18n } from "../context/I18nContext";
+import { useI18n } from "../context/I18nContext";
 import { useCategories } from "../hooks/useCategories";
 import { useComments } from "../hooks/useComments";
 import { RiTwitterXFill } from "react-icons/ri";
@@ -17,33 +17,13 @@ import { BsYoutube } from "react-icons/bs";
 import { BsInstagram } from "react-icons/bs";
 import { sanitizeHtml } from "../utils/sanitize";
 
+import { useArticleText } from "../hooks/useArticleText";
+import { pickLocalized } from "../utils/pickLocalized";
+import { extractImageUrl } from "../utils/extractImageUrl";
+
 interface ArticleProps {
   article: ArticleType;
 }
-
-const extractImageUrl = (input?: string): string | null => {
-  if (!input) return null;
-
-  // If input is a simple URL, return it
-  if (!input.includes('[') && !input.includes('"')) {
-    return input;
-  }
-
-  try {
-    // Try to parse as JSON
-    let parsed = input;
-    while (typeof parsed === 'string' && (parsed.includes('[') || parsed.includes('"'))) {
-      parsed = JSON.parse(parsed);
-      if (Array.isArray(parsed)) {
-        parsed = parsed[0];
-      }
-    }
-    return typeof parsed === 'string' ? parsed : null;
-  } catch (e) {
-    console.error('Failed to parse image URL:', e);
-    return null;
-  }
-};
 
 const Article: React.FC<ArticleProps> = ({ article }) => {
   const [similarArticles, setSimilarArticles] = useState<ArticleType[]>([]);
@@ -52,8 +32,9 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
   const [userRating, setUserRating] = useState<number>(0);
   const [hoveredStar, setHoveredStar] = useState<number>(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const { language } = useLanguage();
-  const { t } = useI18n();
+  const { t, locale: language } = useI18n();
+  const articleText = useArticleText();
+  const articleContent = articleText(article, "content");
   const { categories } = useCategories();
   const { comments, isLoading: commentsLoading, addComment, toggleLike } = useComments(article._id);
 
@@ -89,7 +70,7 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
     return Math.max(1, readingTimeMinutes);
   };
 
-  const dynamicReadTime = calculateReadingTime(article.content[language]);
+  const dynamicReadTime = calculateReadingTime(articleContent);
 
   // Extract headings from article content for automatic table of contents
   const extractHeadingsFromContent = (content: string) => {
@@ -195,7 +176,7 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
     }
 
     // Generate from content if no predefined table of contents
-    return extractHeadingsFromContent(article.content[language]);
+    return extractHeadingsFromContent(articleContent);
   };
 
   const tableOfContents = getTableOfContents();
@@ -262,10 +243,10 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
   // Helper function to get category names
   const getCategoryNames = (article: ArticleType): string[] => {
     if (article.categories && article.categories.length > 0) {
-      return article.categories.map(cat => cat.name[language]);
+      return article.categories.map(cat => pickLocalized(cat.name, language));
     }
     if (article.category?.name) {
-      return [article.category.name[language]];
+      return [pickLocalized(article.category.name, language)];
     }
 
     // If we have categoryId but no category name, try to find it in categories
@@ -273,7 +254,7 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
       const categoryIds = Array.isArray(article.categoryId) ? article.categoryId : [article.categoryId];
       const foundCategories = categories.filter(cat => categoryIds.includes(cat._id));
       if (foundCategories.length > 0) {
-        return foundCategories.map(cat => cat.name[language]);
+        return foundCategories.map(cat => pickLocalized(cat.name, language));
       }
     }
 
@@ -295,7 +276,7 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
             extractImageUrl(article.featuredImages?.[0]) ||
             "/assets/images/blogbg.jpg"
           }
-          alt={article.title[language]}
+          alt={articleText(article, "title")}
           fill
           className="object-cover rounded-10"
           priority
@@ -327,7 +308,7 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
                       ? 'text-sm font-medium hover:text-purple-600'
                       : 'text-base font-semibold hover:text-purple-700'
                       }`}>
-                      {item.title[language]}
+                      {pickLocalized(item.title, language)}
                     </span>
                   </div>
                 </div>
@@ -359,10 +340,10 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
               </div>
               <section>
                 <h2 className="text-[rgba(61,51,74,1)] leading-[120%] tracking-[0%] text-[32px] font-bowler">
-                  {article.title[language]}
+                  {articleText(article, "title")}
                 </h2>
                 <p className="text-[rgba(61,51,74,1)] leading-[120%] tracking-[0%] text-[16px] pt-6 font-pt">
-                  {article.excerpt[language]}
+                  {articleText(article, "excerpt")}
                 </p>
                 <div className="flex items-center gap-[30px] pt-[30px]">
                   <span className="text-[rgba(61,51,74,1)] leading-[120%] tracking-[0%] text-[16px] font-medium font-pt">
@@ -380,7 +361,7 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
             {/* Article Content */}
             <div
               dangerouslySetInnerHTML={{
-                __html: sanitizeHtml(addAnchorsToContent(article.content[language])),
+                __html: sanitizeHtml(addAnchorsToContent(articleContent)),
               }}
               className="mt-[60px] prose max-w-none text-[rgba(132,111,160,1)] article-content"
             />
@@ -921,7 +902,7 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
                         extractImageUrl(similarArticle.featuredImages?.[0]) ||
                         "/assets/images/article.jpg"
                       }
-                      alt={similarArticle.title[language]}
+                      alt={articleText(similarArticle, "title")}
                       width={100}
                       height={100}
                       className="w-full h-full object-cover"
@@ -941,10 +922,10 @@ const Article: React.FC<ArticleProps> = ({ article }) => {
                       )}
                     </div>
                     <h3 className="text-[rgba(61,51,74,1)] text-sm font-medium mb-2 font-bowler">
-                      {similarArticle.title[language]}
+                      {articleText(similarArticle, "title")}
                     </h3>
                     <p className="text-[rgba(132,111,160,1)] text-xs line-clamp-2 font-pt">
-                      {similarArticle.excerpt[language]}
+                      {articleText(similarArticle, "excerpt")}
                     </p>
                   </div>
                 </Link>

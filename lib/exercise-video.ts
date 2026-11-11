@@ -14,8 +14,8 @@ export function getVideoType(value: string): VideoType {
 }
 
 export function resolveExerciseVideo(exercise: { videoUrl?: string; videoUrlEn?: string }, locale: string): string | undefined {
-  const candidates = locale === 'en'
-    ? [exercise.videoUrlEn, exercise.videoUrl]
-    : [exercise.videoUrl, exercise.videoUrlEn];
+  const candidates = locale === 'ru'
+    ? [exercise.videoUrl, exercise.videoUrlEn]
+    : [exercise.videoUrlEn];
   return candidates.find(url => typeof url === 'string' && getVideoType(url) !== 'unknown')?.trim();
 }

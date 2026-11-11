@@ -89,7 +89,6 @@ const GridLayouts: React.FC<GridLayoutsProps> = ({
                   scrollRef={scrollRef}
                   currentPage={currentPage}
                   blogsPerPage={blogsPerPage}
-                  language={getContentLocale(locale)}
                   showHeader={showHeader}
                 />
               );
@@ -100,7 +99,6 @@ const GridLayouts: React.FC<GridLayoutsProps> = ({
                   scrollRef={scrollRef}
                   currentPage={currentPage}
                   blogsPerPage={blogsPerPage}
-                  language={getContentLocale(locale)}
                   showHeader={showHeader}
                 />
               );

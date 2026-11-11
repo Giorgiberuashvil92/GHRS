@@ -194,8 +194,8 @@ const Professional = () => {
             instructor.profession || "Teacher"
           }`,
           education: [
-            instructor.bio?.ka || instructor.bio?.en || instructor.bio?.ru || "",
-            (instructor.htmlContent?.ka || instructor.htmlContent?.en || instructor.htmlContent?.ru || "").replace(/<[^>]*>/g, ""),
+            instructor.bio?.en || "",
+            (instructor.htmlContent?.en || "").replace(/<[^>]*>/g, ""),
           ].filter((text) => text.length > 0),
           imageUrl:
             instructor.profileImage || "/assets/images/teachers/default.jpg",
@@ -261,8 +261,8 @@ const Professional = () => {
           stats={statsData as never[]}
           hideHeaderText={true}
           hideStats={true}
-          customBlockTitle={t("professional.header.title") || "ПРОФЕССИОНАЛЬНОЕ РАЗВИТИЕ"}
-          customBlockDescription={t("professional.header.description") || "Раздел обучение и проф-развитие в области реабилитации, физиотерапии и лечебно-восстановительного массажа — это коллаборация с Израильскими центрами обучения."}
+          customBlockTitle={t("professional.header.title") || "PROFESSIONAL DEVELOPMENT"}
+          customBlockDescription={t("professional.header.description") || "Training and professional development in rehabilitation, physiotherapy, and therapeutic massage."}
           useVideo={false}
           backgroundImage="/assets/images/bluebg.jpg"
         />
@@ -272,7 +272,7 @@ const Professional = () => {
             href="/allCourse"
             className="text-white bg-[#3D334A] rounded-[40px] w-[246px] h-[222px] flex items-start justify-start p-8 transition-transform duration-300 hover:scale-105 cursor-pointer font-bold uppercase text-lg shadow-2xl leading-tight font-bowler"
           >
-            {t("professional.our_courses") || "Наши курсы"}
+            {t("professional.our_courses") || "Our courses"}
           </Link>
         </div>
       </div>
@@ -290,7 +290,7 @@ const Professional = () => {
             <div className="absolute bottom-5 left-5">
               <h2 className="text-[40px] tracking-[1px] text-white">&gt;20</h2>
               <p className="text-[20px] font-medium text-white">
-                {t("professional.cards.qualified_teachers") || "квалифицированных преподавателей"}
+                {t("professional.cards.qualified_teachers") || "qualified instructors"}
               </p>
             </div>
           </div>
@@ -305,7 +305,7 @@ const Professional = () => {
             />
             <div className="absolute bottom-5 left-5">
               <h2 className="text-[40px] tracking-[1px] text-white">50+</h2>
-              <p className="text-[20px] font-medium text-white">{t("professional.cards.exclusive_courses") || "эксклюзивных курсов"}</p>
+              <p className="text-[20px] font-medium text-white">{t("professional.cards.exclusive_courses") || "exclusive courses"}</p>
             </div>
           </div>
           
@@ -320,7 +320,7 @@ const Professional = () => {
             <div className="absolute bottom-5 left-5">
               <h2 className="text-[40px] tracking-[1px] text-white">&gt;20</h2>
               <p className="text-[20px] font-medium text-white">
-                {t("professional.cards.students_learning") || "студентов, проходят обучения сейчас"}
+                {t("professional.cards.students_learning") || "students currently learning"}
               </p>
             </div>
           </div>
@@ -333,7 +333,7 @@ const Professional = () => {
           <div className="p-5">
             <div className="flex items-center justify-between md:mb-[10px]">
               <h1 className="text-[24px] md:text-[64px] font-bowler uppercase tracking-[-1%] text-[#3D334A] leading-[100%] mb-2.5 md:mb-5">
-                {t("professional.courses.popular_courses") || "ПОПУЛЯРНЫЕ КУРСЫ"}
+                {t("professional.courses.popular_courses") || "POPULAR COURSES"}
               </h1>
               <SliderArrows
                 onScrollLeft={scrollLeftTop}
@@ -379,7 +379,7 @@ const Professional = () => {
           <div className="p-5">
             <div className="flex items-center justify-between md:mb-[10px]">
               <h1 className="text-[24px] md:text-[64px] font-bowler uppercase tracking-[-1%] text-[#3D334A] leading-[100%] mb-2.5 md:mb-5">
-                {t("professional.courses.title") || "КУРСЫ"}
+                {t("professional.courses.title") || "COURSES"}
               </h1>
               <SliderArrows
                 onScrollLeft={scrollLeft}
