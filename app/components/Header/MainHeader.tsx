@@ -159,17 +159,17 @@ function MainHeader({
       )}
 
       {ShowBlock && (
-        <div className="absolute bottom-0 right-0 hidden md:flex gap-4 bg-[#F9F7FE] rounded-tl-[80px] p-6 pb-8 z-10 items-end">
+        <div className="absolute bottom-0 right-0 hidden md:flex gap-4 bg-[#fff] rounded-tl-[80px] p-6 pb-8 z-10 items-end before:pointer-events-none before:absolute before:right-0 before:-top-10 before:size-10 before:rounded-br-[40px] before:shadow-[10px_10px_0_10px_#fff] after:pointer-events-none after:absolute after:-left-10 after:bottom-0 after:size-10 after:rounded-br-[40px] after:shadow-[10px_10px_0_10px_#fff]">
           <Link
             href="/about"
-            className="text-white bg-[#3D334A] rounded-[40px] w-[clamp(100px,15vw,246px)] h-[222px] flex items-start justify-start p-8 transition-transform duration-300 hover:scale-105 cursor-pointer font-bold uppercase text-lg shadow-2xl leading-tight font-bowler"
+            className="text-white bg-[#3D334A] rounded-[40px] w-[clamp(100px,15vw,246px)] h-[222px] flex items-start justify-start p-8 transition-transform duration-300 hover:scale-105 cursor-pointer font-bold uppercase text-lg leading-tight font-bowler"
             style={{ wordSpacing: 'normal', hyphens: 'none' }}
           >
             <span dir="auto">{t("header.learn_more") || "Learn more"}</span>
           </Link>
           <Link
             href="/allComplex"
-            className="text-white bg-gradient-to-br from-[#D4BAFC] via-[#C4A6F1] to-[#B794E8] rounded-[40px] w-[clamp(100px,15vw,246px)] h-[222px] flex items-start justify-start p-8 transition-transform duration-300 hover:scale-105 cursor-pointer font-bold uppercase text-lg shadow-2xl leading-tight font-bowler"
+            className="text-white bg-gradient-to-br from-[#D4BAFC] via-[#C4A6F1] to-[#B794E8] rounded-[40px] w-[clamp(100px,15vw,246px)] h-[222px] flex items-start justify-start p-8 transition-transform duration-300 hover:scale-105 cursor-pointer font-bold uppercase text-lg leading-tight font-bowler"
             style={{ wordSpacing: 'normal', hyphens: 'none' }}
           >
             <span dir="auto">{t("header.to_catalog") || "Browse catalog"}</span>

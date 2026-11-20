@@ -112,9 +112,9 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
     Boolean(profNav.parent?.href && pathname === profNav.parent.href);
 
   return (
-    <header dir="ltr" className="sticky font-bowler top-0 left-0 right-0 z-50 w-full md:flex hidden justify-between px-10 py-5 transition-all duration-300">
+    <header dir="ltr" className="sticky font-bowler top-0 left-0 right-0 z-50 w-full md:flex hidden items-start gap-4 px-6 xl:px-10 py-5 transition-all duration-300">
       <div
-        className={`w-[780px] flex flex-col rounded-[24px] border border-white/10 relative overflow-hidden ${getBackgroundStyle()}`}
+        className={`w-max max-w-[calc(100%-8rem)] flex flex-col rounded-[24px] border border-white/10 relative overflow-hidden ${getBackgroundStyle()}`}
       >
         <div className="flex p-3.5 items-center w-full min-h-0">
         {!pathname.startsWith("/article/") && <BackgroundImage imageUrl={data?.featuredImages?.[0]} />}
@@ -130,16 +130,16 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
           )}
         </Link>
         <ul
-          className={`flex flex-wrap items-center gap-x-3 gap-y-2 ms-4 ${
+          className={`flex items-center gap-3 ms-4 ${
             logoVariant === "professional"
               ? "xl:ms-6"
               : logoVariant === "rehabilitation" || logoVariant === "blog"
                 ? "xl:ms-10"
-                : "xl:ms-[89px]"
-          } xl:me-[73px] justify-between w-full min-w-0`}
+                : "xl:ms-10"
+          } whitespace-nowrap`}
         >
           {effectiveMenuItems.map(({ id, name, route }) => (
-            <li key={id} className="max-w-full text-white font-bold text-[16px] xl:text-[18px] hover:text-gray-950 duration-700 leading-[100%] tracking-[-1%]">
+            <li key={id} className="shrink-0 text-white font-bold text-[16px] xl:text-[18px] hover:text-gray-950 duration-700 leading-[100%] tracking-[-1%]">
               <Link href={route}>{name}</Link>
             </li>
           ))}
@@ -194,7 +194,7 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
         ) : null}
       </div>
 
-      <div className="flex items-center gap-4 ml-4">
+      <div className="ml-auto flex shrink-0 items-center gap-4">
         <div className="hover:scale-105 duration-300">
           <LanguageSelector />
         </div>
