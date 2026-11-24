@@ -288,7 +288,7 @@ const BlogHeader = ({ BlogCategory, totalCount }: BlogHeaderProps) => {
 
 const BlogRoute = () => {
   const { t } = useI18n();
-  const { articles: allArticles } = useArticles({ isPublished: true, limit: 8 });
+  const { articles: allArticles, loading: articlesLoading } = useArticles({ isPublished: true, limit: 8 });
   const { articles: featuredArticles } = useArticles({ isFeatured: true, isPublished: true, limit: 4 });
   const { articles: popularArticles } = useArticles({ isPublished: true, limit: 6 });
   const { categories } = useCategories();
@@ -311,7 +311,11 @@ const BlogRoute = () => {
       />
       <MobileNavbar />
       {/* <Header variant="blog" /> */}
-      <SubHeader article={latestArticle} categoryName={latestCategory?.name} />
+      {articlesLoading ? (
+        <div className="mx-6 h-[317px] animate-pulse rounded-[20px] bg-[#E9DFF6] md:h-[718px]" aria-label={t("common.loading")} />
+      ) : (
+        <SubHeader article={latestArticle} categoryName={latestCategory?.name} />
+      )}
 
       {/* Featured Blogs Section */}
       <BlogHeader BlogCategory={t("navigation.blog")} totalCount={totalArticles} />

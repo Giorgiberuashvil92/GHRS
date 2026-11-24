@@ -13,12 +13,11 @@ import { useModal } from "../context/ModalContext";
 import { useI18n } from "../context/I18nContext";
 import { convertRUBtoUSD, formatPriceByLocale } from "../utils/currency";
 
-const subscriptionOptions = [
-  { label: "1 МЕСЯЦ", value: 1 },
-  { label: "3 МЕСЯЦА", value: 3 },
-  { label: "6 МЕСЯЦЕВ", value: 6 },
-  { label: "12 МЕСЯЦЕВ", value: 12 },
-];
+const copy = {
+  ka: { cart: "კალათა", clear: "ყველას წაშლა", empty: "კალათა ცარიელია", period: "გამოწერის პერიოდი", months: "თვე", remove: "წაშლა", items: "პროდუქტი", total: "ჯამი", pay: "გადახდა", recommended: "შეიძლება მოგეწონოთ" },
+  en: { cart: "Cart", clear: "Remove all", empty: "Your cart is empty", period: "Subscription period", months: "months", remove: "Remove", items: "Items", total: "Total", pay: "Pay", recommended: "You may also like" },
+  ru: { cart: "Корзина", clear: "Удалить все", empty: "Корзина пуста", period: "Срок подписки", months: "месяцев", remove: "Удалить", items: "Товаров", total: "Всего на сумму", pay: "Оплатить", recommended: "Может понравиться" },
+};
 
 interface CartItem {
   id: string;
@@ -58,13 +57,13 @@ interface ParsedCartItem {
 
 const ShoppingCard = () => {
   const [cart, setCart] = useState<CartItem[]>([]);
-  const [dropdownOpen, setDropdownOpen] = useState<string | null>(null);
   const [paymentError, setPaymentError] = useState<string | null>(null);
   const [showPayPal, setShowPayPal] = useState(false);
 
   const { sets } = useAllSets();
   const { showSuccess } = useModal();
   const { t, locale } = useI18n();
+  const labels = copy[locale as keyof typeof copy] || copy.en;
 
   useEffect(() => {
     try {
@@ -95,17 +94,6 @@ const ShoppingCard = () => {
       localStorage.setItem("cart", JSON.stringify(newCart));
       return newCart;
     });
-  };
-
-  const handleSelectSubscription = (id: string, value: number) => {
-    setCart((prev) => {
-      const newCart = prev.map((item) =>
-        item.id === id ? { ...item, subscription: value } : item
-      );
-      localStorage.setItem("cart", JSON.stringify(newCart));
-      return newCart;
-    });
-    setDropdownOpen(null);
   };
 
   const handlePaymentSuccess = (details: PaymentResponse) => {
@@ -147,20 +135,20 @@ const ShoppingCard = () => {
           <div className="flex-1 flex flex-col gap-4 items-start p-4 md:p-10 bg-white rounded-[20px]">
             <div className="flex items-center justify-between w-full">
               <h1 className="text-[#3D334A] text-[24px] md:text-[40px] leading-[120%] tracking-[-3px]">
-                Корзина
+                {labels.cart}
               </h1>
               <span
                 onClick={handleRemoveAll}
                 className="hidden font-pt md:flex text-[#D5D1DB] text-[24px] leading-[120%] cursor-pointer hover:text-[#846FA0] transition"
               >
-                Удалить все
+                {labels.clear}
               </span>
             </div>
             <hr className="h-[2px] bg-[#F9F7FE] w-full" />
             {cart.length === 0 ? (
               <div className="w-full text-center py-10">
                 <p className="text-[#846FA0] text-xl font-pt">
-                  Корзина пуста
+                  {labels.cart} пуста
                 </p>
               </div>
             ) : (
@@ -185,69 +173,19 @@ const ShoppingCard = () => {
                     <p className="text-[#846FA0] font-bold leading-[100%] mb-[16px] line-clamp-2 max-w-[353px] font-pt">
                       {item.desc}
                     </p>
-                    <div className="flex items-center gap-2 relative">
-                      <button
-                        className="text-[#846FA0] font-pt font-bold text-[14px] rounded-[8px] py-1 flex items-center gap-1 hover:bg-[#F3EDFF] transition"
-                        onClick={() =>
-                          setDropdownOpen(
-                            dropdownOpen === item.id ? null : item.id
-                          )
-                        }
-                      >
-                        Срок подписки:
-                        <span className="text-purple-400 ">
-                          {
-                            subscriptionOptions.find(
-                              (o) => o.value === item.subscription
-                            )?.label
-                          }
-                        </span>
-                        <svg
-                          className={`ml-1 w-4 h-4 transition-transform ${
-                            dropdownOpen === item.id && "rotate-180"
-                          }`}
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M19 9l-7 7-7-7"
-                          />
-                        </svg>
-                      </button>
-                      {dropdownOpen === item.id && (
-                        <div className="absolute font-bowler z-10 top-10 left-0 bg-white rounded-[16px] shadow-lg py-2 w-[180px] flex flex-col animate-fade-in border border-[#E2D6F9]">
-                          {subscriptionOptions.map((option) => (
-                            <button
-                              key={option.value}
-                              className={`text-left font-pt px-4 py-2 hover:bg-[#F3EDFF] transition text-[#3D334A] ${
-                                item.subscription === option.value
-                                  ? "font-bold"
-                                  : ""
-                              }`}
-                              onClick={() =>
-                                handleSelectSubscription(item.id, option.value)
-                              }
-                            >
-                              <span className="font-bold">{option.label}</span>
-                            </button>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                    <p className="text-[#846FA0] font-pt text-[14px]">
+                      {labels.period}: <span className="text-purple-400 font-bold">{item.subscription} {labels.months}</span>
+                    </p>
                   </div>
                   <div className="flex flex-col justify-between h-full items-end min-h-[100px]">
                     <span className="text-[#3D334A] font-pt text-[24px] leading-[100%] font-bold">
-                      {item.price} ₽
+                      {formatPriceByLocale(item.price, locale)}
                     </span>
                     <button
                       className="text-[#846FA0] font-bold text-[16px] leading-[100% ] font-pt flex items-center gap-3 mt-2 hover:text-[#D7263D] transition"
                       onClick={() => handleRemove(item.id)}
                     >
-                      Удалить
+                      {labels.remove}
                       <Image
                         src={"/assets/icons/trash.svg"}
                         alt="trash"
@@ -263,22 +201,19 @@ const ShoppingCard = () => {
 
           <div className="w-full md:w-[334px] bg-white p-4 rounded-[20px] space-y-5 h-fit">
             <div className="flex items-center justify-between">
-              <h5 className="text-[#846FA0] font-pt">Товаров</h5>
+              <h5 className="text-[#846FA0] font-pt">{labels.items}</h5>
               <span className="text-[#3D334A] text-[18px] font-bold font-pt">
-                {cart.length} шт.
+                {cart.length}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <h5 className="text-[#846FA0] font-pt">Всего на сумму</h5>
+              <h5 className="text-[#846FA0] font-pt">{labels.total}</h5>
               <span className="text-[#3D334A] text-[18px] font-bold font-pt">
                 {formatPriceByLocale(totalAmountRUB, locale)}
               </span>
             </div>
             <div className="flex items-center justify-between">
-              <h5 className="text-[#846FA0] font-pt">Скидки</h5>
-              <span className="text-[#3D334A] text-[18px] font-bold font-pt">
-                1000 ₽
-              </span>
+
             </div>
 
             <button
@@ -286,7 +221,7 @@ const ShoppingCard = () => {
               disabled={cart.length === 0 || totalAmountRUB === 0}
               className="group bg-[url('/assets/images/bluebg.jpg')] rounded-[10px] bg-cover bg-center py-[13px] w-full mt-4 cursor-pointer text-white text-[18px] font-semibold shadow-md hover:opacity-90 transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              <span className="">Оплатить</span>
+              <span>{labels.pay}</span>
               <svg
                 className="w-5 h-5 transition-transform duration-200 group-hover:translate-x-1"
                 fill="none"
@@ -326,7 +261,7 @@ const ShoppingCard = () => {
         </div>
       </div>
       <Works
-        title={"Шейный отдел позвоночника"}
+        title={labels.recommended}
         customMargin={""}
         customBorderRadius={""}
         seeAll={false}

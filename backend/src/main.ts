@@ -3,8 +3,16 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { join } from 'path';
+import { config as loadEnv } from 'dotenv';
+import { setServers } from 'dns';
 
 async function bootstrap() {
+  loadEnv();
+  const dnsServers = process.env.DNS_SERVERS?.split(',').map(server => server.trim()).filter(Boolean);
+  if (dnsServers?.length) {
+    setServers(dnsServers);
+    console.log(`DNS resolvers configured: ${dnsServers.join(', ')}`);
+  }
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   
   // CORS კონფიგურაცია

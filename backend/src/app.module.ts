@@ -10,7 +10,7 @@ import { ExerciseModule } from './exercise/exercise.module';
 import { UploadModule } from './upload/upload.module';
 import { ArticleModule } from './article/article.module';
 import { BlogModule } from './blog/blog.module';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PaymentModule } from './payment/payment.module';
 import { PurchaseModule } from './purchase/purchase.module';
 import { CourseModule } from './course/course.module';
@@ -31,12 +31,16 @@ import { TestModule } from './test/test.module';
       isGlobal: true,
       envFilePath: '.env',
     }),
-    MongooseModule.forRoot('mongodb+srv://beruashvilig60:Berobero1234!@cluster0.dtwfws3.mongodb.net/grs-db', {
-      retryWrites: true,
-      w: 'majority',
-      serverSelectionTimeoutMS: 5000,
-      socketTimeoutMS: 45000,
-      connectTimeoutMS: 10000,
+    MongooseModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        uri: config.getOrThrow<string>('MONGODB_URI'),
+        retryWrites: true,
+        w: 'majority',
+        serverSelectionTimeoutMS: 5000,
+        socketTimeoutMS: 45000,
+        connectTimeoutMS: 10000,
+      }),
     }),
     EmailModule, 
     AuthModule,
