@@ -14,7 +14,8 @@ interface WorkItem {
   image: string;
   exerciseCount: number;
   categoryName: string;
-  monthlyPrice: number;
+  monthlyPrice?: number;
+  priceLabel?: string;
   subcategoryId?: string;
   categoryId: string;
 }
@@ -146,9 +147,7 @@ const WorksSlider: React.FC<WorksSliderProps> = ({
               </div>
               <div className="flex items-center justify-end absolute -bottom-2 right-0">
                 <span className="px-5 py-3 bg-[#D4BAFC] rounded-lg text-white text-[18px] leading-[100%] font-bold mb-8 mr-8 mt-6 font-pt">
-                  {work.monthlyPrice}
-                  {language === "ka" ? "₾" : language === "ru" ? "₽" : "$"}/
-                  {t("common.month")}
+                  {work.priceLabel ?? `${work.monthlyPrice}${language === "ka" ? "₾" : language === "ru" ? "₽" : "$"}/${t("common.month")}`}
                 </span>
               </div>
             </Link>

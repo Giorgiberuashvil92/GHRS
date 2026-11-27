@@ -1,4 +1,5 @@
 "use client";
+import { recommendationTitles } from "./recommendationTitles";
 import React, { Suspense } from "react";
 import { CiPlay1 } from "react-icons/ci";
 import { useSearchParams } from "next/navigation";
@@ -381,7 +382,7 @@ function ComplexContent() {
         <ReviewSlider title={""} />
         <div className="md:my-10">
           <Works
-            title="Может понравиться"
+            title={recommendationTitles[locale]}
             customMargin={""}
             customBorderRadius={""}
             seeAll={false}

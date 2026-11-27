@@ -64,6 +64,11 @@ interface BackendSet {
   difficultyLevels: number;
   levels: Levels;
   price: Price;
+  priceEn?: Partial<Price>;
+  priceKa?: Partial<Price>;
+  discountedPrice?: Partial<Price>;
+  discountedPriceEn?: Partial<Price>;
+  discountedPriceKa?: Partial<Price>;
   isActive: boolean;
   isPublished: boolean;
   sortOrder: number;

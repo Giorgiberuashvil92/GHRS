@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+import { recommendationTitles } from "../recommendationTitles";
 import React from "react";
 import { CiPlay1 } from "react-icons/ci";
 // import Header from "../../components/Header/Header";
@@ -19,6 +20,18 @@ import { Footer } from "@/app/components/Footer";
 import WorksSlider from "@/app/components/WorksSlider";
 import MainHeader from "@/app/components/Header/MainHeader";
 import { formatPriceByLocale } from "@/app/utils/currency";
+
+const complexReviewTitles = {
+  ar: "مراجعات هذا البرنامج",
+  de: "Bewertungen zu diesem Programm",
+  en: "Reviews of this complex",
+  fr: "Avis sur ce programme",
+  he: "ביקורות על התוכנית",
+  it: "Recensioni sul programma",
+  ka: "კომპლექსის მიმოხილვები",
+  ru: "Отзывы о комплексе",
+  uk: "Відгуки про комплекс",
+};
 import { parseSetDescriptionMeta } from "@/app/utils/setDescriptionMeta";
 import Image from "next/image";
 
@@ -158,15 +171,23 @@ const Complex = ({ params }: ComplexPageProps) => {
     );
   }
 
-  const yearlyPrice = (setData as any)?.discountedPrice?.yearly ?? setData?.price?.yearly;
-  const localizedYearlyPrice = locale === 'en'
-    ? ((setData as any)?.discountedPriceEn?.yearly ?? (setData as any)?.priceEn?.yearly)
-    : locale === 'ka'
-      ? ((setData as any)?.discountedPriceKa?.yearly ?? (setData as any)?.priceKa?.yearly)
-      : undefined;
+  const yearlyPrice = [
+    setData?.discountedPrice?.yearly,
+    setData?.price?.yearly,
+  ].find((price) => typeof price === "number" && Number.isFinite(price) && price > 0);
+  const localizedPrices = locale === "en"
+    ? [setData?.discountedPriceEn?.yearly, setData?.priceEn?.yearly]
+    : locale === "ka"
+      ? [setData?.discountedPriceKa?.yearly, setData?.priceKa?.yearly]
+      : [];
+  const localizedYearlyPrice = localizedPrices.find(
+    (price) => typeof price === "number" && Number.isFinite(price) && price > 0
+  );
   const displayedYearlyPrice = localizedYearlyPrice != null
     ? locale === 'en' ? `$${localizedYearlyPrice}` : `${localizedYearlyPrice} ₾`
     : yearlyPrice != null ? formatPriceByLocale(yearlyPrice, locale as 'ka' | 'ru' | 'en') : '—';
+
+  const accessLabel = locale === "en" ? "Permanent" : locale === "ru" ? "Бессрочный доступ" : "12 МЕСЯЦЕВ";
 
   // Add the only available, 12-month plan to the cart.
   function handleAddToCart() {
@@ -267,7 +288,7 @@ const Complex = ({ params }: ComplexPageProps) => {
   const CustomBlock = (
     <div className="md:absolute bottom-0 right-0 gap-4 flex flex-col">
       <div className="hidden mx-auto text-white text-sm bg-[#3D334A4D] p-4  rounded-2xl md:w-54 w-full z-10 md:flex">
-        <p className="text-center font-bold uppercase">12 МЕСЯЦЕВ</p>
+        <p className="text-center font-bold uppercase">{accessLabel}</p>
       </div>
       <div className="flex bottom-0 right-0 md:bg-white rounded-tl-4xl p-8 justify-center">
         <div 
@@ -280,7 +301,7 @@ const Complex = ({ params }: ComplexPageProps) => {
 
           {/* Duration */}
           <p className="text-white font-normal text-lg leading-[90%] uppercase">
-            12 МЕСЯЦЕВ
+            {accessLabel}
           </p>
 
           {/* Button */}
@@ -564,10 +585,10 @@ const Complex = ({ params }: ComplexPageProps) => {
           titleStyles="text-white"
           buttonStyles="hover:opacity-80"
         />
-        <ReviewSlider title={"ОТЗЫВЫ О комплексе"} />
+        <ReviewSlider title={complexReviewTitles[locale]} />
         <div className="md:my-10">
           <WorksSlider
-            title="Может понравиться"
+            title={recommendationTitles[locale]}
             seeAll={true}
             works={[]}
             fromMain={false}

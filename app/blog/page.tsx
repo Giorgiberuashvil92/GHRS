@@ -191,13 +191,12 @@ const BigBlogCard = ({ article }: BigBlogCardProps) => {
   return (
     <Link href={`/article/${article._id}`}>
       <div className="rounded-[20px] h-full md:h-[500px] p-8 flex flex-col justify-between relative overflow-hidden bg-white shadow-sm hover:shadow-lg transition-shadow duration-300 cursor-pointer">
-        {/* Add image div that takes up the top space */}
         <div className="absolute top-0 left-0 w-full h-[45%] overflow-hidden">
           <Image
             src={article.featuredImages?.[0] || "/assets/images/blogbg.jpg"}
             alt={articleText(article, "title")}
             fill
-            className="object-cover opacity-80"
+            className="object-cover"
           />
           {/* <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#6941C6]" /> */}
         </div>

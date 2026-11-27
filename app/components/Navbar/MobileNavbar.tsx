@@ -162,6 +162,7 @@ const MobileNavbar = () => {
             <Link href={item.route} key={index}>
               <button
                 className="text-white text-[17px] text-left px-4 py-2 rounded-lg hover:bg-white/10 transition-colors duration-150"
+                style={{ wordSpacing: "0.32em" }}
                 onClick={() => {
                   setIsMenuOpen(false);
                 }}

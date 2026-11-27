@@ -36,7 +36,6 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
   const { t, locale } = useI18n();
   const router = useRouter();
   const pathname = usePathname();
-  const isHome = pathname === "/";
 
   const localizedMenu = useMemo(() => getDefaultMenuItems(t), [t, locale]);
   const profNav = useMemo(() => getProfDevNavContext(pathname), [pathname]);
@@ -115,9 +114,9 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
   return (
     <header dir="ltr" className="sticky font-bowler top-0 left-0 right-0 z-50 w-full md:flex hidden items-start gap-4 px-6 xl:px-10 py-5 transition-all duration-300">
       <div
-        className={`${isHome ? "w-[850px]" : "w-max"} max-w-[calc(100%-8rem)] flex flex-col rounded-[24px] border border-white/10 relative overflow-hidden ${getBackgroundStyle()}`}
+        className={`w-[850px] max-w-[calc(100%-8rem)] flex flex-col rounded-[24px] border border-white/10 relative overflow-hidden ${getBackgroundStyle()}`}
       >
-        <div className={`flex items-center w-full min-h-0 ${isHome ? "px-6 py-3.5" : "p-3.5"}`}>
+        <div className="flex items-center w-full min-h-0 px-6 py-3.5">
         {!pathname.startsWith("/article/") && <BackgroundImage imageUrl={data?.featuredImages?.[0]} />}
         <Link href="/" className="hover:brightness-0 duration-700 shrink-0 relative z-10" aria-label="Navigate to homepage">
           {logoVariant === "professional" ? (
@@ -131,7 +130,7 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
           )}
         </Link>
         <ul
-          className={`flex items-center ${isHome ? "gap-6" : "gap-3"} ms-4 ${
+          className={`flex items-center gap-6 ms-4 ${
             logoVariant === "professional"
               ? "xl:ms-6"
               : logoVariant === "rehabilitation" || logoVariant === "blog"
@@ -140,8 +139,10 @@ const DesktopNavbar: React.FC<DesktopNavbarProps> = ({
           } whitespace-nowrap`}
         >
           {effectiveMenuItems.map(({ id, name, route }) => (
-            <li key={id} className={`shrink-0 text-white font-bold hover:text-gray-950 duration-700 leading-[100%] tracking-[-1%] ${isHome ? "text-[18px] xl:text-[21px]" : "text-[16px] xl:text-[18px]"}`}>
-              <Link href={route}>{name}</Link>
+            <li key={id} className="shrink-0 text-white font-bold hover:text-gray-950 duration-700 leading-[100%] tracking-[-1%] text-[18px] xl:text-[21px]">
+              <Link href={route} style={{ wordSpacing: "0.32em" }}>
+                {name}
+              </Link>
             </li>
           ))}
         </ul>

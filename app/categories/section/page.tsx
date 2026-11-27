@@ -1,5 +1,6 @@
 "use client";
 
+import { formatPriceByLocale } from "@/app/utils/currency";
 import { Suspense, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { useCategoryComplete } from "../../hooks/useCategoryComplete";
@@ -25,6 +26,30 @@ function SectionContent() {
   const subcategoryId = searchParams.get("subcategoryId") || "";
   const categoryId = searchParams.get("categoryId") || "";
   const { t, locale } = useI18n();
+
+  function formatSetPrice(set: {
+    price?: { yearly?: number };
+    discountedPrice?: { yearly?: number };
+    priceEn?: { yearly?: number };
+    discountedPriceEn?: { yearly?: number };
+    priceKa?: { yearly?: number };
+    discountedPriceKa?: { yearly?: number };
+  }) {
+    const localized = locale === "en"
+      ? [set.discountedPriceEn?.yearly, set.priceEn?.yearly]
+      : locale === "ka"
+        ? [set.discountedPriceKa?.yearly, set.priceKa?.yearly]
+        : [];
+    const isPositivePrice = (price: number | undefined): price is number =>
+      typeof price === "number" && Number.isFinite(price) && price > 0;
+    const localizedPrice = localized.find(isPositivePrice);
+    if (localizedPrice !== undefined) {
+      return locale === "en" ? `$${localizedPrice}` : `${localizedPrice} ₾`;
+    }
+
+    const yearlyPrice = [set.discountedPrice?.yearly, set.price?.yearly].find(isPositivePrice);
+    return yearlyPrice === undefined ? "—" : formatPriceByLocale(yearlyPrice, locale);
+  }
 
   // ვიყენებთ categoryComplete hook-ს მთავარი კატეგორიისთვის
   const { categoryData, loading, error } = useCategoryComplete(categoryId);
@@ -160,8 +185,7 @@ function SectionContent() {
         categoryData?.category?.name as { ka: string; en: string; ru: string },
         locale
       ),
-      price: `${set.price?.monthly || 920}₾/თვე`,
-      monthlyPrice: set.price?.monthly || 920,
+      priceLabel: formatSetPrice(set),
       categoryId: categoryId,
       subcategoryId: set.subCategoryId || "",
     })) || [];
@@ -176,7 +200,7 @@ function SectionContent() {
       title: s.title,
       subcategoryId: s.subcategoryId,
       exerciseCount: s.exerciseCount,
-      price: s.price
+      price: s.priceLabel
     })),
     allPopularSetsDetails: popularSets
   });
@@ -213,8 +237,7 @@ function SectionContent() {
           categoryData?.category?.name as { ka: string; en: string; ru: string },
           locale
         ),
-        price: `${set.price?.monthly || 920}₾/თვე`,
-        monthlyPrice: set.price?.monthly || 920,
+        priceLabel: formatSetPrice(set),
         categoryId: categoryId,
         subcategoryId: set.subCategoryId || "",
       };
@@ -231,8 +254,7 @@ function SectionContent() {
       selectedSubcategory?.name as { ka: string; en: string; ru: string },
       locale
     ),
-    price: `${set.price?.monthly || 920}₾/თვე`,
-    monthlyPrice: set.price?.monthly || 920,
+    priceLabel: formatSetPrice(set),
     categoryId: categoryId,
     subcategoryId: subcategoryId,
   }));

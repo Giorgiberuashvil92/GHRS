@@ -33,7 +33,7 @@ function SubHeader({ ShowText = true, ShowIcons = true, article, categoryName })
           height={718}
           src={extractImageUrl(article?.featuredImages?.[0]) || "/assets/images/blogbg.jpg"}
           alt=""
-          className="md:h-[718px] md:w-full h-[317px] w-full object-cover object-center rounded-[20px]"
+          className="md:h-[718px] h-[317px] w-full object-cover object-center rounded-[20px]"
           priority
         />
         {ShowText && (
